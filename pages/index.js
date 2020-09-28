@@ -1,5 +1,3 @@
-import Nav from "../components/nav";
-
 export default function IndexPage() {
   return (
     <div>
@@ -10,10 +8,10 @@ export default function IndexPage() {
             at Michigan
           </h2>
           <p className="text-2xl mt-8 text-blue-100 font-light leading-tight tracking-tight">
-            Because the next generation of technology products won't be built in a
+            Because the next generation of technology products won&apos;t be built in a
             classroom.
           </p>
-          <button className="bg-gradient-to-r from-yellow-200 to-yellow-500 hover:bg-blue-500 text-gray-800 font-semibold py-2 px-4 rounded shadow mt-24">Request an invite</button>
+          <button type="button" className="bg-gradient-to-r from-yellow-200 to-yellow-500 hover:bg-blue-500 text-gray-800 font-semibold py-2 px-4 rounded shadow mt-24">Request an invite</button>
         </div>
       </div>
     </div>
