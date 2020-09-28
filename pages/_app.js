@@ -1,3 +1,5 @@
+import 'typeface-source-sans-pro'
+import 'typeface-inter'
 import '../styles/index.css'
 
 function MyApp({ Component, pageProps }) {
