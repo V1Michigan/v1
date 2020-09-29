@@ -1,35 +1,37 @@
-import Link from 'next/link';
+import PropTypes from 'prop-types';
 
-const ContentHeader = (props) => {
-  return (
-    <h1 class="font-bold text-white text-4xl text-center pt-20">{props.title}</h1>
-  )
+const ContentHeader = ({ title }) => (
+  <h1 className="font-bold text-white text-4xl text-center pt-20 pb-10 w-10/12 md:w-3/4 block mx-auto">{ title }</h1>
+);
+
+const ContentBody = ({ textElement }) => (
+  <div className="flex justify-center w-10/12 md:w-3/4 lg:w-2/3 mx-auto">
+    { textElement }
+  </div>
+);
+
+const ContentPage = ({ textElement, title }) => (
+  <div className="py-32 bg-gradient-to-r from-gray-900 to-black">
+    <ContentHeader title={ title } />
+    <ContentBody textElement={ textElement } />
+  </div>
+);
+
+ContentHeader.propTypes = {
+  title: PropTypes.string.isRequired,
 };
 
-const ContentBody = (props) => {
-  return (
-    <div class="flex justify-center p-20">
-      {props.textElement}
-    </div>
-  );
-}
+ContentBody.propTypes = {
+  textElement: PropTypes.element.isRequired,
+};
 
-const ContentPage = (props) => {
-  return (
-    <div class="h-screen bg-gradient-to-r from-gray-900 to-black">
-      <ContentHeader title={props.title} />
-      <ContentBody textElement={props.textElement} />
-      <Link href={props.nextLink}>
-        <a class="block text-center mx-auto text-gray-100 text-2xl">
-          {props.nextLinkText}
-        </a>
-      </Link>
-    </div>
-  );
+ContentPage.propTypes = {
+  textElement: PropTypes.element.isRequired,
+  title: PropTypes.string.isRequired,
 };
 
 export {
-  ContentBody,  
+  ContentBody,
   ContentHeader,
-  ContentPage
-}; 
+  ContentPage,
+};

@@ -1,5 +1,4 @@
-import { ContentPage } from '../components/content';
-import Form from "../components/Form";
+import Form from '../components/Form';
 import { What, Special, Expect } from '../components/landing';
 
 export default function IndexPage() {
@@ -13,7 +12,7 @@ export default function IndexPage() {
           <h2 className="text-2xl tracking-tight font-normal italic m-0 p-0 text-gradient bg-gradient-to-r from-yellow-200 to-yellow-500">
             at Michigan
           </h2>
-          <p className="text-2xl mt-8 text-blue-100 font-light leading-tight tracking-tight">
+          <p className="text-2xl mt-8 text-blue-100 font-light leading-tight tracking-tight px-5">
             Because the next generation of technology products won&apos;t be
             built in a classroom.
           </p>
@@ -30,7 +29,7 @@ export default function IndexPage() {
       <Special />
       <Expect />
 
-      <div className="h-screen flex justify-center items-center bg-gradient-to-r from-gray-900 to-black">
+      <div className="min-h-screen flex justify-center items-center bg-gradient-to-r from-gray-900 to-black">
         <Form />
       </div>
     </div>

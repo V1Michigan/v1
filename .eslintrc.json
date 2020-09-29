@@ -10,6 +10,7 @@
     "rules": {
         "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
         "react/react-in-jsx-scope": "off",
+        "react/jsx-closing-bracket-location": [0],
         "react/jsx-props-no-spreading": [2, {
             "exceptions": ["Component"]
         }],
