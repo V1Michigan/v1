@@ -1,4 +1,6 @@
+import { ContentPage } from '../components/content';
 import Form from "../components/Form";
+import { What, Special, Expect } from '../components/landing';
 
 export default function IndexPage() {
   return (
@@ -23,6 +25,11 @@ export default function IndexPage() {
           </button>
         </div>
       </div>
+
+      <What />
+      <Special />
+      <Expect />
+
       <div className="h-screen flex justify-center items-center bg-gradient-to-r from-gray-900 to-black">
         <Form />
       </div>
