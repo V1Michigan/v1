@@ -33,12 +33,13 @@ export default function IndexPage() {
             Because the next generation of technology products won&apos;t be
             built in a classroom.
           </p>
-          <a
-            href="#form"
-            type="button"
-            className="bg-gradient-to-r from-yellow-200 to-yellow-500 hover:bg-blue-500 text-gray-800 font-semibold py-2 px-4 rounded shadow mt-12 hover:opacity-75"
-          >
-            Request an invite
+          <a href="#form">
+            <button
+              type="button"
+              className="bg-gradient-to-r from-yellow-200 to-yellow-500 hover:bg-blue-500 text-gray-800 font-semibold py-2 px-4 rounded shadow mt-12 hover:opacity-75"
+            >
+              Request an invite
+            </button>
           </a>
         </div>
       </div>
