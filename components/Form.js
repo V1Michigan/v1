@@ -33,7 +33,7 @@ export default function Form() {
                 <input
                   name="name"
                   id="name"
-                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-gray-100"
+                  className="mt-2 appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-gray-100"
                   type="text"
                   placeholder="Jim Harbaugh"
                   onChange={handleInputChange}
@@ -50,7 +50,7 @@ export default function Form() {
                 <input
                   name="major"
                   id="major"
-                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-gray-100"
+                  className="mt-2 appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-gray-100"
                   type="text"
                   placeholder="CS, UX, Business, Engineering, etc."
                   onChange={handleInputChange}
@@ -64,7 +64,7 @@ export default function Form() {
                 htmlFor="role"
               >
                 Role
-                <div className="relative">
+                <div className="relative mt-2">
                   <select
                     name="role"
                     id="role"
@@ -93,7 +93,7 @@ export default function Form() {
             </div>
             <div className="px-3 mb-6">
               <label
-                className="block text-gray-100 text-lg mb-2"
+                className="mt-2 block text-gray-100 text-lg mb-2"
                 htmlFor="resume"
               >
                 Resume
@@ -121,7 +121,7 @@ export default function Form() {
                     name="interests"
                     htmlFor="interests"
                     onChange={handleInputChange}
-                    className="w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-gray-100 resize border rounded focus:outline-none focus:shadow-outline md:h-24 h-12"
+                    className="mt-2 w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-gray-100 resize border rounded focus:outline-none focus:shadow-outline md:h-24 h-12"
                     value={invitationRequest.interests}
                   />
                 </label>
@@ -136,7 +136,7 @@ export default function Form() {
                     name="skills"
                     id="skills"
                     onChange={handleInputChange}
-                    className="w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-gray-100 resize border rounded focus:outline-none focus:shadow-outline md:h-24 h-12"
+                    className="mt-2 w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-gray-100 resize border rounded focus:outline-none focus:shadow-outline md:h-24 h-12"
                     value={invitationRequest.skills}
                   />
                 </label>
