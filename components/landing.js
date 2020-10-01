@@ -93,13 +93,10 @@ const Expect = () => (
           <tr>
             <td>
               <p className="text-2xl text-gray-custom py-5">
-                <span
-                  className="text-gradient bg-gradient-to-r
-                                   from-yellow-200 to-yellow-500 "
-                >
+                <span className="text-gradient bg-gradient-to-r from-yellow-200 to-yellow-500">
                   Monthly emails featuring our most exciting projects.{" "}
                 </span>
-                At the end of each month, you&ll receive an email featuring our
+                At the end of each month, you'll receive an email featuring our
                 most highly-vetted projects and what they need help on.
               </p>
             </td>
