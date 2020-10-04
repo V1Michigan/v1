@@ -1,7 +1,7 @@
-import Head from "next/head";
+import Head from 'next/head';
 
-import Form from "../components/Form";
-import { What, Special, Expect } from "../components/landing";
+import Form from '../components/Form';
+import { What, Special, Expect } from '../components/landing';
 
 export default function IndexPage() {
   return (

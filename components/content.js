@@ -1,5 +1,5 @@
-import PropTypes from "prop-types";
-import Fade from "./Fade";
+import PropTypes from 'prop-types';
+import Fade from './Fade';
 
 const ContentHeader = ({ title }) => (
   <h1 className="font-bold text-white text-4xl text-center pt-20 pb-10 w-10/12 md:w-3/4 block mx-auto">
@@ -16,23 +16,23 @@ const ContentBody = ({ textElement }) => (
 const ContentPage = ({ textElement, title }) => (
   <div className="py-32 bg-gradient-to-r from-gray-900 to-black">
     <Fade>
-      <ContentHeader title={title} />
-      <ContentBody textElement={textElement} />
+      <ContentHeader title={ title } />
+      <ContentBody textElement={ textElement } />
     </Fade>
   </div>
 );
 
 ContentHeader.propTypes = {
-  title: PropTypes.string.isRequired
+  title: PropTypes.string.isRequired,
 };
 
 ContentBody.propTypes = {
-  textElement: PropTypes.element.isRequired
+  textElement: PropTypes.element.isRequired,
 };
 
 ContentPage.propTypes = {
   textElement: PropTypes.element.isRequired,
-  title: PropTypes.string.isRequired
+  title: PropTypes.string.isRequired,
 };
 
 export { ContentBody, ContentHeader, ContentPage };
