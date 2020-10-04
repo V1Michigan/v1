@@ -1,26 +1,67 @@
-import { useState } from "react";
-import Swal from "sweetalert2";
-import Fade from "./Fade";
-import { ContentHeader } from "./content";
+import { useState } from 'react';
+import Swal from 'sweetalert2';
+import Fade from './Fade';
+import { ContentHeader } from './content';
 
 export default function Form() {
   const [invitationRequest, setInvitationRequest] = useState({
-    name: "",
-    role: "",
-    major: "",
-    resume: "",
-    interests: "",
-    skills: ""
+    name: '',
+    role: '',
+    major: '',
+    resume: '',
+    interests: '',
+    skills: '',
   });
+  const [submitted, setSubmitted] = useState(false);
 
-  const handleInputChange = e => {
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
     setInvitationRequest({ ...invitationRequest, [name]: value });
   };
 
   return (
     <Fade>
-      <form className="w-full max-w-2xl p-4">
+      <form
+        className="w-full max-w-2xl p-4"
+        onSubmit={ (e) => {
+          e.preventDefault();
+          setSubmitted(true);
+          const data = new FormData();
+          for (const [key, value] of Object.entries(invitationRequest)) {
+            data.append(key, value);
+          }
+
+          fetch(
+            'https://script.google.com/macros/s/AKfycbyr9M13gnlVxM8UYocXy7wKJZQPnxd_iq043N2ZZPh0elrH4Bw/exec',
+            { method: 'POST', body: data },
+          )
+            .then(() => {
+              Swal.fire(
+                'Success!',
+                'Invitation request form submitted.',
+                'success',
+              );
+            })
+            .catch(() => {
+              Swal.fire(
+                'There was an error submitting the form.',
+                'Please try again later or contact us at version1@umich.edu',
+                'error',
+              );
+            }).finally(() => {
+              setSubmitted(false);
+              setInvitationRequest({
+                name: '',
+                role: '',
+                major: '',
+                resume: '',
+                interests: '',
+                skills: '',
+              });
+            });
+        } }
+
+      >
         <ContentHeader title="Request to join now" />
         <div className="flex flex-wrap -mx-3 mb-6">
           <div className="w-full md:w-1/2">
@@ -36,8 +77,9 @@ export default function Form() {
                   className="mt-2 appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-gray-100"
                   type="text"
                   placeholder="Jim Harbaugh"
-                  onChange={handleInputChange}
-                  value={invitationRequest.name}
+                  onChange={ handleInputChange }
+                  value={ invitationRequest.name }
+                  required
                 />
               </label>
             </div>
@@ -53,8 +95,9 @@ export default function Form() {
                   className="mt-2 appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-gray-100"
                   type="text"
                   placeholder="CS, UX, Business, Engineering, etc."
-                  onChange={handleInputChange}
-                  value={invitationRequest.major}
+                  onChange={ handleInputChange }
+                  value={ invitationRequest.major }
+                  required
                 />
               </label>
             </div>
@@ -68,9 +111,10 @@ export default function Form() {
                   <select
                     name="role"
                     id="role"
-                    onChange={handleInputChange}
-                    value={invitationRequest.role}
+                    onChange={ handleInputChange }
+                    value={ invitationRequest.role }
                     className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-gray-100 focus:border-gray-500"
+                    required
                   >
                     <option value="" disabled selected>
                       Role
@@ -103,8 +147,8 @@ export default function Form() {
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-gray-100"
                   type="text"
                   placeholder="Link to Drive, Dropbox, etc."
-                  onChange={handleInputChange}
-                  value={invitationRequest.resume}
+                  onChange={ handleInputChange }
+                  value={ invitationRequest.resume }
                 />
               </label>
             </div>
@@ -120,9 +164,10 @@ export default function Form() {
                   <textarea
                     name="interests"
                     htmlFor="interests"
-                    onChange={handleInputChange}
+                    onChange={ handleInputChange }
                     className="mt-2 w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-gray-100 resize border rounded focus:outline-none focus:shadow-outline md:h-24 h-12"
-                    value={invitationRequest.interests}
+                    value={ invitationRequest.interests }
+                    required
                   />
                 </label>
               </div>
@@ -135,9 +180,10 @@ export default function Form() {
                   <textarea
                     name="skills"
                     id="skills"
-                    onChange={handleInputChange}
+                    onChange={ handleInputChange }
                     className="mt-2 w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-gray-100 resize border rounded focus:outline-none focus:shadow-outline md:h-24 h-12"
-                    value={invitationRequest.skills}
+                    value={ invitationRequest.skills }
+                    required
                   />
                 </label>
               </div>
@@ -146,42 +192,9 @@ export default function Form() {
         </div>
         <div className="flex justify-center pb-4">
           <button
-            type="button"
+            type="submit"
             className="bg-gradient-to-r from-yellow-200 to-yellow-500 hover:bg-blue-500 text-gray-800 font-semibold py-2 px-4 rounded shadow mb-4"
-            onClick={() => {
-              const data = new FormData();
-              for (const [key, value] of Object.entries(invitationRequest)) {
-                // eslint-disable-line
-                data.append(key, value);
-              }
-
-              fetch(
-                "https://script.google.com/macros/s/AKfycbyr9M13gnlVxM8UYocXy7wKJZQPnxd_iq043N2ZZPh0elrH4Bw/exec",
-                { method: "POST", body: data }
-              )
-                .then(() => {
-                  Swal.fire(
-                    "Success!",
-                    "Invitation request form submitted.",
-                    "success"
-                  );
-                })
-                .catch(() => {
-                  Swal.fire(
-                    "There was an error submitting the form.",
-                    "Please try again later or contact us at version1@umich.edu",
-                    "error"
-                  );
-                });
-              setInvitationRequest({
-                name: "",
-                role: "",
-                major: "",
-                resume: "",
-                interests: "",
-                skills: ""
-              });
-            }}
+            disabled={ submitted }
           >
             Request an invite
           </button>

@@ -9,6 +9,7 @@
     ],
     "rules": {
         "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+        "no-restricted-syntax": ["error", "ForInStatement", "LabeledStatement", "WithStatement"],
         "react/react-in-jsx-scope": "off",
         "react/jsx-closing-bracket-location": [0],
         "react/jsx-props-no-spreading": [2, {

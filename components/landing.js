@@ -1,11 +1,11 @@
-import { ContentPage } from "./content";
+import { ContentPage } from './content';
 
 const What = () => (
   <ContentPage
     title="What is V1?"
     nextLink="#special"
     nextLinkText="What makes these projects special?"
-    textElement={
+    textElement={ (
       <div>
         <p className="text-2xl text-gray-custom text-center">
           V1 is a monthly newsletter for ambitious engineering and design
@@ -14,15 +14,16 @@ const What = () => (
         </p>
         <p className="text-2xl text-gray-custom text-center pt-10">
           Each month, we&apos;ll share a curated list of high-potential side
-          projects and startups on campus{" "}
+          projects and startups on campus
+          {' '}
           <span className="font-bold italic">
-            {" "}
+            {' '}
             looking for your help to build their V1&mdash; the first version of
             their product.
           </span>
         </p>
       </div>
-    }
+    ) }
   />
 );
 
@@ -31,7 +32,7 @@ const Special = () => (
     title="Why are V1 projects special?"
     nextLink="#expect"
     nextLinkText="What can you expect as a member?"
-    textElement={
+    textElement={ (
       <div>
         <table>
           <tr>
@@ -41,7 +42,8 @@ const Special = () => (
                   className="text-gradient bg-gradient-to-r
                                from-yellow-200 to-yellow-500 "
                 >
-                  They&apos;re really early.{" "}
+                  They&apos;re really early.
+                  {' '}
                 </span>
                 This means you&apos;ll get to shape the user experience, develop
                 the product from the ground up, and leave a mark that will last.
@@ -55,7 +57,8 @@ const Special = () => (
                   className="text-gradient bg-gradient-to-r
                                    from-yellow-200 to-yellow-500 "
                 >
-                  They have a rockstar team.{" "}
+                  They have a rockstar team.
+                  {' '}
                 </span>
                 We personally vet each project added to the platform, and ensure
                 the team knows what they are doing and want to succeed.
@@ -69,7 +72,8 @@ const Special = () => (
                   className="text-gradient bg-gradient-to-r
                                    from-yellow-200 to-yellow-500 "
                 >
-                  They&apos;re solving a real need.{" "}
+                  They&apos;re solving a real need.
+                  {' '}
                 </span>
                 We look for projects that can actually make a difference in the
                 world.
@@ -78,7 +82,7 @@ const Special = () => (
           </tr>
         </table>
       </div>
-    }
+    ) }
   />
 );
 
@@ -87,16 +91,17 @@ const Expect = () => (
     title="What to expect as a member."
     nextLink="#request"
     nextLinkText="Request an invite"
-    textElement={
+    textElement={ (
       <div>
         <table>
           <tr>
             <td>
               <p className="text-2xl text-gray-custom py-5">
                 <span className="text-gradient bg-gradient-to-r from-yellow-200 to-yellow-500">
-                  Monthly emails featuring our most exciting projects.{" "}
+                  Monthly emails featuring our most exciting projects.
+                  {' '}
                 </span>
-                At the end of each month, you'll receive an email featuring our
+                At the end of each month, you&apos;ll receive an email featuring our
                 most highly-vetted projects and what they need help on.
               </p>
             </td>
@@ -108,7 +113,8 @@ const Expect = () => (
                   className="text-gradient bg-gradient-to-r
                                    from-yellow-200 to-yellow-500 "
                 >
-                  Regular, direct matches based on your interests.{" "}
+                  Regular, direct matches based on your interests.
+                  {' '}
                 </span>
                 In addition to monthly emails, we&apos;ll reach out directly
                 when we think there&apos;s a strong match between your interests
@@ -123,7 +129,8 @@ const Expect = () => (
                   className="text-gradient bg-gradient-to-r
                                    from-yellow-200 to-yellow-500"
                 >
-                  Continuous, personal support.{" "}
+                  Continuous, personal support.
+                  {' '}
                 </span>
                 As our community grows, we will strive to find new ways to
                 support you as an individual. What you get today is only a
@@ -133,7 +140,7 @@ const Expect = () => (
           </tr>
         </table>
       </div>
-    }
+    ) }
   />
 );
 
