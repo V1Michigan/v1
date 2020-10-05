@@ -8,6 +8,8 @@ export default function IndexPage() {
     <main>
       <Head>
         <title>V1 | University of Michigan</title>
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png"></link>
         <meta
           name="description"
           content="V1 is a monthly newsletter for ambitious engineering and design
@@ -19,6 +21,7 @@ export default function IndexPage() {
           content="V1 is a monthly newsletter for ambitious engineering and design
           students at the University of Michigan who are looking to build something great."
         />
+        <meta property="og:image" content="/share.jpeg" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <div className="h-screen flex justify-center items-center bg-gradient-to-r from-gray-900 to-black">
