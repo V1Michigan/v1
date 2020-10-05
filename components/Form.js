@@ -14,9 +14,16 @@ export default function Form() {
   });
   const [submitted, setSubmitted] = useState(false);
 
+  const autoExpand = (target) => {
+    target.style.height = 'inherit';
+    target.style.height = target.scrollHeight + 'px';
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setInvitationRequest({ ...invitationRequest, [name]: value });
+    
+    autoExpand(e.target);
   };
 
   return (
@@ -166,7 +173,7 @@ export default function Form() {
                     name="interests"
                     htmlFor="interests"
                     onChange={ handleInputChange }
-                    className="mt-2 w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-gray-100 resize border rounded focus:outline-none focus:shadow-outline md:h-24 h-12"
+                    className="mt-2 w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-gray-100 resize border rounded focus:outline-none focus:shadow-outline md:h-24 h-20"
                     placeholder="E.g. Consumer social products, tools for students, anything involving machine learning"
                     value={ invitationRequest.interests }
                     required
@@ -183,7 +190,7 @@ export default function Form() {
                     name="skills"
                     id="skills"
                     onChange={ handleInputChange }
-                    className="mt-2 w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-gray-100 resize border rounded focus:outline-none focus:shadow-outline md:h-24 h-12"
+                    className="mt-2 w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-gray-100 resize border rounded focus:outline-none focus:shadow-outline md:h-24 h-20"
                     placeholder="E.g. logo design, python, ReactJS, machine learning"
                     value={ invitationRequest.skills }
                     required
