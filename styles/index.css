@@ -32,7 +32,10 @@
 
 @layer utilities {
   .text-gradient {
+    display: inline-block;
     background-clip: text;
+    color: transparent;
+    -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 }
