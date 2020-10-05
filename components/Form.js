@@ -14,9 +14,16 @@ export default function Form() {
   });
   const [submitted, setSubmitted] = useState(false);
 
+  const autoExpand = (target) => {
+    target.style.height = 'inherit';
+    target.style.height = target.scrollHeight + 'px';
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setInvitationRequest({ ...invitationRequest, [name]: value });
+    
+    autoExpand(e.target);
   };
 
   return (
@@ -140,15 +147,16 @@ export default function Form() {
                 className="mt-2 block text-gray-100 text-lg mb-2"
                 htmlFor="resume"
               >
-                Resume
+                Resume <span className="text-red-800">*</span>
                 <input
                   name="resume"
                   id="resume"
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-gray-100"
                   type="text"
-                  placeholder="Link to Drive, Dropbox, etc."
+                  placeholder="Link to Drive, Dropbox, etc. (e.g. https://drive.google.com/file/d/1BZq0nadzuQK6pttUwnW8RmYWIxmekgZG/view)"
                   onChange={ handleInputChange }
                   value={ invitationRequest.resume }
+                  required
                 />
               </label>
             </div>
@@ -165,7 +173,8 @@ export default function Form() {
                     name="interests"
                     htmlFor="interests"
                     onChange={ handleInputChange }
-                    className="mt-2 w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-gray-100 resize border rounded focus:outline-none focus:shadow-outline md:h-24 h-12"
+                    className="mt-2 w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-gray-100 resize border rounded focus:outline-none focus:shadow-outline md:h-24 h-20"
+                    placeholder="E.g. Consumer social products, tools for students, anything involving machine learning"
                     value={ invitationRequest.interests }
                     required
                   />
@@ -181,7 +190,8 @@ export default function Form() {
                     name="skills"
                     id="skills"
                     onChange={ handleInputChange }
-                    className="mt-2 w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-gray-100 resize border rounded focus:outline-none focus:shadow-outline md:h-24 h-12"
+                    className="mt-2 w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-gray-100 resize border rounded focus:outline-none focus:shadow-outline md:h-24 h-20"
+                    placeholder="E.g. logo design, python, ReactJS, machine learning"
                     value={ invitationRequest.skills }
                     required
                   />
