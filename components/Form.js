@@ -6,6 +6,7 @@ import { ContentHeader } from './content';
 export default function Form() {
   const [invitationRequest, setInvitationRequest] = useState({
     name: '',
+    email: '',
     role: '',
     major: '',
     resume: '',
@@ -52,6 +53,7 @@ export default function Form() {
               setSubmitted(false);
               setInvitationRequest({
                 name: '',
+                email: '',
                 role: '',
                 major: '',
                 resume: '',
@@ -79,6 +81,24 @@ export default function Form() {
                   placeholder="Jim Harbaugh"
                   onChange={ handleInputChange }
                   value={ invitationRequest.name }
+                  required
+                />
+              </label>
+            </div>
+            <div className="px-3 mb-6">
+              <label
+                className="block text-gray-100 text-lg mb-2"
+                htmlFor="email"
+              >
+                Email <span className="text-red-800">*</span>
+                <input
+                  name="email"
+                  id="email"
+                  className="mt-2 appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-gray-100"
+                  type="text"
+                  placeholder="Email"
+                  onChange={ handleInputChange }
+                  value={ invitationRequest.email }
                   required
                 />
               </label>
@@ -165,7 +185,7 @@ export default function Form() {
                     name="interests"
                     htmlFor="interests"
                     onChange={ handleInputChange }
-                    className="mt-2 w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-gray-100 resize border rounded focus:outline-none focus:shadow-outline md:h-24 h-12"
+                    className="mt-2 w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-gray-100 resize border rounded focus:outline-none focus:shadow-outline md:h-32 h-12"
                     value={ invitationRequest.interests }
                     required
                   />
@@ -181,7 +201,7 @@ export default function Form() {
                     name="skills"
                     id="skills"
                     onChange={ handleInputChange }
-                    className="mt-2 w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-gray-100 resize border rounded focus:outline-none focus:shadow-outline md:h-24 h-12"
+                    className="mt-2 w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-gray-100 resize border rounded focus:outline-none focus:shadow-outline md:h-32 h-12"
                     value={ invitationRequest.skills }
                     required
                   />
