@@ -70,7 +70,7 @@ export default function Form() {
                 className="block text-gray-100 text-lg mb-2"
                 htmlFor="name"
               >
-                Name
+                Name <span className="text-red-800">*</span>
                 <input
                   name="name"
                   id="name"
@@ -88,7 +88,7 @@ export default function Form() {
                 className="block text-gray-100 text-lg mb-2"
                 htmlFor="major"
               >
-                Major
+                Major <span className="text-red-800">*</span>
                 <input
                   name="major"
                   id="major"
@@ -106,7 +106,7 @@ export default function Form() {
                 className="block text-gray-100 text-lg mb-2"
                 htmlFor="role"
               >
-                Role
+                Role <span className="text-red-800">*</span>
                 <div className="relative mt-2">
                   <select
                     name="role"
@@ -160,7 +160,7 @@ export default function Form() {
                   className="block text-gray-100 text-lg mb-2"
                   htmlFor="interests"
                 >
-                  What types of projects are you interested in?
+                  What types of projects are you interested in? <span className="text-red-800">*</span>
                   <textarea
                     name="interests"
                     htmlFor="interests"
@@ -176,7 +176,7 @@ export default function Form() {
                   className="block text-gray-100 text-lg mb-2"
                   htmlFor="skills"
                 >
-                  What are your skills?
+                  What are your skills? <span className="text-red-800">*</span>
                   <textarea
                     name="skills"
                     id="skills"
