@@ -99,7 +99,7 @@ export default function Form() {
                 />
               </label>
             </div>
-            <div className="px-3 mb-6">
+            <div className="px-3 mt-10 mb-6">
               <button
                 type="submit"
                 className={`bg-gradient-to-r from-yellow-200 to-yellow-500 hover:bg-blue-500 text-gray-800 font-semibold py-3 px-4 rounded shadow mb-4 ${submitted ? "hidden" : "block"} mx-auto`}
