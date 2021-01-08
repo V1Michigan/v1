@@ -18,7 +18,7 @@ export default function CommunityPage() {
           name="og:description"
           content="A home for student-led entrepreneurship on the University of Michigan campus"
         />
-        <meta property="og:image" content="/share.png" />
+        <meta property="og:image" content="/community.png" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head> 
 			<div className="h-screen bg-gradient-to-r from-gray-900 to-black py-24">
