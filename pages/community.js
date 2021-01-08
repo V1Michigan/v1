@@ -19,7 +19,7 @@ export default function CommunityPage() {
           content="A home for student-led entrepreneurship on the University of Michigan campus"
         />
         <meta property="og:image" content="/share.png" />
-        <meta name="viewport" content="initial-scale=2.0, width=device-width" />
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head> 
 			<div className="h-screen bg-gradient-to-r from-gray-900 to-black py-24">
 				<div className="flex flex-wrap justify-center max-w-lg mx-auto">
