@@ -122,7 +122,7 @@ export default function YC() {
               Partner Reshma Khilnani. Geoff & Reshma will cover some of the
               myths that exist around starting startups, what you should do
               while you’re still in school if you want to start a company, and
-              he’ll talk about how YC can help you get started.
+              how YC can help you get started. Q&A to follow.
             </p>
           </div>
         </div>
