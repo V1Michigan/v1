@@ -81,7 +81,7 @@ export default function YC() {
                     x{" "}
                     <img
                       className="logo ml-3 p-1 bg-gray-100 rounded-sm"
-                      src={`/partners/${referrer}.png`}
+                      src={`/partners/${referrer.toLowerCase()}.png`}
                     />
                   </>
                 ) : null}
