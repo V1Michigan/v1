@@ -268,7 +268,7 @@ export default function YC() {
           </div>
         </form>
 
-        <div className="bg-white p-2 mt-8 max-w-lg mx-auto shadow-md rounded-sm">
+        <div className="bg-white p-2 mt-8 max-w-2xl mx-auto shadow-md rounded-sm">
           <h1 className="text-center text-xl font-bold my-2 text-gray-800">
             Our Partners
           </h1>
@@ -276,6 +276,10 @@ export default function YC() {
             <img className="logo m-1 rounded-sm" src="/partners/mproduct.png" />
             <img className="logo m-1 rounded-sm" src="/partners/akpsi.png" />
             <img className="logo m-1 rounded-sm" src="/partners/shift.png" />
+            <img
+              className="logo m-1 rounded-sm p-2"
+              src="/partners/geecs.png"
+            />
             <img
               className="logo m-1 rounded-sm"
               src="/partners/blockchain.png"
