@@ -67,12 +67,12 @@ export default function YC() {
       <div className="bg-gradient-to-r from-gray-900 to-black p-4">
         <div className="p-4 flex">
           <Link href="/">
-            <img className="w-12 mr-3 rounded-sm" src="/apple-touch-icon.png" />
+            <img className="logo mr-3 rounded-sm" src="/apple-touch-icon.png" />
           </Link>
           <div className="text-white text-xl flex items-center font-bold">
             x
           </div>
-          <img className="w-12 ml-3 rounded-sm" src="/yc.png" />
+          <img className="logo ml-3 rounded-sm" src="/yc.png" />
           {referrer && (
             <>
               <div className="text-white text-xl flex items-center font-bold ml-3">
@@ -80,7 +80,7 @@ export default function YC() {
                   <>
                     x{" "}
                     <img
-                      className="h-12 ml-3 p-1 bg-gray-100 rounded-sm"
+                      className="logo ml-3 p-1 bg-gray-100 rounded-sm"
                       src={`/partners/${referrer}.png`}
                     />
                   </>
