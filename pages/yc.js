@@ -124,6 +124,10 @@ export default function YC() {
               while you’re still in school if you want to start a company, and
               how YC can help you get started. Q&A to follow.
             </p>
+            <p className="text-gray-200 mt-2">
+              This event is open to all Michigan students. Register as soon as
+              possible.
+            </p>
           </div>
         </div>
         <form
@@ -269,12 +273,15 @@ export default function YC() {
             Our Partners
           </h1>
           <div className="flex justify-center flex-wrap">
-            <img className="logo m-2" src="/partners/mproduct.png" />
-            <img className="logo m-2" src="/partners/akpsi.png" />
-            <img className="logo m-2" src="/partners/shift.png" />
-            <img className="logo m-2" src="/partners/blockchain.png" />
-            <img className="logo m-2" src="/partners/sepi.png" />
-            <img className="logo m-2" src="/partners/upround.png" />
+            <img className="logo m-1 rounded-sm" src="/partners/mproduct.png" />
+            <img className="logo m-1 rounded-sm" src="/partners/akpsi.png" />
+            <img className="logo m-1 rounded-sm" src="/partners/shift.png" />
+            <img
+              className="logo m-1 rounded-sm"
+              src="/partners/blockchain.png"
+            />
+            <img className="logo m-1 rounded-sm" src="/partners/sepi.png" />
+            <img className="logo m-1 rounded-sm" src="/partners/upround.png" />
           </div>
         </div>
       </div>
