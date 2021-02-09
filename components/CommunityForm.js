@@ -41,7 +41,7 @@ export default function Form() {
             'https://script.google.com/macros/s/AKfycbxcvZeIseDF-s5b6fNco4SZdZB68PLAM1P8zIDS4JDgIxWFECnQZJws/exec', data
           ).then(res => {
             if (res.data.result === "success") {
-              window.location.href = "https://discord.gg/Ajs72Es5wk";
+              window.location.href = "https://discord.gg/G3Hfkcm3hH";
             } else {
               Swal.fire(
                 'There was an error submitting the form.',
@@ -66,7 +66,7 @@ export default function Form() {
                 className="block text-gray-100 text-lg mb-2"
                 htmlFor="name"
               >
-                Full Name<span className="text-red-800">*</span>
+                Full Name <span className="text-red-800">*</span>
                 <input
                   name="name"
                   id="name"
@@ -102,7 +102,7 @@ export default function Form() {
             <div className="px-3 mt-10 mb-6">
               <button
                 type="submit"
-                className={`bg-gradient-to-r from-yellow-200 to-yellow-500 hover:bg-blue-500 text-gray-800 font-semibold py-3 px-4 rounded shadow mb-4 ${submitted ? "hidden" : "block"} mx-auto`}
+                className={`bg-gradient-to-r from-yellow-200 to-yellow-500 hover:opacity-75 text-gray-800 font-semibold py-3 px-4 rounded shadow mb-4 ${submitted ? "hidden" : "block"} mx-auto`}
                 disabled={ submitted }
               >
                 Join the Discord
