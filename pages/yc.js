@@ -65,7 +65,7 @@ export default function YC() {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <div className="bg-gradient-to-r from-gray-900 to-black p-4">
-        <div className="p-4 flex">
+        <div className="p-4 flex justify-center md:justify-start">
           <Link href="/">
             <img className="logo mr-3 rounded-sm" src="/apple-touch-icon.png" />
           </Link>
