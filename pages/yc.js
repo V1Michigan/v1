@@ -263,6 +263,20 @@ export default function YC() {
             </div>
           </div>
         </form>
+
+        <div className="bg-white p-2 mt-8 max-w-lg mx-auto shadow-md rounded-sm">
+          <h1 className="text-center text-xl font-bold my-2 text-gray-800">
+            Our Partners
+          </h1>
+          <div className="flex justify-center flex-wrap">
+            <img className="logo m-2" src="/partners/mproduct.png" />
+            <img className="logo m-2" src="/partners/akpsi.png" />
+            <img className="logo m-2" src="/partners/shift.png" />
+            <img className="logo m-2" src="/partners/blockchain.png" />
+            <img className="logo m-2" src="/partners/sepi.png" />
+            <img className="logo m-2" src="/partners/upround.png" />
+          </div>
+        </div>
       </div>
       <div className="bg-gradient-to-r from-gray-900 to-black">
         <p className="footer text-gray-200 text-center py-8">
