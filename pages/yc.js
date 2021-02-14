@@ -24,6 +24,7 @@ export default function YC() {
     "geecs",
     "sepi",
     "mpowered",
+    "startum",
   ];
 
   useEffect(() => {
@@ -288,6 +289,7 @@ export default function YC() {
             <img className="logo m-1 rounded-sm" src="/partners/sepi.png" />
             <img className="logo m-1 rounded-sm" src="/partners/upround.png" />
             <img className="logo m-1 rounded-sm" src="/partners/mpowered.png" />
+            <img className="logo m-1 rounded-sm" src="/partners/startum.png" />
           </div>
         </div>
       </div>
