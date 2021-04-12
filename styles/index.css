@@ -15,7 +15,7 @@
   opacity: 0;
   transform: translateY(20vh);
   visibility: hidden;
-  transition: opacity .8s ease-out, transform 1.6s ease-out;
+  transition: opacity 0.8s ease-out, transform 1.6s ease-out;
   will-change: opacity, visibility;
 }
 .fade-in-section.is-visible {
@@ -42,4 +42,8 @@
 
 .logo {
   max-height: 50px;
+}
+
+.tilt {
+  transform: perspective(400px) rotateY(-3deg);
 }

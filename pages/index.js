@@ -1,6 +1,6 @@
 import Head from "next/head";
-import { What, Join } from "../components/about";
-import Link from 'next/link'
+import { What, Offer, Join, Leadership } from "../components/about";
+import Link from "next/link";
 
 export default function IndexPage() {
   return (
@@ -24,9 +24,9 @@ export default function IndexPage() {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
 
-      <div className="h-screen flex justify-center items-center bg-gradient-to-r from-gray-900 to-black">
-        <div className="max-w-md text-center text-white">
-          <Link href="/yc" target="_blank">
+      <div className="h-screen flex justify-center items-center bg-gradient-to-r from-gray-200 to-white">
+        <div className="max-w-screen-xl">
+          {/* <Link href="/yc" target="_blank">
             <div className="block lg:text-center mb-8">
               <div
                 className="p-2 bg-gradient-to-r from-yellow-200 to-yellow-500 items-center text-gray-800 hover:opacity-75 leading-none rounded-full flex inline-flex mb-2 cursor-pointer"
@@ -47,50 +47,40 @@ export default function IndexPage() {
                 </svg>
               </div>
             </div>
-          </Link>
-          <h1 className="text-6xl tracking-tight font-bold font-logo text-blue-100 leading-none">
-            V1
-          </h1>
-          <h2 className="text-2xl tracking-tight font-normal italic m-0 p-0 text-gradient bg-gradient-to-r from-yellow-200 to-yellow-500">
-            at Michigan
-          </h2>
+          </Link> */}
 
-          <p className="text-2xl mt-8 text-blue-100 font-light leading-tight tracking-tight px-5">
-            The home for student-led entrepreneurship at the University of
-            Michigan.
-          </p>
+          <div className="md:flex">
+            <div className="flex-1 p-8 flex items-center">
+              <div className="">
+                <h1 className="text-6xl tracking-tight font-bold font-logo text-gray-900 leading-none">
+                  V1
+                </h1>
+                <h2 className="text-2xl tracking-tight font-bold italic text-gradient bg-gradient-to-r from-yellow-600 to-yellow-700">
+                  at Michigan
+                </h2>
+                <p className="text-2xl mt-8 text-gray-900 font-bold tracking-tight mb-3">
+                  The community for ambitious student builders at the University
+                  of Michigan.
+                </p>
+              </div>
+            </div>
+            <div className="max-w-xl p-4">
+              <img className="tilt shadow-md rounded-sm" src="/gif.gif"></img>
+            </div>
+          </div>
         </div>
       </div>
 
       <What />
+      <Offer />
       <Join />
+      <Leadership />
 
       <div className="bg-gradient-to-r from-gray-900 to-black">
         <p className="footer text-gray-200 text-center py-8">
           &copy; 2021 V1 | team@v1michigan.com
         </p>
       </div>
-     
-     
-      {/* 
-
-    To-do:
-    - typing animation
-    - navbar
-
-    page: What do we offer? 
-    - Discord community + community events 
-    - weekly newsletter with ops + updates
-    - internal projects / drops 
-
-    page: FAQ 
-    - how can i join 
-    - what are commitments
-    - who runs this / more q's 
-    
-    page: Our supporters 
-    */}
-
     </main>
   );
 }
