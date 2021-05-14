@@ -61,9 +61,47 @@ const team = [
   {
     image: "/community/dheera.jpg",
     name: "Dheera Vuppala",
-    role: "Head of Content",
+    role: "Director",
     link: "https://www.linkedin.com/in/dheeravuppala/",
   },
+  {
+    image: "/community/raghav.jpg",
+    name: "Raghav Bhat",
+    role: "Head of Engineering",
+    link: "https://www.linkedin.com/in/raghav-bhat-02/",
+  },
+  {
+    image: "/community/saanika.jpg",
+    name: "Saanika Kulkarni",
+    role: "Head of Content",
+    link: "https://www.linkedin.com/in/saanikak/",
+  },
+  {
+    image: "/community/isaac.jpeg",
+    name: "Isaac Fung",
+    role: "Head of Engineering",
+    link: "https://www.linkedin.com/in/i-fung/",
+  },
+  {
+    image: "/community/drew.jpeg",
+    name: "Drew Levine",
+    role: "Head of Community",
+    link: "https://www.linkedin.com/in/drew-levine-156a99159/",
+  },
+  {
+    image: "/community/advait.jpeg",
+    name: "Advait Iyer",
+    role: "Core Member",
+    link: "https://www.linkedin.com/in/advaitiyer/",
+  },
+  {
+    image: "/community/divya.jpg",
+    name: "Divya Reddy",
+    role: "Core Member",
+    link: "https://www.linkedin.com/in/advaitiyer/",
+  },
+];
+const advisors = [
   {
     image: "/community/sean.jpg",
     name: "Sean Stapleton",
@@ -79,20 +117,19 @@ const team = [
   {
     image: "/community/ellie.jpg",
     name: "Elizabeth Day",
-    role: "Head of Community",
+    role: "Advisor",
     link: "https://www.linkedin.com/in/elizabeth-day-418a3b181/",
   },
   {
     image: "/community/varun.jpg",
     name: "Varun Jindal",
-    role: "Head of Events",
+    role: "Advisor",
     link: "https://www.linkedin.com/in/varun-jindal/",
   },
-];
-
-const Leadership = () => (
+]
+const Leaders = ({team, title}) => (
   <ContentPage
-    title="V1 Leadership"
+    title={ title }
     textElement={
       <div className="mx-auto max-w-4xl">
         <div className="flex flex-wrap justify-center">
@@ -117,6 +154,14 @@ const Leadership = () => (
     }
   />
 );
+
+const Leadership = () => (
+  <Leaders title="V1 Leadership" team={team} />
+)
+
+const Advisors = () => (
+  <Leaders title="V1 Advisors" team={advisors} />
+)
 
 const members = [
   "payal",
@@ -231,4 +276,4 @@ const Join = () => (
 //   />
 // );
 
-export { What, Offer, Join, Leadership };
+export { What, Offer, Join, Leadership, Advisors };

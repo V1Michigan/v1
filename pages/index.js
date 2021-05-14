@@ -1,5 +1,6 @@
 import Head from "next/head";
-import { What, Offer, Join, Leadership } from "../components/about";
+import { What, Offer, Join, Leadership, Advisors } from "../components/about";
+import { ProductStudioBanner } from "../components/banner";
 import Link from "next/link";
 
 export default function IndexPage() {
@@ -23,7 +24,8 @@ export default function IndexPage() {
         <meta property="og:image" content="/share.png" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-
+      {/* }
+      <ProductStudioBanner />*/}
       <div className="h-screen flex justify-center items-center bg-gradient-to-r from-gray-200 to-white">
         <div className="max-w-screen-xl">
           {/* <Link href="/yc" target="_blank">
@@ -75,7 +77,7 @@ export default function IndexPage() {
       <Offer />
       <Join />
       <Leadership />
-
+      <Advisors />
       <div className="bg-gradient-to-r from-gray-900 to-black">
         <p className="footer text-gray-200 text-center py-8">
           &copy; 2021 V1 | team@v1michigan.com
