@@ -1,7 +1,7 @@
 @tailwind base;
 
 /* Write your own custom base styles here */
-
+@import url('https://fonts.googleapis.com/css2?family=Oswald&display=swap');
 /* Start purging... */
 @tailwind components;
 /* Stop purging. */
