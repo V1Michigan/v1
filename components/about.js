@@ -185,7 +185,7 @@ const Join = () => (
     title="You're in the right place."
     textElement={
       <div className="text-center">
-        <div class="-space-x-4 mb-4 ">
+        <div className="-space-x-4 mb-4 ">
           {members.sort().map((member) => (
             <img
               class="relative z-10 inline object-cover w-12 h-12 border-2 border-white rounded-full"
