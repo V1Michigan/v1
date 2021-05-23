@@ -26,7 +26,7 @@ export default function IndexPage() {
       </Head>
       
       <ProductStudioBanner />
-       <div className="h-screen flex justify-center items-center bg-gradient-to-r from-gray-200 to-white">
+      <div className="h-screen flex justify-center items-center bg-gradient-to-r from-gray-200 to-white">
         <div className="max-w-screen-xl">
           { /* <Link href="https://studio.v1michigan.com" target="_blank">
             <div className="block lg:text-center mb-8">

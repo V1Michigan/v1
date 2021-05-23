@@ -14,14 +14,14 @@ const Banner = ({ headline, tagline }) => (
 
 const ProductStudioBanner = () => (
   <div className="cursor-pointer">
-    { /*<Link href="https://studio.v1michigan.com" target="_blank">*/ }
+     <Link href="https://studio.v1michigan.com" target="_blank">
 
       <Banner 
       headline="Introducing Product Studio"
       tagline="Join us this summer for a sprint to create world-class products that solve real world problems">
       </Banner>
       
-  { /*</Link> */}
+  </Link>
  
   </div>
   
