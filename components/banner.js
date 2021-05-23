@@ -6,8 +6,8 @@ const Banner = ({ headline, tagline }) => (
     <div className=""></div>
     <img className="w-12 h-12 md:w-auto md:h-auto" src= {"/rocket.png"}></img>
     <div className="flex flex-wrap justify-left md:justify-center mx-5 md:mx-20">
-      <h1 className="font-bold text-2xl md:text-4xl text-gray-100 font-oswald"> { headline } </h1>
-      <span className="hidden md:block text-gray-100 font-family font-bold"> Join us this summer for a sprint to create world-class products that solve real world problems</span>
+      <h1 className="font-bold text-2xl md:text-4xl text-gray-100 font-logo"> { headline } </h1>
+      <span className="hidden md:block text-gray-100 font-family font-bold font-logo"> Join us this summer for a sprint to create world-class products that solve real world problems</span>
     </div>
   </div>
   </div>
