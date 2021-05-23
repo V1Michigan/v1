@@ -1,7 +1,7 @@
 import { ContentHeader, ContentBody } from "./content";
 import Link from "next/link";
 const Banner = ({ headline, tagline }) => (
-  <div className="flex flex-wrap justify-center bg-gradient-to-r from-gray-200 to-white">
+  <div className="flex flex-wrap justify-center bg-gradient-to-r from-gray-200 to-white max-w-screen-lg">
   <div className="p-3 w-10/12 lg:w-2/3 bg-gradient-to-r from-gray-700 via-gray-900 to-gray-800 flex justify-start my-2 md:my-2"> 
     <div className=""></div>
     <img className="w-12 h-12 md:w-24 md:h-24" src= {"/rocket.png"}></img>
