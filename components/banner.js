@@ -34,8 +34,8 @@ const Banner = ({ largeLine, smallLine, link }) => (
         >
           <span className="sr-only">Dismiss</span>
           <XIcon className="h-6 w-6 text-white" aria-hidden="true" />
-        </button>
-      </div>
+        </button> 
+        </div>
     </div>
   </div>
 </div>
