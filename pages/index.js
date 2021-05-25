@@ -28,7 +28,7 @@ export default function IndexPage() {
       <ProductStudioBanner />
       <div className="h-screen flex justify-center items-center bg-gradient-to-r from-gray-200 to-white">
         <div className="max-w-screen-xl">
-          { <Link href="https://studio.v1michigan.com" target="_blank">
+          { /* <Link href="https://studio.v1michigan.com" target="_blank">
             <div className="block lg:text-center mb-8">
               <div
                 className="p-2 bg-gradient-to-r from-yellow-200 to-yellow-500 items-center text-gray-800 hover:opacity-75 leading-none rounded-full flex inline-flex mb-2 cursor-pointer"
@@ -49,7 +49,7 @@ export default function IndexPage() {
                 </svg>
               </div>
             </div>
-          </Link> }
+  </Link> */}
 
           <div className="md:flex">
             <div className="flex-1 p-8 flex items-center">
