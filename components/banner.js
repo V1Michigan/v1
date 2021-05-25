@@ -3,7 +3,7 @@ import { SpeakerphoneIcon, XIcon } from '@heroicons/react/outline'
 
 import Link from "next/link";
 const Banner = ({ largeLine, smallLine, link }) => (
-  <div className="bg-yellow-600">
+  <div className="bg-yellow-600 full_banner">
   <div className="max-w-7xl mx-auto py-3 px-3 sm:px-6 lg:px-8">
     <div className="flex items-center justify-between flex-wrap">
       <div className="w-0 flex-1 flex items-center">
@@ -28,6 +28,9 @@ const Banner = ({ largeLine, smallLine, link }) => (
         <button
           type="button"
           className="-mr-1 flex p-2 rounded-md hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-white sm:-mr-2"
+          onClick={ () => {
+            document.querySelector('.full_banner').style.display = "none";
+          }}
         >
           <span className="sr-only">Dismiss</span>
           <XIcon className="h-6 w-6 text-white" aria-hidden="true" />
