@@ -8,7 +8,8 @@ const Banner = ({ headline, tagline }) => (
     <div className="flex items-center justify-between flex-wrap">
       <div className="w-0 flex-1 flex items-center">
         <span className="flex p-2 rounded-lg bg-indigo-800">
-          <SpeakerphoneIcon className="h-6 w-6 text-white" aria-hidden="true" />
+          { /* <SpeakerphoneIcon className="h-6 w-6 text-white" aria-hidden="true" /> */ }
+          <img className="h-6 w-6" src="/rocket_icon.png"></img>
         </span>
         <p className="ml-3 font-medium font-sans text-white truncate">
           <span className="md:hidden">We announced a new product!</span>
