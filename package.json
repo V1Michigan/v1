@@ -8,8 +8,9 @@
     "lint": "eslint components/**/*.js pages/**/*.js"
   },
   "dependencies": {
+    "@heroicons/react": "^1.0.1",
     "axios": "^0.21.1",
-    "next": "latest",
+    "next": "^10.2.3",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
