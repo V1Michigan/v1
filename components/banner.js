@@ -1,29 +1,55 @@
-import { ContentHeader, ContentBody } from "./content";
+
+import { SpeakerphoneIcon, XIcon } from '@heroicons/react/outline'
+
 import Link from "next/link";
-const Banner = ({ headline, tagline }) => (
-  <div className="flex flex-wrap justify-center bg-gradient-to-r from-gray-200 to-white">
-  <div className="p-3 w-10/12 lg:w-2/3 bg-gradient-to-r from-gray-700 via-gray-900 to-gray-800 flex justify-start my-2 md:my-2 max-w-screen-lg"> 
-    <img className="w-12 h-12 md:w-24 md:h-24" src= {"/rocket.png"}></img>
-    <div className="flex flex-wrap justify-start mx-1 md:mx-2">
-      <h1 className="font-bold text-2xl md:text-4xl text-gray-100 font-logo"> { headline } </h1>
-      <span className="text-gray-100 text-base md:text-xl font-family font-bold font-logo">{tagline} </span>
+const Banner = ({ largeLine, smallLine, link }) => (
+  <div className="bg-yellow-600 full_banner">
+  <div className="max-w-7xl mx-auto py-3 px-3 sm:px-6 lg:px-8">
+    <div className="flex items-center justify-between flex-wrap">
+      <div className="w-0 flex-1 flex items-center">
+        <span className="flex p-2 rounded-lg bg-yellow-800">
+          { /* <SpeakerphoneIcon className="h-6 w-6 text-white" aria-hidden="true" /> */ }
+          <img className="h-6 w-6" src="/rocket_icon.png"></img>
+        </span>
+        <p className="ml-3 font-medium font-sans text-white truncate">
+          <span className="md:hidden"> { smallLine }</span>
+          <span className="hidden md:inline"> { largeLine }</span>
+        </p>
+      </div>
+      <div className="order-3 mt-2 flex-shrink-0 w-full sm:order-2 sm:mt-0 sm:w-auto">
+        <a
+          href= { link }
+          className="font-sans flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-yellow-600 bg-white hover:bg-yellow-50"
+        >
+          Learn more
+        </a>
+      </div>
+      <div className="order-2 flex-shrink-0 sm:order-3 sm:ml-3">
+        <button
+          type="button"
+          className="-mr-1 flex p-2 rounded-md hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-white sm:-mr-2"
+          onClick={ () => {
+            document.querySelector('.full_banner').style.display = "none";
+          }}
+        >
+          <span className="sr-only">Dismiss</span>
+          <XIcon className="h-6 w-6 text-white" aria-hidden="true" />
+        </button> 
+        </div>
     </div>
   </div>
-  </div>
+</div>
 )
 
 const ProductStudioBanner = () => (
-  <div className="cursor-pointer">
-     <Link href="https://studio.v1michigan.com" target="_blank">
+     
 
       <Banner 
-      headline="Introducing Product Studio"
-      tagline="Join us this summer for a sprint to create world-class products that solve real world problems">
+      largeLine="Product Studio is Here! Join us this summer for a sprint to create world-class products that solve real world problems!"
+      smallLine="Product Studio is Here!"
+      link="https://studio.v1michigan.com">
       </Banner>
-      
-  </Link>
- 
-  </div>
+
   
 )
 
