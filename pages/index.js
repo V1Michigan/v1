@@ -26,7 +26,6 @@ export default function IndexPage() {
       </Head>
       
       <ProductStudioBanner />
-      <Calendar />
       <div className="h-screen flex justify-center items-center bg-gradient-to-r from-gray-200 to-white">
         <div className="max-w-screen-xl">
           { /* <Link href="https://studio.v1michigan.com" target="_blank">
@@ -76,6 +75,7 @@ export default function IndexPage() {
 
       <What />
       <Offer />
+      <Calendar />
       <Join />
       <Leadership />
       <Advisors />
