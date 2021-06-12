@@ -8,6 +8,7 @@
     "lint": "eslint components/**/*.js pages/**/*.js"
   },
   "dependencies": {
+    "@headlessui/react": "^1.2.0",
     "@heroicons/react": "^1.0.1",
     "axios": "^0.21.1",
     "next": "latest",
