@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { What, Offer, Join, Leadership, Advisors } from "../components/about";
 import { ProductStudioBanner } from "../components/banner";
-import NavbarBuilder from "..components/navbar.js"
+import NavbarBuilder from "../components/navbar.js"
 import Link from "next/link";
 
 export default function IndexPage() {
@@ -27,6 +27,7 @@ export default function IndexPage() {
       </Head>
       
       <ProductStudioBanner />
+      <NavbarBuilder />
       <div className="h-screen flex justify-center items-center bg-gradient-to-r from-gray-200 to-white">
         <div className="max-w-screen-xl">
           { /* <Link href="https://studio.v1michigan.com" target="_blank">
@@ -51,7 +52,6 @@ export default function IndexPage() {
               </div>
             </div>
   </Link> */}
-      <NavbarBuilder />
           <div className="md:flex">
             <div className="flex-1 p-8 flex items-center">
               <div className="">
