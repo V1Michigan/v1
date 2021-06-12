@@ -4,7 +4,7 @@ import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
 
 const navigation = [
-    { name: 'Dashboard', href: '#', current: true },
+    // { name: 'V1 @ Michigan', href: '#', current: true },
     { name: 'Community', href: 'https://v1michigan.com/community', current: false },
     { name: 'Studio', href: 'https://studio.v1michigan.com', current: false },
     { name: 'Events', href: '#', current: false },
@@ -36,7 +36,12 @@ export default function NavbarBuilder() {
                                 <div className="flex-shrink-0 flex items-center">
                                     <img
                                         className="block lg:hidden h-8 w-auto"
-                                        src="apple-touch-icon.png"
+                                        src="/apple-touch-icon.png"
+                                        alt="Workflow"
+                                    />
+                                    <img
+                                        className="hidden lg:block h-8 w-auto"
+                                        src="/apple-touch-icon.png"
                                         alt="Workflow"
                                     />
                                 </div>
