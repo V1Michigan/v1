@@ -8,6 +8,7 @@ const navigation = [
     { name: 'Community', href: 'https://v1michigan.com/community', current: false },
     { name: 'Studio', href: 'https://studio.v1michigan.com', current: false },
     { name: 'Events', href: '#', current: false },
+    { name: 'Newsletter', href: 'https://v1network.substack.com/', current: false },
 ]
 
 function classNames(...classes) {
@@ -133,6 +134,19 @@ export default function NavbarBuilder() {
                                                                 )}
                                                             >
                                                                 Events
+                                                            </a>
+                                                        )}
+                                                    </Menu.Item>
+                                                    <Menu.Item>
+                                                        {({ active }) => (
+                                                            <a
+                                                                href="https://v1network.substack.com"
+                                                                className={classNames(
+                                                                    active ? 'bg-gray-100' : '',
+                                                                    'block px-4 py-2 text-sm text-gray-700'
+                                                                )}
+                                                            >
+                                                                Newsletter
                                                             </a>
                                                         )}
                                                     </Menu.Item>
