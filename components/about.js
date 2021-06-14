@@ -105,13 +105,13 @@ const advisors = [
   {
     image: "/community/sean.jpg",
     name: "Sean Stapleton",
-    role: "Founder",
+    role: "Advisor",
     link: "https://www.linkedin.com/in/seancstapleton/",
   },
   {
     image: "/community/dar.jpg",
     name: "Dar Sleeper",
-    role: "Founder",
+    role: "Advisor",
     link: "https://www.linkedin.com/in/darsleeper/",
   },
   {
