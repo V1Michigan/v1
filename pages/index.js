@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { What, Offer, Join, Leadership, Advisors } from "../components/about";
-import { ProductStudioBanner } from "../components/banner";
+//import { ProductStudioBanner } from "../components/banner";
 import NavbarBuilder from "../components/navbar.js"
 import Link from "next/link";
 
