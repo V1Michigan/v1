@@ -4,8 +4,7 @@
 /node_modules
 /.pnp
 .pnp.js
-.lock
-package-lock.json
+
 # testing
 /coverage
 
@@ -36,4 +35,3 @@ yarn-error.log*
 
 # swp files
 *.swp
-
