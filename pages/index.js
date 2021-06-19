@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { What, Offer, Join, Leadership, Advisors } from "../components/about";
 import { ProductStudioBanner } from "../components/banner";
-import Link from "next/link";
+import { Calendar } from '../components/calendarapi'
 
 export default function IndexPage() {
   return (
@@ -75,6 +75,7 @@ export default function IndexPage() {
 
       <What />
       <Offer />
+      <Calendar />
       <Join />
       <Leadership />
       <Advisors />
