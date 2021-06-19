@@ -3,7 +3,7 @@ import { ContentPage } from "./content";
 import ReactHtmlParser from "react-html-parser";
 async function getData() {
   const response = await fetch(
-    "https://v1api-production.up.railway.app/events/"
+    "https://damp-depths-59602.herokuapp.com/https://v1api-production.up.railway.app/events/"
   );
   const data = response.json();
 
