@@ -15,9 +15,9 @@ const navigation = [
     href: "https://v1network.substack.com/",
     current: false,
   },
-  {
+  /*{
     name:"Vault"
-  }
+  }*/
 ];
 
 function classNames(...classes) {
