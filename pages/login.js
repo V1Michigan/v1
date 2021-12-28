@@ -7,7 +7,7 @@ export default function Login() {
     const session = LoggedIn();
     console.log(session);
   return (
-    <div className="container" style={{ padding: '50px 0 100px 0' }}>
+    <div style={{ padding: '50px 0 100px 0' }}>
       {!session ? <Auth /> : <Account key={session.user.id} session={session} />}
     </div>
   )
