@@ -43,15 +43,24 @@ const Banner = ({ largeLine, smallLine, link }) => (
 )
 
 const ProductStudioBanner = () => (
-     
+  <Banner
+    largeLine="Product Studio is here! Join us this summer for a sprint to create world-class products that solve real world problems."
+    smallLine="Product Studio is Here!"
+    link="https://studio.v1michigan.com"
+  />
+);
 
-      <Banner 
-      largeLine="Product Studio is here! Join us this summer for a sprint to create world-class products that solve real world problems."
-      smallLine="Product Studio is Here!"
-      link="https://studio.v1michigan.com">
-      </Banner>
+const StartupFairBanner = () => (
+  <Banner
+    largeLine={
+      <>
+        Apply by <span className="font-bold">January 22nd</span> to meet top
+        startups at <span className="font-bold">V1 Startup Fair</span>
+      </>
+    }
+    smallLine="Meet top startups at V1 Startup Fair!"
+    link="https://startupfair.v1michigan.com"
+  />
+);
 
-  
-)
-
-export { ProductStudioBanner }
+export { ProductStudioBanner, StartupFairBanner };

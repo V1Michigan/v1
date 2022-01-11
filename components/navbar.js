@@ -11,6 +11,11 @@ const navigation = [
   },
   { name: "Studio", href: "https://studio.v1michigan.com", current: false },
   {
+    name: "Startup Fair",
+    href: "https://startupfair.v1michigan.com",
+    current: false,
+  },
+  {
     name: "Newsletter",
     href: "https://v1network.substack.com/",
     current: false,

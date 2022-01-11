@@ -295,7 +295,7 @@ export default function YC() {
       </div>
       <div className="bg-gradient-to-r from-gray-900 to-black">
         <p className="footer text-gray-200 text-center py-8">
-          &copy; 2021 V1 | team@v1michigan.com
+          &copy; 2022 V1 | team@v1michigan.com
         </p>
       </div>
     </main>
