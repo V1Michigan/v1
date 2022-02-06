@@ -25,13 +25,13 @@ export default function IndexPage() {
         <meta property="og:image" content="/share.png" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      
+
       {/* <ProductStudioBanner /> */}
-      <StartupFairBanner />
+      {/* <StartupFairBanner /> */}
       <NavbarBuilder />
       <div className="h-screen flex justify-center items-center bg-gradient-to-r from-gray-200 to-white">
         <div className="max-w-screen-xl">
-          { /* <Link href="https://studio.v1michigan.com" target="_blank">
+          {/* <Link href="https://studio.v1michigan.com" target="_blank">
             <div className="block lg:text-center mb-8">
               <div
                 className="p-2 bg-gradient-to-r from-yellow-200 to-yellow-500 items-center text-gray-800 hover:opacity-75 leading-none rounded-full flex inline-flex mb-2 cursor-pointer"
