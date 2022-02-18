@@ -16,14 +16,15 @@ export default function Form() {
   const [submitted, setSubmitted] = useState(false);
 
   const autoExpand = (target) => {
+    /* eslint-disable no-param-reassign */
     target.style.height = 'inherit';
-    target.style.height = target.scrollHeight + 'px';
+    target.style.height = `${target.scrollHeight}px`;
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setInvitationRequest({ ...invitationRequest, [name]: value });
-    
+
     autoExpand(e.target);
   };
 
@@ -79,7 +80,9 @@ export default function Form() {
                 className="block text-gray-100 text-lg mb-2"
                 htmlFor="name"
               >
-                Name <span className="text-red-800">*</span>
+                Name
+                {' '}
+                <span className="text-red-800">*</span>
                 <input
                   name="name"
                   id="name"
@@ -97,7 +100,9 @@ export default function Form() {
                 className="block text-gray-100 text-lg mb-2"
                 htmlFor="email"
               >
-                Email <span className="text-red-800">*</span>
+                Email
+                {' '}
+                <span className="text-red-800">*</span>
                 <input
                   name="email"
                   id="email"
@@ -115,7 +120,9 @@ export default function Form() {
                 className="block text-gray-100 text-lg mb-2"
                 htmlFor="major"
               >
-                Major <span className="text-red-800">*</span>
+                Major
+                {' '}
+                <span className="text-red-800">*</span>
                 <input
                   name="major"
                   id="major"
@@ -133,7 +140,9 @@ export default function Form() {
                 className="block text-gray-100 text-lg mb-2"
                 htmlFor="role"
               >
-                Role <span className="text-red-800">*</span>
+                Role
+                {' '}
+                <span className="text-red-800">*</span>
                 <div className="relative mt-2">
                   <select
                     name="role"
@@ -167,7 +176,9 @@ export default function Form() {
                 className="mt-2 block text-gray-100 text-lg mb-2"
                 htmlFor="resume"
               >
-                Resume <span className="text-red-800">*</span>
+                Resume
+                {' '}
+                <span className="text-red-800">*</span>
                 <input
                   name="resume"
                   id="resume"
@@ -188,7 +199,9 @@ export default function Form() {
                   className="block text-gray-100 text-lg mb-2"
                   htmlFor="interests"
                 >
-                  What types of projects are you interested in? <span className="text-red-800">*</span>
+                  What types of projects are you interested in?
+                  {' '}
+                  <span className="text-red-800">*</span>
                   <textarea
                     name="interests"
                     htmlFor="interests"
@@ -205,7 +218,9 @@ export default function Form() {
                   className="block text-gray-100 text-lg mb-2"
                   htmlFor="skills"
                 >
-                  What are your skills? <span className="text-red-800">*</span>
+                  What are your skills?
+                  {' '}
+                  <span className="text-red-800">*</span>
                   <textarea
                     name="skills"
                     id="skills"

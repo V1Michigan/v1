@@ -1,45 +1,46 @@
-import Head from "next/head";
-import Link from "next/link";
-import { useState, useEffect } from "react";
-import Swal from "sweetalert2";
-import axios from "axios";
+import Head from 'next/head';
+import Link from 'next/link';
+import { useState, useEffect } from 'react';
+import Swal from 'sweetalert2';
+import axios from 'axios';
 
 export default function YC() {
   const [event, setEvent] = useState({
-    name: "",
-    email: "",
-    referral: "",
+    name: '',
+    email: '',
+    referral: '',
   });
   const [submitted, setSubmitted] = useState(false);
   const [referrer, setReferrer] = useState(null);
 
   const partners = [
-    "mproduct",
-    "shift",
-    "upround",
-    "cfe",
-    "blockchain",
-    "akpsi",
-    "wolverinesintech",
-    "geecs",
-    "sepi",
-    "mpowered",
-    "startum",
+    'mproduct',
+    'shift',
+    'upround',
+    'cfe',
+    'blockchain',
+    'akpsi',
+    'wolverinesintech',
+    'geecs',
+    'sepi',
+    'mpowered',
+    'startum',
   ];
 
   useEffect(() => {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
-    const referral = urlParams.get("ref");
+    const referral = urlParams.get('ref');
     if (referral) {
       setReferrer(referral);
-      setEvent({ ...event, referral: referral });
+      setEvent({ ...event, referral });
     }
   }, []);
 
   const autoExpand = (target) => {
-    target.style.height = "inherit";
-    target.style.height = target.scrollHeight + "px";
+    /* eslint-disable no-param-reassign */
+    target.style.height = 'inherit';
+    target.style.height = `${target.scrollHeight}px`;
   };
 
   const handleInputChange = (e) => {
@@ -69,21 +70,23 @@ export default function YC() {
       <div className="bg-gradient-to-r from-gray-900 to-black p-4">
         <div className="p-4 flex justify-center md:justify-start">
           <Link href="/">
-            <img className="logo mr-3 rounded-sm" src="/apple-touch-icon.png" />
+            <img className="logo mr-3 rounded-sm" src="/v1_logo_gold.png" alt="V1 logo" />
           </Link>
           <div className="text-white text-xl flex items-center font-bold">
             x
           </div>
-          <img className="logo ml-3 rounded-sm" src="/yc.png" />
+          <img className="logo ml-3 rounded-sm" src="/yc.png" alt="Y Combinator logo" />
           {referrer && (
             <>
               <div className="text-white text-xl flex items-center font-bold ml-3">
                 {partners.includes(referrer.toLowerCase()) ? (
                   <>
-                    x{" "}
+                    x
+                    {' '}
                     <img
                       className="logo ml-3 p-1 bg-gray-100 rounded-sm"
-                      src={`/partners/${referrer.toLowerCase()}.png`}
+                      src={ `/partners/${referrer.toLowerCase()}.png` }
+                      alt={ `${referrer} logo` }
                     />
                   </>
                 ) : null}
@@ -113,7 +116,7 @@ export default function YC() {
             Wednesday, February 17th at 7 PM ET
           </p>
           <div className="max-w-lg mx-auto p-4 text-base">
-            {" "}
+            {' '}
             <p className="text-gray-200">
               V1 is hosting an event with Y Combinator, the seed startup
               accelerator that funded Stripe, Airbnb, Cruise Automation,
@@ -134,7 +137,7 @@ export default function YC() {
         </div>
         <form
           className="max-w-xl mx-auto p-4"
-          onSubmit={(e) => {
+          onSubmit={ (e) => {
             e.preventDefault();
             setSubmitted(true);
             const data = new FormData();
@@ -144,30 +147,29 @@ export default function YC() {
 
             axios
               .post(
-                "https://script.google.com/macros/s/AKfycbxlhVld1NPhOCvEPqctFEoRqSV7QCSXngL72BcJeb5CUUbEbrdm3xAu/exec",
-                data
+                'https://script.google.com/macros/s/AKfycbxlhVld1NPhOCvEPqctFEoRqSV7QCSXngL72BcJeb5CUUbEbrdm3xAu/exec',
+                data,
               )
               .then((res) => {
-                if (res.data.result === "success") {
-                  window.location.href =
-                    "https://ycombinator.zoom.us/meeting/register/tJMvfu2vqz0sE9V4tnmbHYztXxeGNhP438lG?timezone_id=America%2FNew_York";
+                if (res.data.result === 'success') {
+                  window.location.href = 'https://ycombinator.zoom.us/meeting/register/tJMvfu2vqz0sE9V4tnmbHYztXxeGNhP438lG?timezone_id=America%2FNew_York';
                 } else {
                   Swal.fire(
-                    "There was an error submitting the form.",
-                    "Please try again later or contact us at team@v1michigan.com",
-                    "error"
+                    'There was an error submitting the form.',
+                    'Please try again later or contact us at team@v1michigan.com',
+                    'error',
                   );
                 }
               })
               .finally(() => {
                 setSubmitted(false);
                 setEvent({
-                  name: "",
-                  email: "",
-                  referral: "",
+                  name: '',
+                  email: '',
+                  referral: '',
                 });
               });
-          }}
+          } }
         >
           <div>
             <div className="w-full bg-gray-100 shadow-md rounded p-4">
@@ -176,17 +178,19 @@ export default function YC() {
                   className="block text-gray-800 text-lg mb-2"
                   htmlFor="name"
                 >
-                  Full Name <span className="text-red-800">*</span>
+                  Full Name
+                  {' '}
+                  <span className="text-red-800">*</span>
                   <input
                     name="name"
                     id="name"
                     className="mt-2 appearance-none block w-full bg-gray-900 text-gray-200 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-gray-800"
                     type="text"
                     placeholder="Billy Magic"
-                    onChange={handleInputChange}
-                    value={event.name}
+                    onChange={ handleInputChange }
+                    value={ event.name }
                     required
-                    disabled={submitted}
+                    disabled={ submitted }
                   />
                 </label>
               </div>
@@ -195,23 +199,26 @@ export default function YC() {
                   className="block text-gray-800 text-lg mb-2"
                   htmlFor="email"
                 >
-                  Email <span className="text-red-800">*</span>
+                  Email
+                  {' '}
+                  <span className="text-red-800">*</span>
                   <input
                     name="email"
                     id="email"
                     className="mt-2 appearance-none block w-full bg-gray-900 text-gray-200 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-gray-800"
                     type="text"
                     placeholder="Email"
-                    onChange={handleInputChange}
-                    value={event.email}
+                    onChange={ handleInputChange }
+                    value={ event.email }
                     required
-                    disabled={submitted}
+                    disabled={ submitted }
                   />
                 </label>
               </div>
               <div className="px-3 my-4">
-                <label className="block text-gray-800 text-lg mb-2">
-                  How did you hear about this event?{" "}
+                <label className="block text-gray-800 text-lg mb-2" htmlFor="referral">
+                  How did you hear about this event?
+                  {' '}
                   <span className="text-red-800">*</span>
                   <input
                     name="referral"
@@ -219,28 +226,28 @@ export default function YC() {
                     className="mt-2 appearance-none block w-full bg-gray-900 text-gray-200 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-gray-800"
                     type="text"
                     placeholder="V1 Newsletter, etc."
-                    onChange={handleInputChange}
-                    value={event.referral}
+                    onChange={ handleInputChange }
+                    value={ event.referral }
                     required
-                    disabled={submitted}
+                    disabled={ submitted }
                   />
                 </label>
               </div>
               <div className="px-3 mt-10 mb-6">
                 <button
                   type="submit"
-                  className={`bg-gradient-to-r from-yellow-200 to-yellow-500 hover:opacity-75 text-gray-800 font-semibold py-3 px-4 rounded shadow mb-4 ${
-                    submitted ? "hidden" : "block"
-                  } mx-auto`}
-                  disabled={submitted}
+                  className={ `bg-gradient-to-r from-yellow-200 to-yellow-500 hover:opacity-75 text-gray-800 font-semibold py-3 px-4 rounded shadow mb-4 ${
+                    submitted ? 'hidden' : 'block'
+                  } mx-auto` }
+                  disabled={ submitted }
                 >
                   Continue to YC Registration ›
                 </button>
                 <button
                   type="button"
-                  className={`bg-gray-500 font-semibold text-gray-800 py-3 px-4 rounded shadow mb-4 ${
-                    submitted ? "block" : "hidden"
-                  } mx-auto`}
+                  className={ `bg-gray-500 font-semibold text-gray-800 py-3 px-4 rounded shadow mb-4 ${
+                    submitted ? 'block' : 'hidden'
+                  } mx-auto` }
                   disabled
                 >
                   <svg
@@ -256,12 +263,12 @@ export default function YC() {
                       r="10"
                       stroke="currentColor"
                       strokeWidth="4"
-                    ></circle>
+                     />
                     <path
                       className="opacity-75"
                       fill="currentColor"
                       d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    ></path>
+                     />
                   </svg>
                   Loading
                 </button>
@@ -275,27 +282,15 @@ export default function YC() {
             Our Partners
           </h1>
           <div className="flex justify-center flex-wrap">
-            <img className="logo m-1 rounded-sm" src="/partners/mproduct.png" />
-            <img className="logo m-1 rounded-sm" src="/partners/akpsi.png" />
-            <img className="logo m-1 rounded-sm" src="/partners/shift.png" />
-            <img
-              className="logo m-1 rounded-sm p-2"
-              src="/partners/geecs.png"
-            />
-            <img
-              className="logo m-1 rounded-sm"
-              src="/partners/blockchain.png"
-            />
-            <img className="logo m-1 rounded-sm" src="/partners/sepi.png" />
-            <img className="logo m-1 rounded-sm" src="/partners/upround.png" />
-            <img className="logo m-1 rounded-sm" src="/partners/mpowered.png" />
-            <img className="logo m-1 rounded-sm" src="/partners/startum.png" />
+            {partners.map((partner) => (
+              <img className="logo m-1 rounded-sm" src={ `/partners/${partner}.png` } alt={ `${partner} logo` } key={ partner } />
+            ))}
           </div>
         </div>
       </div>
       <div className="bg-gradient-to-r from-gray-900 to-black">
         <p className="footer text-gray-200 text-center py-8">
-          &copy; 2021 V1 | team@v1michigan.com
+          &copy; 2022 V1 | team@v1michigan.com
         </p>
       </div>
     </main>

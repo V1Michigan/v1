@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
-import { ContentPage } from "./content";
-import ReactHtmlParser from "react-html-parser";
+import { useEffect, useState } from 'react';
+import ReactHtmlParser from 'react-html-parser';
+import { ContentPage } from './content';
+
 async function getData() {
   const response = await fetch(
-    "https://damp-depths-59602.herokuapp.com/https://v1api-production.up.railway.app/events/"
+    'https://damp-depths-59602.herokuapp.com/https://v1api-production.up.railway.app/events/',
   );
   const data = response.json();
 
@@ -24,7 +25,7 @@ const Calendar = () => {
       {events && events.length > 0 && (
         <ContentPage
           title="Upcoming Events"
-          textElement={
+          textElement={ (
             <div className="mx-auto">
               {events.map((event) => (
                 <div className="w-full text-gray-900 bg-gray-200 p-4 m-4 rounded-md">
@@ -36,13 +37,13 @@ const Calendar = () => {
                 </div>
               ))}
             </div>
-          }
+          ) }
         />
       )}
     </>
   );
 };
 
-export { Calendar };
-//https://stackoverflow.com/questions/7244246/generate-an-rfc-3339-timestamp-similar-to-google-tasks-api
-//https://stackoverflow.com/questions/57161839/module-not-found-error-cant-resolve-fs-in
+export default Calendar;
+// https://stackoverflow.com/questions/7244246/generate-an-rfc-3339-timestamp-similar-to-google-tasks-api
+// https://stackoverflow.com/questions/57161839/module-not-found-error-cant-resolve-fs-in
