@@ -5,7 +5,8 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint components/**/*.js pages/**/*.js"
+    "lint:check": "eslint components/**/*.js pages/**/*.js",
+    "lint:fix": "eslint --fix components/**/*.js pages/**/*.js"
   },
   "dependencies": {
     "@headlessui/react": "^1.2.0",
@@ -31,6 +32,7 @@
     "eslint-plugin-jsx-a11y": "^6.3.1",
     "eslint-plugin-react": "^7.21.2",
     "eslint-plugin-react-hooks": "^4.1.2",
+    "eslint-plugin-prettier": "^4.0.0",
     "postcss-flexbugs-fixes": "4.2.1",
     "postcss-preset-env": "^6.7.0",
     "tailwindcss": "^1.7.4"
