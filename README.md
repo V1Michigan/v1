@@ -18,5 +18,7 @@ This is the code repository for the website. Serverless frontend built with Next
 
 We use ESLint + Prettier to lint our code and enforce consistent style. GitHub Actions automatically runs these linting tools when you push to the remote repository.
 
+Use `npm run lint:check` to check for linting/style errors, and `npm run lint:fix` to automatically fix them.
+
 We'd recommend using an [ESLint plugin for your editor](https://eslint.org/docs/user-guide/integrations) to lint and format your code as you write it.
 - VSCode: [extension](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint), [tutorial](https://www.digitalocean.com/community/tutorials/linting-and-formatting-with-eslint-in-vs-code)
