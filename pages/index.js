@@ -1,8 +1,9 @@
-import Head from "next/head";
-import { What, Offer, Join, Leadership, Advisors } from "../components/about";
-import NavbarBuilder from "../components/navbar.js";
-import { ProductStudioBanner, StartupFairBanner } from "../components/banner";
-import { Calendar } from "../components/calendarapi";
+import Head from 'next/head';
+import {
+  What, Offer, Join,
+} from '../components/about';
+import NavbarBuilder from '../components/navbar';
+import Calendar from '../components/calendarapi';
 
 export default function IndexPage() {
   return (
@@ -34,10 +35,15 @@ export default function IndexPage() {
           {/* <Link href="https://studio.v1michigan.com" target="_blank">
             <div className="block lg:text-center mb-8">
               <div
-                className="p-2 bg-gradient-to-r from-yellow-200 to-yellow-500 items-center text-gray-800 hover:opacity-75 leading-none rounded-full flex inline-flex mb-2 cursor-pointer"
+                className="
+                  p-2 bg-gradient-to-r from-yellow-200 to-yellow-500
+                  items-center text-gray-800 hover:opacity-75 leading-none rounded-full
+                  flex inline-flex mb-2 cursor-pointer"
                 role="alert"
               >
-                <span className="flex rounded-full bg-yellow-500 uppercase px-2 py-1 text-xs font-bold mr-2 ml-2">
+                <span className="
+                  flex rounded-full bg-yellow-500 uppercase
+                  px-2 py-1 text-xs font-bold mr-2 ml-2">
                   New
                 </span>
                 <span className="font-semibold mr-1 text-left flex-auto text-sm">
@@ -48,7 +54,8 @@ export default function IndexPage() {
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 20 20"
                 >
-                  <path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z" />
+                  <path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757
+                  10.828 10l-4.242 4.243L8 15.657l4.95-4.95z" />
                 </svg>
               </div>
             </div>
@@ -69,7 +76,7 @@ export default function IndexPage() {
               </div>
             </div>
             <div className="max-w-xl p-4">
-              <img className="tilt shadow-md rounded-sm" src="/gif.gif"></img>
+              <img className="tilt shadow-md rounded-sm" src="/yc_event_gif.gif" alt="GIF from V1 event with YC President Geoff Ralston" />
             </div>
           </div>
         </div>
