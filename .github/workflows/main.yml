@@ -1,8 +1,9 @@
 name: ci
 on: [push]
 jobs:
-  deploy:
+  ci:
     runs-on: ubuntu-latest
+    environment: Platform (Supabase)
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
@@ -15,4 +16,8 @@ jobs:
       - run: npm install
       - name: JS style
         run: npm run lint:check
-      - run: npm run build
+      - name: Build
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
