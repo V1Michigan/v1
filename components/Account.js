@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { supabase } from '../utils/supabaseClient';
+import supabase from '../utils/supabaseClient';
 
 export default function Account({ session }) {
   const [loading, setLoading] = useState(true);
