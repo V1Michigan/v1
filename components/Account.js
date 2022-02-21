@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import supabase from '../utils/supabaseClient';
+import useSupabase from '../hooks/useSupabase';
 
-export default function Account({ session }) {
+export default function Account() {
+  const { supabase, user } = useSupabase();
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState(null);
   const [website, setWebsite] = useState(null);
@@ -11,7 +11,6 @@ export default function Account({ session }) {
   async function getProfile() {
     try {
       setLoading(true);
-      const user = supabase.auth.user();
 
       const { data, error, status } = await supabase
         .from('users')
@@ -38,12 +37,11 @@ export default function Account({ session }) {
 
   useEffect(() => {
     getProfile();
-  }, [session]);
+  }, [user]);
 
   async function updateProfile({ newUsername, newWebsite, newAvatarUrl }) {
     try {
       setLoading(true);
-      const user = supabase.auth.user();
 
       const updates = {
         id: user.id,
@@ -73,7 +71,7 @@ export default function Account({ session }) {
       <div>
         <label htmlFor="email">
           Email
-          <input id="email" type="text" value={ session.user.email } disabled />
+          <input id="email" type="text" value={ user.email } disabled />
         </label>
       </div>
       <div>
@@ -111,15 +109,15 @@ export default function Account({ session }) {
       </div>
 
       <div>
-        <button className="button block" onClick={ () => supabase.auth.signOut() } type="button">
+        <button
+          className="button block"
+          onClick={ () => {
+            supabase.auth.signOut();
+          } }
+          type="button">
           Sign Out
         </button>
       </div>
     </div>
   );
 }
-
-Account.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
-  session: PropTypes.object.isRequired,
-};
