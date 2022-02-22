@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types';
-import Fade from './Fade';
+import PropTypes from "prop-types";
+import Fade from "./Fade";
 
 const ContentHeader = ({ title }) => (
   <h1 className="font-bold text-gray-900 text-4xl text-center pt-20 pb-10 w-10/12 md:w-3/4 block mx-auto">

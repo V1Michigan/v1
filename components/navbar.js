@@ -1,23 +1,23 @@
-import { Fragment } from 'react';
-import { Disclosure, Menu, Transition } from '@headlessui/react';
-import { MenuIcon, XIcon } from '@heroicons/react/outline';
+import { Fragment } from "react";
+import { Disclosure, Menu, Transition } from "@headlessui/react";
+import { MenuIcon, XIcon } from "@heroicons/react/outline";
 
 const navigation = [
   // { name: 'V1 @ Michigan', href: '#', current: true },
   {
-    name: 'Community',
-    href: 'https://v1michigan.com/community',
+    name: "Community",
+    href: "https://v1michigan.com/community",
     current: false,
   },
-  { name: 'Studio', href: 'https://studio.v1michigan.com', current: false },
+  { name: "Studio", href: "https://studio.v1michigan.com", current: false },
   {
-    name: 'Startup Fair',
-    href: 'https://startupfair.v1michigan.com',
+    name: "Startup Fair",
+    href: "https://startupfair.v1michigan.com",
     current: false,
   },
   {
-    name: 'Newsletter',
-    href: 'https://v1network.substack.com/',
+    name: "Newsletter",
+    href: "https://v1network.substack.com/",
     current: false,
   },
   /* {
@@ -26,7 +26,7 @@ const navigation = [
 ];
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
+  return classes.filter(Boolean).join(" ");
 }
 
 export default function NavbarBuilder() {
@@ -59,11 +59,11 @@ export default function NavbarBuilder() {
                         href={ item.href }
                         className={ classNames(
                           item.current
-                            ? 'bg-gray-900 text-white'
-                            : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                          'px-3 py-2 rounded-md text-sm font-medium',
+                            ? "bg-gray-900 text-white"
+                            : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                          "px-3 py-2 rounded-md text-sm font-medium",
                         ) }
-                        aria-current={ item.current ? 'page' : undefined }
+                        aria-current={ item.current ? "page" : undefined }
                       >
                         {item.name}
                       </a>
@@ -113,8 +113,8 @@ export default function NavbarBuilder() {
                               <a
                                 href="https://v1michigan.com/community"
                                 className={ classNames(
-                                  active ? 'bg-gray-100' : '',
-                                  'block px-4 py-2 text-sm text-gray-700',
+                                  active ? "bg-gray-100" : "",
+                                  "block px-4 py-2 text-sm text-gray-700",
                                 ) }
                               >
                                 Community
@@ -126,8 +126,8 @@ export default function NavbarBuilder() {
                               <a
                                 href="https://studio.v1michigan.com"
                                 className={ classNames(
-                                  active ? 'bg-gray-100' : '',
-                                  'block px-4 py-2 text-sm text-gray-700',
+                                  active ? "bg-gray-100" : "",
+                                  "block px-4 py-2 text-sm text-gray-700",
                                 ) }
                               >
                                 Studio
@@ -152,8 +152,8 @@ export default function NavbarBuilder() {
                               <a
                                 href="https://v1network.substack.com"
                                 className={ classNames(
-                                  active ? 'bg-gray-100' : '',
-                                  'block px-4 py-2 text-sm text-gray-700',
+                                  active ? "bg-gray-100" : "",
+                                  "block px-4 py-2 text-sm text-gray-700",
                                 ) }
                               >
                                 Newsletter
@@ -177,11 +177,11 @@ export default function NavbarBuilder() {
                   href={ item.href }
                   className={ classNames(
                     item.current
-                      ? 'bg-gray-900 text-white'
-                      : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                    'block px-3 py-2 rounded-md text-base font-medium',
+                      ? "bg-gray-900 text-white"
+                      : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                    "block px-3 py-2 rounded-md text-base font-medium",
                   ) }
-                  aria-current={ item.current ? 'page' : undefined }
+                  aria-current={ item.current ? "page" : undefined }
                 >
                   {item.name}
                 </a>

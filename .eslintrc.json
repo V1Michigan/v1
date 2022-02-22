@@ -39,6 +39,14 @@
         ],
         "react/prop-types": [
             "error"
+        ],
+        "quotes": [
+            "error",
+            "double"
+        ],
+        "jsx-quotes": [
+            "error",
+            "prefer-double"
         ]
     },
     "globals": {

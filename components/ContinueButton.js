@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types';
-import { ClipLoader } from 'react-spinners';
+import PropTypes from "prop-types";
+import { ClipLoader } from "react-spinners";
 
 const ContinueButton = ({
   loading, continueButtonLink, isHomepage, disabled, onClick, text,
@@ -11,7 +11,7 @@ const ContinueButton = ({
     <a href={ continueButtonLink }>
       <button
         className={ ` rounded-full overflow-hidden bg-yellow-100 shadow-xl p-3 hover:bg-yellow-200 ${
-          isHomepage ? 'w-full' : null
+          isHomepage ? "w-full" : null
         } opacity-${
           // eslint-disable-next-line no-nested-ternary
           loading
@@ -26,7 +26,7 @@ const ContinueButton = ({
         >
         <p className="text-black-900 font-bold text-2xl p-1">
           {text}
-          {' '}
+          {" "}
         </p>
       </button>
     </a>

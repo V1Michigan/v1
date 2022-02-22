@@ -1,5 +1,5 @@
-import Particles from 'react-tsparticles';
-import ContinueButton from '../components/ContinueButton';
+import Particles from "react-tsparticles";
+import ContinueButton from "../components/ContinueButton";
 
 const Welcome = () => (
   <div>
@@ -26,19 +26,19 @@ const Welcome = () => (
               },
             },
             color: {
-              value: '#ffffff',
+              value: "#ffffff",
             },
             shape: {
-              type: 'circle',
+              type: "circle",
               stroke: {
                 width: 7,
-                color: '#ffffff',
+                color: "#ffffff",
               },
               polygon: {
                 nb_sides: 5,
               },
               image: {
-                src: 'img/github.svg',
+                src: "img/github.svg",
                 width: 100,
                 height: 100,
               },
@@ -66,17 +66,17 @@ const Welcome = () => (
             line_linked: {
               enable: true,
               distance: 126.26387176325524,
-              color: '#ffffff',
+              color: "#ffffff",
               opacity: 0.4,
               width: 3.156596794081381,
             },
             move: {
               enable: true,
               speed: 2,
-              direction: 'none',
+              direction: "none",
               random: false,
               straight: false,
-              out_mode: 'out',
+              out_mode: "out",
               bounce: false,
               attract: {
                 enable: false,
@@ -86,15 +86,15 @@ const Welcome = () => (
             },
           },
           interactivity: {
-            detect_on: 'canvas',
+            detect_on: "canvas",
             events: {
               onhover: {
                 enable: true,
-                mode: 'bubble',
+                mode: "bubble",
               },
               onclick: {
                 enable: true,
-                mode: 'push',
+                mode: "push",
               },
               resize: true,
             },

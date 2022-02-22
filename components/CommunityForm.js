@@ -1,20 +1,20 @@
-import axios from 'axios';
-import { useState } from 'react';
-import Swal from 'sweetalert2';
+import axios from "axios";
+import { useState } from "react";
+import Swal from "sweetalert2";
 
-import Fade from './Fade';
+import Fade from "./Fade";
 
 export default function Form() {
   const [invitationRequest, setInvitationRequest] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
+    firstName: "",
+    lastName: "",
+    email: "",
   });
   const [submitted, setSubmitted] = useState(false);
 
   const autoExpand = (target) => {
     /* eslint-disable no-param-reassign */
-    target.style.height = 'inherit';
+    target.style.height = "inherit";
     target.style.height = `${target.scrollHeight}px`;
   };
 
@@ -39,25 +39,25 @@ export default function Form() {
 
           axios
             .post(
-              'https://script.google.com/macros/s/AKfycbxcvZeIseDF-s5b6fNco4SZdZB68PLAM1P8zIDS4JDgIxWFECnQZJws/exec',
+              "https://script.google.com/macros/s/AKfycbxcvZeIseDF-s5b6fNco4SZdZB68PLAM1P8zIDS4JDgIxWFECnQZJws/exec",
               data,
             )
             .then((res) => {
-              if (res.data.result === 'success') {
-                window.location.href = 'https://discord.gg/G3Hfkcm3hH';
+              if (res.data.result === "success") {
+                window.location.href = "https://discord.gg/G3Hfkcm3hH";
               } else {
                 Swal.fire(
-                  'There was an error submitting the form.',
-                  'Please try again later or contact us at team@v1michigan.com',
-                  'error',
+                  "There was an error submitting the form.",
+                  "Please try again later or contact us at team@v1michigan.com",
+                  "error",
                 );
               }
             })
             .finally(() => {
               setSubmitted(false);
               setInvitationRequest({
-                name: '',
-                email: '',
+                name: "",
+                email: "",
               });
             });
         } }
@@ -70,7 +70,7 @@ export default function Form() {
                 htmlFor="name"
               >
                 Full Name
-                {' '}
+                {" "}
                 <span className="text-red-800">*</span>
                 <input
                   name="name"
@@ -91,7 +91,7 @@ export default function Form() {
                 htmlFor="email"
               >
                 Email
-                {' '}
+                {" "}
                 <span className="text-red-800">*</span>
                 <input
                   name="email"
@@ -110,7 +110,7 @@ export default function Form() {
               <button
                 type="submit"
                 className={ `bg-gradient-to-r from-yellow-200 to-yellow-500 hover:opacity-75 text-gray-800 font-semibold py-3 px-4 rounded shadow mb-4 ${
-                  submitted ? 'hidden' : 'block'
+                  submitted ? "hidden" : "block"
                 } mx-auto` }
                 disabled={ submitted }
               >
@@ -118,14 +118,14 @@ export default function Form() {
                 <img
                   src="/discord-logo.svg"
                   className="inline-block ml-2"
-                  style={ { height: '2rem' } }
+                  style={ { height: "2rem" } }
                   alt="Discord logo"
                 />
               </button>
               <button
                 type="button"
                 className={ `bg-gray-500 font-semibold text-gray-800 py-3 px-4 rounded shadow mb-4 ${
-                  submitted ? 'block' : 'hidden'
+                  submitted ? "block" : "hidden"
                 } mx-auto` }
                 disabled
               >

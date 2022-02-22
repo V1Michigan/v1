@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import useSupabase from '../hooks/useSupabase';
+import { useState, useEffect } from "react";
+import useSupabase from "../hooks/useSupabase";
 
 export default function Account() {
   const { supabase, user } = useSupabase();
@@ -13,9 +13,9 @@ export default function Account() {
       setLoading(true);
 
       const { data, error, status } = await supabase
-        .from('users')
-        .select('username, website, avatar_url')
-        .eq('id', user.id)
+        .from("users")
+        .select("username, website, avatar_url")
+        .eq("id", user.id)
         .single();
 
       if (error && status !== 406) {
@@ -51,8 +51,8 @@ export default function Account() {
         updated_at: new Date(),
       };
 
-      const { error } = await supabase.from('profiles').upsert(updates, {
-        returning: 'minimal', // Don't return the value after inserting
+      const { error } = await supabase.from("profiles").upsert(updates, {
+        returning: "minimal", // Don't return the value after inserting
       });
 
       if (error) {
@@ -80,7 +80,7 @@ export default function Account() {
           <input
             id="username"
             type="text"
-            value={ username || '' }
+            value={ username || "" }
             onChange={ (e) => setUsername(e.target.value) }
         />
         </label>
@@ -91,7 +91,7 @@ export default function Account() {
           <input
             id="website"
             type="website"
-            value={ website || '' }
+            value={ website || "" }
             onChange={ (e) => setWebsite(e.target.value) }
         />
         </label>
@@ -104,7 +104,7 @@ export default function Account() {
           disabled={ loading }
           type="button"
         >
-          {loading ? 'Loading ...' : 'Update'}
+          {loading ? "Loading ..." : "Update"}
         </button>
       </div>
 

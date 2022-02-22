@@ -1,23 +1,23 @@
-import { useState } from 'react';
-import Swal from 'sweetalert2';
-import Fade from './Fade';
-import { ContentHeader } from './content';
+import { useState } from "react";
+import Swal from "sweetalert2";
+import Fade from "./Fade";
+import { ContentHeader } from "./content";
 
 export default function Form() {
   const [invitationRequest, setInvitationRequest] = useState({
-    name: '',
-    email: '',
-    role: '',
-    major: '',
-    resume: '',
-    interests: '',
-    skills: '',
+    name: "",
+    email: "",
+    role: "",
+    major: "",
+    resume: "",
+    interests: "",
+    skills: "",
   });
   const [submitted, setSubmitted] = useState(false);
 
   const autoExpand = (target) => {
     /* eslint-disable no-param-reassign */
-    target.style.height = 'inherit';
+    target.style.height = "inherit";
     target.style.height = `${target.scrollHeight}px`;
   };
 
@@ -41,32 +41,32 @@ export default function Form() {
           }
 
           fetch(
-            'https://script.google.com/macros/s/AKfycbyr9M13gnlVxM8UYocXy7wKJZQPnxd_iq043N2ZZPh0elrH4Bw/exec',
-            { method: 'POST', body: data },
+            "https://script.google.com/macros/s/AKfycbyr9M13gnlVxM8UYocXy7wKJZQPnxd_iq043N2ZZPh0elrH4Bw/exec",
+            { method: "POST", body: data },
           )
             .then(() => {
               Swal.fire(
-                'Success!',
-                'Invitation request form submitted.',
-                'success',
+                "Success!",
+                "Invitation request form submitted.",
+                "success",
               );
             })
             .catch(() => {
               Swal.fire(
-                'There was an error submitting the form.',
-                'Please try again later or contact us at version1@umich.edu',
-                'error',
+                "There was an error submitting the form.",
+                "Please try again later or contact us at version1@umich.edu",
+                "error",
               );
             }).finally(() => {
               setSubmitted(false);
               setInvitationRequest({
-                name: '',
-                email: '',
-                role: '',
-                major: '',
-                resume: '',
-                interests: '',
-                skills: '',
+                name: "",
+                email: "",
+                role: "",
+                major: "",
+                resume: "",
+                interests: "",
+                skills: "",
               });
             });
         } }
@@ -81,7 +81,7 @@ export default function Form() {
                 htmlFor="name"
               >
                 Name
-                {' '}
+                {" "}
                 <span className="text-red-800">*</span>
                 <input
                   name="name"
@@ -101,7 +101,7 @@ export default function Form() {
                 htmlFor="email"
               >
                 Email
-                {' '}
+                {" "}
                 <span className="text-red-800">*</span>
                 <input
                   name="email"
@@ -121,7 +121,7 @@ export default function Form() {
                 htmlFor="major"
               >
                 Major
-                {' '}
+                {" "}
                 <span className="text-red-800">*</span>
                 <input
                   name="major"
@@ -141,7 +141,7 @@ export default function Form() {
                 htmlFor="role"
               >
                 Role
-                {' '}
+                {" "}
                 <span className="text-red-800">*</span>
                 <div className="relative mt-2">
                   <select
@@ -177,7 +177,7 @@ export default function Form() {
                 htmlFor="resume"
               >
                 Resume
-                {' '}
+                {" "}
                 <span className="text-red-800">*</span>
                 <input
                   name="resume"
@@ -200,7 +200,7 @@ export default function Form() {
                   htmlFor="interests"
                 >
                   What types of projects are you interested in?
-                  {' '}
+                  {" "}
                   <span className="text-red-800">*</span>
                   <textarea
                     name="interests"
@@ -219,7 +219,7 @@ export default function Form() {
                   htmlFor="skills"
                 >
                   What are your skills?
-                  {' '}
+                  {" "}
                   <span className="text-red-800">*</span>
                   <textarea
                     name="skills"
