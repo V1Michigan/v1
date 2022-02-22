@@ -40,40 +40,39 @@ export default function Account({ session }) {
     getProfile();
   }, [session]);
 
-  async function updateProfile({ newUsername, newWebsite, newAvatarUrl }) {
+  async function updateProfile() {
     try {
-      setLoading(true);
-      const user = supabase.auth.user();
+      setLoading(true)
+      const user = supabase.auth.user()
 
       const updates = {
-        id: user.id,
-        username: newUsername,
-        website: newWebsite,
-        avatar_url: newAvatarUrl,
+        id: user!.id,
+        username,
+        website,
         updated_at: new Date(),
-      };
+      }
 
-      const { error } = await supabase.from('profiles').upsert(updates, {
+      let { error } = await supabase.from('profiles').upsert(updates, {
         returning: 'minimal', // Don't return the value after inserting
-      });
+      })
 
       if (error) {
-        throw error;
+        throw error
       }
     } catch (error) {
-      // eslint-disable-next-line no-alert
-      alert(error.message);
+      alert(error.message)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   }
+
 
   return (
     <div className="form-widget">
       <div>
         <label htmlFor="email">
           Email
-          <input id="email" type="text" value={ session.user.email } disabled />
+          <input id="email" type="text" value={session.user.email} disabled />
         </label>
       </div>
       <div>
@@ -82,9 +81,9 @@ export default function Account({ session }) {
           <input
             id="username"
             type="text"
-            value={ username || '' }
-            onChange={ (e) => setUsername(e.target.value) }
-        />
+            value={username || ''}
+            onChange={(e) => setUsername(e.target.value)}
+          />
         </label>
       </div>
       <div>
@@ -93,17 +92,17 @@ export default function Account({ session }) {
           <input
             id="website"
             type="website"
-            value={ website || '' }
-            onChange={ (e) => setWebsite(e.target.value) }
-        />
+            value={website || ''}
+            onChange={(e) => setWebsite(e.target.value)}
+          />
         </label>
       </div>
 
       <div>
         <button
           className="button block primary"
-          onClick={ () => updateProfile({ username, website, avatarUrl }) }
-          disabled={ loading }
+          onClick={() => updateProfile()}
+          disabled={loading}
           type="button"
         >
           {loading ? 'Loading ...' : 'Update'}
@@ -111,7 +110,7 @@ export default function Account({ session }) {
       </div>
 
       <div>
-        <button className="button block" onClick={ () => supabase.auth.signOut() } type="button">
+        <button className="button block" onClick={() => supabase.auth.signOut()} type="button">
           Sign Out
         </button>
       </div>
