@@ -5,14 +5,14 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "lint:check": "eslint components/**/*.js pages/**/*.js",
-    "lint:fix": "eslint --fix components/**/*.js pages/**/*.js"
+    "lint:check": "eslint components/**/*.js pages/**/*.js hooks/**/*.js utils/**/*.js",
+    "lint:fix": "eslint --fix components/**/*.js pages/**/*.js hooks/**/*.js utils/**/*.js"
   },
   "dependencies": {
     "@headlessui/react": "^1.2.0",
     "@heroicons/react": "^1.0.1",
+    "@supabase/supabase-js": "^1.30.4",
     "axios": "^0.21.1",
-    "dotenv": "^10.0.0",
     "googleapis": "^39.2.0",
     "https": "^1.0.0",
     "next": "latest",
@@ -21,6 +21,8 @@
     "react-dom": "^16.13.1",
     "react-html-parser": "^2.0.2",
     "react-reveal": "^1.2.2",
+    "react-spinners": "^0.11.0",
+    "react-tsparticles": "^1.37.5",
     "sweetalert2": "^10.3.5",
     "typeface-inter": "^3.15.0",
     "typeface-source-sans-pro": "^1.1.5"
@@ -30,9 +32,9 @@
     "eslint-config-airbnb": "^18.2.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.21.2",
     "eslint-plugin-react-hooks": "^4.1.2",
-    "eslint-plugin-prettier": "^4.0.0",
     "postcss-flexbugs-fixes": "4.2.1",
     "postcss-preset-env": "^6.7.0",
     "tailwindcss": "^1.7.4"

@@ -48,8 +48,8 @@ export default function NavbarBuilder() {
                 </Disclosure.Button>
               </div>
               <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
-                <div className="flex-shrink-0 flex items-center text-white font-bold">
-                  V1 at Michigan
+                <div className="flex-shrink-0 flex items-center text-white text-2xl font-bold hover:opacity-50 hover:cursor-pointer">
+                  V1
                 </div>
                 <div className="hidden sm:block sm:ml-6">
                   <div className="flex space-x-4">
