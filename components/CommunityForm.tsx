@@ -27,7 +27,7 @@ export default function Form() {
     };
 
     return (
-        <Fade children={String} >
+        <Fade children={{}} >
             <form
                 className="w-full p-4"
                 onSubmit={(e) => {
