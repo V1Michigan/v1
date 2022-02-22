@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { analytics } from 'googleapis/build/src/apis/analytics';
 import { useState } from 'react';
 import Swal from 'sweetalert2';
 
@@ -26,7 +27,7 @@ export default function Form() {
     };
 
     return (
-        <Fade children={undefined} >
+        <Fade children={String} >
             <form
                 className="w-full p-4"
                 onSubmit={(e) => {
