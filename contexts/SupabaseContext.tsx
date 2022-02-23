@@ -2,7 +2,18 @@ import { createContext, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import supabase from "../utils/supabaseClient";
 
-const SupabaseContext = createContext();
+interface SupabaseContextInterface {
+  supabase: typeof supabase;
+  signIn: (
+    (credentials: { provider: string } | {email: string, password: string},
+      options: { redirectTo: string })
+      => {error?: string});
+  signUp: (credentials: {email: string, password: string}) => {error?: string};
+  signOut: () => {error?: string};
+  user: {id: string, email: string};
+}
+
+const SupabaseContext = createContext<SupabaseContextInterface | null>(null);
 
 function SupabaseProvider({ children }) {
   const [user, setUser] = useState(null);

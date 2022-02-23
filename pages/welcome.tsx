@@ -110,7 +110,6 @@ const Welcome = () => (
                 size: 16.24159370638244,
                 duration: 2,
                 opacity: 1,
-                speed: 3,
               },
               repulse: {
                 distance: 200,
