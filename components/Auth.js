@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import supabase from '../utils/supabaseClient';
+import { useState } from "react";
+import supabase from "../utils/supabaseClient";
 
 export default function Auth() {
   const [loading, setLoading] = useState(false);
@@ -7,7 +7,7 @@ export default function Auth() {
   const handleLogin = async () => {
     try {
       setLoading(true);
-      const { error } = await supabase.auth.signIn({ provider: 'google' });
+      const { error } = await supabase.auth.signIn({ provider: "google" });
       if (error) throw error;
     } catch (error) {
       // eslint-disable-next-line no-alert
@@ -32,7 +32,7 @@ export default function Auth() {
             disabled={ loading }
             type="button"
           >
-            <span>{loading ? 'Loading' : 'Sign in'}</span>
+            <span>{loading ? "Loading" : "Sign in"}</span>
           </button>
         </div>
       </div>

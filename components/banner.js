@@ -1,5 +1,5 @@
-import { XIcon } from '@heroicons/react/outline';
-import PropTypes from 'prop-types';
+import { XIcon } from "@heroicons/react/outline";
+import PropTypes from "prop-types";
 
 const Banner = ({ largeLine, smallLine, link }) => (
   <div className="bg-yellow-600 full_banner">
@@ -12,11 +12,11 @@ const Banner = ({ largeLine, smallLine, link }) => (
           </span>
           <p className="ml-3 font-medium font-sans text-white truncate">
             <span className="md:hidden">
-              {' '}
+              {" "}
               { smallLine }
             </span>
             <span className="hidden md:inline">
-              {' '}
+              {" "}
               { largeLine }
             </span>
           </p>
@@ -36,7 +36,7 @@ const Banner = ({ largeLine, smallLine, link }) => (
             type="button"
             className="-mr-1 flex p-2 rounded-md hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-white sm:-mr-2"
             onClick={ () => {
-              document.querySelector('.full_banner').style.display = 'none';
+              document.querySelector(".full_banner").style.display = "none";
             } }
         >
             <span className="sr-only">Dismiss</span>
@@ -67,12 +67,12 @@ const StartupFairBanner = () => (
     largeLine={ (
       <>
         Apply by
-        {' '}
+        {" "}
         <span className="font-bold">January 22nd</span>
-        {' '}
+        {" "}
         to meet top
         startups at
-        {' '}
+        {" "}
         <span className="font-bold">V1 Startup Fair</span>
       </>
     ) }

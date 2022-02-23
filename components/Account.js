@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import supabase from '../utils/supabaseClient';
+import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import supabase from "../utils/supabaseClient";
 
 export default function Account({ session }) {
   const [loading, setLoading] = useState(true);
@@ -14,9 +14,9 @@ export default function Account({ session }) {
       const user = supabase.auth.user();
 
       const { data, error, status } = await supabase
-        .from('users')
-        .select('username, website, avatar_url')
-        .eq('id', user.id)
+        .from("users")
+        .select("username, website, avatar_url")
+        .eq("id", user.id)
         .single();
 
       if (error && status !== 406) {
@@ -53,8 +53,8 @@ export default function Account({ session }) {
         updated_at: new Date(),
       };
 
-      const { error } = await supabase.from('profiles').upsert(updates, {
-        returning: 'minimal', // Don't return the value after inserting
+      const { error } = await supabase.from("profiles").upsert(updates, {
+        returning: "minimal", // Don't return the value after inserting
       });
 
       if (error) {
@@ -82,7 +82,7 @@ export default function Account({ session }) {
           <input
             id="username"
             type="text"
-            value={ username || '' }
+            value={ username || "" }
             onChange={ (e) => setUsername(e.target.value) }
         />
         </label>
@@ -93,7 +93,7 @@ export default function Account({ session }) {
           <input
             id="website"
             type="website"
-            value={ website || '' }
+            value={ website || "" }
             onChange={ (e) => setWebsite(e.target.value) }
         />
         </label>
@@ -106,7 +106,7 @@ export default function Account({ session }) {
           disabled={ loading }
           type="button"
         >
-          {loading ? 'Loading ...' : 'Update'}
+          {loading ? "Loading ..." : "Update"}
         </button>
       </div>
 

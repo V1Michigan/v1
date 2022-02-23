@@ -1,5 +1,5 @@
-import { useState, useRef, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import { useState, useRef, useEffect } from "react";
+import PropTypes from "prop-types";
 
 export default function Fade({ children }) {
   const [isVisible, setVisible] = useState(true);
@@ -13,7 +13,7 @@ export default function Fade({ children }) {
   }, []);
   return (
     <div
-      className={ `fade-in-section ${isVisible ? 'is-visible' : ''}` }
+      className={ `fade-in-section ${isVisible ? "is-visible" : ""}` }
       ref={ domRef }
     >
       { children }

@@ -1,6 +1,6 @@
-import Link from 'next/link';
-import PropTypes from 'prop-types';
-import { ContentPage } from './content';
+import Link from "next/link";
+import PropTypes from "prop-types";
+import { ContentPage } from "./content";
 
 const What = () => (
   <ContentPage
@@ -18,14 +18,14 @@ const What = () => (
           <b>
             V1 is the community for ambitious student builders at the University
             of Michigan.
-            {' '}
+            {" "}
           </b>
           At our core, we support students who are working on side-projects and
           startups — those who are looking to build
-          {' '}
+          {" "}
           <i>
             their
-            {' '}
+            {" "}
             <b>V1</b>
           </i>
           : the first version of their product.
@@ -58,78 +58,78 @@ const Offer = () => (
 
 const TEAM_DATA = [
   {
-    image: '/community/samay.jpg',
-    name: 'Samay Shamdasani',
-    role: 'Director',
-    link: 'https://shamdasani.org',
+    image: "/community/samay.jpg",
+    name: "Samay Shamdasani",
+    role: "Director",
+    link: "https://shamdasani.org",
   },
   {
-    image: '/community/dheera.jpg',
-    name: 'Dheera Vuppala',
-    role: 'Director',
-    link: 'https://www.linkedin.com/in/dheeravuppala/',
+    image: "/community/dheera.jpg",
+    name: "Dheera Vuppala",
+    role: "Director",
+    link: "https://www.linkedin.com/in/dheeravuppala/",
   },
   {
-    image: '/community/raghav.jpg',
-    name: 'Raghav Bhat',
-    role: 'Head of Engineering',
-    link: 'https://www.linkedin.com/in/raghav-bhat-02/',
+    image: "/community/raghav.jpg",
+    name: "Raghav Bhat",
+    role: "Head of Engineering",
+    link: "https://www.linkedin.com/in/raghav-bhat-02/",
   },
   {
-    image: '/community/saanika.jpg',
-    name: 'Saanika Kulkarni',
-    role: 'Head of Content',
-    link: 'https://www.linkedin.com/in/saanikak/',
+    image: "/community/saanika.jpg",
+    name: "Saanika Kulkarni",
+    role: "Head of Content",
+    link: "https://www.linkedin.com/in/saanikak/",
   },
   {
-    image: '/community/isaac.jpeg',
-    name: 'Isaac Fung',
-    role: 'Head of Engineering',
-    link: 'https://www.linkedin.com/in/i-fung/',
+    image: "/community/isaac.jpeg",
+    name: "Isaac Fung",
+    role: "Head of Engineering",
+    link: "https://www.linkedin.com/in/i-fung/",
   },
   {
-    image: '/community/drew.jpeg',
-    name: 'Drew Levine',
-    role: 'Head of Community',
-    link: 'https://www.linkedin.com/in/drew-levine-156a99159/',
+    image: "/community/drew.jpeg",
+    name: "Drew Levine",
+    role: "Head of Community",
+    link: "https://www.linkedin.com/in/drew-levine-156a99159/",
   },
   {
-    image: '/community/advait.jpeg',
-    name: 'Advait Iyer',
-    role: 'Core Member',
-    link: 'https://www.linkedin.com/in/advaitiyer/',
+    image: "/community/advait.jpeg",
+    name: "Advait Iyer",
+    role: "Core Member",
+    link: "https://www.linkedin.com/in/advaitiyer/",
   },
   {
-    image: '/community/divya.jpg',
-    name: 'Divya Reddy',
-    role: 'Core Member',
-    link: 'https://www.linkedin.com/in/advaitiyer/',
+    image: "/community/divya.jpg",
+    name: "Divya Reddy",
+    role: "Core Member",
+    link: "https://www.linkedin.com/in/advaitiyer/",
   },
 ];
 const ADVISORS_DATA = [
   {
-    image: '/community/sean.jpg',
-    name: 'Sean Stapleton',
-    role: 'Advisor',
-    link: 'https://www.linkedin.com/in/seancstapleton/',
+    image: "/community/sean.jpg",
+    name: "Sean Stapleton",
+    role: "Advisor",
+    link: "https://www.linkedin.com/in/seancstapleton/",
   },
   {
-    image: '/community/dar.jpg',
-    name: 'Dar Sleeper',
-    role: 'Advisor',
-    link: 'https://www.linkedin.com/in/darsleeper/',
+    image: "/community/dar.jpg",
+    name: "Dar Sleeper",
+    role: "Advisor",
+    link: "https://www.linkedin.com/in/darsleeper/",
   },
   {
-    image: '/community/ellie.jpg',
-    name: 'Elizabeth Day',
-    role: 'Advisor',
-    link: 'https://www.linkedin.com/in/elizabeth-day-418a3b181/',
+    image: "/community/ellie.jpg",
+    name: "Elizabeth Day",
+    role: "Advisor",
+    link: "https://www.linkedin.com/in/elizabeth-day-418a3b181/",
   },
   {
-    image: '/community/varun.jpg',
-    name: 'Varun Jindal',
-    role: 'Advisor',
-    link: 'https://www.linkedin.com/in/varun-jindal/',
+    image: "/community/varun.jpg",
+    name: "Varun Jindal",
+    role: "Advisor",
+    link: "https://www.linkedin.com/in/varun-jindal/",
   },
 ];
 const Leaders = ({ team, title }) => (
@@ -180,20 +180,20 @@ const Advisors = () => (
 );
 
 const members = [
-  'payal',
-  'ryan',
-  'dheera',
-  'samay',
-  'saanika',
-  'sean',
-  'allison',
-  'ellie',
-  'yash',
-  'varun',
-  'divya',
-  'abdullah',
-  'medha',
-  'raghav',
+  "payal",
+  "ryan",
+  "dheera",
+  "samay",
+  "saanika",
+  "sean",
+  "allison",
+  "ellie",
+  "yash",
+  "varun",
+  "divya",
+  "abdullah",
+  "medha",
+  "raghav",
 ];
 
 const Join = () => (
