@@ -11,7 +11,7 @@ export default function ProtectedRoute({ children }) {
     if (!user) {
       router.push("/login");
     }
-  }, [user]);
+  }, [user, router]);
   return user ? children : null;
 }
 

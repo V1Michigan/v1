@@ -33,7 +33,7 @@ export default function YC() {
     const referral = urlParams.get("ref");
     if (referral) {
       setReferrer(referral);
-      setEvent({ ...event, referral });
+      setEvent((e) => ({ ...e, referral }));
     }
   }, []);
 
@@ -69,7 +69,7 @@ export default function YC() {
       </Head>
       <div className="bg-gradient-to-r from-gray-900 to-black p-4">
         <div className="p-4 flex justify-center md:justify-start">
-          <Link href="/">
+          <Link href="/" passHref>
             <img className="logo mr-3 rounded-sm" src="/v1_logo_gold.png" alt="V1 logo" />
           </Link>
           <div className="text-white text-xl flex items-center font-bold">

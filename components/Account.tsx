@@ -8,38 +8,37 @@ export default function Account() {
   const [website, setWebsite] = useState(null);
   const [avatarUrl, setAvatarUrl] = useState(null);
 
-  async function getProfile() {
-    try {
-      setLoading(true);
-
-      const { data, error, status } = await supabase
-        .from("users")
-        .select("username, website, avatar_url")
-        .eq("id", user.id)
-        .single();
-
-      if (error && status !== 406) {
-        throw error;
-      }
-
-      if (data) {
-        setUsername(data.username);
-        setWebsite(data.website);
-        setAvatarUrl(data.avatar_url);
-      }
-    } catch (error) {
-      // eslint-disable-next-line no-alert
-      alert(error.message);
-    } finally {
-      setLoading(false);
-    }
-  }
-
   useEffect(() => {
-    getProfile();
-  }, [user]);
+    const getProfile = async () => {
+      try {
+        setLoading(true);
 
-  async function updateProfile({ newUsername, newWebsite, newAvatarUrl }) {
+        const { data, error, status } = await supabase
+          .from("users")
+          .select("username, website, avatar_url")
+          .eq("id", user.id)
+          .single();
+
+        if (error && status !== 406) {
+          throw error;
+        }
+
+        if (data) {
+          setUsername(data.username);
+          setWebsite(data.website);
+          setAvatarUrl(data.avatar_url);
+        }
+      } catch (error) {
+      // eslint-disable-next-line no-alert
+        alert(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    getProfile();
+  }, [supabase, user]);
+
+  async function updateProfile(newUsername, newWebsite, newAvatarUrl) {
     try {
       setLoading(true);
 
@@ -100,7 +99,7 @@ export default function Account() {
       <div>
         <button
           className="button block primary"
-          onClick={ () => updateProfile({ username, website, avatarUrl }) }
+          onClick={ () => updateProfile(username, website, avatarUrl) }
           disabled={ loading }
           type="button"
         >

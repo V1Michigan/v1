@@ -10,6 +10,6 @@ export default function LoginPage() {
     if (user) {
       router.push("/account");
     }
-  }, [user]);
+  }, [user, router]);
   return <Login />;
 }

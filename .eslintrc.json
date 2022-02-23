@@ -5,14 +5,17 @@
     },
     "parser": "@typescript-eslint/parser",
     "extends": [
+        "next/core-web-vitals",
         "eslint:recommended",
         "plugin:react/recommended",
+        "plugin:react-hooks/recommended",
         "airbnb",
         "plugin:@typescript-eslint/recommended"
-        // "plugin:@typescript-eslint/recommended-requiring-type-checking",
+        // "plugin:@typescript-eslint/recommended-requiring-type-checking"
     ],
     "plugins": [
         "react",
+        "react-hooks",
         "@typescript-eslint"
     ],
     "rules": {
@@ -41,7 +44,6 @@
             "error",
             "WithStatement"
         ],
-        "react/react-in-jsx-scope": "off",
         "react/jsx-closing-bracket-location": [
             0
         ],
@@ -60,6 +62,7 @@
         "react/prop-types": [
             "error"
         ],
+        "react-hooks/exhaustive-deps": "error",
         "quotes": [
             "error",
             "double"
@@ -67,7 +70,8 @@
         "jsx-quotes": [
             "error",
             "prefer-double"
-        ]
+        ],
+        "@next/next/no-img-element": "off"
     },
     "globals": {
         "React": "writable"

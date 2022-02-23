@@ -6,7 +6,7 @@ const navigation = [
   // { name: 'V1 @ Michigan', href: '#', current: true },
   {
     name: "Community",
-    href: "https://v1michigan.com/community",
+    href: "/community",
     current: false,
   },
   { name: "Studio", href: "https://studio.v1michigan.com", current: false },
@@ -108,32 +108,21 @@ export default function NavbarBuilder() {
                           static
                           className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
                         >
-                          <Menu.Item>
-                            {({ active }) => (
-                              <a
-                                href="https://v1michigan.com/community"
-                                className={ classNames(
-                                  active ? "bg-gray-100" : "",
-                                  "block px-4 py-2 text-sm text-gray-700",
-                                ) }
+                          {navigation.map((item) => (
+                            <Menu.Item key={ item.href }>
+                              {({ active }) => (
+                                <a
+                                  href={ item.href }
+                                  className={ classNames(
+                                    active ? "bg-gray-100" : "",
+                                    "block px-4 py-2 text-sm text-gray-700",
+                                  ) }
                               >
-                                Community
-                              </a>
-                            )}
-                          </Menu.Item>
-                          <Menu.Item>
-                            {({ active }) => (
-                              <a
-                                href="https://studio.v1michigan.com"
-                                className={ classNames(
-                                  active ? "bg-gray-100" : "",
-                                  "block px-4 py-2 text-sm text-gray-700",
-                                ) }
-                              >
-                                Studio
-                              </a>
-                            )}
-                          </Menu.Item>
+                                  {item.name}
+                                </a>
+                              )}
+                            </Menu.Item>
+                          ))}
                           {/* <Menu.Item>
                               {({ active }) => (
                                 <a
@@ -147,19 +136,6 @@ export default function NavbarBuilder() {
                                 </a>
                               )}
                             </Menu.Item> */}
-                          <Menu.Item>
-                            {({ active }) => (
-                              <a
-                                href="https://v1network.substack.com"
-                                className={ classNames(
-                                  active ? "bg-gray-100" : "",
-                                  "block px-4 py-2 text-sm text-gray-700",
-                                ) }
-                              >
-                                Newsletter
-                              </a>
-                            )}
-                          </Menu.Item>
                         </Menu.Items>
                       </Transition>
                     </>
