@@ -15,8 +15,7 @@ export const ContentBody = ({ textElement }) => (
 
 export const ContentPage = ({ textElement, title }) => (
   <div className="py-32 bg-gradient-to-r from-gray-200 to-white">
-    {/* eslint-disable-next-line react/no-children-prop */}
-    <Fade children={ undefined }>
+    <Fade>
       <ContentHeader title={ title } />
       <ContentBody textElement={ textElement } />
     </Fade>
