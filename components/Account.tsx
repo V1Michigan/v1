@@ -14,7 +14,7 @@ export default function Account() {
         setLoading(true);
 
         const { data, error, status } = await supabase
-          .from("users")
+          .from("profiles")
           .select("username, website, avatar_url")
           .eq("id", user.id)
           .single();
