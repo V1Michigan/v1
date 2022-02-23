@@ -8,7 +8,7 @@ const What = () => (
     textElement={ (
       <div className="mx-auto max-w-2xl">
         <p className="text-2xl text-gray-900">
-          The Umdfsfsniversity of Michigan is a big school. Currently, there are a lot
+          The University of Michigan is a big school. Currently, there are a lot
           of entrepreneurial resources that incredibly valuable, yet niche and
           selective. It&apos;s also difficult to connect and collaborate with other
           builders across campus.

@@ -15,7 +15,7 @@ const ContinueButton = ({
     )}
     <a href={ continueButtonLink }>
       <button
-        className={ ` rounded-full overflow-hidden bg-yellow-100 shadow-xl p-3 hover:bg-yellow-200 ${
+        className={ `rounded-full overflow-hidden bg-yellow-100 shadow-xl p-3 hover:bg-yellow-200 ${
           isHomepage ? "w-full" : null
         } opacity-${
           // eslint-disable-next-line no-nested-ternary

@@ -1,49 +1,41 @@
-import { useEffect, useState } from "react";
-import ReactHtmlParser from "react-html-parser";
-import { ContentPage } from "./content";
+import { useState } from "react";
+import supabase from "../utils/supabaseClient";
 
-async function getData() {
-  const response = await fetch(
-    "https://damp-depths-59602.herokuapp.com/https://v1api-production.up.railway.app/events/",
-  );
-  const data = response.json();
+export default function Auth() {
+  const [loading, setLoading] = useState(false);
 
-  return data;
-}
-
-const Calendar = () => {
-  const [events, setEvents] = useState([]);
-
-  useEffect(() => {
-    getData().then((data) => {
-      setEvents(data);
-    });
-  }, []);
+  const handleLogin = async () => {
+    try {
+      setLoading(true);
+      const { error } = await supabase.auth.signIn({ provider: "google" });
+      if (error) throw error;
+    } catch (error) {
+      // eslint-disable-next-line no-alert
+      alert(error.error_description || error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <>
-      {events && events.length > 0 && (
-        <ContentPage
-          title="Upcoming Events"
-          textElement={ (
-            <div className="mx-auto">
-              {events.map((event) => (
-                <div className="w-full text-gray-900 bg-gray-200 p-4 m-4 rounded-md">
-                  <h2 className="text-xl font-bold">{event.name}</h2>
-                  <p className="text-sm text-gray-700">
-                    {new Date(event.start).toLocaleString()}
-                  </p>
-                  <p>{ReactHtmlParser(event.description)}</p>
-                </div>
-              ))}
-            </div>
-          ) }
-        />
-      )}
-    </>
+    <div className="row flex flex-center">
+      <div className="col-6 form-widget">
+        <p className="description">Sign in via google below</p>
+        <div />
+        <div>
+          <button
+            onClick={ (e) => {
+              e.preventDefault();
+              handleLogin();
+            } }
+            className="button block"
+            disabled={ loading }
+            type="button"
+          >
+            <span>{loading ? "Loading" : "Sign in"}</span>
+          </button>
+        </div>
+      </div>
+    </div>
   );
-};
-
-export default Calendar;
-// https://stackoverflow.com/questions/7244246/generate-an-rfc-3339-timestamp-similar-to-google-tasks-api
-// https://stackoverflow.com/questions/57161839/module-not-found-error-cant-resolve-fs-in
+}
