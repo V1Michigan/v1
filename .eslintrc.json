@@ -7,9 +7,25 @@
     "extends": [
         "eslint:recommended",
         "plugin:react/recommended",
-        "airbnb"
+        "airbnb",
+        "plugin:@typescript-eslint/recommended"
+        // "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    ],
+    "plugins": [
+        "react",
+        "@typescript-eslint"
     ],
     "rules": {
+        "import/extensions": [
+            "error",
+            "ignorePackages",
+            {
+                "js": "never",
+                "jsx": "never",
+                "ts": "never",
+                "tsx": "never"
+            }
+        ],
         "react/jsx-filename-extension": [
             1,
             {
@@ -64,11 +80,9 @@
         },
         "requireConfigFile": false,
         "ecmaVersion": 12,
-        "sourceType": "module"
+        "sourceType": "module",
+        "project": "./tsconfig.json"
     },
-    "plugins": [
-        "react"
-    ],
     "ignorePatterns": [
         "*.config.js"
     ]

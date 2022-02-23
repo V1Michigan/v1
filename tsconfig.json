@@ -6,9 +6,9 @@
       "dom.iterable",
       "esnext"
     ],
-    "allowJs": true,
+    "allowJs": true, // TODO: Make false
     "skipLibCheck": true,
-    "strict": false,
+    "strict": false, // TODO: Make true
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "esModuleInterop": true,
@@ -22,7 +22,10 @@
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx",
+    // TODO: Remove after migrating to TS
+    "**/*.js",
+    "**/*.jsx"
   ],
   "exclude": [
     "node_modules"
