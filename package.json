@@ -5,8 +5,8 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "lint:check": "eslint components/**/*.tsx pages/**/*.js hooks/**/*.js utils/**/*.js",
-    "lint:fix": "eslint --fix components/**/*.tsx pages/**/*.js hooks/**/*.js utils/**/*.js"
+    "lint:check": "eslint '**/*.{js,jsx,ts,tsx}'",
+    "lint:fix": "eslint --fix '**/*.{js,jsx,ts,tsx}'"
   },
   "dependencies": {
     "@headlessui/react": "^1.2.0",
