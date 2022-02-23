@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import useSupabase from '../hooks/useSupabase';
+import { useState } from "react";
+import useSupabase from "../hooks/useSupabase";
 
 export default function Login() {
   const { signIn } = useSupabase();
@@ -8,12 +8,12 @@ export default function Login() {
   const handleLogin = async () => {
     try {
       setLoading(true);
-      const { error } = await signIn({ provider: 'google' },
+      const { error } = await signIn({ provider: "google" },
         {
           // Redirect URLs must have the same hostname as the "Site URL" in the
           // Supabase Auth settings or be present in the "Additional Redirect URLs"
           // (additional redirects must match exactly)
-          redirectTo: 'http://localhost:3000/login',
+          redirectTo: "http://localhost:3000/login",
         });
       if (error) throw error;
     } catch (error) {
@@ -36,7 +36,7 @@ export default function Login() {
             disabled={ loading }
             type="button"
           >
-            <span>{loading ? 'Loading' : 'Sign in'}</span>
+            <span>{loading ? "Loading" : "Sign in"}</span>
           </button>
         </div>
       </div>
