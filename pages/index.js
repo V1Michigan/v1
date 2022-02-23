@@ -1,9 +1,9 @@
-import Head from 'next/head';
+import Head from "next/head";
 import {
   What, Offer, Join,
-} from '../components/about';
-import NavbarBuilder from '../components/navbar';
-import Calendar from '../components/calendarapi';
+} from "../components/about";
+import NavbarBuilder from "../components/navbar";
+import Calendar from "../components/calendarapi";
 
 export default function IndexPage() {
   return (

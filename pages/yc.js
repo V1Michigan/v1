@@ -1,36 +1,36 @@
-import Head from 'next/head';
-import Link from 'next/link';
-import { useState, useEffect } from 'react';
-import Swal from 'sweetalert2';
-import axios from 'axios';
+import Head from "next/head";
+import Link from "next/link";
+import { useState, useEffect } from "react";
+import Swal from "sweetalert2";
+import axios from "axios";
 
 export default function YC() {
   const [event, setEvent] = useState({
-    name: '',
-    email: '',
-    referral: '',
+    name: "",
+    email: "",
+    referral: "",
   });
   const [submitted, setSubmitted] = useState(false);
   const [referrer, setReferrer] = useState(null);
 
   const partners = [
-    'mproduct',
-    'shift',
-    'upround',
-    'cfe',
-    'blockchain',
-    'akpsi',
-    'wolverinesintech',
-    'geecs',
-    'sepi',
-    'mpowered',
-    'startum',
+    "mproduct",
+    "shift",
+    "upround",
+    "cfe",
+    "blockchain",
+    "akpsi",
+    "wolverinesintech",
+    "geecs",
+    "sepi",
+    "mpowered",
+    "startum",
   ];
 
   useEffect(() => {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
-    const referral = urlParams.get('ref');
+    const referral = urlParams.get("ref");
     if (referral) {
       setReferrer(referral);
       setEvent({ ...event, referral });
@@ -39,7 +39,7 @@ export default function YC() {
 
   const autoExpand = (target) => {
     /* eslint-disable no-param-reassign */
-    target.style.height = 'inherit';
+    target.style.height = "inherit";
     target.style.height = `${target.scrollHeight}px`;
   };
 
@@ -82,7 +82,7 @@ export default function YC() {
                 {partners.includes(referrer.toLowerCase()) ? (
                   <>
                     x
-                    {' '}
+                    {" "}
                     <img
                       className="logo ml-3 p-1 bg-gray-100 rounded-sm"
                       src={ `/partners/${referrer.toLowerCase()}.png` }
@@ -116,7 +116,7 @@ export default function YC() {
             Wednesday, February 17th at 7 PM ET
           </p>
           <div className="max-w-lg mx-auto p-4 text-base">
-            {' '}
+            {" "}
             <p className="text-gray-200">
               V1 is hosting an event with Y Combinator, the seed startup
               accelerator that funded Stripe, Airbnb, Cruise Automation,
@@ -147,26 +147,26 @@ export default function YC() {
 
             axios
               .post(
-                'https://script.google.com/macros/s/AKfycbxlhVld1NPhOCvEPqctFEoRqSV7QCSXngL72BcJeb5CUUbEbrdm3xAu/exec',
+                "https://script.google.com/macros/s/AKfycbxlhVld1NPhOCvEPqctFEoRqSV7QCSXngL72BcJeb5CUUbEbrdm3xAu/exec",
                 data,
               )
               .then((res) => {
-                if (res.data.result === 'success') {
-                  window.location.href = 'https://ycombinator.zoom.us/meeting/register/tJMvfu2vqz0sE9V4tnmbHYztXxeGNhP438lG?timezone_id=America%2FNew_York';
+                if (res.data.result === "success") {
+                  window.location.href = "https://ycombinator.zoom.us/meeting/register/tJMvfu2vqz0sE9V4tnmbHYztXxeGNhP438lG?timezone_id=America%2FNew_York";
                 } else {
                   Swal.fire(
-                    'There was an error submitting the form.',
-                    'Please try again later or contact us at team@v1michigan.com',
-                    'error',
+                    "There was an error submitting the form.",
+                    "Please try again later or contact us at team@v1michigan.com",
+                    "error",
                   );
                 }
               })
               .finally(() => {
                 setSubmitted(false);
                 setEvent({
-                  name: '',
-                  email: '',
-                  referral: '',
+                  name: "",
+                  email: "",
+                  referral: "",
                 });
               });
           } }
@@ -179,7 +179,7 @@ export default function YC() {
                   htmlFor="name"
                 >
                   Full Name
-                  {' '}
+                  {" "}
                   <span className="text-red-800">*</span>
                   <input
                     name="name"
@@ -200,7 +200,7 @@ export default function YC() {
                   htmlFor="email"
                 >
                   Email
-                  {' '}
+                  {" "}
                   <span className="text-red-800">*</span>
                   <input
                     name="email"
@@ -218,7 +218,7 @@ export default function YC() {
               <div className="px-3 my-4">
                 <label className="block text-gray-800 text-lg mb-2" htmlFor="referral">
                   How did you hear about this event?
-                  {' '}
+                  {" "}
                   <span className="text-red-800">*</span>
                   <input
                     name="referral"
@@ -237,7 +237,7 @@ export default function YC() {
                 <button
                   type="submit"
                   className={ `bg-gradient-to-r from-yellow-200 to-yellow-500 hover:opacity-75 text-gray-800 font-semibold py-3 px-4 rounded shadow mb-4 ${
-                    submitted ? 'hidden' : 'block'
+                    submitted ? "hidden" : "block"
                   } mx-auto` }
                   disabled={ submitted }
                 >
@@ -246,7 +246,7 @@ export default function YC() {
                 <button
                   type="button"
                   className={ `bg-gray-500 font-semibold text-gray-800 py-3 px-4 rounded shadow mb-4 ${
-                    submitted ? 'block' : 'hidden'
+                    submitted ? "block" : "hidden"
                   } mx-auto` }
                   disabled
                 >

@@ -3,7 +3,9 @@
         "browser": true,
         "es2021": true
     },
+    "parser": "@typescript-eslint/parser",
     "extends": [
+        "eslint:recommended",
         "plugin:react/recommended",
         "airbnb"
     ],
@@ -13,7 +15,9 @@
             {
                 "extensions": [
                     ".js",
-                    ".jsx"
+                    ".jsx",
+                    ".ts",
+                    ".tsx"
                 ]
             }
         ],
@@ -39,6 +43,14 @@
         ],
         "react/prop-types": [
             "error"
+        ],
+        "quotes": [
+            "error",
+            "double"
+        ],
+        "jsx-quotes": [
+            "error",
+            "prefer-double"
         ]
     },
     "globals": {
@@ -46,12 +58,18 @@
     },
     "parserOptions": {
         "ecmaFeatures": {
-            "jsx": true
+            "jsx": true,
+            "modules": true,
+            "experimentalObjectRestSpread": true
         },
+        "requireConfigFile": false,
         "ecmaVersion": 12,
         "sourceType": "module"
     },
     "plugins": [
         "react"
+    ],
+    "ignorePatterns": [
+        "*.config.js"
     ]
 }

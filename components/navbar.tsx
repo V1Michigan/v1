@@ -21,8 +21,8 @@ const navigation = [
     current: false,
   },
   /* {
-    name:"Vault"
-  } */
+      name:"Vault"
+    } */
 ];
 
 function classNames(...classes) {
@@ -73,27 +73,27 @@ export default function NavbarBuilder() {
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 {/* <button className="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white
-                focus:outline-none
-                focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
-                                    <span className="sr-only">View notifications</span>
-                                    <BellIcon className="h-6 w-6" aria-hidden="true" />
-                                </button> */}
+                  focus:outline-none
+                  focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                                      <span className="sr-only">View notifications</span>
+                                      <BellIcon className="h-6 w-6" aria-hidden="true" />
+                                  </button> */}
 
                 {/* Profile dropdown */}
                 <Menu as="div" className="ml-3 relative">
                   {({ open: menuOpen }) => (
                     <>
                       {/* <Menu.Button
-                          className="bg-gray-800 flex text-sm rounded-full
-                          focus:outline-none focus:ring-2
-                          focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
-                                                    <span className="sr-only">Open user menu</span>
-                                                    <img
-                                                        className="h-8 w-8 rounded-full"
-                                                        src="https://upload.wikimedia.org/wikipedia/en/c/c8/Very_Black_screen.jpg"
-                                                        alt=""
-                                                    />
-                                                </Menu.Button> */}
+                            className="bg-gray-800 flex text-sm rounded-full
+                            focus:outline-none focus:ring-2
+                            focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                                <span className="sr-only">Open user menu</span>
+                                <img
+                                    className="h-8 w-8 rounded-full"
+                                    src="https://upload.wikimedia.org/wikipedia/en/c/c8/Very_Black_screen.jpg"
+                                    alt=""
+                                />
+                            </Menu.Button> */}
                       <Transition
                         show={ menuOpen }
                         as={ Fragment }
@@ -135,18 +135,18 @@ export default function NavbarBuilder() {
                             )}
                           </Menu.Item>
                           {/* <Menu.Item>
-                            {({ active }) => (
-                              <a
-                                href="#"
-                                className={ classNames(
-                                  active ? 'bg-gray-100' : '',
-                                  'block px-4 py-2 text-sm text-gray-700',
-                                ) }
-                              >
-                                Events
-                              </a>
-                            )}
-                          </Menu.Item> */}
+                              {({ active }) => (
+                                <a
+                                  href="#"
+                                  className={ classNames(
+                                    active ? 'bg-gray-100' : '',
+                                    'block px-4 py-2 text-sm text-gray-700',
+                                  ) }
+                                >
+                                  Events
+                                </a>
+                              )}
+                            </Menu.Item> */}
                           <Menu.Item>
                             {({ active }) => (
                               <a

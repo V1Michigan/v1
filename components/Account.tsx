@@ -6,7 +6,8 @@ export default function Account({ session }) {
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState(null);
   const [website, setWebsite] = useState(null);
-  const [avatarUrl, setAvatarUrl] = useState(null);
+  // declared but not used for now fallback
+  const [, setAvatarUrl] = useState(null);
 
   async function getProfile() {
     try {
@@ -14,7 +15,7 @@ export default function Account({ session }) {
       const user = supabase.auth.user();
 
       const { data, error, status } = await supabase
-        .from("profiles")
+        .from("users")
         .select("username, website, avatar_url")
         .eq("id", user.id)
         .single();
@@ -40,16 +41,15 @@ export default function Account({ session }) {
     getProfile();
   }, [session]);
 
-  async function updateProfile({ newUsername, newWebsite, newAvatarUrl }) {
+  async function updateProfile() {
     try {
       setLoading(true);
       const user = supabase.auth.user();
 
       const updates = {
-        id: user.id,
-        username: newUsername,
-        website: newWebsite,
-        avatar_url: newAvatarUrl,
+        id: user!.id,
+        username,
+        website,
         updated_at: new Date(),
       };
 
@@ -84,7 +84,7 @@ export default function Account({ session }) {
             type="text"
             value={ username || "" }
             onChange={ (e) => setUsername(e.target.value) }
-        />
+          />
         </label>
       </div>
       <div>
@@ -95,14 +95,14 @@ export default function Account({ session }) {
             type="website"
             value={ website || "" }
             onChange={ (e) => setWebsite(e.target.value) }
-        />
+          />
         </label>
       </div>
 
       <div>
         <button
           className="button block primary"
-          onClick={ () => updateProfile({ username, website, avatarUrl }) }
+          onClick={ () => updateProfile() }
           disabled={ loading }
           type="button"
         >
@@ -111,7 +111,11 @@ export default function Account({ session }) {
       </div>
 
       <div>
-        <button className="button block" onClick={ () => supabase.auth.signOut() } type="button">
+        <button
+          className="button block"
+          onClick={ () => supabase.auth.signOut() }
+          type="button"
+        >
           Sign Out
         </button>
       </div>

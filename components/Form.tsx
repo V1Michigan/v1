@@ -204,7 +204,6 @@ export default function Form() {
                   <span className="text-red-800">*</span>
                   <textarea
                     name="interests"
-                    htmlFor="interests"
                     onChange={ handleInputChange }
                     className="mt-2 w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-gray-100 resize border rounded focus:outline-none focus:shadow-outline md:h-32 h-20"
                     placeholder="E.g. Consumer social products, tools for students, anything involving machine learning"

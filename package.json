@@ -5,13 +5,13 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "lint:check": "eslint components/**/*.js pages/**/*.js hooks/**/*.js utils/**/*.js",
-    "lint:fix": "eslint --fix components/**/*.js pages/**/*.js hooks/**/*.js utils/**/*.js"
+    "lint:check": "eslint '**/*.{js,jsx,ts,tsx}'",
+    "lint:fix": "eslint --fix '**/*.{js,jsx,ts,tsx}'"
   },
   "dependencies": {
     "@headlessui/react": "^1.2.0",
     "@heroicons/react": "^1.0.1",
-    "@supabase/supabase-js": "^1.30.4",
+    "@supabase/supabase-js": "^1.29.0",
     "axios": "^0.21.1",
     "googleapis": "^39.2.0",
     "https": "^1.0.0",
@@ -28,6 +28,9 @@
     "typeface-source-sans-pro": "^1.1.5"
   },
   "devDependencies": {
+    "@types/react": "^17.0.39",
+    "@typescript-eslint/parser": "^5.12.1",
+    "babel-eslint": "^10.1.0",
     "eslint": "^7.10.0",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-plugin-import": "^2.22.1",
@@ -37,7 +40,8 @@
     "eslint-plugin-react-hooks": "^4.1.2",
     "postcss-flexbugs-fixes": "4.2.1",
     "postcss-preset-env": "^6.7.0",
-    "tailwindcss": "^1.7.4"
+    "tailwindcss": "^1.7.4",
+    "typescript": "^4.5.5"
   },
   "license": "MIT"
 }

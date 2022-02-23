@@ -8,10 +8,10 @@ const What = () => (
     textElement={ (
       <div className="mx-auto max-w-2xl">
         <p className="text-2xl text-gray-900">
-          The University of Michigan is a big school. Currently, there are a lot
-          of entrepreneurial resources that incredibly valuable, yet niche and
-          selective. It&apos;s also difficult to connect and collaborate with other
-          builders across campus.
+          The University of Michigan is a big school. Currently, there are
+          a lot of entrepreneurial resources that incredibly valuable, yet niche
+          and selective. It&apos;s also difficult to connect and collaborate
+          with other builders across campus.
         </p>
 
         <p className="text-2xl text-gray-900 pt-10">
@@ -48,8 +48,9 @@ const Offer = () => (
           builders navigate the Michigan entrepreneurial ecosystem.
         </p>
         <p className="text-2xl text-gray-900 pt-10">
-          In the past, we&apos;ve had speakers like the founder of Morning Brew, the
-          president of Y Combinator, employees at unicorn startups, and more.
+          In the past, we&apos;ve had speakers like the founder of Morning Brew,
+          the president of Y Combinator, employees at unicorn startups, and
+          more.
         </p>
       </div>
     ) }
@@ -162,22 +163,20 @@ const Leaders = ({ team, title }) => (
 );
 
 Leaders.propTypes = {
-  team: PropTypes.arrayOf(PropTypes.shape({
-    image: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    role: PropTypes.string.isRequired,
-    link: PropTypes.string.isRequired,
-  })).isRequired,
+  team: PropTypes.arrayOf(
+    PropTypes.shape({
+      image: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      role: PropTypes.string.isRequired,
+      link: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
   title: PropTypes.string.isRequired,
 };
 
-const Leadership = () => (
-  <Leaders title="V1 Leadership" team={ TEAM_DATA } />
-);
+const Leadership = () => <Leaders title="V1 Leadership" team={ TEAM_DATA } />;
 
-const Advisors = () => (
-  <Leaders title="V1 Advisors" team={ ADVISORS_DATA } />
-);
+const Advisors = () => <Leaders title="V1 Advisors" team={ ADVISORS_DATA } />;
 
 const members = [
   "payal",
@@ -237,62 +236,6 @@ const Join = () => (
   />
 );
 
-// Remake this component
-// const Expect = () => (
-//   <ContentPage
-//     title="What do we offer?"
-//     nextLink="#request"
-//     nextLinkText="Request an invite"
-//     textElement={
-//       <div>
-//         <table>
-//           <tr>
-//             <td>
-//               <p className="text-2xl text-gray-custom py-5">
-//                 <span className="text-gradient bg-gradient-to-r from-yellow-200 to-yellow-500">
-//                   Monthly emails featuring our most exciting projects.&nbsp;
-//                 </span>
-//                 At the end of each month, you&apos;ll receive an email featuring
-//                 our most highly-vetted projects and what they need help on.
-//               </p>
-//             </td>
-//           </tr>
-//           <tr>
-//             <td>
-//               <p className="text-2xl text-gray-custom py-5">
-//                 <span
-//                   className="text-gradient bg-gradient-to-r
-//                                    from-yellow-200 to-yellow-500 "
-//                 >
-//                   Regular, direct matches based on your interests.&nbsp;
-//                 </span>
-//                 In addition to monthly emails, we&apos;ll reach out directly
-//                 when we think there&apos;s a strong match between your interests
-//                 and skills and the team&apos;s needs.
-//               </p>
-//             </td>
-//           </tr>
-//           <tr>
-//             <td>
-//               <p className="text-2xl text-gray-custom py-5">
-//                 <span
-//                   className="text-gradient bg-gradient-to-r
-//                                    from-yellow-200 to-yellow-500"
-//                 >
-//                   Continuous, personal support.&nbsp;
-//                 </span>
-//                 As our community grows, we will strive to find new ways to
-//                 support you as an individual. What you get today is only a
-//                 fraction of what&apos;s to come.
-//               </p>
-//             </td>
-//           </tr>
-//         </table>
-//       </div>
-//     }
-//   />
-// );
-
 export {
-  What, Offer, Join, Leadership, Advisors,
+  What, Leadership, Advisors, Join, Offer,
 };

@@ -1,15 +1,12 @@
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
-import Login from '../components/Login';
-import useSupabase from '../hooks/useSupabase';
+import Auth from "../components/Auth";
+import Account from "../components/Account";
+import useSupabaseSession from "../hooks/useSupabaseSession";
 
-export default function LoginPage() {
-  const { user } = useSupabase();
-  const router = useRouter();
-  useEffect(() => {
-    if (user) {
-      router.push('/account');
-    }
-  }, [user]);
-  return <Login />;
+export default function Login() {
+  const session = useSupabaseSession();
+  return (
+    <div style={ { padding: "50px 0 100px 0" } }>
+      {!session ? <Auth /> : <Account key={ session.user.id } session={ session } />}
+    </div>
+  );
 }

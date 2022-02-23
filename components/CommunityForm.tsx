@@ -6,8 +6,7 @@ import Fade from "./Fade";
 
 export default function Form() {
   const [invitationRequest, setInvitationRequest] = useState({
-    firstName: "",
-    lastName: "",
+    name: "",
     email: "",
   });
   const [submitted, setSubmitted] = useState(false);

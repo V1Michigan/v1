@@ -34,5 +34,6 @@ Fade.propTypes = {
     PropTypes.arrayOf(
       PropTypes.element,
     ),
+    PropTypes.element,
   ]).isRequired,
 };
