@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
-import ReactHtmlParser from 'react-html-parser';
-import { ContentPage } from './content';
+import { useEffect, useState } from "react";
+import ReactHtmlParser from "react-html-parser";
+import { ContentPage } from "./content";
 
 async function getData() {
   const response = await fetch(
-    'https://damp-depths-59602.herokuapp.com/https://v1api-production.up.railway.app/events/',
+    "https://damp-depths-59602.herokuapp.com/https://v1api-production.up.railway.app/events/",
   );
   const data = response.json();
 

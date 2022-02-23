@@ -1,57 +1,43 @@
 {
-    "env": {
-        "browser": true,
-        "es2021": true
-    },
-    "extends": [
-        "plugin:react/recommended",
-        "airbnb"
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "extends": ["plugin:react/recommended", "airbnb"],
+  "rules": {
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
     ],
-    "rules": {
-        "react/jsx-filename-extension": [
-            1,
-            {
-                "extensions": [
-                    ".js",
-                    ".jsx"
-                ]
-            }
-        ],
-        "no-restricted-syntax": [
-            "error",
-            "WithStatement"
-        ],
-        "react/react-in-jsx-scope": "off",
-        "react/jsx-closing-bracket-location": [
-            0
-        ],
-        "react/jsx-props-no-spreading": [
-            2,
-            {
-                "exceptions": [
-                    "Component"
-                ]
-            }
-        ],
-        "react/jsx-curly-spacing": [
-            2,
-            "always"
-        ],
-        "react/prop-types": [
-            "error"
-        ]
+    "no-restricted-syntax": ["error", "WithStatement"],
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-closing-bracket-location": [0],
+    "react/jsx-props-no-spreading": [
+      2,
+      {
+        "exceptions": ["Component"]
+      }
+    ],
+    "react/jsx-curly-spacing": [2, "always"],
+    "react/prop-types": ["error"],
+    "quotes": ["error", "double"],
+    "jsx-quotes": ["error", "prefer-double"]
+  },
+  "globals": {
+    "React": "writable"
+  },
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true,
+      "modules": true,
+      "experimentalObjectRestSpread": true
     },
-    "globals": {
-        "React": "writable"
-    },
-    "parserOptions": {
-        "ecmaFeatures": {
-            "jsx": true
-        },
-        "ecmaVersion": 12,
-        "sourceType": "module"
-    },
-    "plugins": [
-        "react"
-    ]
+    "requireConfigFile": false,
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "plugins": ["react"]
 }

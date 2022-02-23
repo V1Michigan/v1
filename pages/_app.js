@@ -1,8 +1,8 @@
-import 'typeface-source-sans-pro';
-import 'typeface-inter';
-import PropTypes from 'prop-types';
+import "typeface-source-sans-pro";
+import "typeface-inter";
+import PropTypes from "prop-types";
 
-import '../styles/index.css';
+import "../styles/index.css";
 
 function MyApp({ Component, pageProps }) {
   return <Component { ...pageProps } />;

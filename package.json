@@ -5,8 +5,8 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "lint:check": "eslint components/**/*.tsx pages/**/*.tsx hooks/**/*.tsx utils/**/*.tsx contexts/**/*.tsx",
-    "lint:fix": "eslint --fix components/**/*.tsx pages/**/*.tsx hooks/**/*.tsx utils/**/*.tsx contexts/**/*.tsx"
+    "lint:check": "eslint components/**/*.tsx pages/**/*.js hooks/**/*.js utils/**/*.js",
+    "lint:fix": "eslint --fix components/**/*.tsx pages/**/*.js hooks/**/*.js utils/**/*.js"
   },
   "dependencies": {
     "@headlessui/react": "^1.2.0",
@@ -29,6 +29,8 @@
   },
   "devDependencies": {
     "@types/react": "^17.0.39",
+    "@typescript-eslint/parser": "^5.12.1",
+    "babel-eslint": "^10.1.0",
     "eslint": "^7.10.0",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-plugin-import": "^2.22.1",
