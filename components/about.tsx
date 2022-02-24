@@ -222,7 +222,7 @@ const Join = () => (
         </span>
 
         <div className="block">
-          <Link href="/community">
+          <Link href="/community" passHref>
             <button
               type="button"
               className="bg-gradient-to-r from-yellow-600 to-yellow-700 hover:bg-blue-500 text-gray-100 font-semibold py-3 px-4 rounded shadow mt-5 hover:opacity-75"

@@ -11,10 +11,10 @@ export default function ProtectedRoute({ children }) {
     if (!user) {
       router.push("/login");
     }
-  }, [user]);
+  }, [user, router]);
   return user ? children : null;
 }
 
 ProtectedRoute.propTypes = {
-  component: PropTypes.node.isRequired,
+  children: PropTypes.node.isRequired,
 };

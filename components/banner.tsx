@@ -5,10 +5,6 @@ const Banner = ({
   largeLine,
   smallLine,
   link,
-}: {
-  largeLine: any;
-  smallLine: any;
-  link: any;
 }) => (
   <div className="bg-yellow-600 full_banner">
     <div className="max-w-7xl mx-auto py-3 px-3 sm:px-6 lg:px-8">

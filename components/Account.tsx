@@ -1,55 +1,52 @@
 import { useState, useEffect } from "react";
-import PropTypes from "prop-types";
-import supabase from "../utils/supabaseClient";
+import useSupabase from "../hooks/useSupabase";
 
-export default function Account({ session }) {
+export default function Account() {
+  const { supabase, user } = useSupabase();
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState(null);
   const [website, setWebsite] = useState(null);
-  // declared but not used for now fallback
-  const [, setAvatarUrl] = useState(null);
-
-  async function getProfile() {
-    try {
-      setLoading(true);
-      const user = supabase.auth.user();
-
-      const { data, error, status } = await supabase
-        .from("users")
-        .select("username, website, avatar_url")
-        .eq("id", user.id)
-        .single();
-
-      if (error && status !== 406) {
-        throw error;
-      }
-
-      if (data) {
-        setUsername(data.username);
-        setWebsite(data.website);
-        setAvatarUrl(data.avatar_url);
-      }
-    } catch (error) {
-      // eslint-disable-next-line no-alert
-      alert(error.message);
-    } finally {
-      setLoading(false);
-    }
-  }
+  const [avatarUrl, setAvatarUrl] = useState(null);
 
   useEffect(() => {
-    getProfile();
-  }, [session]);
+    const getProfile = async () => {
+      try {
+        setLoading(true);
 
-  async function updateProfile() {
+        const { data, error, status } = await supabase
+          .from("profiles")
+          .select("username, website, avatar_url")
+          .eq("id", user.id)
+          .single();
+
+        if (error && status !== 406) {
+          throw error;
+        }
+
+        if (data) {
+          setUsername(data.username);
+          setWebsite(data.website);
+          setAvatarUrl(data.avatar_url);
+        }
+      } catch (error) {
+      // eslint-disable-next-line no-alert
+        alert(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    getProfile();
+  }, [supabase, user]);
+
+  async function updateProfile(newUsername, newWebsite, newAvatarUrl) {
     try {
       setLoading(true);
-      const user = supabase.auth.user();
 
       const updates = {
-        id: user!.id,
-        username,
-        website,
+        id: user.id,
+        username: newUsername,
+        website: newWebsite,
+        avatar_url: newAvatarUrl,
         updated_at: new Date(),
       };
 
@@ -73,7 +70,7 @@ export default function Account({ session }) {
       <div>
         <label htmlFor="email">
           Email
-          <input id="email" type="text" value={ session.user.email } disabled />
+          <input id="email" type="text" value={ user.email } disabled />
         </label>
       </div>
       <div>
@@ -84,7 +81,7 @@ export default function Account({ session }) {
             type="text"
             value={ username || "" }
             onChange={ (e) => setUsername(e.target.value) }
-          />
+        />
         </label>
       </div>
       <div>
@@ -95,14 +92,14 @@ export default function Account({ session }) {
             type="website"
             value={ website || "" }
             onChange={ (e) => setWebsite(e.target.value) }
-          />
+        />
         </label>
       </div>
 
       <div>
         <button
           className="button block primary"
-          onClick={ () => updateProfile() }
+          onClick={ () => updateProfile(username, website, avatarUrl) }
           disabled={ loading }
           type="button"
         >
@@ -113,17 +110,13 @@ export default function Account({ session }) {
       <div>
         <button
           className="button block"
-          onClick={ () => supabase.auth.signOut() }
-          type="button"
-        >
+          onClick={ () => {
+            supabase.auth.signOut();
+          } }
+          type="button">
           Sign Out
         </button>
       </div>
     </div>
   );
 }
-
-Account.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
-  session: PropTypes.object.isRequired,
-};
