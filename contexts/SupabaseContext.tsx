@@ -1,4 +1,6 @@
-import { createContext, useState, useEffect } from "react";
+import {
+  createContext, useState, useEffect, ReactChild, ReactChildren,
+} from "react";
 import PropTypes from "prop-types";
 import {
   SupabaseClient, Session, User, UserCredentials, Provider, ApiError,
@@ -23,13 +25,13 @@ interface SupabaseContextInterface {
     error: ApiError | null
   }>;
   signOut: () => Promise<{ error: ApiError | null }>;
-  user: User;
+  user: User | null;
 }
 
 const SupabaseContext = createContext<SupabaseContextInterface | null>(null);
 
-function SupabaseProvider({ children }) {
-  const [user, setUser] = useState(null);
+function SupabaseProvider({ children }: { children: ReactChild | ReactChildren }) {
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
