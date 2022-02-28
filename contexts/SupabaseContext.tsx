@@ -19,7 +19,7 @@ interface SupabaseContextInterface {
       error: ApiError | null
     }>
   );
-  signUp: ({ email, password, phone }: UserCredentials) => Promise<{
+  signUp: ({ email, password }: UserCredentials, options: { redirectTo: string }) => Promise<{
     user: User | null
     session: Session | null
     error: ApiError | null
