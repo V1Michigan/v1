@@ -19,16 +19,28 @@ export default function SignUp() {
       // eslint-disable-next-line no-alert
       alert("Passwords do not match");
     } else {
-      const { error } = await signUp({ email, password },
+      const { user: existingUser, session, error } = await signUp({ email, password },
         {
           // Redirect URLs must have the same hostname as the "Site URL" in the
           // Supabase Auth settings or be present in the "Additional Redirect URLs"
           // (additional redirects must match exactly)
           redirectTo: "http://localhost:3000/join",
         });
-      if (error) {
+      if (existingUser && session) {
+        // From https://supabase.com/docs/reference/javascript/auth-signup#notes:
+        //   New users: a user is returned but session will be null
+        //   Existing users: an obfuscated / fake user object will be returned.
+        // eslint-disable-next-line no-alert
+        alert("Found an existing user...redirecting to /login");
+        // TODO: Redirect to /login
+      } else if (error) {
         // eslint-disable-next-line no-alert
         alert(error.message);
+      } else {
+        // Per https://github.com/supabase/supabase/discussions/3526,
+        // there's no way to resend the verification email...
+        // eslint-disable-next-line no-alert
+        alert(`We've sent an email to ${email} — please click the link to verify your email`);
       }
     }
     setLoading(false);
@@ -38,7 +50,7 @@ export default function SignUp() {
     setLoading(true);
     const { error } = await signIn(
       { provider: "google" },
-      { redirectTo: "http://localhost:3000/login" },
+      { redirectTo: "http://localhost:3000/join" },
     );
     if (error) {
       // eslint-disable-next-line no-alert
@@ -54,18 +66,21 @@ export default function SignUp() {
           <div className="flex flex-col flex-center">
             <input
               type="email"
+              autoComplete="email"
               placeholder="Email"
               value={ email || "" }
               onChange={ (e) => setEmail(e.target.value) }
           />
             <input
               type="password"
+              autoComplete="new-password"
               placeholder="Password"
               value={ password || "" }
               onChange={ (e) => setPassword(e.target.value) }
           />
             <input
               type="password"
+              autoComplete="new-password"
               placeholder="Confirm password"
               value={ passwordConfirm || "" }
               onChange={ (e) => setPasswordConfirm(e.target.value) }

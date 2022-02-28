@@ -7,6 +7,12 @@ import {
 } from "@supabase/supabase-js";
 import supabase from "../utils/supabaseClient";
 
+type OnboardingStep =
+  | "REGISTERED"
+  | "SCREEN_1"
+  | "SCREEN_2"
+  | "COMPLETED"
+
 interface SupabaseContextInterface {
   supabase: SupabaseClient;
   signIn: (
@@ -26,25 +32,58 @@ interface SupabaseContextInterface {
   }>;
   signOut: () => Promise<{ error: ApiError | null }>;
   user: User | null;
+  onboardingStep: OnboardingStep | null;
+  setOnboardingStep: (step: OnboardingStep) => void;
 }
 
 const SupabaseContext = createContext<SupabaseContextInterface | null>(null);
 
 function SupabaseProvider({ children }: { children: ReactChild | ReactChildren }) {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(false);
+  // Default value checks for an active session
+  const [user, setUser] = useState<User | null>(supabase.auth.session()?.user ?? null);
+  const [onboardingStep, setOnboardingStep_] = useState<OnboardingStep | null>(null);
+  const loading = !user || (user && !onboardingStep);
 
   useEffect(() => {
-    // Check active session
-    setUser(supabase.auth.session()?.user ?? null);
-    setLoading(false);
-
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
     });
-
     return () => listener?.unsubscribe();
   }, []);
+
+  useEffect(() => {
+    async function getOnboardingStep() {
+      if (user) {
+        const { data, error, status } = await supabase
+          .from("profiles")
+          .select("onboarding_step")
+          .eq("id", user.id)
+          .single();
+
+        if (error && status !== 406) {
+          throw error;
+        }
+
+        const { onboarding_step: onboardingStep_ = "REGISTERED" } = data;
+        setOnboardingStep_(onboardingStep_);
+      }
+    }
+    getOnboardingStep();
+  }, [user]);
+
+  // Update local state and Supabase DB
+  const setOnboardingStep = (step: OnboardingStep) => {
+    if (user) {
+      setOnboardingStep_(step);
+      supabase
+        .from("profiles")
+        .update({ id: user.id, onboarding_step: step }, { returning: "minimal" });
+    }
+  };
+
+  if (loading) {
+    return null;
+  }
 
   return (
     <SupabaseContext.Provider value={ {
@@ -54,8 +93,10 @@ function SupabaseProvider({ children }: { children: ReactChild | ReactChildren }
       signUp: supabase.auth.signUp.bind(supabase.auth),
       signOut: supabase.auth.signOut.bind(supabase.auth),
       user,
+      onboardingStep,
+      setOnboardingStep,
     } }>
-      {!loading && children}
+      {children}
     </SupabaseContext.Provider>
   );
 }
