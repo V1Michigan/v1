@@ -13,6 +13,20 @@ type OnboardingStep =
   | "SCREEN_2"
   | "COMPLETED"
 
+interface EmailUser extends User {
+  email: string; // We know email isn't undefined
+}
+
+interface GoogleUser extends User {
+  email: string;
+  /* eslint-disable camelcase */
+  user_metadata: {
+    // Only defining the fields we need
+    full_name: string;
+    avatar_url: string;
+  }
+}
+
 interface SupabaseContextInterface {
   supabase: SupabaseClient;
   signIn: (
@@ -31,7 +45,7 @@ interface SupabaseContextInterface {
     error: ApiError | null
   }>;
   signOut: () => Promise<{ error: ApiError | null }>;
-  user: User | null;
+  user: EmailUser | GoogleUser | null;
   onboardingStep: OnboardingStep | null;
   setOnboardingStep: (step: OnboardingStep) => void;
 }
@@ -81,6 +95,15 @@ function SupabaseProvider({ children }: { children: ReactChild | ReactChildren }
     }
   };
 
+  let typedUser = null;
+  if (user) {
+    if (user.app_metadata.provider === "google") {
+      typedUser = user as GoogleUser;
+    } else {
+      typedUser = user as EmailUser;
+    }
+  }
+
   if (loading) {
     return null;
   }
@@ -92,7 +115,7 @@ function SupabaseProvider({ children }: { children: ReactChild | ReactChildren }
       signIn: supabase.auth.signIn.bind(supabase.auth),
       signUp: supabase.auth.signUp.bind(supabase.auth),
       signOut: supabase.auth.signOut.bind(supabase.auth),
-      user,
+      user: typedUser,
       onboardingStep,
       setOnboardingStep,
     } }>
