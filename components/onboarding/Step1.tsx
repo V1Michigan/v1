@@ -71,6 +71,8 @@ const Step1 = ({
             errors.username = "Please select a username";
           } else if (values.username.length < 3 || values.username.length > 30) {
             errors.username = "Username must be between 3 and 30 characters";
+          } else if (!/^[a-zA-Z\d]*$/.test(values.username)) {
+            errors.username = "Usernames must only contain letters and numbers";
           } else {
             // TODO: Cache DB queries for each attempted username
             const { count, error, status } = await supabase
@@ -94,7 +96,7 @@ const Step1 = ({
 
           if (!values.phone) {
             errors.phone = "Please enter your phone number";
-          } else if (!/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/i.test(values.phone)) {
+          } else if (!/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/.test(values.phone)) {
             errors.phone = "Please enter a valid phone number";
           }
 

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import useSupabase from "../hooks/useSupabase";
+import { HOSTNAME } from "../pages/_app";
 
 export default function Login() {
   const { signIn } = useSupabase();
@@ -12,7 +13,7 @@ export default function Login() {
         // Redirect URLs must have the same hostname as the "Site URL" in the
         // Supabase Auth settings or be present in the "Additional Redirect URLs"
         // (additional redirects must match exactly)
-        redirectTo: "http://localhost:3000/login",
+        redirectTo: `${HOSTNAME}/login`,
       });
     if (error) {
       // eslint-disable-next-line no-alert

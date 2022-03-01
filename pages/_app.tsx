@@ -5,6 +5,10 @@ import { SupabaseProvider } from "../contexts/SupabaseContext";
 
 import "../styles/index.css";
 
+export const HOSTNAME = process.env.NODE_ENV === "development"
+  ? "http://localhost:3000"
+  : process.env.NEXT_PUBLIC_HOSTNAME;
+
 function MyApp({ Component, pageProps }) {
   return (
     <SupabaseProvider>

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import useSupabase from "../hooks/useSupabase";
+import { HOSTNAME } from "../pages/_app";
 
 export default function SignUp() {
   const { signIn, signUp } = useSupabase();
@@ -24,7 +25,7 @@ export default function SignUp() {
           // Redirect URLs must have the same hostname as the "Site URL" in the
           // Supabase Auth settings or be present in the "Additional Redirect URLs"
           // (additional redirects must match exactly)
-          redirectTo: "http://localhost:3000/join",
+          redirectTo: `${HOSTNAME}/join`,
         });
       if (existingUser && session) {
         // From https://supabase.com/docs/reference/javascript/auth-signup#notes:
@@ -50,7 +51,7 @@ export default function SignUp() {
     setLoading(true);
     const { error } = await signIn(
       { provider: "google" },
-      { redirectTo: "http://localhost:3000/join" },
+      { redirectTo: `${HOSTNAME}/join` },
     );
     if (error) {
       // eslint-disable-next-line no-alert
