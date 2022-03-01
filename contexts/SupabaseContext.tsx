@@ -45,6 +45,7 @@ interface SupabaseContextInterface {
     error: ApiError | null
   }>;
   signOut: () => Promise<{ error: ApiError | null }>;
+  // TODO: Would be nice if these weren't nullable under ProtectedRoutes
   user: EmailUser | GoogleUser | null;
   onboardingStep: OnboardingStep | null;
   setOnboardingStep: (step: OnboardingStep) => void;
@@ -86,12 +87,13 @@ function SupabaseProvider({ children }: { children: ReactChild | ReactChildren }
   }, [user]);
 
   // Update local state and Supabase DB
-  const setOnboardingStep = (step: OnboardingStep) => {
+  const setOnboardingStep = async (step: OnboardingStep) => {
     if (user) {
       setOnboardingStep_(step);
-      supabase
+      await supabase
         .from("profiles")
-        .update({ id: user.id, onboarding_step: step }, { returning: "minimal" });
+        .update({ onboarding_step: step }, { returning: "minimal" })
+        .eq("id", user.id);
     }
   };
 
