@@ -11,7 +11,7 @@ const GoogleSignIn = ({ onClick, disabled = false }: {disabled: boolean, onClick
   }
   return (
     <button
-      className="w-48 h-12"
+      className={ `w-48 h-12 ${disabled ? "opacity-50 cursor-not-allowed" : ""}` }
       type="button"
       disabled={ disabled }
       onMouseEnter={ () => setHover(true) }
