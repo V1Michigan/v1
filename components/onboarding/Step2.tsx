@@ -78,7 +78,10 @@ const Step2 = ({ nextStep }: Step2Props) => {
             }
           }
 
-          // No validation for additionalLinks, people might put e.g. multiple links
+          // Note that additionalLinks is optional
+          if (values.additionalLinks && values.additionalLinks.length > 500) {
+            errors.additionalLinks = "Please limit additional links to 500 characters";
+          }
 
           return errors;
         } }

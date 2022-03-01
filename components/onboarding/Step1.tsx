@@ -42,6 +42,8 @@ const Step1 = ({
 }: Step1Props) => {
   const { user, supabase } = useSupabase();
   const [submitError, setSubmitError] = useState<string | null>(null);
+  // Memo to avoid repeated queries
+  const [openUsernames, setOpenUsernames] = useState<{[key: string]: boolean}>({});
 
   if (!user) {
     return null;
@@ -65,6 +67,8 @@ const Step1 = ({
 
           if (!values.name) {
             errors.name = "Please enter your name";
+          } else if (values.name.length < 2 || values.name.length > 50) {
+            errors.name = "Please enter a name between 2 and 50 characters";
           }
 
           if (!values.username) {
@@ -73,17 +77,23 @@ const Step1 = ({
             errors.username = "Username must be between 3 and 30 characters";
           } else if (!/^[a-zA-Z\d]*$/.test(values.username)) {
             errors.username = "Usernames must only contain letters and numbers";
-          } else {
-            // TODO: Cache DB queries for each attempted username
+          } else if (openUsernames[values.username] === undefined) {
             const { count, error, status } = await supabase
               .from("profiles")
               .select("username", { count: "exact", head: true })
               .eq("username", values.username);
             if (error && status !== 406) {
               errors.username = error.message;
-            } else if (count) {
-              errors.username = "Username is already taken";
+            } else {
+              if (count) {
+                errors.username = "Username is already taken";
+              }
+              setOpenUsernames(
+                (openUsernames_) => ({ ...openUsernames_, [values.username]: !count }),
+              );
             }
+          } else if (!openUsernames[values.username]) {
+            errors.username = "Username is already taken";
           }
 
           if (!values.avatarUrl) {
