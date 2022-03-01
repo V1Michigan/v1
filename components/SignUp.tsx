@@ -12,7 +12,6 @@ export default function SignUp() {
 
   const handleEmailSignup = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
-    setLoading(true);
     if (!email || !password || !passwordConfirm) {
       // eslint-disable-next-line no-alert
       alert("Please fill out all fields");
@@ -20,6 +19,7 @@ export default function SignUp() {
       // eslint-disable-next-line no-alert
       alert("Passwords do not match");
     } else {
+      setLoading(true);
       const { user: existingUser, session, error } = await signUp({ email, password },
         {
           // Redirect URLs must have the same hostname as the "Site URL" in the
@@ -43,8 +43,8 @@ export default function SignUp() {
         // eslint-disable-next-line no-alert
         alert(`We've sent an email to ${email} — please click the link to verify your email`);
       }
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const handleGoogleSignup = async (): Promise<void> => {
@@ -87,20 +87,18 @@ export default function SignUp() {
               onChange={ (e) => setPasswordConfirm(e.target.value) }
           />
             {password && passwordConfirm && password !== passwordConfirm
-            && <p className="error">Passwords must match</p>}
+            && <p className="text-red-500">Passwords must match</p>}
             <input type="submit" value="Let's go ›" disabled={ loading } />
           </div>
         </form>
-        <div>
-          <button
-            onClick={ handleGoogleSignup }
-            className="button block"
-            disabled={ loading }
-            type="button"
+        <button
+          onClick={ handleGoogleSignup }
+          className="button block"
+          disabled={ loading }
+          type="button"
           >
-            {loading ? "Loading" : "Sign in with Google"}
-          </button>
-        </div>
+          {loading ? "Loading" : "Sign in with Google"}
+        </button>
       </div>
     </div>
   );

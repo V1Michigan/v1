@@ -6,15 +6,35 @@ export default function Login() {
   const { signIn } = useSupabase();
   const [loading, setLoading] = useState(false);
 
-  const handleLogin = async (): Promise<void> => {
+  const [email, setEmail] = useState<string | null>(null);
+  const [password, setPassword] = useState<string | null>(null);
+
+  // TODO: Use Formik
+  const handleEmailLogin = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
+    event.preventDefault();
+    if (!email || !password) {
+      // eslint-disable-next-line no-alert
+      alert("Please fill out all fields");
+    } else {
+      setLoading(true);
+      const { error } = await signIn(
+        { email, password },
+        { redirectTo: `${HOSTNAME}/account` },
+      );
+      if (error) {
+        // eslint-disable-next-line no-alert
+        alert(error.message);
+      }
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleLogin = async (): Promise<void> => {
     setLoading(true);
-    const { error } = await signIn({ provider: "google" },
-      {
-        // Redirect URLs must have the same hostname as the "Site URL" in the
-        // Supabase Auth settings or be present in the "Additional Redirect URLs"
-        // (additional redirects must match exactly)
-        redirectTo: `${HOSTNAME}/login`,
-      });
+    const { error } = await signIn(
+      { provider: "google" },
+      { redirectTo: `${HOSTNAME}/account` },
+    );
     if (error) {
       // eslint-disable-next-line no-alert
       alert(error.message);
@@ -23,20 +43,36 @@ export default function Login() {
   };
 
   return (
-    <div className="row flex flex-center">
+    <div className="row flex flex-col w-1/2 gap-y-4">
       <div className="col-6 form-widget">
-        <p className="description">Sign in via Google below</p>
-        <div>
-          <button
-            onClick={ handleLogin }
-            className="button block"
-            disabled={ loading }
-            type="button"
-          >
-            <span>{loading ? "Loading" : "Sign in"}</span>
-          </button>
-        </div>
+        <form onSubmit={ handleEmailLogin }>
+          <div className="flex flex-col flex-center">
+            <input
+              type="email"
+              autoComplete="email"
+              placeholder="Email"
+              value={ email || "" }
+              onChange={ (e) => setEmail(e.target.value) }
+            />
+            <input
+              type="password"
+              autoComplete="password"
+              placeholder="Password"
+              value={ password || "" }
+              onChange={ (e) => setPassword(e.target.value) }
+            />
+            <input type="submit" value="Login ›" disabled={ loading } />
+          </div>
+        </form>
       </div>
+      <button
+        onClick={ handleGoogleLogin }
+        className="button block"
+        disabled={ loading }
+        type="button"
+      >
+        <span>{loading ? "Loading" : "Sign in with Google"}</span>
+      </button>
     </div>
   );
 }
