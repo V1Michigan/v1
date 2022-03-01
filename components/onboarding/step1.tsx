@@ -60,6 +60,7 @@ const Step1 = ({
           phone: "",
         } as FormValues }
         validate={ async (values) => {
+          setSubmitError(null);
           const errors: FormikErrors<FormValues> = {};
 
           if (!values.name) {
@@ -107,7 +108,7 @@ const Step1 = ({
               username: values.username,
               avatar_url: values.avatarUrl,
               year: values.year,
-              // phone: values.phone, TODO: turn this on when we have a phone number field
+              phone: values.phone,
               updated_at: new Date(),
             }, {
               returning: "minimal", // Don't return the value after inserting
@@ -122,35 +123,46 @@ const Step1 = ({
         } }
      >
         {({ values, isSubmitting }) => (
-          <Form className="flex flex-col w-1/2">
-            <Field type="text" name="name" placeholder="Name" />
-            <ErrorMessage name="name" component="p" className="text-red-500" />
+          <Form className="flex flex-col w-1/2 gap-y-4">
+
+            <div>
+              <Field type="text" name="name" placeholder="Name" />
+              <ErrorMessage name="name" component="p" className="text-red-500" />
+            </div>
 
             <Field type="email" value={ email } disabled />
 
-            <Field type="text" name="username" placeholder="Username" />
-            <ErrorMessage name="username" component="p" className="text-red-500" />
+            <div>
+              <Field type="text" name="username" placeholder="Username" />
+              <ErrorMessage name="username" component="p" className="text-red-500" />
+            </div>
 
-            {/* TODO: Placeholder for empty avatar */}
-            {values.avatarUrl && (
-            <img
-              src={ values.avatarUrl }
-              className="w-32 h-32 rounded-full m-2"
-              alt="Profile"
+            <div>
+              {/* TODO: Placeholder for empty avatar */}
+              {values.avatarUrl && (
+              <img
+                src={ values.avatarUrl }
+                className="w-32 h-32 rounded-full m-2"
+                alt="Profile"
                 />
-            )}
-            <Field type="avatarUrl" name="avatarUrl" placeholder="Profile picture" />
-            <ErrorMessage name="avatarUrl" component="p" className="text-red-500" />
+              )}
+              <Field type="avatarUrl" name="avatarUrl" placeholder="Profile picture" />
+              <ErrorMessage name="avatarUrl" component="p" className="text-red-500" />
+            </div>
 
-            <Field as="select" name="year">
-              {["", ...YEARS].map((year) => (
-                <option key={ year } value={ year }>{year}</option>
-              ))}
-            </Field>
-            <ErrorMessage name="year" component="p" className="text-red-500" />
+            <div>
+              <Field as="select" name="year">
+                {["", ...YEARS].map((year) => (
+                  <option key={ year } value={ year }>{year}</option>
+                ))}
+              </Field>
+              <ErrorMessage name="year" component="p" className="text-red-500" />
+            </div>
 
-            <Field type="tel" name="phone" placeholder="Phone number (xxx-xxx-xxxx)" />
-            <ErrorMessage name="phone" component="p" className="text-red-500" />
+            <div>
+              <Field type="tel" name="phone" placeholder="Phone number (xxx-xxx-xxxx)" />
+              <ErrorMessage name="phone" component="p" className="text-red-500" />
+            </div>
 
             <button type="submit" disabled={ isSubmitting }>
               {isSubmitting ? "Loading..." : "Submit"}

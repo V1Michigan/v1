@@ -3,6 +3,7 @@ import { NextPage } from "next";
 import useSupabase from "../hooks/useSupabase";
 import ProtectedRoute from "../components/ProtectedRoute";
 import Step1 from "../components/onboarding/step1";
+import Step2 from "../components/onboarding/step2";
 
 const WelcomePage: NextPage = () => {
   const { user, onboardingStep, setOnboardingStep } = useSupabase();
@@ -28,6 +29,9 @@ const WelcomePage: NextPage = () => {
         initialAvatarUrl={ initialAvatarUrl }
         nextStep={ () => setOnboardingStep("SCREEN_2") } />
     );
+  }
+  if (onboardingStep === "SCREEN_2") {
+    return <Step2 nextStep={ () => setOnboardingStep("SCREEN_2") } />;
   }
   return null; // TODO
 };
