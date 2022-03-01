@@ -1,65 +1,58 @@
 -- Create a table for Public Profiles
 create table profiles (
-  id uuid references auth.users not null,
-  updated_at timestamp with time zone,
-  username text unique,
+  id uuid references auth.users not null primary key,
+  username varchar not null unique,
+  name text,
+  website text,
   avatar_url text,
   resume_url text,
-  website text,
   linkedin text,
-  cohort vachar(3) constraint validate_cohort check ( cohort ~* '^[a-zA-Z][0-9]{2}$' ),
-
-  primary key (id),
-  --- can mutate this in the middleware but as a baseline a good check
-  constraint username_length check (char_length(username) >= 3)
-);
+  created_at timestamptz not null default now(),
+  updated_at timestamptz default now(),
+  cohort varchar(3) constraint validate_cohort check ( cohort ~* '^[a-zA-Z][0-9]{2}$' )
+ );
 
 alter table profiles enable row level security;
 
-create policy "profiles are viewable by everyone."
-  on profiles for select
-  using ( true );
+create type year_enum as enum ( 'Freshman', 'Sophomore', 'Junior', 'Senior', 'Alumni', 'Faculty' );
+alter table profiles add column year year_enum;
 
-create policy "Users can only insert into their own profile."
-  on profiles for insert
-  with check ( auth.uid() = id );
+create type onbd_step_enum as enum ( 'REGISTERED', 'SCREEN_1', 'SCREEN_2', 'COMPLETED' );
+alter table profiles add column onboarding_step onbd_step_enum;
 
-create policy "Users can only update own profile."
-  on profiles for update
-  using ( auth.uid() = id );
+create policy "Enable access to all users" on profiles
+	as permissive
+	for select
+	to public
+	using (auth.role() = 'authenticated'::text);
 
-create policy "Users can only delete own profile."
-  on profiles for delete
-  using ( auth.uid() = id );
+create policy "Enable delete for users based on user_id" on profiles
+	as permissive
+	for delete
+	to public
+	using (auth.uid() = id);
 
--- Set up Realtime!
-begin;
-  drop publication if exists supabase_realtime;
-  create publication supabase_realtime;
-commit;
-alter publication supabase_realtime add table profiles;
+create policy "Enable update for users based on id" on profiles
+	as permissive
+	for update
+	to public
+	using (auth.uid() = id)
+	with check (auth.role() = 'authenticated'::text);
 
--- Set up Storage
-insert into storage.buckets (id, name)
-values ('avatars', 'avatars');
+create policy "update if auth" on profiles
+	as permissive
+	for insert
+	to public
+	with check (auth.uid() = id);
 
-create policy "Avatar images are publicly accessible."
-  on storage.objects for select
-  using ( bucket_id = 'avatars' );
 
-create policy "Anyone can upload an avatar."
-  on storage.objects for insert
-  with check ( bucket_id = 'avatars' );
-
----
-
-insert into storage.buckets (id, name)
-values ('resumes', 'resumes');
-
-create policy "Resumes are publicly accessible."
-  on storage.objects for select
-  using ( bucket_id = 'resumes', auth.uid() = id );
-
-create policy "Anyone can upload an avatar."
-  on storage.objects for insert
-  with check ( bucket_id = 'avatars', auth.uid() = id );
+create function signup_copy_to_users_table() returns trigger
+	security definer
+	language plpgsql
+as $$
+BEGIN
+    INSERT INTO public.profiles (id, username, name)
+    VALUES(new.id, new.email, new.raw_user_meta_data ->> 'full_name');
+    RETURN NEW;
+  END;
+$$;
