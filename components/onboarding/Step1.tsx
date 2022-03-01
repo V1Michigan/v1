@@ -10,6 +10,8 @@ type Year =
   | "Junior"
   | "Senior"
   | "Alumni"
+  | "Grad student"
+  | "Dropout"
   | "Faculty";
 
 const YEARS = [
@@ -18,6 +20,8 @@ const YEARS = [
   "Junior",
   "Senior",
   "Alumni",
+  "Grad student",
+  "Dropout",
   "Faculty",
 ] as Year[];
 

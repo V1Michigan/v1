@@ -48,6 +48,8 @@ export default function SignUp() {
               errors.email = "Please enter your email";
             } else if (!/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(values.email)) {
               errors.email = "Please enter a valid email";
+            } else if (!values.email.endsWith("@umich.edu")) {
+              errors.email = "Please use your UMich email";
             }
 
             if (!values.password) {
@@ -96,7 +98,7 @@ export default function SignUp() {
           {({ isSubmitting }) => (
             <Form className="flex flex-col w-1/2 gap-y-4">
               <div>
-                <Field type="email" name="email" placeholder="Email" />
+                <Field type="email" name="email" placeholder="billymagic@umich.edu" />
                 <ErrorMessage name="email" component="p" className="text-red-500" />
               </div>
               <div>
