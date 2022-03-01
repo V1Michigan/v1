@@ -2,6 +2,7 @@ import { useState } from "react";
 import {
   Formik, Form, Field, ErrorMessage, FormikErrors,
 } from "formik";
+import Link from "next/link";
 import useSupabase from "../hooks/useSupabase";
 import GoogleSignIn from "./GoogleSignIn";
 import { HOSTNAME } from "../pages/_app";
@@ -10,6 +11,8 @@ interface FormValues {
   email: string;
   password: string;
 }
+
+const REDIRECT_URL = `${HOSTNAME}/account`;
 
 export default function Login() {
   const { signIn } = useSupabase();
@@ -21,7 +24,7 @@ export default function Login() {
     setLoading(true);
     const { error } = await signIn(
       { provider: "google" },
-      { redirectTo: `${HOSTNAME}/account` },
+      { redirectTo: REDIRECT_URL },
     );
     if (error) {
       setSubmitError(error.message);
@@ -57,7 +60,7 @@ export default function Login() {
             setLoading(true);
             const { error } = await signIn(
               { email: values.email, password: values.password },
-              { redirectTo: `${HOSTNAME}/account` },
+              { redirectTo: REDIRECT_URL },
             );
             if (error) {
               setSubmitError(error.message);
@@ -66,17 +69,25 @@ export default function Login() {
             setSubmitting(false);
           } }
      >
-          {({ isSubmitting }) => (
+          {({ errors, isSubmitting }) => (
             <Form className="flex flex-col w-1/2 gap-y-4">
               <div>
-                <Field type="email" name="email" placeholder="Email" />
+                <Field
+                  type="email"
+                  name="email"
+                  placeholder="Email"
+                  autoComplete="email" />
                 <ErrorMessage name="email" component="p" className="text-red-500" />
               </div>
               <div>
-                <Field type="password" name="password" placeholder="Password" />
+                <Field
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                  autoComplete="current-password" />
                 <ErrorMessage name="password" component="p" className="text-red-500" />
               </div>
-              <button type="submit" disabled={ isSubmitting }>
+              <button type="submit" disabled={ isSubmitting || Object.keys(errors).length > 0 }>
                 {isSubmitting ? "Loading..." : "Login ›"}
               </button>
               {submitError && <p className="text-red-500">{submitError}</p>}
@@ -88,6 +99,9 @@ export default function Login() {
         onClick={ handleGoogleLogin }
         disabled={ loading }
       />
+      <Link href="/join" passHref>
+        <p className="link">Don&apos;t have an account yet? Sign up</p>
+      </Link>
     </div>
   );
 }

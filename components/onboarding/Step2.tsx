@@ -139,6 +139,7 @@ const Step2 = ({ nextStep }: Step2Props) => {
                   (event) => event.currentTarget?.files && setFieldValue("resume", event.currentTarget.files[0])
                 }
               />
+              <ErrorMessage name="resume" component="p" className="text-red-500" />
             </div>
 
             <div>

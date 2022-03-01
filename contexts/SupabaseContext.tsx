@@ -11,7 +11,7 @@ type OnboardingStep =
   | "REGISTERED"
   | "SCREEN_1"
   | "SCREEN_2"
-  | "COMPLETED"
+  | "COMPLETE"
 
 interface EmailUser extends User {
   email: string; // We know email isn't undefined
@@ -45,7 +45,7 @@ interface SupabaseContextInterface {
     error: ApiError | null
   }>;
   signOut: () => Promise<{ error: ApiError | null }>;
-  // TODO: Would be nice if these weren't nullable under ProtectedRoutes
+  // TODO: Would be nice if these weren't nullable under `ProtectedRoute`s
   user: EmailUser | GoogleUser | null;
   onboardingStep: OnboardingStep | null;
   setOnboardingStep: (step: OnboardingStep) => void;
@@ -78,8 +78,7 @@ function SupabaseProvider({ children }: { children: ReactChild | ReactChildren }
           throw error;
         }
 
-        const { onboarding_step: onboardingStep_ = "REGISTERED" } = data;
-        setOnboardingStep_(onboardingStep_);
+        setOnboardingStep_(data?.onboarding_step || "REGISTERED");
       }
     }
     getOnboardingStep();
@@ -103,6 +102,12 @@ function SupabaseProvider({ children }: { children: ReactChild | ReactChildren }
     } else {
       typedUser = user as EmailUser;
     }
+  }
+
+  // If we have user, wait to load onboardingStep before rendering
+  // TODO: This feels kinda sketchy
+  if (user && !onboardingStep) {
+    return null;
   }
 
   return (

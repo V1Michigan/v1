@@ -32,9 +32,9 @@ const WelcomePage: NextPage = () => {
     );
   }
   if (onboardingStep === "SCREEN_2") {
-    return <Step2 nextStep={ () => setOnboardingStep("COMPLETED") } />;
+    return <Step2 nextStep={ () => setOnboardingStep("COMPLETE") } />;
   }
-  // Else, onboardingStep === "COMPLETED"
+  // Else, onboardingStep === "COMPLETE"
   return <OnboardingComplete />;
 };
 

@@ -2,6 +2,7 @@ import { useState } from "react";
 import {
   Formik, Form, Field, ErrorMessage, FormikErrors,
 } from "formik";
+import Link from "next/link";
 import useSupabase from "../hooks/useSupabase";
 import { HOSTNAME } from "../pages/_app";
 import GoogleSignIn from "./GoogleSignIn";
@@ -11,6 +12,8 @@ interface FormValues {
   password: string;
   passwordConfirm: string;
 }
+
+const REDIRECT_URL = `${HOSTNAME}/welcome`;
 
 export default function SignUp() {
   const { signIn, signUp } = useSupabase();
@@ -23,7 +26,10 @@ export default function SignUp() {
     setLoading(true);
     const { error } = await signIn(
       { provider: "google" },
-      { redirectTo: `${HOSTNAME}/join` },
+      // Redirect URLs must have the same hostname as the "Site URL" in the
+      // Supabase Auth settings or be present in the "Additional Redirect URLs"
+      // (additional redirects must match exactly)
+      { redirectTo: REDIRECT_URL },
     );
     if (error) {
       setSubmitError(error.message);
@@ -71,12 +77,7 @@ export default function SignUp() {
             setLoading(true);
             const { user: existingUser, session, error } = await signUp(
               { email: values.email, password: values.password },
-              {
-                // Redirect URLs must have the same hostname as the "Site URL" in the
-                // Supabase Auth settings or be present in the "Additional Redirect URLs"
-                // (additional redirects must match exactly)
-                redirectTo: `${HOSTNAME}/join`,
-              },
+              { redirectTo: REDIRECT_URL },
             );
             if (existingUser && session) {
               // From https://supabase.com/docs/reference/javascript/auth-signup#notes:
@@ -95,21 +96,33 @@ export default function SignUp() {
             setSubmitting(false);
           } }
         >
-          {({ isSubmitting }) => (
+          {({ errors, isSubmitting }) => (
             <Form className="flex flex-col w-1/2 gap-y-4">
               <div>
-                <Field type="email" name="email" placeholder="billymagic@umich.edu" />
+                <Field
+                  type="email"
+                  name="email"
+                  placeholder="billymagic@umich.edu"
+                  autoComplete="email" />
                 <ErrorMessage name="email" component="p" className="text-red-500" />
               </div>
               <div>
-                <Field type="password" name="password" placeholder="Password" />
+                <Field
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                  autoComplete="new-password" />
                 <ErrorMessage name="password" component="p" className="text-red-500" />
               </div>
               <div>
-                <Field type="password" name="passwordConfirm" placeholder="Confirm password" />
+                <Field
+                  type="password"
+                  name="passwordConfirm"
+                  placeholder="Confirm password"
+                  autoComplete="new-password" />
                 <ErrorMessage name="passwordConfirm" component="p" className="text-red-500" />
               </div>
-              <button type="submit" disabled={ isSubmitting }>
+              <button type="submit" disabled={ isSubmitting || Object.keys(errors).length > 0 }>
                 {isSubmitting ? "Loading..." : "Let's go ›"}
               </button>
               {submitError && <p className="text-red-500">{submitError}</p>}
@@ -121,6 +134,9 @@ export default function SignUp() {
           onClick={ handleGoogleSignup }
           disabled={ loading }
         />
+        <Link href="/login" passHref>
+          <p className="link">Already have an account? Log in</p>
+        </Link>
       </div>
     </div>
   );
