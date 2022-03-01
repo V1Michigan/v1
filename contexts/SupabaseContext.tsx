@@ -57,7 +57,6 @@ function SupabaseProvider({ children }: { children: ReactChild | ReactChildren }
   // Default value checks for an active session
   const [user, setUser] = useState<User | null>(supabase.auth.session()?.user ?? null);
   const [onboardingStep, setOnboardingStep_] = useState<OnboardingStep | null>(null);
-  const loading = !user || (user && !onboardingStep);
 
   useEffect(() => {
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -104,10 +103,6 @@ function SupabaseProvider({ children }: { children: ReactChild | ReactChildren }
     } else {
       typedUser = user as EmailUser;
     }
-  }
-
-  if (loading) {
-    return null;
   }
 
   return (

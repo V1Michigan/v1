@@ -2,8 +2,9 @@ import { useEffect } from "react";
 import { NextPage } from "next";
 import useSupabase from "../hooks/useSupabase";
 import ProtectedRoute from "../components/ProtectedRoute";
-import Step1 from "../components/onboarding/step1";
-import Step2 from "../components/onboarding/step2";
+import Step1 from "../components/onboarding/Step1";
+import Step2 from "../components/onboarding/Step2";
+import OnboardingComplete from "../components/onboarding/Complete";
 
 const WelcomePage: NextPage = () => {
   const { user, onboardingStep, setOnboardingStep } = useSupabase();
@@ -31,9 +32,10 @@ const WelcomePage: NextPage = () => {
     );
   }
   if (onboardingStep === "SCREEN_2") {
-    return <Step2 nextStep={ () => setOnboardingStep("SCREEN_2") } />;
+    return <Step2 nextStep={ () => setOnboardingStep("COMPLETED") } />;
   }
-  return null; // TODO
+  // Else, onboardingStep === "COMPLETED"
+  return <OnboardingComplete />;
 };
 
 export default () => (

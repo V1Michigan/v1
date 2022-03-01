@@ -69,6 +69,8 @@ const Step1 = ({
 
           if (!values.username) {
             errors.username = "Please select a username";
+          } else if (values.username.length < 3 || values.username.length > 30) {
+            errors.username = "Username must be between 3 and 30 characters";
           } else {
             // TODO: Cache DB queries for each attempted username
             const { count, error, status } = await supabase
