@@ -1,6 +1,7 @@
 import { useState } from "react";
 import useSupabase from "../hooks/useSupabase";
 import { HOSTNAME } from "../pages/_app";
+import GoogleSignIn from "./GoogleSignIn";
 
 export default function SignUp() {
   const { signIn, signUp } = useSupabase();
@@ -91,14 +92,10 @@ export default function SignUp() {
             <input type="submit" value="Let's go ›" disabled={ loading } />
           </div>
         </form>
-        <button
+        <GoogleSignIn
           onClick={ handleGoogleSignup }
-          className="button block"
           disabled={ loading }
-          type="button"
-          >
-          {loading ? "Loading" : "Sign in with Google"}
-        </button>
+          />
       </div>
     </div>
   );
