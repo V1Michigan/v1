@@ -2,6 +2,7 @@ import { useState } from "react";
 import {
   Formik, Form, Field, ErrorMessage, FormikErrors,
 } from "formik";
+import Dropzone from "react-dropzone";
 import useSupabase from "../../hooks/useSupabase";
 
 type RoleType =
@@ -69,12 +70,10 @@ const Step2 = ({ nextStep }: Step2Props) => {
           }
 
           // Note that LinkedIn is optional
-          if (values.linkedin) {
-            if (!/https:\/\/linkedin\.com\/in\/.{3,100}/.test(values.linkedin)) {
-              errors.linkedin = (
-                "Please enter a valid LinkedIn profile URL (e.g. https://www.linkedin.com/in/billymagic)"
-              );
-            }
+          if (values.linkedin && !/https:\/\/linkedin\.com\/in\/.{3,100}/.test(values.linkedin)) {
+            errors.linkedin = (
+              "Please enter a valid LinkedIn profile URL (e.g. https://www.linkedin.com/in/billymagic)"
+            );
           }
 
           // Note that additionalLinks is optional
@@ -85,12 +84,39 @@ const Step2 = ({ nextStep }: Step2Props) => {
           return errors;
         } }
         onSubmit={ async (values, { setSubmitting }) => {
-          // TODO: Upload resume to bucket + get URL
+          // Upload resume to bucket
+          const bucketPath = `${user.id}/resume.pdf`;
+          const { error: uploadError } = await supabase
+            .storage.from("resumes").upload(
+              bucketPath,
+              // values.resume is not null, would've been caught by validation
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+              values.resume!,
+              {
+                contentType: "application/pdf",
+                cacheControl: "3600",
+                upsert: true,
+              },
+            );
+          if (uploadError) {
+            setSubmitError(uploadError.message);
+            return;
+          }
+          const { publicURL: resumeUrl, error: urlError } = supabase
+            .storage
+            .from("resumes")
+            .getPublicUrl(bucketPath);
+          if (urlError) {
+            setSubmitError(urlError.message);
+            return;
+          }
+
           const { error } = await supabase
             .from("profiles")
             .update({
-              linkedin: values.linkedin,
               // roles: values.roleTypes,  TODO: decide type for this column
+              resume_url: resumeUrl,
+              linkedin: values.linkedin,
               website: values.additionalLinks,
               updated_at: new Date(),
             }, {
@@ -105,7 +131,7 @@ const Step2 = ({ nextStep }: Step2Props) => {
           setSubmitting(false);
         } }
      >
-        {({ setFieldValue, isSubmitting }) => (
+        {({ values, setFieldValue, isSubmitting }) => (
           <Form className="flex flex-col w-1/2 gap-y-4">
             <div>
               <p id="role-type-group">Type(s) of role you&apos;re interested in:</p>
@@ -127,18 +153,31 @@ const Step2 = ({ nextStep }: Step2Props) => {
             </div>
 
             <div>
-              <p>Resume upload (*.pdf)</p>
-              <input
-                id="resume"
-                name="resume"
-                type="file"
+              <Dropzone
                 accept="application/pdf"
-                multiple={ false }
-                onChange={
-                  (event) => event.currentTarget?.files && setFieldValue("resume", event.currentTarget.files[0])
-                }
-              />
-              <ErrorMessage name="resume" component="p" className="text-red-500" />
+                maxFiles={ 1 }
+                onDrop={ ([file]) => setFieldValue("resume", file) }
+              >
+                {({ getRootProps, getInputProps }) => (
+                  /* eslint-disable react/jsx-props-no-spreading */
+                  <div { ...getRootProps() } className="p-4 bg-gray-300 border-black border-2 rounded-lg">
+                    <input { ...getInputProps() } />
+                    <p>
+                      Upload your resume (*.pdf)
+                      {values.resume && (
+                        <>
+                          :
+                          <b>
+                            {" "}
+                            {values.resume.name}
+                          </b>
+                        </>
+                      )}
+                    </p>
+                    <ErrorMessage name="resume" component="p" className="text-red-500" />
+                  </div>
+                )}
+              </Dropzone>
             </div>
 
             <div>
