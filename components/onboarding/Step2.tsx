@@ -145,21 +145,19 @@ const Step2 = ({ nextStep }: Step2Props) => {
         {({ values, setFieldValue, isSubmitting }) => (
           <Form className="flex flex-col w-1/2 gap-y-4">
             <div>
-              <p id="role-type-group">Type(s) of role you&apos;re interested in:</p>
-              <div role="group" aria-labelledby="role-type-group">
-                {Object.entries(RoleType).map(([key, value]) => (
-                  <div key={ key }>
-                    <Field
-                      type="checkbox"
-                      name="roleTypes"
-                      className="m-1"
-                      id={ key }
-                      value={ key }
+              <label htmlFor="roleTypes">Type(s) of role you&apos;re interested in:</label>
+              {Object.entries(RoleType).map(([key, value]) => (
+                <div key={ key }>
+                  <Field
+                    type="checkbox"
+                    name="roleTypes"
+                    className="m-1"
+                    id={ key }
+                    value={ key }
                     />
-                    <label htmlFor={ key }>{ value }</label>
-                  </div>
-                ))}
-              </div>
+                  <label htmlFor={ key }>{ value }</label>
+                </div>
+              ))}
               <ErrorMessage name="roleTypes" component="p" className="text-red-500" />
             </div>
 
@@ -198,12 +196,15 @@ const Step2 = ({ nextStep }: Step2Props) => {
             </div>
 
             <div>
-              <Field type="text" name="linkedin" placeholder="LinkedIn profile (optional)" />
+              <label htmlFor="linkedin">LinkedIn profile (optional)</label>
+              <Field type="text" name="linkedin" placeholder="https://linkedin.com/in/billymagic" />
               <ErrorMessage name="linkedin" component="p" className="text-red-500" />
             </div>
 
             <div>
-              <p>Any other links you&apos;d like to share?</p>
+              <label htmlFor="additionalLinks">
+                Any other links you&apos;d like to share? (optional)
+              </label>
               <Field
                 type="text"
                 name="additionalLinks"

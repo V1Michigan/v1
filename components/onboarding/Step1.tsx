@@ -60,7 +60,6 @@ const Step1 = ({
       <Formik
         initialValues={ {
           name: initialName || "",
-          // TODO: Don't suggest username if it's already taken
           username: email?.split("@")[0] || "",
           avatar: initialAvatarUrl || "",
           year: "",
@@ -183,19 +182,25 @@ const Step1 = ({
           <Form className="flex flex-col w-1/2 gap-y-4">
 
             <div>
+              <label htmlFor="name" className="block">Name</label>
               <Field type="text" name="name" placeholder="Name" />
               <ErrorMessage name="name" component="p" className="text-red-500" />
             </div>
 
-            <Field type="email" value={ email } disabled />
+            <div>
+              <label htmlFor="email" className="block">Email</label>
+              <Field type="email" value={ email } disabled />
+            </div>
 
             <div>
+              <label htmlFor="username" className="block">Username</label>
               <Field type="text" name="username" placeholder="Username" />
               <ErrorMessage name="username" component="p" className="text-red-500" />
             </div>
 
             <div>
-              <Field type="tel" name="phone" placeholder="Phone number (xxx-xxx-xxxx)" />
+              <label htmlFor="phone" className="block">Phone number</label>
+              <Field type="tel" name="phone" placeholder="xxx-xxx-xxxx" />
               <ErrorMessage name="phone" component="p" className="text-red-500" />
             </div>
 
@@ -235,6 +240,7 @@ const Step1 = ({
             </div>
 
             <div>
+              <label htmlFor="year" className="block">School year</label>
               <Field as="select" name="year">
                 <option value="" disabled hidden>
                   Select your year
@@ -246,18 +252,24 @@ const Step1 = ({
               <ErrorMessage name="year" component="p" className="text-red-500" />
             </div>
 
-            <MultiSelect
-              name="majors"
-              options={ FIELDS_OF_STUDY }
-              placeholder="Select your major(s)"
-            />
+            <div>
+              <label htmlFor="majors" className="block">Major(s)</label>
+              <MultiSelect
+                name="majors"
+                options={ FIELDS_OF_STUDY }
+                placeholder="Select your major(s)"
+              />
+            </div>
 
-            {/* List of minors might be slightly different...probably fine for now */}
-            <MultiSelect
-              name="minors"
-              options={ FIELDS_OF_STUDY }
-              placeholder="Select your minors(s) (optional)"
+            <div>
+              <label htmlFor="minors" className="block">Minor(s) (optional)</label>
+              <MultiSelect
+                name="minors"
+                // List of minors might be slightly different...fine for now
+                options={ FIELDS_OF_STUDY }
+                placeholder="Select your minor(s)"
             />
+            </div>
 
             <button type="submit" disabled={ isSubmitting }>
               {isSubmitting ? "Loading..." : "Submit"}

@@ -68,6 +68,15 @@
             "prefer-double"
         ],
         "@next/next/no-img-element": "off",
+        "jsx-a11y/label-has-associated-control": [
+            "error",
+            {
+                "controlComponents": [
+                    "Field" // from Formik
+                ],
+                "depth": 1
+            }
+        ],
         "no-unused-vars": "off",
         "@typescript-eslint/no-unused-vars": [
             "warn",
