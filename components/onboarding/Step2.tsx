@@ -23,7 +23,6 @@ const ROLE_TYPES = [
 ] as RoleType[];
 
 interface FormValues {
-  // TODO: Major(s)/minor(s)?
   roleTypes: RoleType[],
   // TODO: Industry?
   resume: File | null,

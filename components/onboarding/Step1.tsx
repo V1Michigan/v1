@@ -2,7 +2,12 @@ import { useState } from "react";
 import {
   Formik, Form, Field, ErrorMessage, FormikErrors,
 } from "formik";
+import MultiSelect from "./MultiSelect";
 import useSupabase from "../../hooks/useSupabase";
+import _FIELDS_OF_STUDY from "./fieldsOfStudy";
+import type { FieldOfStudy } from "./fieldsOfStudy";
+
+const FIELDS_OF_STUDY = _FIELDS_OF_STUDY.map((field) => ({ label: field, value: field }));
 
 type Year =
   | "Freshman"
@@ -36,9 +41,11 @@ interface Step1Props {
 interface FormValues {
   name: string;
   username: string;
+  phone: string;
   avatarUrl: string;
   year: Year | "";
-  phone: string;
+  majors: FieldOfStudy[];
+  minors: FieldOfStudy[];
 }
 
 const Step1 = ({
@@ -64,6 +71,8 @@ const Step1 = ({
           avatarUrl: initialAvatarUrl || "",
           year: "",
           phone: "",
+          majors: [],
+          minors: [],
         } as FormValues }
         validate={ async (values) => {
           setSubmitError(null);
@@ -100,6 +109,12 @@ const Step1 = ({
             errors.username = "Username is already taken";
           }
 
+          if (!values.phone) {
+            errors.phone = "Please enter your phone number";
+          } else if (!/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/.test(values.phone)) {
+            errors.phone = "Please enter a valid phone number";
+          }
+
           if (!values.avatarUrl) {
             errors.avatarUrl = "Please upload a profile picture";
           }
@@ -108,10 +123,8 @@ const Step1 = ({
             errors.year = "Please select your year";
           }
 
-          if (!values.phone) {
-            errors.phone = "Please enter your phone number";
-          } else if (!/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/.test(values.phone)) {
-            errors.phone = "Please enter a valid phone number";
+          if (values.majors.length === 0) {
+            errors.majors = "Please select at least one major, or 'Undecided'";
           }
 
           return errors;
@@ -124,9 +137,13 @@ const Step1 = ({
             .update({
               name: values.name,
               username: values.username,
+              phone: values.phone,
               avatar_url: values.avatarUrl,
               year: values.year,
-              phone: values.phone,
+              fields_of_study: {
+                majors: values.majors,
+                minors: values.minors,
+              },
               updated_at: new Date(),
             }, {
               returning: "minimal", // Don't return the value after inserting
@@ -156,6 +173,11 @@ const Step1 = ({
             </div>
 
             <div>
+              <Field type="tel" name="phone" placeholder="Phone number (xxx-xxx-xxxx)" />
+              <ErrorMessage name="phone" component="p" className="text-red-500" />
+            </div>
+
+            <div>
               {/* TODO: Placeholder for empty avatar */}
               {values.avatarUrl && (
               <img
@@ -177,10 +199,18 @@ const Step1 = ({
               <ErrorMessage name="year" component="p" className="text-red-500" />
             </div>
 
-            <div>
-              <Field type="tel" name="phone" placeholder="Phone number (xxx-xxx-xxxx)" />
-              <ErrorMessage name="phone" component="p" className="text-red-500" />
-            </div>
+            <MultiSelect
+              name="majors"
+              options={ FIELDS_OF_STUDY }
+              placeholder="Select your major(s)"
+            />
+
+            {/* List of minors might be slightly different...probably fine for now */}
+            <MultiSelect
+              name="minors"
+              options={ FIELDS_OF_STUDY }
+              placeholder="Select your minors(s) (optional)"
+            />
 
             <button type="submit" disabled={ isSubmitting }>
               {isSubmitting ? "Loading..." : "Submit"}

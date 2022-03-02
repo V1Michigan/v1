@@ -22,6 +22,7 @@
     "react-dom": "^16.13.1",
     "react-html-parser": "^2.0.2",
     "react-reveal": "^1.2.2",
+    "react-select": "^5.2.2",
     "react-spinners": "^0.11.0",
     "react-tsparticles": "^1.37.5",
     "sweetalert2": "^10.3.5",

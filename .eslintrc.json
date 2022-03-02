@@ -67,7 +67,16 @@
             "error",
             "prefer-double"
         ],
-        "@next/next/no-img-element": "off"
+        "@next/next/no-img-element": "off",
+        "no-unused-vars": "off",
+        "@typescript-eslint/no-unused-vars": [
+            "warn",
+            {
+                "argsIgnorePattern": "^_",
+                "varsIgnorePattern": "^_",
+                "caughtErrorsIgnorePattern": "^_"
+            }
+        ]
     },
     "globals": {
         "React": "writable"

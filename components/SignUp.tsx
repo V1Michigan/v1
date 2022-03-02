@@ -2,6 +2,7 @@ import { useState } from "react";
 import {
   Formik, Form, Field, ErrorMessage, FormikErrors,
 } from "formik";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import useSupabase from "../hooks/useSupabase";
 import { HOSTNAME } from "../pages/_app";
@@ -17,6 +18,8 @@ const REDIRECT_URL = `${HOSTNAME}/welcome`;
 
 export default function SignUp() {
   const { signIn, signUp } = useSupabase();
+  const router = useRouter();
+
   const [loading, setLoading] = useState(false);
   const [submitMessage, setSubmitMessage] = useState<string | null>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -84,7 +87,7 @@ export default function SignUp() {
               //   New users: a user is returned but session will be null
               //   Existing users: an obfuscated / fake user object will be returned.
               setSubmitError("Found an existing user...redirecting to /login");
-              // TODO: Redirect to /login
+              router.push("/login");
             } else if (error) {
               setSubmitError(error.message);
             } else {
