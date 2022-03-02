@@ -95,7 +95,7 @@ const Step2 = ({ nextStep }: Step2Props) => {
         } }
         onSubmit={ async (values, { setSubmitting }) => {
           // Upload resume to bucket
-          const bucketPath = `${user.id}/resume.pdf`;
+          const bucketPath = `${user.id}.pdf`;
           const { error: uploadError } = await supabase
             .storage.from("resumes").upload(
               bucketPath,

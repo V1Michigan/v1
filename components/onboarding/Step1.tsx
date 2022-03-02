@@ -141,7 +141,7 @@ const Step1 = ({
           // Upload avatar to bucket
           // values.avatar is not null, would've been caught by validation
           const avatarFile = (values.avatar as File);
-          const bucketPath = `${user.id}/avatar.${avatarFile.type.split("/")[1]}`;
+          const bucketPath = `${user.id}.${avatarFile.type.split("/")[1]}`;
           const { error: uploadError } = await supabase
             .storage.from("avatars").upload(
               bucketPath, avatarFile, {
