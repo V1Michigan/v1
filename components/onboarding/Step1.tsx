@@ -2,8 +2,10 @@ import { useState } from "react";
 import {
   Formik, Form, Field, ErrorMessage, FormikErrors,
 } from "formik";
+import Dropzone from "react-dropzone";
 import MultiSelect from "./MultiSelect";
 import useSupabase from "../../hooks/useSupabase";
+import getFileFromUrl from "../../utils/getFileFromUrl";
 import _FIELDS_OF_STUDY from "./fieldsOfStudy";
 import type { FieldOfStudy } from "./fieldsOfStudy";
 
@@ -42,7 +44,7 @@ interface FormValues {
   name: string;
   username: string;
   phone: string;
-  avatarUrl: string;
+  avatar: string | File;
   year: Year | "";
   majors: FieldOfStudy[];
   minors: FieldOfStudy[];
@@ -53,6 +55,7 @@ const Step1 = ({
 }: Step1Props) => {
   const { user, supabase } = useSupabase();
   const [submitError, setSubmitError] = useState<string | null>(null);
+
   // Memo to avoid repeated queries
   const [openUsernames, setOpenUsernames] = useState<{[key: string]: boolean}>({});
 
@@ -68,7 +71,7 @@ const Step1 = ({
           name: initialName || "",
           // TODO: Don't suggest username if it's already taken
           username: email?.split("@")[0] || "",
-          avatarUrl: initialAvatarUrl || "",
+          avatar: initialAvatarUrl || "",
           year: "",
           phone: "",
           majors: [],
@@ -115,8 +118,8 @@ const Step1 = ({
             errors.phone = "Please enter a valid phone number";
           }
 
-          if (!values.avatarUrl) {
-            errors.avatarUrl = "Please upload a profile picture";
+          if (!values.avatar) {
+            errors.avatar = "Please upload a profile picture";
           }
 
           if (!values.year) {
@@ -132,13 +135,41 @@ const Step1 = ({
         // Don't want to query DB for username on every keystroke, so just do onBlur
         validateOnChange={ false }
         onSubmit={ async (values, { setSubmitting }) => {
-          const { error } = await supabase
+          // Fetch avatar if it's still the initial URL
+          const avatarFile = values.avatar instanceof File
+            ? values.avatar
+            : await getFileFromUrl(values.avatar, "avatar");
+          const bucketPath = `${user.id}/avatar.${avatarFile.type.split("/")[1]}`;
+
+          // Upload avatar to bucket
+          const { error: uploadError } = await supabase
+            .storage.from("avatars").upload(
+              bucketPath, avatarFile, {
+                contentType: avatarFile.type,
+                cacheControl: "3600",
+                upsert: true,
+              },
+            );
+          if (uploadError) {
+            setSubmitError(uploadError.message);
+            return;
+          }
+          const { publicURL: avatarUrl, error: urlError } = supabase
+            .storage
+            .from("avatars")
+            .getPublicUrl(bucketPath);
+          if (urlError) {
+            setSubmitError(urlError.message);
+            return;
+          }
+
+          const { error: dbError } = await supabase
             .from("profiles")
             .update({
               name: values.name,
               username: values.username,
               phone: values.phone,
-              avatar_url: values.avatarUrl,
+              avatar_url: avatarUrl,
               year: values.year,
               fields_of_study: {
                 majors: values.majors,
@@ -149,15 +180,15 @@ const Step1 = ({
               returning: "minimal", // Don't return the value after inserting
             })
             .eq("id", user.id);
-          if (error) {
-            setSubmitError(error.message);
+          if (dbError) {
+            setSubmitError(dbError.message);
           } else {
             nextStep();
           }
           setSubmitting(false);
         } }
      >
-        {({ values, isSubmitting }) => (
+        {({ values, setFieldValue, isSubmitting }) => (
           <Form className="flex flex-col w-1/2 gap-y-4">
 
             <div>
@@ -178,16 +209,39 @@ const Step1 = ({
             </div>
 
             <div>
-              {/* TODO: Placeholder for empty avatar */}
-              {values.avatarUrl && (
-              <img
-                src={ values.avatarUrl }
-                className="w-32 h-32 rounded-full m-2"
-                alt="Profile"
+              {values.avatar && (
+                <img
+                  src={ typeof values.avatar === "string" ? values.avatar : URL.createObjectURL(values.avatar) }
+                  className="w-32 h-32 rounded-full m-2 border-black border-2"
+                  alt="Profile"
                 />
               )}
-              <Field type="avatarUrl" name="avatarUrl" placeholder="Profile picture" />
-              <ErrorMessage name="avatarUrl" component="p" className="text-red-500" />
+              <Dropzone
+                accept="image/jpeg, image/png, image/gif"
+                maxFiles={ 1 }
+                onDrop={ ([file]) => setFieldValue("avatar", file) }
+              >
+                {({ getRootProps, getInputProps }) => (
+                  /* eslint-disable react/jsx-props-no-spreading */
+                  <div { ...getRootProps() } className="p-4 bg-gray-300 border-black border-2 rounded-lg">
+                    <input { ...getInputProps() } />
+                    <p>
+                      Select a profile picture (*.jpeg, *.png, *.gif)
+                      {values.avatar instanceof File && (
+                        <>
+                          :
+                          <b>
+                            {" "}
+                            {values.avatar.name}
+                          </b>
+
+                        </>
+                      )}
+                    </p>
+                    <ErrorMessage name="avatar" component="p" className="text-red-500" />
+                  </div>
+                )}
+              </Dropzone>
             </div>
 
             <div>
