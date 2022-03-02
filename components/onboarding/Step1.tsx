@@ -236,7 +236,10 @@ const Step1 = ({
 
             <div>
               <Field as="select" name="year">
-                {["", ...Object.keys(Year)].map((year) => (
+                <option value="" disabled hidden>
+                  Select your year
+                </option>
+                {Object.keys(Year).map((year) => (
                   <option key={ year } value={ year }>{year}</option>
                 ))}
               </Field>
