@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Formik, Form, Field, ErrorMessage, FormikErrors,
 } from "formik";
@@ -35,7 +35,7 @@ interface FormValues {
   name: string;
   username: string;
   phone: string;
-  avatar: string | File;
+  avatar: File | null;
   year: Year | "";
   majors: FieldOfStudy[];
   minors: FieldOfStudy[];
@@ -46,6 +46,18 @@ const Step1 = ({
 }: Step1Props) => {
   const { user, supabase } = useSupabase();
   const [submitError, setSubmitError] = useState<string | null>(null);
+
+  // If we have an initialAvatarUrl, fetch it and set it as the initial avatar
+  const [initialAvatar, setInitialAvatar] = useState<File | null>(null);
+  useEffect(() => {
+    const fetchInitialAvatar = async () => {
+      if (initialAvatarUrl) {
+        const file = await getFileFromUrl(initialAvatarUrl, "avatar");
+        setInitialAvatar(file);
+      }
+    };
+    fetchInitialAvatar();
+  }, [initialAvatarUrl]);
 
   // Memo to avoid repeated queries
   const [openUsernames, setOpenUsernames] = useState<{[key: string]: boolean}>({});
@@ -58,10 +70,11 @@ const Step1 = ({
     <div>
       <p>Let&apos;s get to know you!</p>
       <Formik
+        enableReinitialize // to set avatar after fetching initialAvatarUrl
         initialValues={ {
           name: initialName || "",
           username: email?.split("@")[0] || "",
-          avatar: initialAvatarUrl || "",
+          avatar: initialAvatar, // may change after fetching
           year: "",
           phone: "",
           majors: [],
@@ -125,13 +138,10 @@ const Step1 = ({
         // Don't want to query DB for username on every keystroke, so just do onBlur
         validateOnChange={ false }
         onSubmit={ async (values, { setSubmitting }) => {
-          // Fetch avatar if it's still the initial URL
-          const avatarFile = values.avatar instanceof File
-            ? values.avatar
-            : await getFileFromUrl(values.avatar, "avatar");
-          const bucketPath = `${user.id}/avatar.${avatarFile.type.split("/")[1]}`;
-
           // Upload avatar to bucket
+          // values.avatar is not null, would've been caught by validation
+          const avatarFile = (values.avatar as File);
+          const bucketPath = `${user.id}/avatar.${avatarFile.type.split("/")[1]}`;
           const { error: uploadError } = await supabase
             .storage.from("avatars").upload(
               bucketPath, avatarFile, {
@@ -207,7 +217,7 @@ const Step1 = ({
             <div>
               {values.avatar && (
                 <img
-                  src={ typeof values.avatar === "string" ? values.avatar : URL.createObjectURL(values.avatar) }
+                  src={ URL.createObjectURL(values.avatar) }
                   className="w-32 h-32 rounded-full m-2 border-black border-2"
                   alt="Profile"
                 />
@@ -223,7 +233,7 @@ const Step1 = ({
                     <input { ...getInputProps() } />
                     <p>
                       Select a profile picture (*.jpeg, *.png, *.gif)
-                      {values.avatar instanceof File && (
+                      {values.avatar && (
                         <>
                           :
                           <b>
