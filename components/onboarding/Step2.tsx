@@ -4,19 +4,33 @@ import {
 } from "formik";
 import Dropzone from "react-dropzone";
 import useSupabase from "../../hooks/useSupabase";
+import MultiSelect from "./MultiSelect";
 
 enum RoleType {
-  "Software Engineering" = "Software Engineering",
-  "Data Science" = "Data Science",
-  "UX/UI Design" = "UX/UI Design",
-  "Business" = "Business",
-  "Growth" = "Growth",
-  "Product Management" = "Product Management",
+  "eng" = "Engineering",
+  "ds" = "Data Science",
+  "des" = "UX/UI Design",
+  "bus" = "Business",
+  "gro" = "Growth",
+  "pm" = "Product Management",
+}
+
+enum Interests {
+  "sus" = "Sustainability",
+  "fin" = "Fintech",
+  "cr" = "Crypto",
+  "tr" = "Transportation",
+  "ai" = "Artificial Intelligence",
+  "ec" = "E-commerce",
+  "bio" = "Biotech",
+  "edu" = "Education",
+  "con" = "Consumer",
+  "b2b" = "Business-to-business (B2B)",
 }
 
 interface FormValues {
   roleTypes: RoleType[],
-  // TODO: Industry?
+  interests: Interests[],
   resume: File | null,
   linkedin: string, // Optional
   additionalLinks: string, // Optional
@@ -40,6 +54,7 @@ const Step2 = ({ nextStep }: Step2Props) => {
       <Formik
         initialValues={ {
           roleTypes: [],
+          interests: [],
           resume: null,
           linkedin: "",
           additionalLinks: "",
@@ -50,6 +65,10 @@ const Step2 = ({ nextStep }: Step2Props) => {
 
           if (values.roleTypes.length === 0) {
             errors.roleTypes = "Please select at least one role";
+          }
+
+          if (values.interests.length === 0) {
+            errors.interests = "Please select at least one of your interests";
           }
 
           if (!values.resume) {
@@ -105,7 +124,8 @@ const Step2 = ({ nextStep }: Step2Props) => {
           const { error } = await supabase
             .from("profiles")
             .update({
-              // roles: values.roleTypes,  TODO: decide type for this column
+              roles: values.roleTypes,
+              interests: values.interests,
               resume_url: resumeUrl,
               linkedin: values.linkedin,
               website: values.additionalLinks,
@@ -127,21 +147,27 @@ const Step2 = ({ nextStep }: Step2Props) => {
             <div>
               <p id="role-type-group">Type(s) of role you&apos;re interested in:</p>
               <div role="group" aria-labelledby="role-type-group">
-                {Object.keys(RoleType).map((roleType) => (
-                  <div key={ roleType }>
-                    <label htmlFor={ roleType }>{ roleType }</label>
+                {Object.entries(RoleType).map(([key, value]) => (
+                  <div key={ key }>
                     <Field
-                      id={ roleType }
                       type="checkbox"
                       name="roleTypes"
-                      value={ roleType }
-                      className="m-2"
-                  />
+                      className="m-1"
+                      id={ key }
+                      value={ key }
+                    />
+                    <label htmlFor={ key }>{ value }</label>
                   </div>
                 ))}
               </div>
               <ErrorMessage name="roleTypes" component="p" className="text-red-500" />
             </div>
+
+            <MultiSelect
+              placeholder="Industries you&apos;re interested in"
+              name="interests"
+              options={ Object.entries(Interests).map(([k, v]) => ({ value: k, label: v })) }
+            />
 
             <div>
               <Dropzone
