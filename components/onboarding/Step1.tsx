@@ -234,7 +234,6 @@ const Step1 = ({
                             {" "}
                             {values.avatar.name}
                           </b>
-
                         </>
                       )}
                     </p>
