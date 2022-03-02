@@ -10,10 +10,10 @@ export default function ProtectedRoute({ children }: { children: JSX.Element }) 
   useEffect(() => {
     if (user) {
       if (onboardingStep !== "COMPLETE" && router.pathname !== "/welcome") {
-        router.push("/welcome");
+        router.replace("/welcome");
       }
     } else {
-      router.push("/login");
+      router.replace("/login");
     }
   }, [user, onboardingStep, router]);
   return user ? children : null;

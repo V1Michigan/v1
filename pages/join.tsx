@@ -9,7 +9,7 @@ const JoinPage: NextPage = () => {
   const router = useRouter();
   useEffect(() => {
     if (user) {
-      router.push("/account");
+      router.replace("/account");
     }
   }, [user, router]);
   return <SignUp />;
