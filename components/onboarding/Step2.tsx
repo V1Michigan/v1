@@ -5,23 +5,14 @@ import {
 import Dropzone from "react-dropzone";
 import useSupabase from "../../hooks/useSupabase";
 
-type RoleType =
-  | "Software Engineering"
-  | "Data Science"
-  | "UX/UI Design"
-  | "Business"
-  | "Growth"
-  | "Product Management"
-
-// TODO: better way to do this?
-const ROLE_TYPES = [
-  "Software Engineering",
-  "Data Science",
-  "UX/UI Design",
-  "Business",
-  "Growth",
-  "Product Management",
-] as RoleType[];
+enum RoleType {
+  "Software Engineering" = "Software Engineering",
+  "Data Science" = "Data Science",
+  "UX/UI Design" = "UX/UI Design",
+  "Business" = "Business",
+  "Growth" = "Growth",
+  "Product Management" = "Product Management",
+}
 
 interface FormValues {
   roleTypes: RoleType[],
@@ -136,7 +127,7 @@ const Step2 = ({ nextStep }: Step2Props) => {
             <div>
               <p id="role-type-group">Type(s) of role you&apos;re interested in:</p>
               <div role="group" aria-labelledby="role-type-group">
-                {ROLE_TYPES.map((roleType) => (
+                {Object.keys(RoleType).map((roleType) => (
                   <div key={ roleType }>
                     <label htmlFor={ roleType }>{ roleType }</label>
                     <Field

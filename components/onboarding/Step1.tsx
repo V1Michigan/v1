@@ -11,26 +11,17 @@ import type { FieldOfStudy } from "./fieldsOfStudy";
 
 const FIELDS_OF_STUDY = _FIELDS_OF_STUDY.map((field) => ({ label: field, value: field }));
 
-type Year =
-  | "Freshman"
-  | "Sophomore"
-  | "Junior"
-  | "Senior"
-  | "Alumni"
-  | "Grad student"
-  | "Dropout"
-  | "Faculty";
-
-const YEARS = [
-  "Freshman",
-  "Sophomore",
-  "Junior",
-  "Senior",
-  "Alumni",
-  "Grad student",
-  "Dropout",
-  "Faculty",
-] as Year[];
+// Use string enum so we don't get numbers from Object.keys()
+enum Year {
+  "Freshman" = "Freshman",
+  "Sophomore" = "Sophomore",
+  "Junior" = "Junior",
+  "Senior" = "Senior",
+  "Alumni" = "Alumni",
+  "Grad student" = "Grad student",
+  "Dropout" = "Dropout",
+  "Faculty" = "Faculty",
+}
 
 /* eslint-disable react/require-default-props */
 interface Step1Props {
@@ -245,7 +236,7 @@ const Step1 = ({
 
             <div>
               <Field as="select" name="year">
-                {["", ...YEARS].map((year) => (
+                {["", ...Object.keys(Year)].map((year) => (
                   <option key={ year } value={ year }>{year}</option>
                 ))}
               </Field>
