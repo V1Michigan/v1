@@ -2,7 +2,6 @@ import { useState } from "react";
 import {
   Formik, Form, Field, ErrorMessage, FormikErrors,
 } from "formik";
-import { useRouter } from "next/router";
 import Link from "next/link";
 import useSupabase from "../hooks/useSupabase";
 import { HOSTNAME } from "../pages/_app";
@@ -18,7 +17,6 @@ const REDIRECT_URL = `${HOSTNAME}/welcome`;
 
 export default function SignUp() {
   const { signIn, signUp } = useSupabase();
-  const router = useRouter();
 
   const [loading, setLoading] = useState(false);
   const [submitMessage, setSubmitMessage] = useState<string | null>(null);

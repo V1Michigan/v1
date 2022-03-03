@@ -112,21 +112,12 @@ const Step2 = ({ nextStep }: Step2Props) => {
             setSubmitError(uploadError.message);
             return;
           }
-          const { publicURL: resumeUrl, error: urlError } = supabase
-            .storage
-            .from("resumes")
-            .getPublicUrl(bucketPath);
-          if (urlError) {
-            setSubmitError(urlError.message);
-            return;
-          }
 
           const { error } = await supabase
             .from("profiles")
             .update({
               roles: values.roleTypes,
               interests: values.interests,
-              resume_url: resumeUrl,
               linkedin: values.linkedin,
               website: values.additionalLinks,
               updated_at: new Date(),

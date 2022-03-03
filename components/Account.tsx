@@ -6,7 +6,27 @@ export default function Account() {
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState(null);
   const [website, setWebsite] = useState(null);
-  const [avatarUrl, setAvatarUrl] = useState(null);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+
+  // useEffect to download avatarUrl from Supabase
+  useEffect(() => {
+    if (!user) {
+      return;
+    }
+    const getAvatarUrl = async () => {
+      const { data, error } = await supabase.storage.from("avatars").download(user.id);
+      if (error) {
+        // eslint-disable-next-line no-console
+        console.error(error);
+      } else if (!data) {
+        // eslint-disable-next-line no-console
+        console.error("No avatar found");
+      } else {
+        setAvatarUrl(URL.createObjectURL(data));
+      }
+    };
+    getAvatarUrl();
+  }, [user, supabase]);
 
   useEffect(() => {
     const getProfile = async () => {
@@ -15,7 +35,7 @@ export default function Account() {
 
         const { data, error, status } = await supabase
           .from("profiles")
-          .select("username, website, avatar_url")
+          .select("username, website")
           .eq("id", user.id)
           .single();
 
@@ -26,7 +46,6 @@ export default function Account() {
         if (data) {
           setUsername(data.username);
           setWebsite(data.website);
-          setAvatarUrl(data.avatar_url);
         }
       } catch (error) {
       // eslint-disable-next-line no-alert
@@ -67,6 +86,13 @@ export default function Account() {
 
   return (
     <div className="form-widget">
+      {avatarUrl && (
+        <img
+          src={ avatarUrl }
+          className="w-32 h-32 rounded-full m-2 border-black border-2"
+          alt="Profile"
+        />
+      )}
       <div>
         <label htmlFor="email">
           Email

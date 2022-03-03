@@ -141,10 +141,10 @@ const Step1 = ({
           // Upload avatar to bucket
           // values.avatar is not null, would've been caught by validation
           const avatarFile = (values.avatar as File);
-          const bucketPath = `${user.id}.${avatarFile.type.split("/")[1]}`;
           const { error: uploadError } = await supabase
             .storage.from("avatars").upload(
-              bucketPath, avatarFile, {
+              // Not including file extension since we may have PNG, JPG, etc
+              user.id, avatarFile, {
                 contentType: avatarFile.type,
                 cacheControl: "3600",
                 upsert: true,
@@ -154,14 +154,6 @@ const Step1 = ({
             setSubmitError(uploadError.message);
             return;
           }
-          const { publicURL: avatarUrl, error: urlError } = supabase
-            .storage
-            .from("avatars")
-            .getPublicUrl(bucketPath);
-          if (urlError) {
-            setSubmitError(urlError.message);
-            return;
-          }
 
           const { error: dbError } = await supabase
             .from("profiles")
@@ -169,7 +161,6 @@ const Step1 = ({
               name: values.name,
               username: values.username,
               phone: values.phone,
-              avatar_url: avatarUrl,
               year: values.year,
               fields_of_study: {
                 majors: values.majors,
