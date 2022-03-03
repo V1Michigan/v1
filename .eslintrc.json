@@ -67,7 +67,30 @@
             "error",
             "prefer-double"
         ],
-        "@next/next/no-img-element": "off"
+        "@next/next/no-img-element": "off",
+        "jsx-a11y/label-has-associated-control": [
+            "error",
+            {
+                "controlComponents": [
+                    "Field" // from Formik
+                ],
+                "depth": 1
+            }
+        ],
+        "no-unused-vars": "off",
+        "@typescript-eslint/no-unused-vars": [
+            "warn",
+            {
+                "argsIgnorePattern": "^_",
+                "varsIgnorePattern": "^_",
+                "caughtErrorsIgnorePattern": "^_"
+            }
+        ],
+        // This is a bug: https://github.com/typescript-eslint/tslint-to-eslint-config/issues/856
+        "no-shadow": "off",
+        "@typescript-eslint/no-shadow": [
+            "error"
+        ]
     },
     "globals": {
         "React": "writable"

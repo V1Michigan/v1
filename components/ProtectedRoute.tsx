@@ -4,14 +4,18 @@ import { useRouter } from "next/router";
 
 import useSupabase from "../hooks/useSupabase";
 
-export default function ProtectedRoute({ children }) {
-  const { user } = useSupabase();
+export default function ProtectedRoute({ children }: { children: JSX.Element }) {
+  const { user, onboardingStep } = useSupabase();
   const router = useRouter();
   useEffect(() => {
-    if (!user) {
-      router.push("/login");
+    if (user) {
+      if (onboardingStep !== "COMPLETE" && router.pathname !== "/welcome") {
+        router.replace("/welcome");
+      }
+    } else {
+      router.replace("/login");
     }
-  }, [user, router]);
+  }, [user, onboardingStep, router]);
   return user ? children : null;
 }
 
