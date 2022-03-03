@@ -78,17 +78,16 @@ export default function SignUp() {
           } }
           onSubmit={ async (values, { setSubmitting }) => {
             setLoading(true);
-            const { user: existingUser, session, error } = await signUp(
+            const { error } = await signUp(
               { email: values.email, password: values.password },
               { redirectTo: REDIRECT_URL },
             );
-            if (existingUser && session) {
-              // From https://supabase.com/docs/reference/javascript/auth-signup#notes:
-              //   New users: a user is returned but session will be null
-              //   Existing users: an obfuscated / fake user object will be returned.
-              setSubmitError("Found an existing user...redirecting to /login");
-              router.push("/login");
-            } else if (error) {
+            // A `user` is always returned, but will have a fake UUID +
+            // timestamps if the user already exists. We can't tell the difference
+            // though, so I don't think we can check for the user's existence here :/
+            // https://supabase.com/docs/reference/javascript/auth-signup#notes:
+            // https://github.com/supabase/supabase-js/issues/296
+            if (error) {
               setSubmitError(error.message);
             } else {
               // Per https://github.com/supabase/supabase/discussions/3526,
