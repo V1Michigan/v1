@@ -5,8 +5,7 @@ create table profiles (
   username varchar not null unique,
   name text,
   website text,
-  avatar_url text,
-  resume_url text,
+-- no need for avatar/resume urls after setting up bucket policies
   linkedin text,
   created_at timestamptz not null default now(),
   updated_at timestamptz default now(),
@@ -64,3 +63,22 @@ $$;
 create trigger on_auth_user_created
   after insert on auth.users
   for each row execute procedure public.handle_new_user();
+
+-- these bucket policies each have a unique hash_suffix appended to them, only here for reference purpose
+CREATE POLICY "Can only read if auth i5g8va_0" ON storage.objects FOR SELECT USING (((bucket_id = 'resumes'::text) AND (role() = 'authenticated'::text)));
+CREATE POLICY "Owner IUD Access i5g8va_0" ON storage.objects FOR INSERT WITH CHECK (((bucket_id = 'resumes'::text) AND (uid() = owner)));
+CREATE POLICY "Owner IUD Access i5g8va_1" ON storage.objects FOR UPDATE USING (((bucket_id = 'resumes'::text) AND (uid() = owner)));
+CREATE POLICY "Owner IUD Access i5g8va_2" ON storage.objects FOR DELETE USING (((bucket_id = 'resumes'::text) AND (uid() = owner)));
+
+CREATE POLICY "Give auth users access to see avatars 1oj01fe_0" ON storage.objects FOR SELECT USING (((bucket_id = 'avatars'::text) AND (role() = 'authenticated'::text)));
+CREATE POLICY "Avatars IUD for just the owner 1oj01fe_0" ON storage.objects FOR INSERT WITH CHECK (((bucket_id = 'avatars'::text) AND (uid() = owner)));
+CREATE POLICY "Avatars IUD for just the owner 1oj01fe_2" ON storage.objects FOR UPDATE USING (((bucket_id = 'avatars'::text) AND (uid() = owner)));
+CREATE POLICY "Avatars IUD for just the owner 1oj01fe_1" ON storage.objects FOR DELETE USING (((bucket_id = 'avatars'::text) AND (uid() = owner)));
+
+-- to allow deleting users when they have an object fkey attached
+alter table storage.objects
+drop constraint objects_owner_fkey,
+add constraint objects_owner_fkey
+   foreign key (owner)
+   references auth.users(id)
+   on delete set null;
