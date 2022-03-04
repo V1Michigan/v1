@@ -7,6 +7,7 @@ import useSupabase from "../../hooks/useSupabase";
 
 // Username included separately
 interface Profile {
+  id: string;
   name: string;
   email: string;
   phone: string; // Not sure this should be public
@@ -21,7 +22,8 @@ interface Profile {
   roles: RoleType[],
   interests: string[],
 }
-const PROFILE_COLUMNS = "name, phone, year, fields_of_study, linkedin, website, roles, interests";
+// TODO: Get email somehow
+const PROFILE_COLUMNS = "id, name, phone, year, fields_of_study, linkedin, website, roles, interests";
 
 const UserProfile: NextPage = () => {
   const router = useRouter();
@@ -30,6 +32,7 @@ const UserProfile: NextPage = () => {
   const isCurrentUser = profileUsername === currentUsername;
 
   const [profileData, setProfileData] = useState<Profile | null>(null);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -48,13 +51,54 @@ const UserProfile: NextPage = () => {
     fetchProfile();
   }, [supabase, profileUsername, router]);
 
+  useEffect(() => {
+    if (!profileData) {
+      return;
+    }
+    const getAvatarUrl = async () => {
+      const { data, error } = await supabase.storage.from("avatars").download(profileData.id);
+      if (error) {
+        // eslint-disable-next-line no-console
+        console.error(error);
+      } else if (!data) {
+        // eslint-disable-next-line no-console
+        console.error("No avatar found");
+      } else {
+        setAvatarUrl(URL.createObjectURL(data));
+      }
+    };
+    getAvatarUrl();
+  }, [profileData, supabase]);
+
   return (
-    <p>
-      Profile:
-      {" "}
-      {profileUsername}
-      {profileData && JSON.stringify(profileData)}
-    </p>
+    <div>
+      { avatarUrl && (
+      <img
+        src={ avatarUrl }
+        className="w-32 h-32 rounded-full m-2 border-black border-2"
+        alt="Profile"
+        />
+      )}
+
+      <p>
+        Profile:
+        {" "}
+        {profileUsername}
+        {profileData && JSON.stringify(profileData)}
+      </p>
+
+      <div>
+        <button
+          className="button block"
+          onClick={ () => {
+            supabase.auth.signOut();
+          } }
+          type="button">
+          Sign Out
+        </button>
+      </div>
+
+    </div>
   );
 };
 
