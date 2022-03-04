@@ -5,28 +5,7 @@ import {
 import Dropzone from "react-dropzone";
 import useSupabase from "../../hooks/useSupabase";
 import MultiSelect from "./MultiSelect";
-
-enum RoleType {
-  "eng" = "Engineering",
-  "ds" = "Data Science",
-  "des" = "UX/UI Design",
-  "bus" = "Business",
-  "gro" = "Growth",
-  "pm" = "Product Management",
-}
-
-enum Interests {
-  "sus" = "Sustainability",
-  "fin" = "Fintech",
-  "cr" = "Crypto",
-  "tr" = "Transportation",
-  "ai" = "Artificial Intelligence",
-  "ec" = "E-commerce",
-  "bio" = "Biotech",
-  "edu" = "Education",
-  "con" = "Consumer",
-  "b2b" = "Business-to-business (B2B)",
-}
+import { RoleType, Interests } from "../../types/profile";
 
 interface FormValues {
   roleTypes: RoleType[],

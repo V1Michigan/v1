@@ -6,22 +6,13 @@ import Dropzone from "react-dropzone";
 import MultiSelect from "./MultiSelect";
 import useSupabase from "../../hooks/useSupabase";
 import getFileFromUrl from "../../utils/getFileFromUrl";
-import _FIELDS_OF_STUDY from "./fieldsOfStudy";
-import type { FieldOfStudy } from "./fieldsOfStudy";
+// Not using `import type` so that we can use these as values
+import { FieldOfStudy } from "../../types/fieldsOfStudy";
+import { Year } from "../../types/profile";
 
-const FIELDS_OF_STUDY = _FIELDS_OF_STUDY.map((field) => ({ label: field, value: field }));
-
-// Use string enum so we don't get numbers from Object.keys()
-enum Year {
-  "Freshman" = "Freshman",
-  "Sophomore" = "Sophomore",
-  "Junior" = "Junior",
-  "Senior" = "Senior",
-  "Alumni" = "Alumni",
-  "Grad student" = "Grad student",
-  "Dropout" = "Dropout",
-  "Faculty" = "Faculty",
-}
+const FIELDS_OF_STUDY = Object.entries(FieldOfStudy).map(
+  ([key, name]) => ({ value: key, label: name }),
+);
 
 /* eslint-disable react/require-default-props */
 interface Step1Props {
