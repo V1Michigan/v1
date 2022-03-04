@@ -60,7 +60,7 @@ const Step1 = ({
   }, [initialAvatarUrl]);
 
   // Memo to avoid repeated queries
-  const [openUsernames, setOpenUsernames] = useState<{[key: string]: boolean}>({});
+  const [openUsernames, setOpenUsernames] = useState<{ [key: string]: boolean }>({});
 
   if (!user) {
     return null;
@@ -68,10 +68,18 @@ const Step1 = ({
 
   return (
     <div>
-      <p>Let&apos;s get to know you!</p>
+      <div className="md:grid md:grid-cols-3 md:gap-6">
+        <div className="md:col-span-1 pl-8 pt-6">
+          <div className="px-4 sm:px-0">
+            <h3 className="text-lg font-large leading-6 text-gray-900">Profile</h3>
+            <p className="mt-1 text-m text-gray-600">
+              Let us get to know you better!
+            </p>
+          </div>
+        </div>
       <Formik
         enableReinitialize // to set avatar after fetching initialAvatarUrl
-        initialValues={ {
+        initialValues={{
           name: initialName || "",
           username: email?.split("@")[0] || "",
           avatar: initialAvatar, // may change after fetching
@@ -79,8 +87,8 @@ const Step1 = ({
           phone: "",
           majors: [],
           minors: [],
-        } as FormValues }
-        validate={ async (values) => {
+        } as FormValues}
+        validate={async (values) => {
           setSubmitError(null);
           const errors: FormikErrors<FormValues> = {};
 
@@ -134,10 +142,10 @@ const Step1 = ({
           }
 
           return errors;
-        } }
+        }}
         // Don't want to query DB for username on every keystroke, so just do onBlur
-        validateOnChange={ false }
-        onSubmit={ async (values, { setSubmitting }) => {
+        validateOnChange={false}
+        onSubmit={async (values, { setSubmitting }) => {
           // Upload avatar to bucket
           // values.avatar is not null, would've been caught by validation
           const avatarFile = (values.avatar as File);
@@ -145,10 +153,10 @@ const Step1 = ({
             .storage.from("avatars").upload(
               // Not including file extension since we may have PNG, JPG, etc
               user.id, avatarFile, {
-                contentType: avatarFile.type,
-                cacheControl: "3600",
-                upsert: true,
-              },
+              contentType: avatarFile.type,
+              cacheControl: "3600",
+              upsert: true,
+            },
             );
           if (uploadError) {
             setSubmitError(uploadError.message);
@@ -177,51 +185,69 @@ const Step1 = ({
             nextStep();
           }
           setSubmitting(false);
-        } }
-     >
+        }}
+      >
         {({ values, setFieldValue, isSubmitting }) => (
-          <Form className="flex flex-col w-1/2 gap-y-4">
+        <div className="pt-2 mt-5 md:mt-0 md:col-start-2 col-end-4">
 
-            <div>
+          <Form className ="pr-8">
+          <div className="shadow sm:rounded-md sm:overflow-hidden">
+          <div className="px-4 py-5 bg-white space-y-6 sm:p-6">
+
+            <div className="grid grid-cols-6 gap-6">
+              <div className="col-span-6 sm:col-span-3">
               <label htmlFor="name" className="block">Name</label>
-              <Field type="text" name="name" placeholder="Name" />
+              <div className="mt-1 flex rounded-md shadow-sm">
+              <Field type="text" name="name" placeholder="Name" 
+              className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
+              </div>
               <ErrorMessage name="name" component="p" className="text-red-500" />
-            </div>
-
-            <div>
+              </div>
+              <div className="col-span-6 sm:col-span-3">
               <label htmlFor="email" className="block">Email</label>
-              <Field type="email" value={ email } disabled />
+              <div className="mt-1 flex rounded-md shadow-sm">
+              <Field type="email" value={email} disabled 
+              className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
+              </div>
+              </div>
             </div>
 
-            <div>
+            <div className="grid grid-cols-6 gap-6">
+              <div className="col-span-6 sm:col-span-3">
               <label htmlFor="username" className="block">Username</label>
-              <Field type="text" name="username" placeholder="Username" />
+              <div className="mt-1 flex rounded-md shadow-sm">
+              <Field type="text" name="username" placeholder="Username" 
+              className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
+              </div>
               <ErrorMessage name="username" component="p" className="text-red-500" />
-            </div>
-
-            <div>
-              <label htmlFor="phone" className="block">Phone number</label>
-              <Field type="tel" name="phone" placeholder="xxx-xxx-xxxx" />
+              </div>
+              <div className="col-span-6 sm:col-span-3">
+              <label htmlFor="phone" className="block">Phone Number</label>
+              <div className="mt-1 flex rounded-md shadow-sm">
+              <Field type="tel" name="phone" placeholder="xxx-xxx-xxxx"
+              className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
+              </div>
               <ErrorMessage name="phone" component="p" className="text-red-500" />
+              </div>
             </div>
 
             <div>
               {values.avatar && (
                 <img
-                  src={ URL.createObjectURL(values.avatar) }
+                  src={URL.createObjectURL(values.avatar)}
                   className="w-32 h-32 rounded-full m-2 border-black border-2"
                   alt="Profile"
                 />
               )}
               <Dropzone
                 accept="image/jpeg, image/png, image/gif"
-                maxFiles={ 1 }
-                onDrop={ ([file]) => setFieldValue("avatar", file) }
+                maxFiles={1}
+                onDrop={([file]) => setFieldValue("avatar", file)}
               >
                 {({ getRootProps, getInputProps }) => (
                   /* eslint-disable react/jsx-props-no-spreading */
-                  <div { ...getRootProps() } className="p-4 bg-gray-300 border-black border-2 rounded-lg">
-                    <input { ...getInputProps() } />
+                  <div {...getRootProps()} className="p-4 bg-gray-300 border-black border-2 rounded-lg">
+                    <input {...getInputProps()} />
                     <p>
                       Select a profile picture (*.jpeg, *.png, *.gif)
                       {values.avatar && (
@@ -240,45 +266,55 @@ const Step1 = ({
               </Dropzone>
             </div>
 
-            <div>
+            <div className="grid grid-cols-6 gap-6">
+              <div className="col-span-6 sm:col-span-3">
               <label htmlFor="year" className="block">School year</label>
-              <Field as="select" name="year">
+              <Field as="select" name="year" 
+                className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                 <option value="" disabled hidden>
                   Select your year
                 </option>
                 {Object.keys(Year).map((year) => (
-                  <option key={ year } value={ year }>{year}</option>
+                  <option key={year} value={year}>{year}</option>
                 ))}
               </Field>
+              </div>
               <ErrorMessage name="year" component="p" className="text-red-500" />
             </div>
-
-            <div>
-              <label htmlFor="majors" className="block">Major(s)</label>
+            <div className="grid grid-cols-6 gap-6">
+              <div className="col-span-6 sm:col-span-3">
+              <label htmlFor="majors" className="block pb-1">Major(s)</label>
               <MultiSelect
                 name="majors"
-                options={ FIELDS_OF_STUDY }
+                options={FIELDS_OF_STUDY}
                 placeholder="Select your major(s)"
               />
             </div>
 
-            <div>
-              <label htmlFor="minors" className="block">Minor(s) (optional)</label>
+              <div className="col-span-6 sm:col-span-3">
+              <label htmlFor="minors" className="block pb-1">Minor(s) (optional)</label>
               <MultiSelect
                 name="minors"
                 // List of minors might be slightly different...fine for now
-                options={ FIELDS_OF_STUDY }
+                options={FIELDS_OF_STUDY}
                 placeholder="Select your minor(s)"
-            />
+              />
+            </div>
             </div>
 
-            <button type="submit" disabled={ isSubmitting }>
+            <button type="submit" disabled={isSubmitting}
+            className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
               {isSubmitting ? "Loading..." : "Submit"}
+              
             </button>
             {submitError && <p className="text-red-500">{submitError}</p>}
+          </div>
+          </div>
           </Form>
+        </div>
         )}
       </Formik>
+    </div>
     </div>
   );
 };
