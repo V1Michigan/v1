@@ -46,7 +46,9 @@ interface SupabaseContextInterface {
   }>;
   signOut: () => Promise<{ error: ApiError | null }>;
   // TODO: Would be nice if these weren't nullable under `ProtectedRoute`s
+  // Maybe a second UserContext applied by ProtectedRoutes that fetches all this
   user: EmailUser | GoogleUser | null;
+  username: string | null;
   onboardingStep: OnboardingStep | null;
   setOnboardingStep: (step: OnboardingStep) => void;
 }
@@ -56,6 +58,8 @@ const SupabaseContext = createContext<SupabaseContextInterface | null>(null);
 function SupabaseProvider({ children }: { children: ReactChild | ReactChildren }) {
   // Default value checks for an active session
   const [user, setUser] = useState<User | null>(supabase.auth.session()?.user ?? null);
+  // TODO: Need to update this during onboarding
+  const [username, setUsername] = useState<string | null>(null);
   const [onboardingStep, setOnboardingStep_] = useState<OnboardingStep | null>(null);
 
   useEffect(() => {
@@ -66,11 +70,11 @@ function SupabaseProvider({ children }: { children: ReactChild | ReactChildren }
   }, []);
 
   useEffect(() => {
-    async function getOnboardingStep() {
+    async function getUserData() {
       if (user) {
         const { data, error, status } = await supabase
           .from("profiles")
-          .select("onboarding_step")
+          .select("username, onboarding_step")
           .eq("id", user.id)
           .single();
 
@@ -78,10 +82,11 @@ function SupabaseProvider({ children }: { children: ReactChild | ReactChildren }
           throw error;
         }
 
+        setUsername(data?.username ?? null);
         setOnboardingStep_(data?.onboarding_step || "REGISTERED");
       }
     }
-    getOnboardingStep();
+    getUserData();
   }, [user]);
 
   // Update local state and Supabase DB
@@ -118,6 +123,7 @@ function SupabaseProvider({ children }: { children: ReactChild | ReactChildren }
       signUp: supabase.auth.signUp.bind(supabase.auth),
       signOut: supabase.auth.signOut.bind(supabase.auth),
       user: typedUser,
+      username,
       onboardingStep,
       setOnboardingStep,
     } }>
