@@ -2,7 +2,7 @@ import Particles from "react-tsparticles";
 import ContinueButton from "../components/ContinueButton";
 
 const Welcome = () => (
-  <div>
+  <div className="bg-black">
     <div className="h-screen flex justify-center items-center  flex-col z-50 p-8">
       <h1 className="text-6xl tracking-tight font-bold font-logo text-gray-100 leading-none text-center">
         Welcome to V1
