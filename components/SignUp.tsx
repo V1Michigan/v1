@@ -157,7 +157,7 @@ export default function SignUp() {
           />
         </div>
         <Link href="/login" passHref>
-          <p className="group relative w-full flex justify-center font-medium text-indigo-600 hover:text-indigo-500 ">Already have an account? Log in</p>
+          <p className="cursor-pointer group relative w-full flex justify-center font-medium text-indigo-600 hover:text-indigo-500 ">Already have an account? Log in</p>
         </Link>
       </div>
     </div>
