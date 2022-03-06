@@ -22,7 +22,7 @@ export enum RoleType {
   "pm" = "Product Management",
 }
 
-export enum Interests {
+export enum Interest {
   "sus" = "Sustainability",
   "fin" = "Fintech",
   "cr" = "Crypto",

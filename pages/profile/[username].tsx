@@ -3,11 +3,12 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import useSupabase from "../../hooks/useSupabase";
 import ProtectedRoute from "../../components/ProtectedRoute";
-import type { Year, RoleType } from "../../types/profile";
+import ViewProfile from "../../components/profile/ViewProfile";
+import type { Year, RoleType, Interest } from "../../types/profile";
 import type { FieldOfStudy } from "../../types/fieldsOfStudy";
 
 // Username included separately
-interface Profile {
+export type Profile = {
   id: string;
   email: string;
   name: string;
@@ -21,7 +22,7 @@ interface Profile {
   linkedin: string,
   website: string,
   roles: RoleType[],
-  interests: string[],
+  interests: Interest[],
 }
 const PROFILE_COLUMNS = "id, email, name, phone, year, fields_of_study, linkedin, website, roles, interests";
 
@@ -70,22 +71,27 @@ const UserProfile: NextPage = () => {
     getAvatarUrl();
   }, [profileData, supabase]);
 
+  if (!profileUsername || typeof profileUsername !== "string" || !profileData) {
+    return null;
+  }
+
   return (
     <div>
+      {/* TODO: Edit avatar */}
       { avatarUrl && (
-      <img
-        src={ avatarUrl }
-        className="w-32 h-32 rounded-full m-2 border-black border-2"
-        alt="Profile"
+        <img
+          src={ avatarUrl }
+          className="w-32 h-32 rounded-full m-2 border-black border-2"
+          alt="Profile"
         />
       )}
 
-      <p>
-        Profile:
-        {" "}
-        {profileUsername}
-        {profileData && JSON.stringify(profileData)}
-      </p>
+      <ViewProfile
+        username={ profileUsername }
+        profile={ profileData }
+      />
+
+      {/* TODO: Show + edit resume */}
 
       <div className="mt-4">
         <button

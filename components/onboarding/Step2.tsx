@@ -5,11 +5,11 @@ import {
 import Dropzone from "react-dropzone";
 import useSupabase from "../../hooks/useSupabase";
 import MultiSelect from "./MultiSelect";
-import { RoleType, Interests } from "../../types/profile";
+import { RoleType, Interest } from "../../types/profile";
 
 interface FormValues {
   roleTypes: RoleType[],
-  interests: Interests[],
+  interests: Interest[],
   resume: File | null,
   linkedin: string, // Optional
   additionalLinks: string, // Optional
@@ -134,7 +134,7 @@ const Step2 = ({ nextStep }: Step2Props) => {
             <MultiSelect
               placeholder="Industries you&apos;re interested in"
               name="interests"
-              options={ Object.entries(Interests).map(([k, v]) => ({ value: k, label: v })) }
+              options={ Object.entries(Interest).map(([k, v]) => ({ value: k, label: v })) }
             />
 
             <div>
