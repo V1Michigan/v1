@@ -1,15 +1,16 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import useSupabase from "../../hooks/useSupabase";
+import ProtectedRoute from "../../components/ProtectedRoute";
 import type { Year, RoleType } from "../../types/profile";
 import type { FieldOfStudy } from "../../types/fieldsOfStudy";
-import useSupabase from "../../hooks/useSupabase";
 
 // Username included separately
 interface Profile {
   id: string;
-  name: string;
   email: string;
+  name: string;
   phone: string; // Not sure this should be public
   // cohort: string;  For the future...
   year: Year,
@@ -22,8 +23,7 @@ interface Profile {
   roles: RoleType[],
   interests: string[],
 }
-// TODO: Get email somehow
-const PROFILE_COLUMNS = "id, name, phone, year, fields_of_study, linkedin, website, roles, interests";
+const PROFILE_COLUMNS = "id, email, name, phone, year, fields_of_study, linkedin, website, roles, interests";
 
 const UserProfile: NextPage = () => {
   const router = useRouter();
@@ -87,7 +87,7 @@ const UserProfile: NextPage = () => {
         {profileData && JSON.stringify(profileData)}
       </p>
 
-      <div>
+      <div className="mt-4">
         <button
           className="button block"
           onClick={ () => {
@@ -102,4 +102,8 @@ const UserProfile: NextPage = () => {
   );
 };
 
-export default UserProfile;
+export default () => (
+  <ProtectedRoute>
+    <UserProfile />
+  </ProtectedRoute>
+);

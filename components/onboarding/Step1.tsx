@@ -43,7 +43,7 @@ const Step1 = ({
   useEffect(() => {
     const fetchInitialAvatar = async () => {
       if (initialAvatarUrl) {
-        const file = await getFileFromUrl(initialAvatarUrl, "avatar");
+        const file = await getFileFromUrl(initialAvatarUrl, "Google profile picture");
         setInitialAvatar(file);
       }
     };
@@ -134,7 +134,8 @@ const Step1 = ({
           const avatarFile = (values.avatar as File);
           const { error: uploadError } = await supabase
             .storage.from("avatars").upload(
-              // Not including file extension since we may have PNG, JPG, etc
+              // Just save as `user.id`, not including file extension
+              // since we may have PNG, JPG, etc
               user.id, avatarFile, {
                 contentType: avatarFile.type,
                 cacheControl: "3600",
@@ -199,6 +200,7 @@ const Step1 = ({
             <div>
               {values.avatar && (
                 <img
+                  // TODO: Memo this
                   src={ URL.createObjectURL(values.avatar) }
                   className="w-32 h-32 rounded-full m-2 border-black border-2"
                   alt="Profile"
@@ -215,7 +217,7 @@ const Step1 = ({
                     <input { ...getInputProps() } />
                     <p>
                       Select a profile picture (*.jpeg, *.png, *.gif)
-                      {values.avatar && (
+                      {values.avatar?.name && (
                         <>
                           :
                           <b>
