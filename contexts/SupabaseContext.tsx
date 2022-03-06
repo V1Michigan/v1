@@ -49,6 +49,7 @@ interface SupabaseContextInterface {
   // Maybe a second UserContext applied by ProtectedRoutes that fetches all this
   user: EmailUser | GoogleUser | null;
   username: string | null;
+  setUsername: (username: string) => void;
   onboardingStep: OnboardingStep | null;
   setOnboardingStep: (step: OnboardingStep) => void;
 }
@@ -58,7 +59,6 @@ const SupabaseContext = createContext<SupabaseContextInterface | null>(null);
 function SupabaseProvider({ children }: { children: ReactChild | ReactChildren }) {
   // Default value checks for an active session
   const [user, setUser] = useState<User | null>(supabase.auth.session()?.user ?? null);
-  // TODO: Need to update this during onboarding
   const [username, setUsername] = useState<string | null>(null);
   const [onboardingStep, setOnboardingStep_] = useState<OnboardingStep | null>(null);
 
@@ -124,6 +124,7 @@ function SupabaseProvider({ children }: { children: ReactChild | ReactChildren }
       signOut: supabase.auth.signOut.bind(supabase.auth),
       user: typedUser,
       username,
+      setUsername,
       onboardingStep,
       setOnboardingStep,
     } }>

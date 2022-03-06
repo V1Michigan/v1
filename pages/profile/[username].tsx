@@ -90,10 +90,9 @@ const UserProfile: NextPage = () => {
       <div className="mt-4">
         <button
           className="button block"
-          onClick={ () => {
-            supabase.auth.signOut();
-          } }
-          type="button">
+          onClick={ () => supabase.auth.signOut() }
+          type="button"
+        >
           Sign Out
         </button>
       </div>

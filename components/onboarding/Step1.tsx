@@ -35,7 +35,7 @@ interface FormValues {
 const Step1 = ({
   email, initialName, initialAvatarUrl, nextStep,
 }: Step1Props) => {
-  const { user, supabase } = useSupabase();
+  const { user, setUsername, supabase } = useSupabase();
   const [submitError, setSubmitError] = useState<string | null>(null);
 
   // If we have an initialAvatarUrl, fetch it and set it as the initial avatar
@@ -166,6 +166,7 @@ const Step1 = ({
           if (dbError) {
             setSubmitError(dbError.message);
           } else {
+            setUsername(values.username);
             nextStep();
           }
           setSubmitting(false);
