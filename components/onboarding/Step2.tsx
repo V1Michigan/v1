@@ -1,8 +1,7 @@
 import { useState } from "react";
 import {
-  Formik, Form, ErrorMessage, FormikErrors,
+  Formik, Form, FormikErrors,
 } from "formik";
-import Dropzone from "react-dropzone";
 import useSupabase from "../../hooks/useSupabase";
 import {
   RoleTypesField,
@@ -11,6 +10,7 @@ import {
   AdditionalLinksField,
 } from "../profile/ProfileFields";
 import ViewResume from "../profile/ViewResume";
+import EditResume from "../profile/EditResume";
 
 interface FormValues {
   roleTypes: string[],
@@ -106,31 +106,7 @@ const Step2 = ({ nextStep }: Step2Props) => {
 
             <div>
               {values.resume && <ViewResume resume={ values.resume } maxPages={ 1 } />}
-              <Dropzone
-                accept="application/pdf"
-                maxFiles={ 1 }
-                onDrop={ ([file]) => setFieldValue("resume", file) }
-              >
-                {({ getRootProps, getInputProps }) => (
-                  /* eslint-disable react/jsx-props-no-spreading */
-                  <div { ...getRootProps() } className="p-4 bg-gray-300 border-black border-2 rounded-lg">
-                    <input { ...getInputProps() } />
-                    <p>
-                      Upload your resume (*.pdf)
-                      {values.resume && (
-                        <>
-                          :
-                          <b>
-                            {" "}
-                            {values.resume.name}
-                          </b>
-                        </>
-                      )}
-                    </p>
-                    <ErrorMessage name="resume" component="p" className="text-red-500" />
-                  </div>
-                )}
-              </Dropzone>
+              <EditResume value={ values.resume } onChange={ (resume: File) => setFieldValue("resume", resume) } />
             </div>
 
             <LinkedInField />
