@@ -36,7 +36,7 @@ export default function Account() {
         const { data, error, status } = await supabase
           .from("profiles")
           .select("username, website")
-          .eq("id", user.id)
+          .eq("id", user?.id)
           .single();
 
         if (error && status !== 406) {
