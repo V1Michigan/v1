@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { FaLinkedin as LinkedInIcon, FaPhone as PhoneIcon, MdMail as EmailIcon } from "react-icons/all";
+import { FaLinkedin as LinkedInIcon, FaPhone as PhoneIcon } from "react-icons/fa";
+import { MdMail as EmailIcon } from "react-icons/md";
 import type { Profile } from "../../pages/profile/[username]";
 import {
   FieldOfStudy, Year, Interest, RoleType,
@@ -13,7 +14,7 @@ interface ViewProfileProps {
 const ViewProfile = ({ username, profile }: ViewProfileProps) => (
   <div>
     <h2 className="text-2xl font-bold">{profile.name}</h2>
-    <div className="flex flex-row">
+    <div className="flex flex-row gap-x-8 p-2">
       <Link href={ `mailto:${profile.email}` } passHref>
         <EmailIcon />
       </Link>
@@ -55,7 +56,7 @@ const ViewProfile = ({ username, profile }: ViewProfileProps) => (
       {profile.roles.map((roleKey) => RoleType[roleKey]).join(", ")}
     </p>
     <p>
-      Roles:
+      Interests:
       {" "}
       {profile.interests.map((interestKey) => Interest[interestKey]).join(", ")}
     </p>

@@ -1,9 +1,10 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import useSupabase from "../../hooks/useSupabase";
 import ProtectedRoute from "../../components/ProtectedRoute";
 import ViewProfile from "../../components/profile/ViewProfile";
+import ViewResume from "../../components/profile/ViewResume";
 
 // Username included separately
 export type Profile = {
@@ -21,6 +22,8 @@ export type Profile = {
   website: string,
   roles: string[],
   interests: string[],
+  avatarUrl: string,
+  resumeUrl: string,
 }
 const PROFILE_COLUMNS = "id, email, name, phone, year, fields_of_study, linkedin, website, roles, interests";
 
@@ -30,8 +33,9 @@ const UserProfile: NextPage = () => {
   const { supabase, username: currentUsername } = useSupabase();
   const isCurrentUser = profileUsername === currentUsername;
 
-  const [profileData, setProfileData] = useState<Profile | null>(null);
+  const [dbProfileData, setDBProfileData] = useState<Profile | null>(null);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [resumeUrl, setResumeUrl] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -44,18 +48,18 @@ const UserProfile: NextPage = () => {
       if ((error && status !== 406) || !data) {
         router.replace("/404");
       } else {
-        setProfileData(data);
+        setDBProfileData(data);
       }
     };
     fetchProfile();
   }, [supabase, profileUsername, router]);
 
   useEffect(() => {
-    if (!profileData) {
+    if (!dbProfileData) {
       return;
     }
     const getAvatarUrl = async () => {
-      const { data, error } = await supabase.storage.from("avatars").download(profileData.id);
+      const { data, error } = await supabase.storage.from("avatars").download(dbProfileData.id);
       if (error) {
         // eslint-disable-next-line no-console
         console.error(error);
@@ -67,7 +71,31 @@ const UserProfile: NextPage = () => {
       }
     };
     getAvatarUrl();
-  }, [profileData, supabase]);
+  }, [dbProfileData, supabase]);
+
+  useEffect(() => {
+    if (!dbProfileData) {
+      return;
+    }
+    const getResumeUrl = async () => {
+      const { data, error } = await supabase.storage.from("resumes").download(`${dbProfileData.id}.pdf`);
+      if (error) {
+        // eslint-disable-next-line no-console
+        console.error(error);
+      } else if (!data) {
+        // eslint-disable-next-line no-console
+        console.error("No resume found");
+      } else {
+        setResumeUrl(URL.createObjectURL(data));
+      }
+    };
+    getResumeUrl();
+  }, [dbProfileData, supabase]);
+
+  const profileData = useMemo(
+    () => dbProfileData && ({ ...dbProfileData, avatarUrl, resumeUrl } as Profile),
+    [dbProfileData, avatarUrl, resumeUrl],
+  );
 
   if (!profileUsername || typeof profileUsername !== "string" || !profileData) {
     return null;
@@ -89,7 +117,8 @@ const UserProfile: NextPage = () => {
         profile={ profileData }
       />
 
-      {/* TODO: Show + edit resume */}
+      {/* TODO: Edit resume */}
+      {resumeUrl && <ViewResume url={ resumeUrl } />}
 
       <div className="mt-4">
         <button

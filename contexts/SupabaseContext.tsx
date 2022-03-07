@@ -7,11 +7,12 @@ import {
 } from "@supabase/supabase-js";
 import supabase from "../utils/supabaseClient";
 
-type OnboardingStep =
-  | "REGISTERED"
-  | "SCREEN_1"
-  | "SCREEN_2"
-  | "COMPLETE"
+enum OnboardingStep {
+  REGISTERED,
+  SCREEN_1,
+  SCREEN_2,
+  COMPLETE,
+}
 
 interface EmailUser extends User {
   email: string; // We know email isn't undefined
@@ -45,8 +46,8 @@ interface SupabaseContextInterface {
     error: ApiError | null
   }>;
   signOut: () => Promise<{ error: ApiError | null }>;
-  // TODO: Would be nice if these weren't nullable under `ProtectedRoute`s
-  // Maybe a second UserContext applied by ProtectedRoutes that fetches all this
+  // Would be nice if these weren't nullable under `ProtectedRoute`s
+  // ...maybe a second UserContext that fetches all this data? :/
   user: EmailUser | GoogleUser | null;
   username: string | null;
   setUsername: (username: string) => void;
@@ -109,8 +110,7 @@ function SupabaseProvider({ children }: { children: ReactChild | ReactChildren }
     }
   }
 
-  // If we have user, wait to load onboardingStep before rendering
-  // TODO: This feels kinda sketchy
+  // If we have user, wait to load onboardingStep before rendering (this feels kinda sketchy)
   if (user && !onboardingStep) {
     return null;
   }
