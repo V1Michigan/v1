@@ -5,6 +5,7 @@ import useSupabase from "../../hooks/useSupabase";
 import ProtectedRoute from "../../components/ProtectedRoute";
 import ViewProfile from "../../components/profile/ViewProfile";
 import ViewResume from "../../components/profile/ViewResume";
+import ViewAvatar from "../../components/profile/ViewAvatar";
 
 // Username included separately
 export type Profile = {
@@ -104,13 +105,7 @@ const UserProfile: NextPage = () => {
   return (
     <div>
       {/* TODO: Edit avatar */}
-      { avatarUrl && (
-        <img
-          src={ avatarUrl }
-          className="w-32 h-32 rounded-full m-2 border-black border-2"
-          alt="Profile"
-        />
-      )}
+      <ViewAvatar avatar={ profileData.avatarUrl } />
 
       <ViewProfile
         username={ profileUsername }

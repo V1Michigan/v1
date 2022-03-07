@@ -13,6 +13,7 @@ import {
   MajorsField,
   MinorsField,
 } from "../profile/ProfileFields";
+import ViewAvatar from "../profile/ViewAvatar";
 
 /* eslint-disable react/require-default-props */
 interface Step1Props {
@@ -138,14 +139,7 @@ const Step1 = ({
             <PhoneField />
 
             <div>
-              {values.avatar && (
-                <img
-                  // TODO: Memo this
-                  src={ URL.createObjectURL(values.avatar) }
-                  className="w-32 h-32 rounded-full m-2 border-black border-2"
-                  alt="Profile"
-                />
-              )}
+              {values.avatar && <ViewAvatar avatar={ values.avatar } />}
               <Dropzone
                 accept="image/jpeg, image/png, image/gif"
                 maxFiles={ 1 }
@@ -178,7 +172,7 @@ const Step1 = ({
             <MinorsField />
 
             <button type="submit" disabled={ isSubmitting }>
-              {isSubmitting ? "Loading..." : "Submit"}
+              {isSubmitting ? "Loading..." : "Next ›"}
             </button>
             {submitError && <p className="text-red-500">{submitError}</p>}
           </Form>
