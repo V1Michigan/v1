@@ -8,7 +8,7 @@
     ],
     "allowJs": false,
     "skipLibCheck": true,
-    "strict": true,
+    "strict": false, // TODO: Make true
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "esModuleInterop": true,
