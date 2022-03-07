@@ -1,7 +1,5 @@
 import { useState } from "react";
-import {
-  Formik, Form, FormikErrors,
-} from "formik";
+import { Formik, Form } from "formik";
 import useSupabase from "../../hooks/useSupabase";
 import {
   RolesField,
@@ -43,20 +41,7 @@ const Step2 = ({ nextStep }: Step2Props) => {
           linkedin: "",
           additionalLinks: "",
         } as FormValues }
-        validate={ (values) => {
-          setSubmitError(null);
-          const errors: FormikErrors<FormValues> = {};
-
-          if (!values.resume) {
-            errors.resume = "Please upload your resume";
-          } else if (values.resume.type !== "application/pdf") {
-            errors.resume = "Please upload a PDF resume";
-          } else if (values.resume.size > 5 * 1024 * 1024) {
-            errors.resume = "Please limit resume size to 5 MB";
-          }
-
-          return errors;
-        } }
+        validate={ () => setSubmitError(null) }
         onSubmit={ async (values, { setSubmitting }) => {
           // Upload resume to bucket
           // TODO: For consistency with avatars, consider not using file extension
@@ -98,7 +83,7 @@ const Step2 = ({ nextStep }: Step2Props) => {
           setSubmitting(false);
         } }
      >
-        {({ values, setFieldValue, isSubmitting }) => (
+        {({ values, isSubmitting }) => (
           <Form className="flex flex-col w-1/2 gap-y-4">
 
             <RolesField />
@@ -106,7 +91,7 @@ const Step2 = ({ nextStep }: Step2Props) => {
 
             <div>
               {values.resume && <ViewResume resume={ values.resume } maxPages={ 1 } />}
-              <EditResume value={ values.resume } onChange={ (resume: File) => setFieldValue("resume", resume) } />
+              <EditResume />
             </div>
 
             <LinkedInField />

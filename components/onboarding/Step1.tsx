@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Formik, Form, FormikErrors } from "formik";
+import { Formik, Form } from "formik";
 import useSupabase from "../../hooks/useSupabase";
 import getFileFromUrl from "../../utils/getFileFromUrl";
 import {
@@ -68,21 +68,7 @@ const Step1 = ({
           majors: [],
           minors: [],
         } as FormValues }
-        validate={ (values) => {
-          setSubmitError(null);
-          const errors: FormikErrors<FormValues> = {};
-
-          // TODO: Move validation logic into EditAvatar, same for resume
-          if (!values.avatar) {
-            errors.avatar = "Please upload a profile picture";
-          } else if (!["image/jpeg", "image/png", "image/gif"].includes(values.avatar.type)) {
-            errors.avatar = "Please upload an image avatar";
-          } else if (values.avatar.size > 2 * 1024 * 1024) {
-            errors.avatar = "Please limit avatar size to 2 MB";
-          }
-
-          return errors;
-        } }
+        validate={ () => setSubmitError(null) }
         // Don't want to query DB for username on every keystroke, so just do onBlur
         validateOnChange={ false }
         onSubmit={ async (values, { setSubmitting }) => {
@@ -129,7 +115,7 @@ const Step1 = ({
           setSubmitting(false);
         } }
      >
-        {({ values, setFieldValue, isSubmitting }) => (
+        {({ values, isSubmitting }) => (
           <Form className="flex flex-col w-1/2 gap-y-4">
 
             <NameField />
@@ -139,7 +125,7 @@ const Step1 = ({
 
             <div>
               {values.avatar && <ViewAvatar avatar={ values.avatar } />}
-              <EditAvatar value={ values.avatar } onChange={ (file: File) => setFieldValue("avatar", file) } />
+              <EditAvatar />
             </div>
 
             <YearField />
