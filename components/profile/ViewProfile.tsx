@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { FaLinkedin as LinkedInIcon, FaPhone as PhoneIcon, MdMail as EmailIcon } from "react-icons/all";
 import type { Profile } from "../../pages/profile/[username]";
-import { FieldOfStudy } from "../../types/fieldsOfStudy";
-import { Interest, RoleType } from "../../types/profile";
+import {
+  FieldOfStudy, Year, Interest, RoleType,
+} from "../../constants/profile";
 
 interface ViewProfileProps {
   username: string,
@@ -30,7 +31,7 @@ const ViewProfile = ({ username, profile }: ViewProfileProps) => (
     <p>
       Year:
       {" "}
-      {profile.year}
+      {Year[profile.year]}
     </p>
     <p>
       Major
@@ -51,13 +52,12 @@ const ViewProfile = ({ username, profile }: ViewProfileProps) => (
     <p>
       Roles:
       {" "}
-      {/* Need to cast since these enums map string slugs => values */}
-      {profile.roles.map((roleKey) => RoleType[roleKey as string as keyof typeof RoleType]).join(", ")}
+      {profile.roles.map((roleKey) => RoleType[roleKey]).join(", ")}
     </p>
     <p>
       Roles:
       {" "}
-      {profile.interests.map((interestKey) => Interest[interestKey as string as keyof typeof Interest]).join(", ")}
+      {profile.interests.map((interestKey) => Interest[interestKey]).join(", ")}
     </p>
   </div>
 );

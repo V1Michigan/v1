@@ -4,8 +4,6 @@ import { useEffect, useState } from "react";
 import useSupabase from "../../hooks/useSupabase";
 import ProtectedRoute from "../../components/ProtectedRoute";
 import ViewProfile from "../../components/profile/ViewProfile";
-import type { Year, RoleType, Interest } from "../../types/profile";
-import type { FieldOfStudy } from "../../types/fieldsOfStudy";
 
 // Username included separately
 export type Profile = {
@@ -14,15 +12,15 @@ export type Profile = {
   name: string;
   phone: string; // Not sure this should be public
   // cohort: string;  For the future...
-  year: Year,
+  year: string,
   fields_of_study: {
-    majors: FieldOfStudy[],
-    minors: FieldOfStudy[],
+    majors: string[],
+    minors: string[],
   },
   linkedin: string,
   website: string,
-  roles: RoleType[],
-  interests: Interest[],
+  roles: string[],
+  interests: string[],
 }
 const PROFILE_COLUMNS = "id, email, name, phone, year, fields_of_study, linkedin, website, roles, interests";
 

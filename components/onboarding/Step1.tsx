@@ -6,9 +6,7 @@ import Dropzone from "react-dropzone";
 import MultiSelect from "./MultiSelect";
 import useSupabase from "../../hooks/useSupabase";
 import getFileFromUrl from "../../utils/getFileFromUrl";
-// Not using `import type` so that we can use these as values
-import { FieldOfStudy } from "../../types/fieldsOfStudy";
-import { Year } from "../../types/profile";
+import { Year, FieldOfStudy } from "../../constants/profile";
 
 const FIELDS_OF_STUDY = Object.entries(FieldOfStudy).map(
   ([key, name]) => ({ value: key, label: name }),
@@ -27,9 +25,9 @@ interface FormValues {
   username: string;
   phone: string;
   avatar: File | null;
-  year: Year | "";
-  majors: FieldOfStudy[];
-  minors: FieldOfStudy[];
+  year: string;
+  majors: string[];
+  minors: string[];
 }
 
 const Step1 = ({
@@ -240,8 +238,8 @@ const Step1 = ({
                 <option value="" disabled hidden>
                   Select your year
                 </option>
-                {Object.keys(Year).map((year) => (
-                  <option key={ year } value={ year }>{year}</option>
+                {Object.entries(Year).map(([key, value]) => (
+                  <option key={ key } value={ key }>{value}</option>
                 ))}
               </Field>
               <ErrorMessage name="year" component="p" className="text-red-500" />

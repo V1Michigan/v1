@@ -5,11 +5,11 @@ import {
 import Dropzone from "react-dropzone";
 import useSupabase from "../../hooks/useSupabase";
 import MultiSelect from "./MultiSelect";
-import { RoleType, Interest } from "../../types/profile";
+import { RoleType, Interest } from "../../constants/profile";
 
 interface FormValues {
-  roleTypes: RoleType[],
-  interests: Interest[],
+  roleTypes: string[],
+  interests: string[],
   resume: File | null,
   linkedin: string, // Optional
   additionalLinks: string, // Optional
