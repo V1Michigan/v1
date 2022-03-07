@@ -4,7 +4,7 @@ import {
 } from "formik";
 import useSupabase from "../../hooks/useSupabase";
 import {
-  RoleTypesField,
+  RolesField,
   InterestsField,
   LinkedInField,
   AdditionalLinksField,
@@ -13,7 +13,7 @@ import ViewResume from "../profile/ViewResume";
 import EditResume from "../profile/EditResume";
 
 interface FormValues {
-  roleTypes: string[],
+  roles: string[],
   interests: string[],
   resume: File | null,
   linkedin: string, // Optional
@@ -37,7 +37,7 @@ const Step2 = ({ nextStep }: Step2Props) => {
       <p>We can&apos;t wait to learn more about you</p>
       <Formik
         initialValues={ {
-          roleTypes: [],
+          roles: [],
           interests: [],
           resume: null,
           linkedin: "",
@@ -81,7 +81,7 @@ const Step2 = ({ nextStep }: Step2Props) => {
           const { error } = await supabase
             .from("profiles")
             .update({
-              roles: values.roleTypes,
+              roles: values.roles,
               interests: values.interests,
               linkedin: values.linkedin,
               website: values.additionalLinks,
@@ -101,7 +101,7 @@ const Step2 = ({ nextStep }: Step2Props) => {
         {({ values, setFieldValue, isSubmitting }) => (
           <Form className="flex flex-col w-1/2 gap-y-4">
 
-            <RoleTypesField />
+            <RolesField />
             <InterestsField />
 
             <div>

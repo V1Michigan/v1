@@ -28,6 +28,14 @@ const NameField = () => {
   );
 };
 
+// We don't allow users to change their email address, this is just here for consistency
+const EmailField = ({ value }: {value: string}) => (
+  <div>
+    <label htmlFor="email" className="block">Email</label>
+    <Field type="email" value={ value } disabled />
+  </div>
+);
+
 const UsernameField = () => {
   const { supabase } = useSupabase();
   // Memo to avoid repeated queries
@@ -141,8 +149,8 @@ const MinorsField = () => (
   </div>
 );
 
-const RoleTypesField = () => {
-  const validateRoleTypes = (value: string[]) => {
+const RolesField = () => {
+  const validateRoles = (value: string[]) => {
     if (value.length === 0) {
       return "Please select at least one role";
     }
@@ -150,21 +158,21 @@ const RoleTypesField = () => {
   };
   return (
     <div>
-      <label htmlFor="roleTypes">Type(s) of role you&apos;re interested in:</label>
+      <label htmlFor="roles">Type(s) of role you&apos;re interested in:</label>
       {Object.entries(RoleType).map(([key, value]) => (
         <div key={ key }>
           <Field
             type="checkbox"
-            name="roleTypes"
+            name="roles"
             className="m-1"
             id={ key }
             value={ key }
-            validate={ validateRoleTypes }
+            validate={ validateRoles }
           />
           <label htmlFor={ key }>{ value }</label>
         </div>
       ))}
-      <ErrorMessage name="roleTypes" component="p" className="text-red-500" />
+      <ErrorMessage name="roles" component="p" className="text-red-500" />
     </div>
   );
 };
@@ -230,12 +238,13 @@ const AdditionalLinksField = () => {
 
 export {
   NameField,
+  EmailField,
   UsernameField,
   PhoneField,
   YearField,
   MajorsField,
   MinorsField,
-  RoleTypesField,
+  RolesField,
   InterestsField,
   LinkedInField,
   AdditionalLinksField,

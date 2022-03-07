@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
-import {
-  Formik, Form, Field, FormikErrors,
-} from "formik";
+import { Formik, Form, FormikErrors } from "formik";
 import useSupabase from "../../hooks/useSupabase";
 import getFileFromUrl from "../../utils/getFileFromUrl";
 import {
   NameField,
+  EmailField,
   UsernameField,
   PhoneField,
   YearField,
@@ -69,12 +68,17 @@ const Step1 = ({
           majors: [],
           minors: [],
         } as FormValues }
-        validate={ async (values) => {
+        validate={ (values) => {
           setSubmitError(null);
           const errors: FormikErrors<FormValues> = {};
 
+          // TODO: Move validation logic into EditAvatar, same for resume
           if (!values.avatar) {
             errors.avatar = "Please upload a profile picture";
+          } else if (!["image/jpeg", "image/png", "image/gif"].includes(values.avatar.type)) {
+            errors.avatar = "Please upload an image avatar";
+          } else if (values.avatar.size > 2 * 1024 * 1024) {
+            errors.avatar = "Please limit avatar size to 2 MB";
           }
 
           return errors;
@@ -129,12 +133,7 @@ const Step1 = ({
           <Form className="flex flex-col w-1/2 gap-y-4">
 
             <NameField />
-
-            <div>
-              <label htmlFor="email" className="block">Email</label>
-              <Field type="email" value={ email } disabled />
-            </div>
-
+            <EmailField value={ email } />
             <UsernameField />
             <PhoneField />
 
