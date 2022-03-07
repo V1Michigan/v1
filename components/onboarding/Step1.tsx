@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import {
-  Formik, Form, Field, ErrorMessage, FormikErrors,
+  Formik, Form, Field, FormikErrors,
 } from "formik";
 import useSupabase from "../../hooks/useSupabase";
 import getFileFromUrl from "../../utils/getFileFromUrl";

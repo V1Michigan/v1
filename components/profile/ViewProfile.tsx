@@ -1,6 +1,4 @@
 import Link from "next/link";
-import { FaLinkedin as LinkedInIcon, FaPhone as PhoneIcon } from "react-icons/fa";
-import { MdMail as EmailIcon } from "react-icons/md";
 import type { Profile } from "../../pages/profile/[username]";
 import {
   FieldOfStudy, Year, Interest, RoleType,
@@ -16,13 +14,13 @@ const ViewProfile = ({ username, profile }: ViewProfileProps) => (
     <h2 className="text-2xl font-bold">{profile.name}</h2>
     <div className="flex flex-row gap-x-8 p-2">
       <Link href={ `mailto:${profile.email}` } passHref>
-        <EmailIcon />
+        <img src="/profile/email.svg" alt="Email" />
       </Link>
       <Link href={ `tel:${profile.phone}` } passHref>
-        <PhoneIcon />
+        <img src="/profile/phone.svg" alt="Phone" />
       </Link>
       <Link href={ profile.linkedin } passHref>
-        <LinkedInIcon />
+        <img src="/profile/linkedin.svg" alt="LinkedIn" />
       </Link>
     </div>
     {/* If "additional links" is a single URL, link to that; else, just show the text */}
