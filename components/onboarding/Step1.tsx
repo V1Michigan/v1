@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import {
   Formik, Form, Field, ErrorMessage, FormikErrors,
 } from "formik";
-import Dropzone from "react-dropzone";
 import useSupabase from "../../hooks/useSupabase";
 import getFileFromUrl from "../../utils/getFileFromUrl";
 import {
@@ -14,6 +13,7 @@ import {
   MinorsField,
 } from "../profile/ProfileFields";
 import ViewAvatar from "../profile/ViewAvatar";
+import EditAvatar from "../profile/EditAvatar";
 
 /* eslint-disable react/require-default-props */
 interface Step1Props {
@@ -140,31 +140,7 @@ const Step1 = ({
 
             <div>
               {values.avatar && <ViewAvatar avatar={ values.avatar } />}
-              <Dropzone
-                accept="image/jpeg, image/png, image/gif"
-                maxFiles={ 1 }
-                onDrop={ ([file]) => setFieldValue("avatar", file) }
-              >
-                {({ getRootProps, getInputProps }) => (
-                  /* eslint-disable react/jsx-props-no-spreading */
-                  <div { ...getRootProps() } className="p-4 bg-gray-300 border-black border-2 rounded-lg">
-                    <input { ...getInputProps() } />
-                    <p>
-                      Select a profile picture (*.jpeg, *.png, *.gif)
-                      {values.avatar?.name && (
-                        <>
-                          :
-                          <b>
-                            {" "}
-                            {values.avatar.name}
-                          </b>
-                        </>
-                      )}
-                    </p>
-                    <ErrorMessage name="avatar" component="p" className="text-red-500" />
-                  </div>
-                )}
-              </Dropzone>
+              <EditAvatar value={ values.avatar } onChange={ (file: File) => setFieldValue("avatar", file) } />
             </div>
 
             <YearField />

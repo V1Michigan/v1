@@ -94,7 +94,10 @@ const UserProfile: NextPage = () => {
   }, [dbProfileData, supabase]);
 
   const profileData = useMemo(
-    () => dbProfileData && ({ ...dbProfileData, avatarUrl, resumeUrl } as Profile),
+    () => dbProfileData
+    && avatarUrl
+    && resumeUrl
+    && ({ ...dbProfileData, avatarUrl, resumeUrl } as Profile),
     [dbProfileData, avatarUrl, resumeUrl],
   );
 
