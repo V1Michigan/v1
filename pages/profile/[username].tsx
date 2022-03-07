@@ -1,11 +1,12 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useMemo, useState } from "react";
-import useSupabase from "../../hooks/useSupabase";
+import { useEffect, useReducer, useState } from "react";
 import ProtectedRoute from "../../components/ProtectedRoute";
 import ViewProfile from "../../components/profile/ViewProfile";
 import ViewResume from "../../components/profile/ViewResume";
 import ViewAvatar from "../../components/profile/ViewAvatar";
+import isObjectEqual from "../../utils/isObjectEqual";
+import useSupabase from "../../hooks/useSupabase";
 
 // Username included separately
 export type Profile = {
@@ -23,8 +24,8 @@ export type Profile = {
   website: string,
   roles: string[],
   interests: string[],
-  avatarUrl: string,
-  resumeUrl: string,
+  avatar: File,
+  resume: File,
 }
 const PROFILE_COLUMNS = "id, email, name, phone, year, fields_of_study, linkedin, website, roles, interests";
 
@@ -34,72 +35,38 @@ const UserProfile: NextPage = () => {
   const { supabase, username: currentUsername } = useSupabase();
   const isCurrentUser = profileUsername === currentUsername;
 
-  const [dbProfileData, setDBProfileData] = useState<Profile | null>(null);
-  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
-  const [resumeUrl, setResumeUrl] = useState<string | null>(null);
+  const [editMode, toggleEditMode] = useReducer((x) => !x, false);
+
+  const [profileData, setProfileData] = useState<Profile | null>(null);
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      const { data, error, status } = await supabase
+    const fetchProfileData = async () => {
+      const { data: data_, error, status } = await supabase
         .from("profiles")
         .select(PROFILE_COLUMNS)
         .eq("username", profileUsername)
         .single();
+      const data = data_ as Omit<Profile, "avatar" | "resume">;
 
       if ((error && status !== 406) || !data) {
         router.replace("/404");
       } else {
-        setDBProfileData(data);
+        // TODO: This blocks rendering until the avatar and resume are fetched,
+        // consider rendering as soon as DB data fetched
+        // TODO: Handle errors
+        const [{ data: avatar }, { data: resume }] = await Promise.all([
+          supabase.storage.from("avatars").download(data.id),
+          supabase.storage.from("resumes").download(`${data.id}.pdf`),
+        ]);
+        setProfileData({
+          ...data,
+          avatar: new File([avatar as BlobPart], "avatar"),
+          resume: new File([resume as BlobPart], `${profileUsername} Resume.pdf`),
+        });
       }
     };
-    fetchProfile();
+    fetchProfileData();
   }, [supabase, profileUsername, router]);
-
-  useEffect(() => {
-    if (!dbProfileData) {
-      return;
-    }
-    const getAvatarUrl = async () => {
-      const { data, error } = await supabase.storage.from("avatars").download(dbProfileData.id);
-      if (error) {
-        // eslint-disable-next-line no-console
-        console.error(error);
-      } else if (!data) {
-        // eslint-disable-next-line no-console
-        console.error("No avatar found");
-      } else {
-        setAvatarUrl(URL.createObjectURL(data));
-      }
-    };
-    getAvatarUrl();
-  }, [dbProfileData, supabase]);
-
-  useEffect(() => {
-    if (!dbProfileData) {
-      return;
-    }
-    const getResumeUrl = async () => {
-      const { data, error } = await supabase.storage.from("resumes").download(`${dbProfileData.id}.pdf`);
-      if (error) {
-        // eslint-disable-next-line no-console
-        console.error(error);
-      } else if (!data) {
-        // eslint-disable-next-line no-console
-        console.error("No resume found");
-      } else {
-        setResumeUrl(URL.createObjectURL(data));
-      }
-    };
-    getResumeUrl();
-  }, [dbProfileData, supabase]);
-
-  const profileData = useMemo(
-    () => dbProfileData
-    && avatarUrl
-    && resumeUrl
-    && ({ ...dbProfileData, avatarUrl, resumeUrl } as Profile),
-    [dbProfileData, avatarUrl, resumeUrl],
-  );
 
   if (!profileUsername || typeof profileUsername !== "string" || !profileData) {
     return null;
@@ -108,7 +75,7 @@ const UserProfile: NextPage = () => {
   return (
     <div>
       {/* TODO: Edit avatar */}
-      <ViewAvatar avatar={ profileData.avatarUrl } />
+      <ViewAvatar avatar={ profileData.avatar } />
 
       <ViewProfile
         username={ profileUsername }
@@ -116,9 +83,18 @@ const UserProfile: NextPage = () => {
       />
 
       {/* TODO: Edit resume */}
-      {resumeUrl && <ViewResume resume={ resumeUrl } />}
+      {profileData.resume && <ViewResume resume={ profileData.resume } />}
 
       <div className="mt-4">
+        {isCurrentUser && (
+          <button
+            className="button block"
+            onClick={ toggleEditMode }
+            type="button"
+          >
+            {editMode ? "Save Profile" : "Edit Profile"}
+          </button>
+        )}
         <button
           className="button block"
           onClick={ () => supabase.auth.signOut() }
