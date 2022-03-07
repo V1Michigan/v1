@@ -3,14 +3,16 @@ import {
   Formik, Form, Field, ErrorMessage, FormikErrors,
 } from "formik";
 import Dropzone from "react-dropzone";
-import MultiSelect from "./MultiSelect";
 import useSupabase from "../../hooks/useSupabase";
 import getFileFromUrl from "../../utils/getFileFromUrl";
-import { Year, FieldOfStudy } from "../../constants/profile";
-
-const FIELDS_OF_STUDY = Object.entries(FieldOfStudy).map(
-  ([key, name]) => ({ value: key, label: name }),
-);
+import {
+  NameField,
+  UsernameField,
+  PhoneField,
+  YearField,
+  MajorsField,
+  MinorsField,
+} from "../profile/ProfileFields";
 
 /* eslint-disable react/require-default-props */
 interface Step1Props {
@@ -48,9 +50,6 @@ const Step1 = ({
     fetchInitialAvatar();
   }, [initialAvatarUrl]);
 
-  // Memo to avoid repeated queries
-  const [openUsernames, setOpenUsernames] = useState<{[key: string]: boolean}>({});
-
   if (!user) {
     return null;
   }
@@ -73,53 +72,8 @@ const Step1 = ({
           setSubmitError(null);
           const errors: FormikErrors<FormValues> = {};
 
-          if (!values.name) {
-            errors.name = "Please enter your name";
-          } else if (values.name.length < 2 || values.name.length > 50) {
-            errors.name = "Please enter a name between 2 and 50 characters";
-          }
-
-          if (!values.username) {
-            errors.username = "Please select a username";
-          } else if (values.username.length < 3 || values.username.length > 30) {
-            errors.username = "Username must be between 3 and 30 characters";
-          } else if (!/^[a-zA-Z\d]*$/.test(values.username)) {
-            errors.username = "Usernames must only contain letters and numbers";
-          } else if (openUsernames[values.username] === undefined) {
-            const { count, error, status } = await supabase
-              .from("profiles")
-              .select("username", { count: "exact", head: true })
-              .eq("username", values.username);
-            if (error && status !== 406) {
-              errors.username = error.message;
-            } else {
-              if (count) {
-                errors.username = "Username is already taken";
-              }
-              setOpenUsernames(
-                (openUsernames_) => ({ ...openUsernames_, [values.username]: !count }),
-              );
-            }
-          } else if (!openUsernames[values.username]) {
-            errors.username = "Username is already taken";
-          }
-
-          if (!values.phone) {
-            errors.phone = "Please enter your phone number";
-          } else if (!/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/.test(values.phone)) {
-            errors.phone = "Please enter a valid phone number";
-          }
-
           if (!values.avatar) {
             errors.avatar = "Please upload a profile picture";
-          }
-
-          if (!values.year) {
-            errors.year = "Please select your year";
-          }
-
-          if (values.majors.length === 0) {
-            errors.majors = "Please select at least one major, or 'Undecided'";
           }
 
           return errors;
@@ -173,28 +127,15 @@ const Step1 = ({
         {({ values, setFieldValue, isSubmitting }) => (
           <Form className="flex flex-col w-1/2 gap-y-4">
 
-            <div>
-              <label htmlFor="name" className="block">Name</label>
-              <Field type="text" name="name" placeholder="Name" />
-              <ErrorMessage name="name" component="p" className="text-red-500" />
-            </div>
+            <NameField />
 
             <div>
               <label htmlFor="email" className="block">Email</label>
               <Field type="email" value={ email } disabled />
             </div>
 
-            <div>
-              <label htmlFor="username" className="block">Username</label>
-              <Field type="text" name="username" placeholder="Username" />
-              <ErrorMessage name="username" component="p" className="text-red-500" />
-            </div>
-
-            <div>
-              <label htmlFor="phone" className="block">Phone number</label>
-              <Field type="tel" name="phone" placeholder="xxx-xxx-xxxx" />
-              <ErrorMessage name="phone" component="p" className="text-red-500" />
-            </div>
+            <UsernameField />
+            <PhoneField />
 
             <div>
               {values.avatar && (
@@ -232,37 +173,9 @@ const Step1 = ({
               </Dropzone>
             </div>
 
-            <div>
-              <label htmlFor="year" className="block">School year</label>
-              <Field as="select" name="year">
-                <option value="" disabled hidden>
-                  Select your year
-                </option>
-                {Object.entries(Year).map(([key, value]) => (
-                  <option key={ key } value={ key }>{value}</option>
-                ))}
-              </Field>
-              <ErrorMessage name="year" component="p" className="text-red-500" />
-            </div>
-
-            <div>
-              <label htmlFor="majors" className="block">Major(s)</label>
-              <MultiSelect
-                name="majors"
-                options={ FIELDS_OF_STUDY }
-                placeholder="Select your major(s)"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="minors" className="block">Minor(s) (optional)</label>
-              <MultiSelect
-                name="minors"
-                // List of minors might be slightly different...fine for now
-                options={ FIELDS_OF_STUDY }
-                placeholder="Select your minor(s)"
-            />
-            </div>
+            <YearField />
+            <MajorsField />
+            <MinorsField />
 
             <button type="submit" disabled={ isSubmitting }>
               {isSubmitting ? "Loading..." : "Submit"}

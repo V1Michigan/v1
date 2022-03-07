@@ -11,17 +11,24 @@ interface MultiSelectProps {
   name: string;
   options: Option[];
   placeholder: string;
+  // eslint-disable-next-line react/require-default-props
+  validate?: (value: string[]) => string | undefined;
 }
 
 const MultiSelect = ({
   name,
   options,
   placeholder,
+  validate = undefined,
 }: MultiSelectProps) => {
-  const [field, _, { setValue, setTouched }] = useField(name);
+  const [field, _, { setValue, setTouched, setError }] = useField(name);
 
   const onChange = (option: MultiValue<Option>) => {
-    setValue((option as Option[]).map((item) => item.value));
+    const value = (option as Option[]).map((item) => item.value);
+    setValue(value);
+    if (validate) {
+      setError(validate(value));
+    }
   };
 
   return (

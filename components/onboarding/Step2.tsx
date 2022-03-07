@@ -1,11 +1,15 @@
 import { useState } from "react";
 import {
-  Formik, Form, Field, ErrorMessage, FormikErrors,
+  Formik, Form, ErrorMessage, FormikErrors,
 } from "formik";
 import Dropzone from "react-dropzone";
 import useSupabase from "../../hooks/useSupabase";
-import MultiSelect from "./MultiSelect";
-import { RoleType, Interest } from "../../constants/profile";
+import {
+  RoleTypesField,
+  InterestsField,
+  LinkedInField,
+  AdditionalLinksField,
+} from "../profile/ProfileFields";
 
 interface FormValues {
   roleTypes: string[],
@@ -42,32 +46,12 @@ const Step2 = ({ nextStep }: Step2Props) => {
           setSubmitError(null);
           const errors: FormikErrors<FormValues> = {};
 
-          if (values.roleTypes.length === 0) {
-            errors.roleTypes = "Please select at least one role";
-          }
-
-          if (values.interests.length === 0) {
-            errors.interests = "Please select at least one of your interests";
-          }
-
           if (!values.resume) {
             errors.resume = "Please upload your resume";
           } else if (values.resume.type !== "application/pdf") {
             errors.resume = "Please upload a PDF resume";
           } else if (values.resume.size > 5 * 1024 * 1024) {
             errors.resume = "Please limit resume size to 5 MB";
-          }
-
-          // Note that LinkedIn is optional
-          if (values.linkedin && !/https:\/\/linkedin\.com\/in\/.{3,100}/.test(values.linkedin)) {
-            errors.linkedin = (
-              "Please enter a valid LinkedIn profile URL (e.g. https://www.linkedin.com/in/billymagic)"
-            );
-          }
-
-          // Note that additionalLinks is optional
-          if (values.additionalLinks && values.additionalLinks.length > 500) {
-            errors.additionalLinks = "Please limit additional links to 500 characters";
           }
 
           return errors;
@@ -115,28 +99,9 @@ const Step2 = ({ nextStep }: Step2Props) => {
      >
         {({ values, setFieldValue, isSubmitting }) => (
           <Form className="flex flex-col w-1/2 gap-y-4">
-            <div>
-              <label htmlFor="roleTypes">Type(s) of role you&apos;re interested in:</label>
-              {Object.entries(RoleType).map(([key, value]) => (
-                <div key={ key }>
-                  <Field
-                    type="checkbox"
-                    name="roleTypes"
-                    className="m-1"
-                    id={ key }
-                    value={ key }
-                    />
-                  <label htmlFor={ key }>{ value }</label>
-                </div>
-              ))}
-              <ErrorMessage name="roleTypes" component="p" className="text-red-500" />
-            </div>
 
-            <MultiSelect
-              placeholder="Industries you&apos;re interested in"
-              name="interests"
-              options={ Object.entries(Interest).map(([k, v]) => ({ value: k, label: v })) }
-            />
+            <RoleTypesField />
+            <InterestsField />
 
             <div>
               <Dropzone
@@ -166,22 +131,8 @@ const Step2 = ({ nextStep }: Step2Props) => {
               </Dropzone>
             </div>
 
-            <div>
-              <label htmlFor="linkedin">LinkedIn profile (optional)</label>
-              <Field type="text" name="linkedin" placeholder="https://linkedin.com/in/billymagic" />
-              <ErrorMessage name="linkedin" component="p" className="text-red-500" />
-            </div>
-
-            <div>
-              <label htmlFor="additionalLinks">
-                Any other links you&apos;d like to share? (optional)
-              </label>
-              <Field
-                type="text"
-                name="additionalLinks"
-                placeholder="E.g. personal site, Twitter, past projects..."
-            />
-            </div>
+            <LinkedInField />
+            <AdditionalLinksField />
 
             <button type="submit" disabled={ isSubmitting }>
               {isSubmitting ? "Loading..." : "Submit"}
