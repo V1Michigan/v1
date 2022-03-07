@@ -10,6 +10,7 @@ import {
   LinkedInField,
   AdditionalLinksField,
 } from "../profile/ProfileFields";
+import ViewResume from "../profile/ViewResume";
 
 interface FormValues {
   roleTypes: string[],
@@ -104,6 +105,7 @@ const Step2 = ({ nextStep }: Step2Props) => {
             <InterestsField />
 
             <div>
+              {values.resume && <ViewResume resume={ values.resume } maxPages={ 1 } />}
               <Dropzone
                 accept="application/pdf"
                 maxFiles={ 1 }

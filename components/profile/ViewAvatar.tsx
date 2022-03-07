@@ -5,11 +5,11 @@ interface ViewAvatarProps {
 }
 
 const ViewAvatar = ({ avatar: avatar_ }: ViewAvatarProps) => {
-  const avatar = useMemo(() => (typeof avatar_ === "string" ? avatar_ : URL.createObjectURL(avatar_)),
+  const avatarUrl = useMemo(() => (typeof avatar_ === "string" ? avatar_ : URL.createObjectURL(avatar_)),
     [avatar_]);
   return (
     <img
-      src={ avatar }
+      src={ avatarUrl }
       className="w-32 h-32 rounded-full m-2 border-black border-2"
       alt="Profile"
     />

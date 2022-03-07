@@ -116,7 +116,7 @@ const UserProfile: NextPage = () => {
       />
 
       {/* TODO: Edit resume */}
-      {resumeUrl && <ViewResume url={ resumeUrl } />}
+      {resumeUrl && <ViewResume resume={ resumeUrl } />}
 
       <div className="mt-4">
         <button

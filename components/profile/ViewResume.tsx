@@ -1,22 +1,26 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/legacy/build/pdf.worker.min.js`;
 
 interface ViewResumeProps {
-  url: string,
+  resume: string | File,
+  // eslint-disable-next-line react/require-default-props
+  maxPages?: number,
 }
 
-const ViewResume = ({ url }: ViewResumeProps) => {
+const ViewResume = ({ resume: resume_, maxPages = Infinity }: ViewResumeProps) => {
+  const resumeUrl = useMemo(() => (typeof resume_ === "string" ? resume_ : URL.createObjectURL(resume_)),
+    [resume_]);
   const [numPages, setNumPages] = useState<number>(0);
   return (
-    <a href={ url } target="_blank" rel="noopener noreferrer">
+    <a href={ resumeUrl } target="_blank" rel="noopener noreferrer">
       <Document
-        file={ url }
+        file={ resumeUrl }
         onLoadSuccess={ ({ numPages: pages }) => setNumPages(pages) }
     >
         <div className="flex flex-row overflow-x-auto">
-          {Array.from({ length: numPages })
+          {Array.from({ length: Math.min(numPages, maxPages) })
             .map((_, n) => n + 1)
             .map((n) => (
               <Page key={ n } pageNumber={ n } height={ 300 } />
