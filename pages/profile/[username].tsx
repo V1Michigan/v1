@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useMemo, useState } from "react";
-import { Formik, Form, FormikErrors } from "formik";
+import { useEffect, useState } from "react";
+import { Formik, Form } from "formik";
 import ProtectedRoute from "../../components/ProtectedRoute";
 import ViewProfile from "../../components/profile/ViewProfile";
 import ViewResume from "../../components/profile/ViewResume";
@@ -36,14 +36,9 @@ const UserProfile: NextPage = () => {
   const { supabase, username: currentUsername } = useSupabase();
   const isCurrentUser = profileUsername === currentUsername;
 
-  const [editMode, setEditMode] = useState(true);
+  const [editMode, setEditMode] = useState(true); // TODO: false
 
   const [initialProfile, setInitialProfile] = useState<Profile | null>(null);
-  const [profileData, setProfileData] = useState<Profile | null>(null);
-  const profileHasChanges = useMemo(
-    () => initialProfile && profileData && !isObjectEqual(initialProfile, profileData),
-    [initialProfile, profileData],
-  );
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -71,42 +66,87 @@ const UserProfile: NextPage = () => {
           resume: new File([resume as BlobPart], `${profileUsername} Resume.pdf`),
         };
         setInitialProfile(newProfileData);
-        setProfileData(newProfileData);
       }
     };
     fetchProfileData();
   }, [supabase, profileUsername, router]);
 
-  const saveProfile = () => {
-    if (!profileHasChanges) {
-      return;
-    }
-    setInitialProfile(profileData);
-    setEditMode(false);
-  };
-
-  if (!profileUsername || typeof profileUsername !== "string" || !initialProfile || !profileData) {
+  if (!profileUsername || typeof profileUsername !== "string" || !initialProfile) {
     return null;
   }
 
+  const saveProfile = async (profileData_: Profile) => {
+    if (isObjectEqual(initialProfile, profileData_)) {
+      return;
+    }
+    const {
+      id, avatar, resume, ...profile
+    } = profileData_;
+    // TODO: handle errors
+    await Promise.all([
+      supabase
+        .from("profiles")
+        .update({
+          phone: profile.phone,
+          linkedin: profile.linkedin,
+          website: profile.website,
+          year: profile.year,
+          fields_of_study: {
+            majors: profile.majors,
+            minors: profile.minors,
+          },
+          roles: profile.roles,
+          interests: profile.interests,
+          updated_at: new Date(),
+        }, {
+          returning: "minimal",
+        })
+        .eq("id", id),
+      (avatar !== initialProfile.avatar) && supabase.storage.from("avatars").upload(
+        id, avatar, {
+          contentType: avatar.type,
+          cacheControl: "3600",
+          upsert: true,
+        },
+      ),
+      (resume !== initialProfile.resume) && supabase.storage.from("resumes").upload(
+        id, resume, {
+          contentType: resume.type,
+          cacheControl: "3600",
+          upsert: true,
+        },
+      ),
+    ].filter(Boolean));
+    setInitialProfile(profileData_);
+    setEditMode(false);
+  };
+
   return (
     <Formik
-      enableReinitialize // to set avatar after fetching initialAvatarUrl
+      enableReinitialize // to update when resetting initialProfile after submit
       initialValues={ initialProfile }
       validate={ undefined }
       onSubmit={ saveProfile }
     >
-      {({ isSubmitting }) => (
+      {({ values, isSubmitting }) => (
         <Form className="flex flex-col w-1/2 gap-y-4">
           {/* TODO: Edit avatar */}
-          <ViewAvatar avatar={ profileData.avatar } />
+          <ViewAvatar avatar={ values.avatar } />
 
+          {/* Not allowing name or username changes for now */}
+          <h2 className="text-2xl">
+            <span className="font-bold">{values.name}</span>
+            {" "}
+            (
+            {profileUsername}
+            )
+          </h2>
           {editMode
-            ? <EditProfile profile={ profileData } />
-            : <ViewProfile profile={ profileData } />}
+            ? <EditProfile profile={ values } />
+            : <ViewProfile profile={ values } />}
 
           {/* TODO: Edit resume */}
-          {profileData.resume && <ViewResume resume={ profileData.resume } />}
+          {values.resume && <ViewResume resume={ values.resume } />}
 
           {isCurrentUser && (
             <div className="mt-4">
@@ -114,9 +154,8 @@ const UserProfile: NextPage = () => {
                 <>
                   <button
                     className="button block"
-                    onClick={ saveProfile }
-                    disabled={ !profileHasChanges || isSubmitting }
-                    type="button"
+                    disabled={ isObjectEqual(values, initialProfile) || isSubmitting }
+                    type="submit"
                   >
                     Save Profile
                   </button>

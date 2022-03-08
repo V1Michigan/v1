@@ -10,7 +10,6 @@ interface EditProfileProps {
 
 const EditProfile = ({ profile }: EditProfileProps) => (
   <div className="flex flex-col gap-y-4">
-    <h2 className="text-2xl font-bold">{profile.name}</h2>
     <div className="flex flex-col gap-y-2 p-2">
       <div className="flex flex-row">
         <img className="h-6" src="/profile/email.svg" alt="Email" />

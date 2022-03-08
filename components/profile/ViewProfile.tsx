@@ -10,7 +10,6 @@ interface ViewProfileProps {
 
 const ViewProfile = ({ profile }: ViewProfileProps) => (
   <div>
-    <h2 className="text-2xl font-bold">{profile.name}</h2>
     <div className="flex flex-row gap-x-8 p-2">
       <Link href={ `mailto:${profile.email}` } passHref>
         <img src="/profile/email.svg" alt="Email" />
