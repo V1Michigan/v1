@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Field, ErrorMessage } from "formik";
-import useSupabase from "../../hooks/useSupabase";
-import MultiSelect from "../MultiSelect";
+import useSupabase from "../../../hooks/useSupabase";
+import MultiSelect from "../../MultiSelect";
 import {
   Year, FieldOfStudy, RoleType, Interest,
-} from "../../constants/profile";
+} from "../../../constants/profile";
 
 const FIELDS_OF_STUDY = Object.entries(FieldOfStudy).map(
   ([key, name]) => ({ value: key, label: name }),

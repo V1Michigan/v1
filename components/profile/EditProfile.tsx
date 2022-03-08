@@ -2,7 +2,7 @@ import type { Profile } from "../../pages/profile/[username]";
 import {
   AdditionalLinksField, EmailField, InterestsField, LinkedInField, MajorsField,
   MinorsField, PhoneField, RolesField, YearField,
-} from "./ProfileFields";
+} from "./fields/ProfileFields";
 
 interface EditProfileProps {
   profile: Profile

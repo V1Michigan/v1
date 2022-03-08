@@ -6,9 +6,9 @@ import {
   InterestsField,
   LinkedInField,
   AdditionalLinksField,
-} from "../profile/ProfileFields";
+} from "../profile/fields/ProfileFields";
 import ViewResume from "../profile/ViewResume";
-import EditResume from "../profile/EditResume";
+import EditResume from "../profile/fields/EditResume";
 
 interface FormValues {
   roles: string[],

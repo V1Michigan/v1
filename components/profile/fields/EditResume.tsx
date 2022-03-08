@@ -1,6 +1,7 @@
 import { ErrorMessage, useField } from "formik";
 import Dropzone from "react-dropzone";
 
+// Consider combining this with EditAvatar...lots of duplicated code
 const EditResume = () => {
   const [field, _, { setValue, setError }] = useField("resume");
   const validateResume = (resume: File) => {

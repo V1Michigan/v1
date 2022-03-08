@@ -9,8 +9,8 @@ import ViewAvatar from "../../components/profile/ViewAvatar";
 import isObjectEqual from "../../utils/isObjectEqual";
 import useSupabase from "../../hooks/useSupabase";
 import EditProfile from "../../components/profile/EditProfile";
-import EditAvatar from "../../components/profile/EditAvatar";
-import EditResume from "../../components/profile/EditResume";
+import EditAvatar from "../../components/profile/fields/EditAvatar";
+import EditResume from "../../components/profile/fields/EditResume";
 
 // Username included separately
 export type Profile = {
