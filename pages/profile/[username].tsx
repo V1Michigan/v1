@@ -2,6 +2,7 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Formik, Form } from "formik";
+import type { PostgrestError } from "@supabase/supabase-js";
 import ProtectedRoute from "../../components/ProtectedRoute";
 import ViewProfile from "../../components/profile/ViewProfile";
 import ViewResume from "../../components/profile/ViewResume";
@@ -41,6 +42,8 @@ const UserProfile: NextPage = () => {
   const [editMode, setEditMode] = useState(false);
   const [initialProfile, setInitialProfile] = useState<Profile | null>(null);
 
+  const [formSubmitErrors, setFormSubmitErrors] = useState<string[]>([]);
+
   useEffect(() => {
     const fetchProfileData = async () => {
       const { data: data_, error, status } = await supabase
@@ -72,19 +75,14 @@ const UserProfile: NextPage = () => {
     fetchProfileData();
   }, [supabase, profileUsername, router]);
 
-  if (!profileUsername || typeof profileUsername !== "string" || !initialProfile) {
-    return null;
-  }
-
-  const saveProfile = async (profileData_: Profile) => {
-    if (isObjectEqual(initialProfile, profileData_)) {
+  const saveProfile = async (profileData: Profile) => {
+    if (!initialProfile || isObjectEqual(initialProfile, profileData)) {
       return;
     }
     const {
       id, avatar, resume, ...profile
-    } = profileData_;
-    // TODO: handle errors
-    await Promise.all([
+    } = profileData;
+    const results = await Promise.all([
       supabase
         .from("profiles")
         .update({
@@ -117,16 +115,27 @@ const UserProfile: NextPage = () => {
           upsert: true,
         },
       ),
-    ].filter(Boolean));
-    setInitialProfile(profileData_);
-    setEditMode(false);
+    ]);
+    const errors = results.map(
+      (result) => result && result.error,
+    ).filter(Boolean) as (Error | PostgrestError)[];
+    if (errors.length > 0) {
+      setFormSubmitErrors(errors.map(({ message }) => message));
+    } else {
+      setInitialProfile(profileData);
+      setEditMode(false);
+    }
   };
+
+  if (!profileUsername || typeof profileUsername !== "string" || !initialProfile) {
+    return null;
+  }
 
   return (
     <Formik
       enableReinitialize // to update when resetting initialProfile after submit
       initialValues={ initialProfile }
-      validate={ undefined }
+      validate={ () => setFormSubmitErrors([]) }
       onSubmit={ saveProfile }
     >
       {({ values, isSubmitting }) => (
@@ -156,7 +165,7 @@ const UserProfile: NextPage = () => {
                 <>
                   <button
                     className="button block"
-                    disabled={ isObjectEqual(values, initialProfile) || isSubmitting }
+                    disabled={ isSubmitting || isObjectEqual(values, initialProfile) }
                     type="submit"
                   >
                     {isSubmitting ? "Saving..." : "Save Profile"}
@@ -169,6 +178,9 @@ const UserProfile: NextPage = () => {
                   >
                     Cancel
                   </button>
+                  {formSubmitErrors.map((error) => (
+                    <p key={ error } className="text-red-500">{ error }</p>
+                  ))}
                 </>
               )
                 : (
