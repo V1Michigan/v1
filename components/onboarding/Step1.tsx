@@ -10,9 +10,9 @@ import {
   YearField,
   MajorsField,
   MinorsField,
-} from "../profile/ProfileFields";
+} from "../profile/fields/ProfileFields";
 import ViewAvatar from "../profile/ViewAvatar";
-import EditAvatar from "../profile/EditAvatar";
+import EditAvatar from "../profile/fields/EditAvatar";
 
 /* eslint-disable react/require-default-props */
 interface Step1Props {
@@ -118,19 +118,19 @@ const Step1 = ({
         {({ values, isSubmitting }) => (
           <Form className="flex flex-col w-1/2 gap-y-4">
 
-            <NameField />
-            <EmailField value={ email } />
-            <UsernameField />
-            <PhoneField />
+            <NameField label="Name" />
+            <EmailField value={ email } label="Email" />
+            <UsernameField label="Username" />
+            <PhoneField label="Phone" />
 
             <div>
               {values.avatar && <ViewAvatar avatar={ values.avatar } />}
               <EditAvatar />
             </div>
 
-            <YearField />
-            <MajorsField />
-            <MinorsField />
+            <YearField label="School year" />
+            <MajorsField label="Major(s)" />
+            <MinorsField label="Minor(s) (optional)" />
 
             <button type="submit" disabled={ isSubmitting }>
               {isSubmitting ? "Loading..." : "Next ›"}

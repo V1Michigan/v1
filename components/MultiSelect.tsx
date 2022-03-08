@@ -10,7 +10,6 @@ interface Option {
 interface MultiSelectProps {
   name: string;
   options: Option[];
-  placeholder: string;
   // eslint-disable-next-line react/require-default-props
   validate?: (value: string[]) => string | undefined;
 }
@@ -18,7 +17,6 @@ interface MultiSelectProps {
 const MultiSelect = ({
   name,
   options,
-  placeholder,
   validate = undefined,
 }: MultiSelectProps) => {
   const [field, _, { setValue, setTouched, setError }] = useField(name);
@@ -39,7 +37,6 @@ const MultiSelect = ({
       onBlur={ () => setTouched(true) }
       options={ options }
       isMulti
-      placeholder={ placeholder }
     />
   );
 };

@@ -86,16 +86,16 @@ const Step2 = ({ nextStep }: Step2Props) => {
         {({ values, isSubmitting }) => (
           <Form className="flex flex-col w-1/2 gap-y-4">
 
-            <RolesField />
-            <InterestsField />
+            <RolesField label="Which types of roles are you interested in?" />
+            <InterestsField label="Which industries are you interested in?" />
 
             <div>
               {values.resume && <ViewResume resume={ values.resume } maxPages={ 1 } />}
               <EditResume />
             </div>
 
-            <LinkedInField />
-            <AdditionalLinksField />
+            <LinkedInField label="LinkedIn profile (optional)" />
+            <AdditionalLinksField label="Any other links you'd like to share? (optional)" />
 
             <button type="submit" disabled={ isSubmitting }>
               {isSubmitting ? "Loading..." : "Submit"}

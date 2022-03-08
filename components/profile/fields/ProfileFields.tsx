@@ -10,7 +10,11 @@ const FIELDS_OF_STUDY = Object.entries(FieldOfStudy).map(
   ([key, name]) => ({ value: key, label: name }),
 );
 
-const NameField = () => {
+interface LabelProps {
+  label: string | JSX.Element;
+}
+
+const NameField = ({ label }: LabelProps) => {
   const validateName = (value: string) => {
     if (!value) {
       return "Please enter your name";
@@ -21,7 +25,7 @@ const NameField = () => {
   };
   return (
     <div>
-      <label htmlFor="name" className="block">Name</label>
+      <label htmlFor="name" className="block">{label}</label>
       <Field type="text" name="name" placeholder="Name" validate={ validateName } />
       <ErrorMessage name="name" component="p" className="text-red-500" />
     </div>
@@ -29,14 +33,14 @@ const NameField = () => {
 };
 
 // We don't allow users to change their email address, this is just here for consistency
-const EmailField = ({ value }: {value: string}) => (
+const EmailField = ({ value, label }: {value: string} & LabelProps) => (
   <div>
-    <label htmlFor="email" className="block">Email</label>
+    <label htmlFor="email" className="block">{label}</label>
     <Field type="email" value={ value } disabled />
   </div>
 );
 
-const UsernameField = () => {
+const UsernameField = ({ label }: LabelProps) => {
   const { supabase } = useSupabase();
   // Memo to avoid repeated queries
   const [openUsernames, setOpenUsernames] = useState<{[key: string]: boolean}>({});
@@ -68,14 +72,14 @@ const UsernameField = () => {
   };
   return (
     <div>
-      <label htmlFor="username" className="block">Username</label>
+      <label htmlFor="username" className="block">{label}</label>
       <Field type="text" name="username" placeholder="Username" validate={ validateUsername } />
       <ErrorMessage name="username" component="p" className="text-red-500" />
     </div>
   );
 };
 
-const PhoneField = () => {
+const PhoneField = ({ label }: LabelProps) => {
   const validatePhone = (value: string) => {
     if (!value) {
       return "Please enter your phone number";
@@ -86,14 +90,14 @@ const PhoneField = () => {
   };
   return (
     <div>
-      <label htmlFor="phone" className="block">Phone number</label>
+      <label htmlFor="phone" className="block">{label}</label>
       <Field type="tel" name="phone" placeholder="xxx-xxx-xxxx" validate={ validatePhone } />
       <ErrorMessage name="phone" component="p" className="text-red-500" />
     </div>
   );
 };
 
-const YearField = () => {
+const YearField = ({ label }: LabelProps) => {
   const validateYear = (value: string) => {
     if (!value) {
       return "Please select your year";
@@ -102,7 +106,7 @@ const YearField = () => {
   };
   return (
     <div>
-      <label htmlFor="year" className="block">School year</label>
+      <label htmlFor="year" className="block">{label}</label>
       <Field as="select" name="year" validate={ validateYear }>
         <option value="" disabled hidden>
           Select your year
@@ -116,7 +120,7 @@ const YearField = () => {
   );
 };
 
-const MajorsField = () => {
+const MajorsField = ({ label }: LabelProps) => {
   const validateMajors = (value: string[]) => {
     if (value.length === 0) {
       return "Please select at least one major, or 'Undecided'";
@@ -125,11 +129,10 @@ const MajorsField = () => {
   };
   return (
     <div>
-      <label htmlFor="majors" className="block">Major(s)</label>
+      <label htmlFor="majors" className="block">{label}</label>
       <MultiSelect
         name="majors"
         options={ FIELDS_OF_STUDY }
-        placeholder="Select your major(s)"
         validate={ validateMajors }
       />
     </div>
@@ -137,19 +140,18 @@ const MajorsField = () => {
 };
 
 // No validation required
-const MinorsField = () => (
+const MinorsField = ({ label }: LabelProps) => (
   <div>
-    <label htmlFor="minors" className="block">Minor(s) (optional)</label>
+    <label htmlFor="minors" className="block">{label}</label>
     <MultiSelect
       name="minors"
       // List of minors might be slightly different...fine for now
       options={ FIELDS_OF_STUDY }
-      placeholder="Select your minor(s)"
     />
   </div>
 );
 
-const RolesField = () => {
+const RolesField = ({ label }: LabelProps) => {
   const validateRoles = (value: string[]) => {
     if (value.length === 0) {
       return "Please select at least one role";
@@ -158,7 +160,7 @@ const RolesField = () => {
   };
   return (
     <div>
-      <label htmlFor="roles">Type(s) of role you&apos;re interested in:</label>
+      <label htmlFor="roles">{label}</label>
       {Object.entries(RoleType).map(([key, value]) => (
         <div key={ key }>
           <Field
@@ -177,7 +179,7 @@ const RolesField = () => {
   );
 };
 
-const InterestsField = () => {
+const InterestsField = ({ label }: LabelProps) => {
   const validateInterests = (value: string[]) => {
     if (value.length === 0) {
       return "Please select at least one of your interests";
@@ -185,16 +187,18 @@ const InterestsField = () => {
     return undefined;
   };
   return (
-    <MultiSelect
-      placeholder="Industries you&apos;re interested in"
-      name="interests"
-      options={ Object.entries(Interest).map(([k, v]) => ({ value: k, label: v })) }
-      validate={ validateInterests }
-  />
+    <div>
+      <label htmlFor="interests">{label}</label>
+      <MultiSelect
+        name="interests"
+        options={ Object.entries(Interest).map(([k, v]) => ({ value: k, label: v })) }
+        validate={ validateInterests }
+      />
+    </div>
   );
 };
 
-const LinkedInField = () => {
+const LinkedInField = ({ label }: LabelProps) => {
   const validateLinkedIn = (value: string) => {
     // Note that LinkedIn is optional
     if (value && !/https:\/\/linkedin\.com\/in\/.{3,100}/.test(value)) {
@@ -206,14 +210,14 @@ const LinkedInField = () => {
   };
   return (
     <div>
-      <label htmlFor="linkedin">LinkedIn profile (optional)</label>
+      <label htmlFor="linkedin">{label}</label>
       <Field type="text" name="linkedin" placeholder="https://linkedin.com/in/billymagic" validate={ validateLinkedIn } />
       <ErrorMessage name="linkedin" component="p" className="text-red-500" />
     </div>
   );
 };
 
-const AdditionalLinksField = () => {
+const AdditionalLinksField = ({ label }: LabelProps) => {
   const validateAdditionalLinks = (value: string) => {
     // Note that additionalLinks is optional
     if (value && value.length > 500) {
@@ -223,9 +227,7 @@ const AdditionalLinksField = () => {
   };
   return (
     <div>
-      <label htmlFor="additionalLinks">
-        Any other links you&apos;d like to share? (optional)
-      </label>
+      <label htmlFor="additionalLinks">{label}</label>
       <Field
         type="text"
         name="additionalLinks"
