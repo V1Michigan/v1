@@ -9,6 +9,8 @@ import ViewAvatar from "../../components/profile/ViewAvatar";
 import isObjectEqual from "../../utils/isObjectEqual";
 import useSupabase from "../../hooks/useSupabase";
 import EditProfile from "../../components/profile/EditProfile";
+import EditAvatar from "../../components/profile/EditAvatar";
+import EditResume from "../../components/profile/EditResume";
 
 // Username included separately
 export type Profile = {
@@ -36,8 +38,7 @@ const UserProfile: NextPage = () => {
   const { supabase, username: currentUsername } = useSupabase();
   const isCurrentUser = profileUsername === currentUsername;
 
-  const [editMode, setEditMode] = useState(true); // TODO: false
-
+  const [editMode, setEditMode] = useState(false);
   const [initialProfile, setInitialProfile] = useState<Profile | null>(null);
 
   useEffect(() => {
@@ -130,8 +131,9 @@ const UserProfile: NextPage = () => {
     >
       {({ values, isSubmitting }) => (
         <Form className="flex flex-col w-1/2 gap-y-4">
-          {/* TODO: Edit avatar */}
+
           <ViewAvatar avatar={ values.avatar } />
+          {editMode && <EditAvatar />}
 
           {/* Not allowing name or username changes for now */}
           <h2 className="text-2xl">
@@ -145,8 +147,8 @@ const UserProfile: NextPage = () => {
             ? <EditProfile profile={ values } />
             : <ViewProfile profile={ values } />}
 
-          {/* TODO: Edit resume */}
           {values.resume && <ViewResume resume={ values.resume } />}
+          {editMode && <EditResume />}
 
           {isCurrentUser && (
             <div className="mt-4">
@@ -157,7 +159,7 @@ const UserProfile: NextPage = () => {
                     disabled={ isObjectEqual(values, initialProfile) || isSubmitting }
                     type="submit"
                   >
-                    Save Profile
+                    {isSubmitting ? "Saving..." : "Save Profile"}
                   </button>
                   <button
                     className="button block"

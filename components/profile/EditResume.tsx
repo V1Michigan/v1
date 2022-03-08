@@ -2,7 +2,7 @@ import { ErrorMessage, useField } from "formik";
 import Dropzone from "react-dropzone";
 
 const EditResume = () => {
-  const [field, _, { setValue, setError }] = useField("avatar");
+  const [field, _, { setValue, setError }] = useField("resume");
   const validateResume = (resume: File) => {
     if (!resume) {
       return "Please upload your resume";
