@@ -42,31 +42,38 @@ const UserProfile: NextPage = () => {
   const [editMode, setEditMode] = useState(false);
   const [initialProfile, setInitialProfile] = useState<Profile | null>(null);
 
+  const [dataFetchErrors, setDataFetchErrors] = useState<string[]>([]);
   const [formSubmitErrors, setFormSubmitErrors] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchProfileData = async () => {
-      const { data: data_, error, status } = await supabase
+      setDataFetchErrors([]);
+      const { data: data_, error: dbError, status } = await supabase
         .from("profiles")
         .select(PROFILE_COLUMNS)
         .eq("username", profileUsername)
         .single();
       const data = { ...data_, ...data_.fields_of_study } as Omit<Profile, "avatar" | "resume">;
 
-      if ((error && status !== 406) || !data) {
+      if ((dbError && status !== 406) || !data) {
         router.replace("/404");
       } else {
         // TODO: This blocks rendering until the avatar and resume are fetched,
         // consider rendering as soon as DB data fetched
-        // TODO: Handle errors
-        const [{ data: avatar }, { data: resume }] = await Promise.all([
+        const [
+          { data: avatar, error: avatarError }, { data: resume, error: resumeError },
+        ] = await Promise.all([
           supabase.storage.from("avatars").download(data.id),
           supabase.storage.from("resumes").download(`${data.id}.pdf`),
         ]);
 
+        setDataFetchErrors(
+          ([avatarError, resumeError].filter(Boolean) as Error[]).map((error) => error.message),
+        );
+
         const newProfileData = {
           ...data,
-          avatar: new File([avatar as BlobPart], "avatar"),
+          avatar: new File([avatar as BlobPart], `${profileUsername} avatar`),
           resume: new File([resume as BlobPart], `${profileUsername} Resume.pdf`),
         };
         setInitialProfile(newProfileData);
@@ -79,6 +86,7 @@ const UserProfile: NextPage = () => {
     if (!initialProfile || isObjectEqual(initialProfile, profileData)) {
       return;
     }
+    setFormSubmitErrors([]);
     const {
       id, avatar, resume, ...profile
     } = profileData;
@@ -158,6 +166,10 @@ const UserProfile: NextPage = () => {
 
           {values.resume && <ViewResume resume={ values.resume } />}
           {editMode && <EditResume />}
+
+          {dataFetchErrors.map((error) => (
+            <p key={ error } className="text-red-500">{ error }</p>
+          ))}
 
           {isCurrentUser && (
             <div className="mt-4">
