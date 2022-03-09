@@ -28,8 +28,9 @@ export type Profile = {
   website: string,
   roles: string[],
   interests: string[],
-  avatar: File,
-  resume: File,
+  // These two need to be fetched separately, after the DB query
+  avatar?: File,
+  resume?: File,
 }
 const PROFILE_COLUMNS = "id, email, name, phone, year, fields_of_study, linkedin, website, roles, interests";
 
@@ -48,35 +49,34 @@ const UserProfile: NextPage = () => {
   useEffect(() => {
     const fetchProfileData = async () => {
       setDataFetchErrors([]);
-      const { data: data_, error: dbError, status } = await supabase
+      const { data: dbData, error: dbError, status } = await supabase
         .from("profiles")
         .select(PROFILE_COLUMNS)
         .eq("username", profileUsername)
         .single();
-      const data = { ...data_, ...data_.fields_of_study } as Omit<Profile, "avatar" | "resume">;
+      const profile = { ...dbData, ...dbData.fields_of_study } as Omit<Profile, "avatar" | "resume">;
 
-      if ((dbError && status !== 406) || !data) {
+      if ((dbError && status !== 406) || !profile) {
         router.replace("/404");
       } else {
-        // TODO: This blocks rendering until the avatar and resume are fetched,
-        // consider rendering as soon as DB data fetched
+        // Show the profile data from the DB, then start fetching the avatar and resume
+        setInitialProfile(profile);
+
         const [
           { data: avatar, error: avatarError }, { data: resume, error: resumeError },
         ] = await Promise.all([
-          supabase.storage.from("avatars").download(data.id),
-          supabase.storage.from("resumes").download(`${data.id}.pdf`),
+          supabase.storage.from("avatars").download(profile.id),
+          supabase.storage.from("resumes").download(`${profile.id}.pdf`),
         ]);
 
         setDataFetchErrors(
           ([avatarError, resumeError].filter(Boolean) as Error[]).map((error) => error.message),
         );
-
-        const newProfileData = {
-          ...data,
+        setInitialProfile({
+          ...profile,
           avatar: new File([avatar as BlobPart], `${profileUsername} avatar`),
           resume: new File([resume as BlobPart], `${profileUsername} Resume.pdf`),
-        };
-        setInitialProfile(newProfileData);
+        });
       }
     };
     fetchProfileData();
@@ -109,14 +109,14 @@ const UserProfile: NextPage = () => {
           returning: "minimal",
         })
         .eq("id", id),
-      (avatar !== initialProfile.avatar) && supabase.storage.from("avatars").upload(
+      (avatar && avatar !== initialProfile.avatar) && supabase.storage.from("avatars").upload(
         id, avatar, {
           contentType: avatar.type,
           cacheControl: "3600",
           upsert: true,
         },
       ),
-      (resume !== initialProfile.resume) && supabase.storage.from("resumes").upload(
+      (resume && resume !== initialProfile.resume) && supabase.storage.from("resumes").upload(
         id, resume, {
           contentType: resume.type,
           cacheControl: "3600",
@@ -149,8 +149,12 @@ const UserProfile: NextPage = () => {
       {({ values, isSubmitting }) => (
         <Form className="flex flex-col w-1/2 gap-y-4">
 
-          <ViewAvatar avatar={ values.avatar } />
-          {editMode && <EditAvatar />}
+          {values.avatar && (
+            <>
+              <ViewAvatar avatar={ values.avatar } />
+              {editMode && <EditAvatar />}
+            </>
+          )}
 
           {/* Not allowing name or username changes for now */}
           <h2 className="text-2xl">
@@ -164,8 +168,12 @@ const UserProfile: NextPage = () => {
             ? <EditProfile profile={ values } />
             : <ViewProfile profile={ values } />}
 
-          {values.resume && <ViewResume resume={ values.resume } />}
-          {editMode && <EditResume />}
+          {values.resume && (
+            <>
+              <ViewResume resume={ values.resume } />
+              {editMode && <EditResume />}
+            </>
+          )}
 
           {dataFetchErrors.map((error) => (
             <p key={ error } className="text-red-500">{ error }</p>
