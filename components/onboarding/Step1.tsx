@@ -14,7 +14,6 @@ import {
 import ViewAvatar from "../profile/ViewAvatar";
 import EditAvatar from "../profile/fields/EditAvatar";
 
-/* eslint-disable react/require-default-props */
 interface Step1Props {
   email: string;
   initialName?: string;

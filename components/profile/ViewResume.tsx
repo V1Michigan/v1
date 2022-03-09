@@ -5,7 +5,6 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/l
 
 interface ViewResumeProps {
   resume: string | File,
-  // eslint-disable-next-line react/require-default-props
   maxPages?: number,
 }
 

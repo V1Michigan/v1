@@ -10,14 +10,13 @@ interface Option {
 interface MultiSelectProps {
   name: string;
   options: Option[];
-  // eslint-disable-next-line react/require-default-props
-  validate?: (value: string[]) => string | undefined;
+  validate?: (value: string[]) => string;
 }
 
 const MultiSelect = ({
   name,
   options,
-  validate = undefined,
+  validate,
 }: MultiSelectProps) => {
   const [field, _, { setValue, setTouched, setError }] = useField(name);
 
