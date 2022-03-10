@@ -5,5 +5,9 @@ module.exports = {
       // your project has ESLint errors.
       ignoreDuringBuilds: true,
     },
-  };
-
+    typescript: {
+      // Warning: Dangerously allow production builds to successfully complete even if
+      // your project has TypeScript errors.
+      ignoreBuildErrors: true,
+    },
+};
