@@ -37,6 +37,8 @@ const EmailField = ({ value, label }: {value: string} & LabelProps) => (
   <div>
     <label htmlFor="email" className="block">{label}</label>
     <Field type="email" value={ value } disabled />
+    {/* Error message, just in case */}
+    {/* <ErrorMessage name="email" component="p" className="text-red-500" /> */}
   </div>
 );
 
@@ -135,6 +137,7 @@ const MajorsField = ({ label }: LabelProps) => {
         options={ FIELDS_OF_STUDY }
         validate={ validateMajors }
       />
+      <ErrorMessage name="majors" component="p" className="text-red-500" />
     </div>
   );
 };
@@ -148,6 +151,8 @@ const MinorsField = ({ label }: LabelProps) => (
       // List of minors might be slightly different...fine for now
       options={ FIELDS_OF_STUDY }
     />
+    {/* In case we ever do validation */}
+    {/* <ErrorMessage name="minors" component="p" className="text-red-500" /> */}
   </div>
 );
 
@@ -194,6 +199,7 @@ const InterestsField = ({ label }: LabelProps) => {
         options={ Object.entries(Interest).map(([k, v]) => ({ value: k, label: v })) }
         validate={ validateInterests }
       />
+      <ErrorMessage name="interests" component="p" className="text-red-500" />
     </div>
   );
 };
@@ -234,6 +240,7 @@ const AdditionalLinksField = ({ label }: LabelProps) => {
         placeholder="E.g. personal site, Twitter, past projects..."
         validate={ validateAdditionalLinks }
       />
+      <ErrorMessage name="additionalLinks" component="p" className="text-red-500" />
     </div>
   );
 };
