@@ -166,19 +166,11 @@ const RolesField = ({ label }: LabelProps) => {
   return (
     <div>
       <label htmlFor="roles">{label}</label>
-      {Object.entries(RoleType).map(([key, value]) => (
-        <div key={ key }>
-          <Field
-            type="checkbox"
-            name="roles"
-            className="m-1"
-            id={ key }
-            value={ key }
-            validate={ validateRoles }
-          />
-          <label htmlFor={ key }>{ value }</label>
-        </div>
-      ))}
+      <MultiSelect
+        name="roles"
+        options={ Object.entries(RoleType).map(([k, v]) => ({ value: k, label: v })) }
+        validate={ validateRoles }
+      />
       <ErrorMessage name="roles" component="p" className="text-red-500" />
     </div>
   );
