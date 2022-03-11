@@ -83,15 +83,15 @@ const PhoneField = ({ label }: LabelProps) => {
   const validatePhone = (value: string) => {
     if (!value) {
       return "Please enter your phone number";
-    } if (!/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/.test(value)) {
-      return "Please enter a valid phone number";
+    } if (!/^(\+\d{1,2}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/.test(value)) {
+      return "Please enter a valid phone number. For country codes, use + followed by the country code";
     }
     return undefined;
   };
   return (
     <div>
       <label htmlFor="phone" className="block">{label}</label>
-      <Field type="tel" name="phone" placeholder="xxx-xxx-xxxx" validate={ validatePhone } />
+      <Field type="tel" name="phone" placeholder="###-###-####" validate={ validatePhone } />
       <ErrorMessage name="phone" component="p" className="text-red-500" />
     </div>
   );
