@@ -3,6 +3,8 @@ import Swal from "sweetalert2";
 import Fade from "./Fade";
 import { ContentHeader } from "./content";
 
+type FormInputElement = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+
 export default function Form() {
   const [invitationRequest, setInvitationRequest] = useState({
     name: "",
@@ -15,16 +17,15 @@ export default function Form() {
   });
   const [submitted, setSubmitted] = useState(false);
 
-  const autoExpand = (target) => {
+  const autoExpand = (target: FormInputElement) => {
     /* eslint-disable no-param-reassign */
     target.style.height = "inherit";
     target.style.height = `${target.scrollHeight}px`;
   };
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<FormInputElement>) => {
     const { name, value } = e.target;
     setInvitationRequest({ ...invitationRequest, [name]: value });
-
     autoExpand(e.target);
   };
 

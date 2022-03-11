@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import React, { useState } from "react";
 import Swal from "sweetalert2";
 
 import Fade from "./Fade";
@@ -11,16 +11,15 @@ export default function Form() {
   });
   const [submitted, setSubmitted] = useState(false);
 
-  const autoExpand = (target) => {
+  const autoExpand = (target: HTMLInputElement) => {
     /* eslint-disable no-param-reassign */
     target.style.height = "inherit";
     target.style.height = `${target.scrollHeight}px`;
   };
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setInvitationRequest({ ...invitationRequest, [name]: value });
-
     autoExpand(e.target);
   };
 
@@ -37,7 +36,7 @@ export default function Form() {
           }
 
           axios
-            .post(
+            .post<{result: string}>(
               "https://script.google.com/macros/s/AKfycbxcvZeIseDF-s5b6fNco4SZdZB68PLAM1P8zIDS4JDgIxWFECnQZJws/exec",
               data,
             )

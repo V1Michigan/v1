@@ -19,6 +19,7 @@ const MultiSelect = ({
   placeholder,
 }: MultiSelectProps) => {
   const [field, _, { setValue, setTouched }] = useField(name);
+  const value = options.filter((option) => (field.value as string[]).indexOf(option.value) !== -1);
 
   const onChange = (option: MultiValue<Option>) => {
     setValue((option as Option[]).map((item) => item.value));
@@ -27,7 +28,7 @@ const MultiSelect = ({
   return (
     <Select
       name={ field.name }
-      value={ options.filter((option) => field.value.indexOf(option.value) !== -1) }
+      value={ value }
       onChange={ onChange }
       onBlur={ () => setTouched(true) }
       options={ options }

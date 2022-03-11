@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
 
@@ -11,7 +11,7 @@ export default function YC() {
     referral: "",
   });
   const [submitted, setSubmitted] = useState(false);
-  const [referrer, setReferrer] = useState(null);
+  const [referrer, setReferrer] = useState<string | null>(null);
 
   const partners = [
     "mproduct",
@@ -30,25 +30,25 @@ export default function YC() {
   useEffect(() => {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
-    const referral = urlParams.get("ref");
+    const referral = urlParams.get("ref") as string;
     if (referral) {
       setReferrer(referral);
       setEvent((e) => ({ ...e, referral }));
     }
   }, []);
 
-  const autoExpand = (target) => {
+  const autoExpand = (target: HTMLInputElement) => {
     /* eslint-disable no-param-reassign */
     target.style.height = "inherit";
     target.style.height = `${target.scrollHeight}px`;
   };
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setEvent({ ...event, [name]: value });
-
     autoExpand(e.target);
   };
+
   return (
     <main>
       <Head>
@@ -146,7 +146,7 @@ export default function YC() {
             }
 
             axios
-              .post(
+              .post < { result: string }>(
                 "https://script.google.com/macros/s/AKfycbxlhVld1NPhOCvEPqctFEoRqSV7QCSXngL72BcJeb5CUUbEbrdm3xAu/exec",
                 data,
               )

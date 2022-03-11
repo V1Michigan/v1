@@ -27,6 +27,8 @@ interface GoogleUser extends User {
   }
 }
 
+export const isGoogleUser = (user: User | EmailUser | GoogleUser): user is GoogleUser => user.app_metadata.provider === "google";
+
 interface SupabaseContextInterface {
   supabase: SupabaseClient;
   signIn: (
@@ -68,6 +70,8 @@ function SupabaseProvider({ children }: { children: ReactChild | ReactChildren }
   useEffect(() => {
     async function getOnboardingStep() {
       if (user) {
+        // TODO: Should be fixed with Supabase DB types
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const { data, error, status } = await supabase
           .from("profiles")
           .select("onboarding_step")
@@ -78,7 +82,10 @@ function SupabaseProvider({ children }: { children: ReactChild | ReactChildren }
           throw error;
         }
 
-        setOnboardingStep_(data?.onboarding_step || "REGISTERED");
+        setOnboardingStep_(
+          (data as {onboarding_step?: OnboardingStep})?.onboarding_step
+          || "REGISTERED",
+        );
       }
     }
     getOnboardingStep();
@@ -97,8 +104,8 @@ function SupabaseProvider({ children }: { children: ReactChild | ReactChildren }
 
   let typedUser = null;
   if (user) {
-    if (user.app_metadata.provider === "google") {
-      typedUser = user as GoogleUser;
+    if (isGoogleUser(user)) {
+      typedUser = user;
     } else {
       typedUser = user as EmailUser;
     }

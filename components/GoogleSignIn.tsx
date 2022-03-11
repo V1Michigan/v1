@@ -1,6 +1,11 @@
 import { useState } from "react";
 
-const GoogleSignIn = ({ onClick, disabled = false }: {disabled: boolean, onClick: () => void}) => {
+interface GoogleSignInProps {
+  disabled: boolean;
+  onClick: () => void;
+}
+
+const GoogleSignIn = ({ onClick, disabled = false }: GoogleSignInProps) => {
   const [hover, setHover] = useState(false);
   const [pressed, setPressed] = useState(false);
   let src = "/google_signin/google_signin.png";

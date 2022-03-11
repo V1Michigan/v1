@@ -11,12 +11,18 @@ async function getData() {
   return data;
 }
 
+interface Event {
+  name: string;
+  start: string; // Not sure about this...
+  description: string;
+}
+
 const Calendar = () => {
-  const [events, setEvents] = useState([]);
+  const [events, setEvents] = useState<Event[]>([]);
 
   useEffect(() => {
     getData().then((data) => {
-      setEvents(data);
+      setEvents(data as Event[]);
     });
   }, []);
 
@@ -33,6 +39,9 @@ const Calendar = () => {
                   <p className="text-sm text-gray-700">
                     {new Date(event.start).toLocaleString()}
                   </p>
+                  {/* Consider just using dangerouslySetInnerHtml here,
+                    I think react-html-parser breaks some of our deps anyway */}
+                  {/* eslint-disable */}
                   <p>{ReactHtmlParser(event.description)}</p>
                 </div>
               ))}

@@ -5,6 +5,7 @@ import ProtectedRoute from "../components/ProtectedRoute";
 import Step1 from "../components/onboarding/Step1";
 import Step2 from "../components/onboarding/Step2";
 import OnboardingComplete from "../components/onboarding/Complete";
+import { isGoogleUser } from "../contexts/SupabaseContext";
 
 const WelcomePage: NextPage = () => {
   const { user, onboardingStep, setOnboardingStep } = useSupabase();
@@ -18,7 +19,7 @@ const WelcomePage: NextPage = () => {
     return null;
   }
 
-  const [initialName, initialAvatarUrl] = (user.app_metadata.provider === "google")
+  const [initialName, initialAvatarUrl] = isGoogleUser(user)
     ? [user.user_metadata.full_name, user.user_metadata.avatar_url]
     : [undefined, undefined];
 
