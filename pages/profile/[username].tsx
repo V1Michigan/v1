@@ -10,8 +10,7 @@ import ViewAvatar from "../../components/profile/ViewAvatar";
 import isObjectEqual from "../../utils/isObjectEqual";
 import useSupabase from "../../hooks/useSupabase";
 import EditProfile from "../../components/profile/EditProfile";
-import EditAvatar from "../../components/profile/fields/EditAvatar";
-import EditResume from "../../components/profile/fields/EditResume";
+import { EditAvatar, EditResume } from "../../components/profile/fields/FileFields";
 
 // Username included separately
 export type Profile = {
@@ -74,8 +73,8 @@ const UserProfile: NextPage = () => {
         );
         setInitialProfile({
           ...profile,
-          avatar: new File([avatar as BlobPart], `${profileUsername} avatar`),
-          resume: new File([resume as BlobPart], `${profileUsername} Resume.pdf`),
+          avatar: avatar ? new File([avatar as BlobPart], `${profileUsername} avatar`, { type: avatar.type }) : undefined,
+          resume: resume ? new File([resume as BlobPart], `${profileUsername} Resume.pdf`, { type: "application/pdf" }) : undefined,
         });
       }
     };

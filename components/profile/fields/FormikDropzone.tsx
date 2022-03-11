@@ -1,21 +1,21 @@
 import { ErrorMessage, useField } from "formik";
 import Dropzone from "react-dropzone";
 
-const EditAvatar = () => {
-  const validate = (avatar: File) => {
-    if (!avatar) {
-      return "Please upload a profile picture";
-    } if (!["image/jpeg", "image/png", "image/gif"].includes(avatar.type)) {
-      return "Please upload an JPEG, PNG, or GIF avatar";
-    } if (avatar.size > 2 * 1024 * 1024) {
-      return "Please limit avatar size to 2 MB";
-    }
-    return undefined;
-  };
-  const [field, _, { setValue, setTouched }] = useField({ name: "avatar", validate });
+interface FormikDropzoneProps {
+  name: string;
+  message: string;
+  fileType: string | string[];
+  validate?: (value: File) => string | undefined;
+}
+
+const FormikDropzone = ({
+  name, message, fileType: fileType_, validate,
+}: FormikDropzoneProps) => {
+  const [field, _, { setValue, setTouched }] = useField({ name, validate });
+  const fileType = Array.isArray(fileType_) ? fileType_ : [fileType_];
   return (
     <Dropzone
-      accept="image/jpeg, image/png, image/gif"
+      accept={ fileType.join(", ") }
       maxFiles={ 1 }
       onDrop={ ([file]) => setValue(file) }
     >
@@ -27,7 +27,11 @@ const EditAvatar = () => {
         >
           <input { ...getInputProps() } />
           <p>
-            Select a profile picture (*.jpeg, *.png, *.gif)
+            {message}
+            {" "}
+            (
+            {fileType.map((type) => `*.${type.split("/")[1]}`).join(", ")}
+            )
             {field.value?.name && (
             <>
               :
@@ -38,11 +42,11 @@ const EditAvatar = () => {
             </>
             )}
           </p>
-          <ErrorMessage name="avatar" component="p" className="text-red-500" />
+          <ErrorMessage name={ name } component="p" className="text-red-500" />
         </div>
       )}
     </Dropzone>
   );
 };
 
-export default EditAvatar;
+export default FormikDropzone;

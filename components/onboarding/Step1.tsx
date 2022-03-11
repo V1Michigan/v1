@@ -12,7 +12,7 @@ import {
   MinorsField,
 } from "../profile/fields/ProfileFields";
 import ViewAvatar from "../profile/ViewAvatar";
-import EditAvatar from "../profile/fields/EditAvatar";
+import { EditAvatar } from "../profile/fields/FileFields";
 
 interface Step1Props {
   email: string;

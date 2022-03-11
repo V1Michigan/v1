@@ -8,7 +8,7 @@ import {
   AdditionalLinksField,
 } from "../profile/fields/ProfileFields";
 import ViewResume from "../profile/ViewResume";
-import EditResume from "../profile/fields/EditResume";
+import { EditResume } from "../profile/fields/FileFields";
 
 interface FormValues {
   roles: string[],
