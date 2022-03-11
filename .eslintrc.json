@@ -87,6 +87,12 @@
             }
         ],
         "@typescript-eslint/no-floating-promises": "off",
+        "@typescript-eslint/no-misused-promises": [
+            "error",
+            {
+                "checksVoidReturn": false
+            }
+        ],
         // This is a bug: https://github.com/typescript-eslint/tslint-to-eslint-config/issues/856
         "no-shadow": "off",
         "@typescript-eslint/no-shadow": [
