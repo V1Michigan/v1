@@ -7,6 +7,7 @@ import Link from "next/link";
 import useSupabase from "../hooks/useSupabase";
 import { HOSTNAME } from "../pages/_app";
 import GoogleSignIn from "./GoogleSignIn";
+import logo from "/public/V1_logo_round.png"; // with import
 
 interface FormValues {
   email: string;
@@ -41,16 +42,17 @@ export default function SignUp() {
   };
 
   return (
-    <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
+    <div className="test flex h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="h-full max-w-md w-full space-y-8">
         <div>
           <img
+            src={ logo.src }
             className="mx-auto h-20 w-auto"
-            src="https://v1michigan.com/favicon.ico?v=1"
             // need to add a new image, this is obviously temporary
             alt="Workflow"
           />
-          <h3 className="mt-6 text-center text-2xl font-medium text-gray-900">Sign up now—we love new faces!</h3>
+          <h3 className="mt-6 text-center text-2xl font-medium">Sign up now—we love new faces!</h3>
+          <p className="mt-6 text-center">It only takes 2 minutes :)</p>
         </div>
         <Formik
           initialValues={ {
@@ -157,7 +159,7 @@ export default function SignUp() {
           />
         </div>
         <Link href="/login" passHref>
-          <p className="cursor-pointer group relative w-full flex justify-center font-medium text-indigo-600 hover:text-indigo-500 ">Already have an account? Log in</p>
+          <p className="cursor-pointer group relative w-full flex justify-center font-medium text-gray-100 hover:text-gray-200 ">Already have an account? Log in</p>
         </Link>
       </div>
     </div>
