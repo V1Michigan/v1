@@ -7,7 +7,7 @@ import Link from "next/link";
 import useSupabase from "../hooks/useSupabase";
 import { HOSTNAME } from "../pages/_app";
 import GoogleSignIn from "./GoogleSignIn";
-import logo from "/public/V1_logo_round.png"; // with import
+import logo from "../public/V1_logo_round.png"; // with import
 
 interface FormValues {
   email: string;
