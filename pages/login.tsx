@@ -9,7 +9,7 @@ const LoginPage: NextPage = () => {
   const router = useRouter();
   useEffect(() => {
     if (user) {
-      router.replace("/account");
+      router.replace("/profile");
     }
   }, [user, router]);
   return <Login />;

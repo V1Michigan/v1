@@ -7,11 +7,12 @@ import {
 } from "@supabase/supabase-js";
 import supabase from "../utils/supabaseClient";
 
-type OnboardingStep =
-  | "REGISTERED"
-  | "SCREEN_1"
-  | "SCREEN_2"
-  | "COMPLETE"
+enum OnboardingStep {
+  REGISTERED,
+  SCREEN_1,
+  SCREEN_2,
+  COMPLETE,
+}
 
 interface EmailUser extends User {
   email: string; // We know email isn't undefined
@@ -47,8 +48,11 @@ interface SupabaseContextInterface {
     error: ApiError | null
   }>;
   signOut: () => Promise<{ error: ApiError | null }>;
-  // TODO: Would be nice if these weren't nullable under `ProtectedRoute`s
+  // Would be nice if these weren't nullable under `ProtectedRoute`s
+  // ...maybe a second UserContext that fetches all this data? :/
   user: EmailUser | GoogleUser | null;
+  username: string | null;
+  setUsername: (username: string) => void;
   onboardingStep: OnboardingStep | null;
   setOnboardingStep: (step: OnboardingStep) => void;
 }
@@ -58,6 +62,7 @@ const SupabaseContext = createContext<SupabaseContextInterface | null>(null);
 function SupabaseProvider({ children }: { children: ReactChild | ReactChildren }) {
   // Default value checks for an active session
   const [user, setUser] = useState<User | null>(supabase.auth.session()?.user ?? null);
+  const [username, setUsername] = useState<string | null>(null);
   const [onboardingStep, setOnboardingStep_] = useState<OnboardingStep | null>(null);
 
   useEffect(() => {
@@ -68,13 +73,13 @@ function SupabaseProvider({ children }: { children: ReactChild | ReactChildren }
   }, []);
 
   useEffect(() => {
-    async function getOnboardingStep() {
+    async function getUserData() {
       if (user) {
         // TODO: Should be fixed with Supabase DB types
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const { data, error, status } = await supabase
           .from("profiles")
-          .select("onboarding_step")
+          .select("username, onboarding_step")
           .eq("id", user.id)
           .single();
 
@@ -82,13 +87,14 @@ function SupabaseProvider({ children }: { children: ReactChild | ReactChildren }
           throw error;
         }
 
+        setUsername(data?.username ?? null);
         setOnboardingStep_(
           (data as {onboarding_step?: OnboardingStep})?.onboarding_step
           || "REGISTERED",
         );
       }
     }
-    getOnboardingStep();
+    getUserData();
   }, [user]);
 
   // Update local state and Supabase DB
@@ -111,8 +117,7 @@ function SupabaseProvider({ children }: { children: ReactChild | ReactChildren }
     }
   }
 
-  // If we have user, wait to load onboardingStep before rendering
-  // TODO: This feels kinda sketchy
+  // If we have user, wait to load onboardingStep before rendering (this feels kinda sketchy)
   if (user && !onboardingStep) {
     return null;
   }
@@ -125,6 +130,8 @@ function SupabaseProvider({ children }: { children: ReactChild | ReactChildren }
       signUp: supabase.auth.signUp.bind(supabase.auth),
       signOut: supabase.auth.signOut.bind(supabase.auth),
       user: typedUser,
+      username,
+      setUsername,
       onboardingStep,
       setOnboardingStep,
     } }>
