@@ -2,12 +2,11 @@ import { useState } from "react";
 import {
   Formik, Form, Field, ErrorMessage, FormikErrors,
 } from "formik";
-import { useRouter } from "next/router";
 import Link from "next/link";
 import useSupabase from "../hooks/useSupabase";
 import { HOSTNAME } from "../pages/_app";
 import GoogleSignIn from "./GoogleSignIn";
-import logo from "../public/V1_logo_round.png"; // with import
+import logo from "../public/V1_logo_round.png";
 
 interface FormValues {
   email: string;
@@ -19,7 +18,6 @@ const REDIRECT_URL = `${HOSTNAME}/welcome`;
 
 export default function SignUp() {
   const { signIn, signUp } = useSupabase();
-  const router = useRouter();
 
   const [loading, setLoading] = useState(false);
   const [submitMessage, setSubmitMessage] = useState<string | null>(null);
@@ -42,17 +40,16 @@ export default function SignUp() {
   };
 
   return (
-    <div className="test flex h-screen items-center justify-center py-24 px-4 sm:px-6 lg:px-8">
+    <div className="bg-gradient flex h-screen items-center justify-center py-24 px-4 sm:px-6 lg:px-8">
       <div className="h-full max-w-md w-full space-y-8">
         <div>
           <img
             src={ logo.src }
             className="mx-auto h-20 w-auto"
-            // need to add a new image, this is obviously temporary
-            alt="Workflow"
+            alt="V1 logo"
           />
-          <h3 className="mt-6 text-center text-2xl font-medium">Sign up now—we love new faces!</h3>
-          <p className="mt-6 text-center">It only takes 2 minutes :)</p>
+          <h3 className="mt-6 text-center text-2xl font-medium text-white">Sign up now &#8212; we love new faces!</h3>
+          <p className="mt-6 text-center text-white">It only takes 2 minutes :)</p>
         </div>
         <Formik
           initialValues={ {
@@ -89,17 +86,16 @@ export default function SignUp() {
           } }
           onSubmit={ async (values, { setSubmitting }) => {
             setLoading(true);
-            const { user: existingUser, session, error } = await signUp(
+            const { error } = await signUp(
               { email: values.email, password: values.password },
               { redirectTo: REDIRECT_URL },
             );
-            if (existingUser && session) {
-              // From https://supabase.com/docs/reference/javascript/auth-signup#notes:
-              //   New users: a user is returned but session will be null
-              //   Existing users: an obfuscated / fake user object will be returned.
-              setSubmitError("Found an existing user...redirecting to /login");
-              router.push("/login");
-            } else if (error) {
+            // A `user` is always returned, but will have a fake UUID +
+            // timestamps if the user already exists. We can't tell the difference
+            // though, so I don't think we can check for the user's existence here :/
+            // https://supabase.com/docs/reference/javascript/auth-signup#notes:
+            // https://github.com/supabase/supabase-js/issues/296
+            if (error) {
               setSubmitError(error.message);
             } else {
               // Per https://github.com/supabase/supabase/discussions/3526,
@@ -111,14 +107,13 @@ export default function SignUp() {
           } }
         >
           {({ errors, isSubmitting }) => (
-            <Form className="mt-8 space-y-6" action="#" method="POST">
-              <input type="hidden" name="remember" defaultValue="true" />
+            <Form className="mt-8 space-y-6">
               <div className="rounded-md shadow-sm -space-y-px">
                 <Field
                   className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                   type="email"
                   name="email"
-                  placeholder="uniqname@umich.edu"
+                  placeholder="billymagic@umich.edu"
                   autoComplete="email"
                 />
                 <ErrorMessage name="email" component="p" className="text-red-500" />

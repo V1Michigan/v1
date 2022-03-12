@@ -66,9 +66,7 @@ const Step1 = ({
   }, [initialAvatarUrl]);
 
   // Memo to avoid repeated queries
-  const [openUsernames, setOpenUsernames] = useState<{
-    [key: string]: boolean;
-  }>({});
+  const [openUsernames, setOpenUsernames] = useState<{[key: string]: boolean;}>({});
 
   if (!user) {
     return null;
@@ -79,7 +77,7 @@ const Step1 = ({
       <div className="md:grid md:grid-cols-3 md:gap-6">
         <div className="md:col-span-1 pl-8 pt-6">
           <div className="px-4 sm:px-0">
-            <h3 className="text-lg font-large leading-6 text-V1gold">
+            <h3 className="text-lg font-large leading-6 text-V1gold font-bold">
               Profile
             </h3>
             <p className="mt-1 text-m text-V1gold">
@@ -246,7 +244,7 @@ const Step1 = ({
                             type="email"
                             value={ email }
                             disabled
-                            className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                            className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md bg-gray-200 text-gray-500"
                           />
                         </div>
                       </div>
@@ -291,7 +289,7 @@ const Step1 = ({
                       </div>
                     </div>
 
-                    <div>
+                    <div className="w-full">
                       {values.avatar && (
                         <img
                           src={ URL.createObjectURL(values.avatar) }
@@ -305,10 +303,9 @@ const Step1 = ({
                         onDrop={ ([file]) => setFieldValue("avatar", file) }
                       >
                         {({ getRootProps, getInputProps }) => (
-                          /* eslint-disable react/jsx-props-no-spreading */
                           <div
-                            { ...getRootProps() }
-                            className="p-4 bg-gray-300 border-black border-2 rounded-lg"
+                            /* eslint-disable react/jsx-props-no-spreading */
+                            { ...getRootProps({ className: "p-1 pl-2 block w-full cursor-pointer bg-gray-100 border border-gray-500 text-gray-900 focus:outline-none focus:border-transparent text-sm rounded-lg" }) }
                           >
                             <input { ...getInputProps() } />
                             <p>
@@ -352,12 +349,12 @@ const Step1 = ({
                             </option>
                           ))}
                         </Field>
-                      </div>
-                      <ErrorMessage
-                        name="year"
-                        component="p"
-                        className="text-red-500"
+                        <ErrorMessage
+                          name="year"
+                          component="p"
+                          className="text-red-500"
                       />
+                      </div>
                     </div>
                     <div className="grid grid-cols-6 gap-6">
                       <div className="col-span-6 sm:col-span-3 overflow-x-visible">

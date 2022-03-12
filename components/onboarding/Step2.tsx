@@ -138,7 +138,7 @@ const Step2 = ({ nextStep }: Step2Props) => {
             <div className="bg-white col-span-6 sm:col-start-2 col-end-6 center pt-2 mt-5 md:mt-0 rounded-md">
               <Form className="pr-8">
                 <div className="sm:rounded-md px-4 py-5 bg-white space-y-2 sm:p-6">
-                  <label htmlFor="roleTypes">Type(s) of role you&apos;re interested in:</label>
+                  <label htmlFor="roleTypes">Type(s) of roles you&apos;re interested in:</label>
                   {Object.entries(RoleType).map(([key, value]) => (
                     <div key={ key }>
                       <Field
@@ -158,20 +158,24 @@ const Step2 = ({ nextStep }: Step2Props) => {
                     <MultiSelect
                       placeholder="Industries you&apos;re interested in"
                       name="interests"
-                      options={ Object.entries(Interests).map(([k, v]) => ({ value: k, label: v })) }
+                      options={ Object.entries(Interests).map(
+                        ([k, v]) => ({ value: k, label: v }),
+                      ) }
                     />
                   </div>
 
                   <div className="col-span-6 sm:col-span-3">
-                    <div className="w-3/5 self-center">
+                    <div className="w-full">
                       <Dropzone
                         accept="application/pdf"
                         maxFiles={ 1 }
                         onDrop={ ([file]) => setFieldValue("resume", file) }
-                    >
+                      >
                         {({ getRootProps, getInputProps }) => (
-                        /* eslint-disable react/jsx-props-no-spreading */
-                          <div { ...getRootProps() } className="p-1 pl-2 block w-full cursor-pointer bg-gray-50 border border-gray-300 text-gray-900 focus:outline-none focus:border-transparent text-sm rounded-lg">
+                          <div
+                            /* eslint-disable react/jsx-props-no-spreading */
+                            { ...getRootProps({ className: "p-1 pl-2 block w-full cursor-pointer bg-gray-100 border border-gray-500 text-gray-900 focus:outline-none focus:border-transparent text-sm rounded-lg" }) }
+                          >
                             <input { ...getInputProps() } />
                             <p className="text-sm font-medium text-gray-500 block ">
                               Please upload your resume (*.pdf)
