@@ -50,7 +50,8 @@ const Step2 = ({ nextStep }: Step2Props) => {
             .storage.from("resumes").upload(
               bucketPath,
               // values.resume is not null, would've been caught by validation
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+              // eslint-disable-next-line max-len
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion, @typescript-eslint/no-non-null-assertion
               values.resume!,
               {
                 contentType: "application/pdf",

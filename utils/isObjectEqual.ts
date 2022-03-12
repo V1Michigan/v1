@@ -1,6 +1,6 @@
+/* eslint-disable */
 // Simple isObjectEqual function...could use lodash or underscore
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function isObjectEqual(a: any, b: any) {
+export default function isObjectEqual(a: object, b: object) {
   const keys = Object.keys(a);
   if (keys.length !== Object.keys(b).length) return false;
 

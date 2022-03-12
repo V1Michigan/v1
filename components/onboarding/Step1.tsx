@@ -86,6 +86,7 @@ const Step1 = ({
           onSubmit={ async (values, { setSubmitting }) => {
           // Upload avatar to bucket
           // values.avatar is not null, would've been caught by validation
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
             const avatarFile = (values.avatar as File);
             const { error: uploadError } = await supabase
               .storage.from("avatars").upload(

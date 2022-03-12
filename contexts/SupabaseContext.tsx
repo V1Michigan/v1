@@ -3,15 +3,15 @@ import {
 } from "react";
 import PropTypes from "prop-types";
 import {
-  SupabaseClient, Session, User, UserCredentials, Provider, ApiError,
+  SupabaseClient, Session, User, UserCredentials, Provider, ApiError, PostgrestSingleResponse,
 } from "@supabase/supabase-js";
 import supabase from "../utils/supabaseClient";
 
 enum OnboardingStep {
-  REGISTERED,
-  SCREEN_1,
-  SCREEN_2,
-  COMPLETE,
+  REGISTERED = "REGISTERED",
+  SCREEN_1 = "SCREEN_1",
+  SCREEN_2 = "SCREEN_2",
+  COMPLETE = "COMPLETE",
 }
 
 interface EmailUser extends User {
@@ -54,7 +54,7 @@ interface SupabaseContextInterface {
   username: string | null;
   setUsername: (username: string) => void;
   onboardingStep: OnboardingStep | null;
-  setOnboardingStep: (step: OnboardingStep) => void;
+  setOnboardingStep: (step: OnboardingStep | string) => void;
 }
 
 const SupabaseContext = createContext<SupabaseContextInterface | null>(null);
@@ -81,7 +81,7 @@ function SupabaseProvider({ children }: { children: ReactChild | ReactChildren }
           .from("profiles")
           .select("username, onboarding_step")
           .eq("id", user.id)
-          .single();
+          .single() as PostgrestSingleResponse<{username: string, onboarding_step: OnboardingStep}>;
 
         if (error && status !== 406) {
           throw error;
@@ -90,7 +90,7 @@ function SupabaseProvider({ children }: { children: ReactChild | ReactChildren }
         setUsername(data?.username ?? null);
         setOnboardingStep_(
           (data as {onboarding_step?: OnboardingStep})?.onboarding_step
-          || "REGISTERED",
+          || "REGISTERED" as OnboardingStep,
         );
       }
     }
@@ -98,9 +98,9 @@ function SupabaseProvider({ children }: { children: ReactChild | ReactChildren }
   }, [user]);
 
   // Update local state and Supabase DB
-  const setOnboardingStep = async (step: OnboardingStep) => {
+  const setOnboardingStep = async (step: OnboardingStep | string) => {
     if (user) {
-      setOnboardingStep_(step);
+      setOnboardingStep_(step as OnboardingStep);
       await supabase
         .from("profiles")
         .update({ onboarding_step: step }, { returning: "minimal" })
@@ -108,7 +108,7 @@ function SupabaseProvider({ children }: { children: ReactChild | ReactChildren }
     }
   };
 
-  let typedUser = null;
+  let typedUser = null as GoogleUser | EmailUser | null;
   if (user) {
     if (isGoogleUser(user)) {
       typedUser = user;
