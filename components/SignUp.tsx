@@ -42,7 +42,7 @@ export default function SignUp() {
   };
 
   return (
-    <div className="test flex h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="test flex h-screen items-center justify-center py-24 px-4 sm:px-6 lg:px-8">
       <div className="h-full max-w-md w-full space-y-8">
         <div>
           <img
@@ -118,7 +118,7 @@ export default function SignUp() {
                   className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                   type="email"
                   name="email"
-                  placeholder="billymagic@umich.edu"
+                  placeholder="uniqname@umich.edu"
                   autoComplete="email"
                 />
                 <ErrorMessage name="email" component="p" className="text-red-500" />

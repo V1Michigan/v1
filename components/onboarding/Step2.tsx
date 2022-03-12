@@ -49,8 +49,8 @@ const Step2 = ({ nextStep }: Step2Props) => {
   }
 
   return (
-    <div>
-      <h3 className="text-lg font-large leading-6 text-gray-900 pl-6 pt-4">We can&apos;t wait to learn more about you!</h3>
+    <div className="h-screen bg-black">
+      <h3 className="text-lg font-large font-bold text-center leading-6 text-V1gold pl-6 pt-4">We can&apos;t wait to learn more about you!</h3>
       <Formik
         initialValues={ {
           roleTypes: [],
@@ -134,10 +134,10 @@ const Step2 = ({ nextStep }: Step2Props) => {
         } }
      >
         {({ values, setFieldValue, isSubmitting }) => (
-          <div className="pt-2 mt-5 md:mt-0">
-            <Form className="pr-8">
-              <div className="sm:rounded-md">
-                <div className="px-4 py-5 bg-white space-y-2 sm:p-6">
+          <div className="grid grid-cols-6 gap-6 pt-4">
+            <div className="bg-white col-span-6 sm:col-start-2 col-end-6 center pt-2 mt-5 md:mt-0 rounded-md">
+              <Form className="pr-8">
+                <div className="sm:rounded-md px-4 py-5 bg-white space-y-2 sm:p-6">
                   <label htmlFor="roleTypes">Type(s) of role you&apos;re interested in:</label>
                   {Object.entries(RoleType).map(([key, value]) => (
                     <div key={ key }>
@@ -153,76 +153,81 @@ const Step2 = ({ nextStep }: Step2Props) => {
                   ))}
                   <ErrorMessage name="roleTypes" component="p" className="text-red-500" />
                 </div>
-              </div>
-              <div className="pl-6 pb-6 w-1/3">
-                <MultiSelect
-                  placeholder="Industries you&apos;re interested in"
-                  name="interests"
-                  options={ Object.entries(Interests).map(([k, v]) => ({ value: k, label: v })) }
-            />
-              </div>
+                <div className="grid grid-cols-6 gap-6">
+                  <div className="pl-6 col-span-6 sm:col-span-3 w-2/3">
+                    <MultiSelect
+                      placeholder="Industries you&apos;re interested in"
+                      name="interests"
+                      options={ Object.entries(Interests).map(([k, v]) => ({ value: k, label: v })) }
+                    />
+                  </div>
 
-              <div className="pl-6 w-1/3 pb-6">
-                <Dropzone
-                  accept="application/pdf"
-                  maxFiles={ 1 }
-                  onDrop={ ([file]) => setFieldValue("resume", file) }
-              >
-                  {({ getRootProps, getInputProps }) => (
-                  /* eslint-disable react/jsx-props-no-spreading */
-                    <div { ...getRootProps() } className="p-1 pl-2 block w-full cursor-pointer bg-gray-50 border border-gray-300 text-gray-900 focus:outline-none focus:border-transparent text-sm rounded-lg">
-                      <input { ...getInputProps() } />
-                      <p className="text-sm font-medium text-gray-500 block ">
-                        Please upload your resume (*.pdf)
-                        {values.resume && (
-                        <>
-                          :
-                          <b>
-                            {" "}
-                            {values.resume.name}
-                          </b>
-                        </>
+                  <div className="col-span-6 sm:col-span-3">
+                    <div className="w-3/5 self-center">
+                      <Dropzone
+                        accept="application/pdf"
+                        maxFiles={ 1 }
+                        onDrop={ ([file]) => setFieldValue("resume", file) }
+                    >
+                        {({ getRootProps, getInputProps }) => (
+                        /* eslint-disable react/jsx-props-no-spreading */
+                          <div { ...getRootProps() } className="p-1 pl-2 block w-full cursor-pointer bg-gray-50 border border-gray-300 text-gray-900 focus:outline-none focus:border-transparent text-sm rounded-lg">
+                            <input { ...getInputProps() } />
+                            <p className="text-sm font-medium text-gray-500 block ">
+                              Please upload your resume (*.pdf)
+                              {values.resume && (
+                              <>
+                                :
+                                <b>
+                                  {" "}
+                                  {values.resume.name}
+                                </b>
+                              </>
+                              )}
+                            </p>
+                            <ErrorMessage name="resume" component="p" className="text-red-500" />
+                          </div>
                         )}
-                      </p>
-                      <ErrorMessage name="resume" component="p" className="text-red-500" />
+                      </Dropzone>
                     </div>
-                  )}
-                </Dropzone>
-              </div>
-              <div className="grid grid-cols-6">
-                <div className="pl-6 col-span-6 sm:col-span-3">
-                  <label htmlFor="linkedin">LinkedIn profile (optional)</label>
-                  <Field
-                    className="w-3/5 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                    type="text"
-                    name="linkedin"
-                    placeholder="https://linkedin.com/in/billymagic" />
-                  <ErrorMessage name="linkedin" component="p" className="text-red-500" />
+                  </div>
                 </div>
 
-                <div className="col-span-6 sm:col-span-3">
-                  <label htmlFor="additionalLinks">
-                    Any other links you&apos;d like to share? (optional)
-                  </label>
-                  <Field
-                    className="w-3/5 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                    type="text"
-                    name="additionalLinks"
-                    placeholder="E.g. personal site, Twitter, past projects..."
+                <div className="grid grid-cols-6 gap-6 pt-4">
+                  <div className="pl-6 col-span-6 sm:col-span-3">
+                    <label htmlFor="linkedin">LinkedIn profile (optional)</label>
+                    <Field
+                      className="w-4/5 mt-1 self-center focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      type="text"
+                      name="linkedin"
+                      placeholder="https://linkedin.com/in/billymagic" />
+                    <ErrorMessage name="linkedin" component="p" className="text-red-500" />
+                  </div>
+
+                  <div className="col-span-6 sm:col-span-3">
+                    <label htmlFor="additionalLinks">
+                      Any other links you&apos;d like to share? (optional)
+                    </label>
+                    <Field
+                      className="w-4/5 justify-self-center mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      type="text"
+                      name="additionalLinks"
+                      placeholder="E.g. personal site, Twitter, past projects..."
             />
+                  </div>
                 </div>
-              </div>
-              <div className="pl-6 pt-4">
-                <button
-                  type="submit"
-                  disabled={ isSubmitting }
-                  className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                <div className="pl-6 pt-4 pb-4">
+                  <button
+                    type="submit"
+                    disabled={ isSubmitting }
+                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
-                  {isSubmitting ? "Loading..." : "Submit"}
-                </button>
-                {submitError && <p className="text-red-500">{submitError}</p>}
-              </div>
-            </Form>
+                    {isSubmitting ? "Loading..." : "Submit"}
+                  </button>
+                  {submitError && <p className="text-red-500">{submitError}</p>}
+                </div>
+              </Form>
+            </div>
           </div>
         )}
       </Formik>

@@ -75,14 +75,14 @@ const Step1 = ({
   }
 
   return (
-    <div>
+    <div className="bg-black h-screen">
       <div className="md:grid md:grid-cols-3 md:gap-6">
         <div className="md:col-span-1 pl-8 pt-6">
           <div className="px-4 sm:px-0">
-            <h3 className="text-lg font-large leading-6 text-gray-900">
+            <h3 className="text-lg font-large leading-6 text-V1gold">
               Profile
             </h3>
-            <p className="mt-1 text-m text-gray-600">
+            <p className="mt-1 text-m text-V1gold">
               Let us get to know you better!
             </p>
           </div>
@@ -214,9 +214,9 @@ const Step1 = ({
           } }
         >
           {({ values, setFieldValue, isSubmitting }) => (
-            <div className="pt-2 mt-5 md:mt-0 md:col-start-2 col-end-4">
+            <div className="pt-6 mt-5 md:mt-0 md:col-start-2 col-end-4">
               <Form className="pr-8">
-                <div className="shadow sm:rounded-md sm:overflow-hidden">
+                <div className="shadow sm:rounded-md overflow-visible">
                   <div className="px-4 py-5 bg-white space-y-6 sm:p-6">
                     <div className="grid grid-cols-6 gap-6">
                       <div className="col-span-6 sm:col-span-3">
@@ -360,7 +360,7 @@ const Step1 = ({
                       />
                     </div>
                     <div className="grid grid-cols-6 gap-6">
-                      <div className="col-span-6 sm:col-span-3">
+                      <div className="col-span-6 sm:col-span-3 overflow-x-visible">
                         <label htmlFor="majors" className="block pb-1">
                           Major(s)
                         </label>

@@ -9,7 +9,8 @@ module.exports = {
     extend: {
       colors: {
         'accent-1': '#333',
-        'gray-custom': '#727272'
+        'gray-custom': '#727272',
+        'V1gold': '#F0CC70'
       },
       fontFamily: {
         logo: ["Source Sans Pro", "sans-serif"],
