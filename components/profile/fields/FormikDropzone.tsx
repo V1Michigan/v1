@@ -17,16 +17,21 @@ const FormikDropzone = ({
     <Dropzone
       accept={ fileType.join(", ") }
       maxFiles={ 1 }
-      onDrop={ ([file]) => setValue(file) }
+      onDrop={ ([file]) => {
+        setTouched(true);
+        setValue(file);
+      } }
+      onFileDialogCancel={ () => setTouched(true) }
     >
       {({ getRootProps, getInputProps }) => (
         /* eslint-disable react/jsx-props-no-spreading */
         <div
-          { ...getRootProps({ onClick: () => setTouched(true) }) }
-          className="p-4 bg-gray-300 border-black border-2 rounded-lg"
+          { ...getRootProps({
+            className: "p-1 pl-2 block w-full cursor-pointer bg-gray-100 border border-gray-500 text-gray-900 focus:outline-none focus:border-transparent rounded-lg",
+          }) }
         >
           <input { ...getInputProps() } />
-          <p>
+          <p className="text-gray-500 block">
             {message}
             {" "}
             (

@@ -24,11 +24,18 @@ const NameField = ({ label }: LabelProps) => {
     return undefined;
   };
   return (
-    <div>
-      <label htmlFor="name" className="block">{label}</label>
-      <Field type="text" name="name" placeholder="Name" validate={ validateName } />
+    <>
+      <div className="mt-1 rounded-md shadow-sm">
+        <label htmlFor="name" className="block">{label}</label>
+        <Field
+          className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+          type="text"
+          name="name"
+          placeholder="Name"
+          validate={ validateName } />
+      </div>
       <ErrorMessage name="name" component="p" className="text-red-500" />
-    </div>
+    </>
   );
 };
 
@@ -36,7 +43,11 @@ const NameField = ({ label }: LabelProps) => {
 const EmailField = ({ value, label }: {value: string} & LabelProps) => (
   <div>
     <label htmlFor="email" className="block">{label}</label>
-    <Field type="email" value={ value } disabled />
+    <Field
+      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md bg-gray-200 text-gray-500"
+      type="email"
+      value={ value }
+      disabled />
     {/* Error message, just in case */}
     {/* <ErrorMessage name="email" component="p" className="text-red-500" /> */}
   </div>
@@ -73,11 +84,18 @@ const UsernameField = ({ label }: LabelProps) => {
     return undefined;
   };
   return (
-    <div>
-      <label htmlFor="username" className="block">{label}</label>
-      <Field type="text" name="username" placeholder="Username" validate={ validateUsername } />
+    <>
+      <div className="mt-1 rounded-md shadow-sm">
+        <label htmlFor="username" className="block">{label}</label>
+        <Field
+          className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+          type="text"
+          name="username"
+          placeholder="Username"
+          validate={ validateUsername } />
+      </div>
       <ErrorMessage name="username" component="p" className="text-red-500" />
-    </div>
+    </>
   );
 };
 
@@ -91,11 +109,18 @@ const PhoneField = ({ label }: LabelProps) => {
     return undefined;
   };
   return (
-    <div>
-      <label htmlFor="phone" className="block">{label}</label>
-      <Field type="tel" name="phone" placeholder="###-###-####" validate={ validatePhone } />
+    <>
+      <div className="mt-1 rounded-md shadow-sm">
+        <label htmlFor="phone" className="block">{label}</label>
+        <Field
+          className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+          type="tel"
+          name="phone"
+          placeholder="###-###-####"
+          validate={ validatePhone } />
+      </div>
       <ErrorMessage name="phone" component="p" className="text-red-500" />
-    </div>
+    </>
   );
 };
 
@@ -109,7 +134,12 @@ const YearField = ({ label }: LabelProps) => {
   return (
     <div>
       <label htmlFor="year" className="block">{label}</label>
-      <Field as="select" name="year" validate={ validateYear }>
+      <Field
+        className="mt-1 block w-full py-2 px-3 pt-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        as="select"
+        name="year"
+        validate={ validateYear }
+      >
         <option value="" disabled hidden>
           Select your year
         </option>
@@ -131,7 +161,7 @@ const MajorsField = ({ label }: LabelProps) => {
   };
   return (
     <div>
-      <label htmlFor="majors" className="block">{label}</label>
+      <label htmlFor="majors" className="block pb-1">{label}</label>
       <MultiSelect
         name="majors"
         options={ FIELDS_OF_STUDY }
@@ -145,7 +175,7 @@ const MajorsField = ({ label }: LabelProps) => {
 // No validation required
 const MinorsField = ({ label }: LabelProps) => (
   <div>
-    <label htmlFor="minors" className="block">{label}</label>
+    <label htmlFor="minors" className="block pb-1">{label}</label>
     <MultiSelect
       name="minors"
       // List of minors might be slightly different...fine for now
@@ -165,7 +195,7 @@ const RolesField = ({ label }: LabelProps) => {
   };
   return (
     <div>
-      <label htmlFor="roles">{label}</label>
+      <label htmlFor="roles" className="block pb-1">{label}</label>
       <MultiSelect
         name="roles"
         options={ Object.entries(RoleType).map(([k, v]) => ({ value: k, label: v })) }
@@ -185,7 +215,7 @@ const InterestsField = ({ label }: LabelProps) => {
   };
   return (
     <div>
-      <label htmlFor="interests">{label}</label>
+      <label htmlFor="interests" className="block pb-1">{label}</label>
       <MultiSelect
         name="interests"
         options={ Object.entries(Interest).map(([k, v]) => ({ value: k, label: v })) }
@@ -209,7 +239,12 @@ const LinkedInField = ({ label }: LabelProps) => {
   return (
     <div>
       <label htmlFor="linkedin">{label}</label>
-      <Field type="text" name="linkedin" placeholder="https://linkedin.com/in/billymagic" validate={ validateLinkedIn } />
+      <Field
+        className="w-4/5 mt-1 self-center focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+        type="text"
+        name="linkedin"
+        placeholder="https://linkedin.com/in/billymagic"
+        validate={ validateLinkedIn } />
       <ErrorMessage name="linkedin" component="p" className="text-red-500" />
     </div>
   );
@@ -227,6 +262,7 @@ const AdditionalLinksField = ({ label }: LabelProps) => {
     <div>
       <label htmlFor="additionalLinks">{label}</label>
       <Field
+        className="w-4/5 justify-self-center mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
         type="text"
         name="additionalLinks"
         placeholder="E.g. personal site, Twitter, past projects..."

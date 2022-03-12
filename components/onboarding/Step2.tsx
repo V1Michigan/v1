@@ -31,8 +31,8 @@ const Step2 = ({ nextStep }: Step2Props) => {
   }
 
   return (
-    <div>
-      <p>We can&apos;t wait to learn more about you</p>
+    <div className="h-screen bg-black">
+      <h3 className="text-lg font-large font-bold text-center leading-6 text-V1gold pl-6 pt-4">We can&apos;t wait to learn more about you!</h3>
       <Formik
         initialValues={ {
           roles: [],
@@ -82,26 +82,48 @@ const Step2 = ({ nextStep }: Step2Props) => {
           }
           setSubmitting(false);
         } }
-     >
+      >
         {({ values, isSubmitting }) => (
-          <Form className="flex flex-col w-1/2 gap-y-4">
+          <div className="grid grid-cols-6 gap-6 pt-4">
+            <div className="bg-white col-span-6 sm:col-start-2 col-end-6 center pt-2 mt-5 md:mt-0 rounded-md">
+              <Form className="px-4">
 
-            <RolesField label="Which types of roles are you interested in?" />
-            <InterestsField label="Which industries are you interested in?" />
+                <div className="grid grid-cols-6 gap-6">
+                  <div className="pl-6 col-span-6 sm:col-span-3 w-2/3">
+                    <RolesField label="Which types of roles are you interested in?" />
+                  </div>
+                  <div className="pl-6 col-span-6 sm:col-span-3 w-2/3">
+                    <InterestsField label="Which industries are you interested in?" />
+                  </div>
+                </div>
 
-            <div>
-              {values.resume && <ViewResume resume={ values.resume } maxPages={ 1 } />}
-              <EditResume />
+                <div className="pt-4 w-3/4 mx-auto">
+                  {values.resume && <ViewResume resume={ values.resume } maxPages={ 1 } />}
+                  <EditResume />
+                </div>
+
+                <div className="grid grid-cols-6 gap-6 pt-4">
+                  <div className="pl-6 col-span-6 sm:col-span-3">
+                    <LinkedInField label="LinkedIn profile (optional)" />
+                  </div>
+
+                  <div className="col-span-6 sm:col-span-3">
+                    <AdditionalLinksField label="Any other links you'd like to share? (optional)" />
+                  </div>
+                </div>
+                <div className="pl-6 pt-4 pb-4">
+                  <button
+                    type="submit"
+                    disabled={ isSubmitting }
+                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  >
+                    {isSubmitting ? "Loading..." : "Submit"}
+                  </button>
+                  {submitError && <p className="text-red-500">{submitError}</p>}
+                </div>
+              </Form>
             </div>
-
-            <LinkedInField label="LinkedIn profile (optional)" />
-            <AdditionalLinksField label="Any other links you'd like to share? (optional)" />
-
-            <button type="submit" disabled={ isSubmitting }>
-              {isSubmitting ? "Loading..." : "Submit"}
-            </button>
-            {submitError && <p className="text-red-500">{submitError}</p>}
-          </Form>
+          </div>
         )}
       </Formik>
     </div>
