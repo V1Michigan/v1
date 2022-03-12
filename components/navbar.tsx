@@ -25,10 +25,6 @@ const navigation = [
     } */
 ];
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
-
 export default function NavbarBuilder() {
   return (
     <Disclosure as="nav" className="bg-gray-800">
@@ -57,12 +53,11 @@ export default function NavbarBuilder() {
                       <a
                         key={ item.name }
                         href={ item.href }
-                        className={ classNames(
+                        className={ `${
                           item.current
                             ? "bg-gray-900 text-white"
-                            : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                          "px-3 py-2 rounded-md text-sm font-medium",
-                        ) }
+                            : "text-gray-300 hover:bg-gray-700 hover:text-white"}
+                          px-3 py-2 rounded-md text-sm font-medium` }
                         aria-current={ item.current ? "page" : undefined }
                       >
                         {item.name}
@@ -113,10 +108,8 @@ export default function NavbarBuilder() {
                               {({ active }) => (
                                 <a
                                   href={ item.href }
-                                  className={ classNames(
-                                    active ? "bg-gray-100" : "",
-                                    "block px-4 py-2 text-sm text-gray-700",
-                                  ) }
+                                  className={ `${active ? "bg-gray-100" : ""}
+                                    block px-4 py-2 text-sm text-gray-700` }
                               >
                                   {item.name}
                                 </a>
@@ -151,12 +144,11 @@ export default function NavbarBuilder() {
                 <a
                   key={ item.name }
                   href={ item.href }
-                  className={ classNames(
+                  className={ `${
                     item.current
                       ? "bg-gray-900 text-white"
-                      : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                    "block px-3 py-2 rounded-md text-base font-medium",
-                  ) }
+                      : "text-gray-300 hover:bg-gray-700 hover:text-white"}
+                    block px-3 py-2 rounded-md text-base font-medium` }
                   aria-current={ item.current ? "page" : undefined }
                 >
                   {item.name}

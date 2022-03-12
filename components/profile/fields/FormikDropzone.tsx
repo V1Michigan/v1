@@ -11,7 +11,7 @@ interface FormikDropzoneProps {
 const FormikDropzone = ({
   name, message, fileType: fileType_, validate,
 }: FormikDropzoneProps) => {
-  const [field, _, { setValue, setTouched }] = useField({ name, validate });
+  const [field, _, { setValue, setTouched }] = useField<File>({ name, validate });
   const fileType = Array.isArray(fileType_) ? fileType_ : [fileType_];
   return (
     <Dropzone

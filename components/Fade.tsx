@@ -1,16 +1,23 @@
 import { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 
-export default function Fade({ children }) {
+interface FadeProps {
+  children: JSX.Element | JSX.Element[];
+}
+
+export default function Fade({ children }: FadeProps) {
   const [isVisible, setVisible] = useState(true);
-  const domRef = useRef();
+  const domRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const domNode = domRef.current;
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => setVisible(entry.isIntersecting));
-    });
-    observer.observe(domNode);
-    return () => observer.unobserve(domNode);
+    if (domNode) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => setVisible(entry.isIntersecting));
+      });
+      observer.observe(domNode);
+      return () => observer.unobserve(domNode);
+    }
+    return undefined;
   }, []);
   return (
     <div

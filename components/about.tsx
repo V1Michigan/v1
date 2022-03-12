@@ -133,7 +133,18 @@ const ADVISORS_DATA = [
     link: "https://www.linkedin.com/in/varun-jindal/",
   },
 ];
-const Leaders = ({ team, title }) => (
+
+interface LeadersProps {
+  title: string;
+  team: {
+    image: string;
+    name: string;
+    role: string;
+    link: string;
+  }[];
+}
+
+const Leaders = ({ team, title }: LeadersProps) => (
   <ContentPage
     title={ title }
     textElement={ (

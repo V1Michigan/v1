@@ -1,11 +1,17 @@
 import { XIcon } from "@heroicons/react/outline";
 import PropTypes from "prop-types";
 
+interface BannerProps {
+  link: string,
+  largeLine: JSX.Element | string
+  smallLine: JSX.Element | string
+}
+
 const Banner = ({
   largeLine,
   smallLine,
   link,
-}) => (
+}: BannerProps) => (
   <div className="bg-yellow-600 full_banner">
     <div className="max-w-7xl mx-auto py-3 px-3 sm:px-6 lg:px-8">
       <div className="flex items-center justify-between flex-wrap">
@@ -40,9 +46,10 @@ const Banner = ({
             type="button"
             className="-mr-1 flex p-2 rounded-md hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-white sm:-mr-2"
             onClick={ () => {
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
               document.querySelector<HTMLElement>(
                 ".full_banner",
-              ).style.display = "none";
+              )!.style.display = "none";
             } }
           >
             <span className="sr-only">Dismiss</span>

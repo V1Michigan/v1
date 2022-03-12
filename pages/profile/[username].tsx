@@ -2,7 +2,7 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Formik, Form } from "formik";
-import type { PostgrestError } from "@supabase/supabase-js";
+import type { PostgrestError, PostgrestSingleResponse } from "@supabase/supabase-js";
 import ProtectedRoute from "../../components/ProtectedRoute";
 import ViewProfile from "../../components/profile/ViewProfile";
 import ViewResume from "../../components/profile/ViewResume";
@@ -32,10 +32,16 @@ export type Profile = {
   resume?: File,
 }
 const PROFILE_COLUMNS = "id, email, name, phone, year, fields_of_study, linkedin, website, roles, interests";
+type DBProfile = Omit<Profile, "minors" | "majors"> & {
+  fields_of_study: {
+    minors: string[];
+    majors: string[];
+  };
+}
 
 const UserProfile: NextPage = () => {
   const router = useRouter();
-  const { username: profileUsername } = router.query;
+  const { username: profileUsername } = router.query as {username: string};
   const { supabase, username: currentUsername } = useSupabase();
   const isCurrentUser = profileUsername === currentUsername;
 
@@ -52,12 +58,12 @@ const UserProfile: NextPage = () => {
         .from("profiles")
         .select(PROFILE_COLUMNS)
         .eq("username", profileUsername)
-        .single();
-      const profile = { ...dbData, ...dbData.fields_of_study } as Omit<Profile, "avatar" | "resume">;
+        .single() as PostgrestSingleResponse<DBProfile>;
 
-      if ((dbError && status !== 406) || !profile) {
+      if ((dbError && status !== 406) || !dbData) {
         router.replace("/404");
       } else {
+        const profile = { ...dbData, ...dbData.fields_of_study } as Omit<Profile, "avatar" | "resume">;
         // Show the profile data from the DB, then start fetching the avatar and resume
         setInitialProfile(profile);
 
@@ -69,6 +75,7 @@ const UserProfile: NextPage = () => {
         ]);
 
         setDataFetchErrors(
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
           ([avatarError, resumeError].filter(Boolean) as Error[]).map((error) => error.message),
         );
         setInitialProfile({
@@ -123,6 +130,7 @@ const UserProfile: NextPage = () => {
         },
       ),
     ]);
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
     const errors = results.map(
       (result) => result && result.error,
     ).filter(Boolean) as (Error | PostgrestError)[];

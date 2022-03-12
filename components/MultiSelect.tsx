@@ -17,7 +17,7 @@ const MultiSelect = ({
   options,
   validate,
 }: MultiSelectProps) => {
-  const [field, _, { setValue, setTouched }] = useField({ name, validate });
+  const [field, _, { setValue, setTouched }] = useField<string[]>({ name, validate });
   return (
     <Select
       name={ field.name }

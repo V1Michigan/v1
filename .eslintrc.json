@@ -10,8 +10,8 @@
         "plugin:react/recommended",
         "plugin:react-hooks/recommended",
         "airbnb",
-        "plugin:@typescript-eslint/recommended"
-        // "plugin:@typescript-eslint/recommended-requiring-type-checking"
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/recommended-requiring-type-checking"
     ],
     "plugins": [
         "react",
@@ -85,6 +85,13 @@
                 "argsIgnorePattern": "^_",
                 "varsIgnorePattern": "^_",
                 "caughtErrorsIgnorePattern": "^_"
+            }
+        ],
+        "@typescript-eslint/no-floating-promises": "off",
+        "@typescript-eslint/no-misused-promises": [
+            "error",
+            {
+                "checksVoidReturn": false
             }
         ],
         // This is a bug: https://github.com/typescript-eslint/tslint-to-eslint-config/issues/856
