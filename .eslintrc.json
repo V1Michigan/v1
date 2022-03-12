@@ -68,6 +68,7 @@
             "prefer-double"
         ],
         "@next/next/no-img-element": "off",
+        "react/require-default-props": "off", // TODO: Remove after deleting PropTypes
         "jsx-a11y/label-has-associated-control": [
             "error",
             {

@@ -15,7 +15,7 @@ const OnboardingComplete = () => {
         {" "}
         <b>Welcome to V1!</b>
       </p>
-      <button type="button" onClick={ () => router.push("/account") }>
+      <button type="button" onClick={ () => router.push("/profile") }>
         Let&apos;s get started!
       </button>
     </div>

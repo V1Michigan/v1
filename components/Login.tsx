@@ -12,7 +12,7 @@ interface FormValues {
   password: string;
 }
 
-const REDIRECT_URL = `${HOSTNAME}/account`;
+const REDIRECT_URL = `${HOSTNAME}/profile`;
 
 export default function Login() {
   const { signIn } = useSupabase();

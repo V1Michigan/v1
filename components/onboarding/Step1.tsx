@@ -1,29 +1,19 @@
 import { useEffect, useState } from "react";
-import {
-  Formik, Form, Field, ErrorMessage, FormikErrors,
-} from "formik";
-import Dropzone from "react-dropzone";
-import MultiSelect from "./MultiSelect";
+import { Formik, Form } from "formik";
 import useSupabase from "../../hooks/useSupabase";
 import getFileFromUrl from "../../utils/getFileFromUrl";
-import _FIELDS_OF_STUDY from "./fieldsOfStudy";
-import type { FieldOfStudy } from "./fieldsOfStudy";
+import {
+  NameField,
+  EmailField,
+  UsernameField,
+  PhoneField,
+  YearField,
+  MajorsField,
+  MinorsField,
+} from "../profile/fields/ProfileFields";
+import ViewAvatar from "../profile/ViewAvatar";
+import { EditAvatar } from "../profile/fields/FileFields";
 
-const FIELDS_OF_STUDY = _FIELDS_OF_STUDY.map((field) => ({ label: field, value: field }));
-
-// Use string enum so we don't get numbers from Object.keys()
-enum Year {
-  "Freshman" = "Freshman",
-  "Sophomore" = "Sophomore",
-  "Junior" = "Junior",
-  "Senior" = "Senior",
-  "Alumni" = "Alumni",
-  "Grad student" = "Grad student",
-  "Dropout" = "Dropout",
-  "Faculty" = "Faculty",
-}
-
-/* eslint-disable react/require-default-props */
 interface Step1Props {
   email: string;
   initialName?: string;
@@ -36,15 +26,18 @@ interface FormValues {
   username: string;
   phone: string;
   avatar: File | null;
-  year: Year | "";
-  majors: FieldOfStudy[];
-  minors: FieldOfStudy[];
+  year: string;
+  majors: string[];
+  minors: string[];
 }
 
 const Step1 = ({
-  email, initialName, initialAvatarUrl, nextStep,
+  email,
+  initialName,
+  initialAvatarUrl,
+  nextStep,
 }: Step1Props) => {
-  const { user, supabase } = useSupabase();
+  const { user, setUsername, supabase } = useSupabase();
   const [submitError, setSubmitError] = useState<string | null>(null);
 
   // If we have an initialAvatarUrl, fetch it and set it as the initial avatar
@@ -52,233 +45,149 @@ const Step1 = ({
   useEffect(() => {
     const fetchInitialAvatar = async () => {
       if (initialAvatarUrl) {
-        const file = await getFileFromUrl(initialAvatarUrl, "avatar");
+        const file = await getFileFromUrl(initialAvatarUrl, "Google profile picture");
         setInitialAvatar(file);
       }
     };
     fetchInitialAvatar();
   }, [initialAvatarUrl]);
 
-  // Memo to avoid repeated queries
-  const [openUsernames, setOpenUsernames] = useState<{[key: string]: boolean}>({});
-
   if (!user) {
     return null;
   }
 
   return (
-    <div>
-      <p>Let&apos;s get to know you!</p>
-      <Formik
-        enableReinitialize // to set avatar after fetching initialAvatarUrl
-        initialValues={ {
-          name: initialName || "",
-          username: email?.split("@")[0] || "",
-          avatar: initialAvatar, // may change after fetching
-          year: "",
-          phone: "",
-          majors: [],
-          minors: [],
-        } as FormValues }
-        validate={ async (values) => {
-          setSubmitError(null);
-          const errors: FormikErrors<FormValues> = {};
-
-          if (!values.name) {
-            errors.name = "Please enter your name";
-          } else if (values.name.length < 2 || values.name.length > 50) {
-            errors.name = "Please enter a name between 2 and 50 characters";
-          }
-
-          if (!values.username) {
-            errors.username = "Please select a username";
-          } else if (values.username.length < 3 || values.username.length > 30) {
-            errors.username = "Username must be between 3 and 30 characters";
-          } else if (!/^[a-zA-Z\d]*$/.test(values.username)) {
-            errors.username = "Usernames must only contain letters and numbers";
-          } else if (openUsernames[values.username] === undefined) {
-            const { count, error, status } = await supabase
-              .from("profiles")
-              .select("username", { count: "exact", head: true })
-              .eq("username", values.username);
-            if (error && status !== 406) {
-              errors.username = error.message;
-            } else {
-              if (count) {
-                errors.username = "Username is already taken";
-              }
-              setOpenUsernames(
-                (openUsernames_) => ({ ...openUsernames_, [values.username]: !count }),
-              );
-            }
-          } else if (!openUsernames[values.username]) {
-            errors.username = "Username is already taken";
-          }
-
-          if (!values.phone) {
-            errors.phone = "Please enter your phone number";
-          } else if (!/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/.test(values.phone)) {
-            errors.phone = "Please enter a valid phone number";
-          }
-
-          if (!values.avatar) {
-            errors.avatar = "Please upload a profile picture";
-          }
-
-          if (!values.year) {
-            errors.year = "Please select your year";
-          }
-
-          if (values.majors.length === 0) {
-            errors.majors = "Please select at least one major, or 'Undecided'";
-          }
-
-          return errors;
-        } }
+    <div className="bg-black h-screen">
+      <div className="md:grid md:grid-cols-3 md:gap-6">
+        <div className="md:col-span-1 pl-8 pt-6">
+          <div className="px-4 sm:px-0">
+            <h3 className="text-lg font-large leading-6 text-V1gold font-bold">
+              Profile
+            </h3>
+            <p className="mt-1 text-m text-V1gold">
+              Let us get to know you better!
+            </p>
+          </div>
+        </div>
+        <Formik
+          enableReinitialize // to set avatar after fetching initialAvatarUrl
+          initialValues={ {
+            name: initialName || "",
+            username: email?.split("@")[0] || "",
+            avatar: initialAvatar, // may change after fetching
+            year: "",
+            phone: "",
+            majors: [],
+            minors: [],
+          } as FormValues }
+          validate={ () => setSubmitError(null) }
         // Don't want to query DB for username on every keystroke, so just do onBlur
-        validateOnChange={ false }
-        onSubmit={ async (values, { setSubmitting }) => {
+          validateOnChange={ false }
+          onSubmit={ async (values, { setSubmitting }) => {
           // Upload avatar to bucket
           // values.avatar is not null, would've been caught by validation
-          const avatarFile = (values.avatar as File);
-          const { error: uploadError } = await supabase
-            .storage.from("avatars").upload(
-              // Not including file extension since we may have PNG, JPG, etc
-              user.id, avatarFile, {
-                contentType: avatarFile.type,
-                cacheControl: "3600",
-                upsert: true,
-              },
-            );
-          if (uploadError) {
-            setSubmitError(uploadError.message);
-            return;
-          }
+            const avatarFile = (values.avatar as File);
+            const { error: uploadError } = await supabase
+              .storage.from("avatars").upload(
+              // Just save as `user.id`, not including file extension
+              // since we may have PNG, JPG, etc
+                user.id, avatarFile, {
+                  contentType: avatarFile.type,
+                  cacheControl: "3600",
+                  upsert: true,
+                },
+              );
+            if (uploadError) {
+              setSubmitError(uploadError.message);
+              return;
+            }
 
-          const { error: dbError } = await supabase
-            .from("profiles")
-            .update({
-              name: values.name,
-              username: values.username,
-              phone: values.phone,
-              year: values.year,
-              fields_of_study: {
-                majors: values.majors,
-                minors: values.minors,
-              },
-              updated_at: new Date(),
-            }, {
-              returning: "minimal", // Don't return the value after inserting
-            })
-            .eq("id", user.id);
-          if (dbError) {
-            setSubmitError(dbError.message);
-          } else {
-            nextStep();
-          }
-          setSubmitting(false);
-        } }
+            const { error: dbError } = await supabase
+              .from("profiles")
+              .update({
+                name: values.name,
+                username: values.username,
+                phone: values.phone,
+                year: values.year,
+                fields_of_study: {
+                  majors: values.majors,
+                  minors: values.minors,
+                },
+                updated_at: new Date(),
+              }, {
+                returning: "minimal", // Don't return the value after inserting
+              })
+              .eq("id", user.id);
+            if (dbError) {
+              setSubmitError(dbError.message);
+            } else {
+              setUsername(values.username);
+              nextStep();
+            }
+            setSubmitting(false);
+          } }
      >
-        {({ values, setFieldValue, isSubmitting }) => (
-          <Form className="flex flex-col w-1/2 gap-y-4">
+          {({ values, isSubmitting }) => (
+            <div className="pt-6 mt-5 md:mt-0 md:col-start-2 col-end-4">
+              <Form className="pr-8">
+                <div className="shadow sm:rounded-md overflow-visible">
+                  <div className="px-4 py-5 bg-white space-y-6 sm:p-6">
+                    <div className="grid grid-cols-6 gap-6">
+                      <div className="col-span-6 sm:col-span-3">
+                        <NameField label="Name" />
+                      </div>
+                      <div className="col-span-6 sm:col-span-3">
+                        <EmailField value={ email } label="Email" />
+                      </div>
+                    </div>
 
-            <div>
-              <label htmlFor="name" className="block">Name</label>
-              <Field type="text" name="name" placeholder="Name" />
-              <ErrorMessage name="name" component="p" className="text-red-500" />
-            </div>
+                    <div className="grid grid-cols-6 gap-6">
+                      <div className="col-span-6 sm:col-span-3">
+                        <UsernameField label="Username" />
+                      </div>
+                      <div className="col-span-6 sm:col-span-3">
+                        <PhoneField label="Phone" />
+                      </div>
+                    </div>
 
-            <div>
-              <label htmlFor="email" className="block">Email</label>
-              <Field type="email" value={ email } disabled />
-            </div>
+                    <div className="w-full">
+                      {values.avatar && <ViewAvatar avatar={ values.avatar } />}
+                      <EditAvatar />
+                    </div>
 
-            <div>
-              <label htmlFor="username" className="block">Username</label>
-              <Field type="text" name="username" placeholder="Username" />
-              <ErrorMessage name="username" component="p" className="text-red-500" />
-            </div>
+                    <div className="grid grid-cols-6 gap-6">
+                      <div className="col-span-6 sm:col-span-3">
 
-            <div>
-              <label htmlFor="phone" className="block">Phone number</label>
-              <Field type="tel" name="phone" placeholder="xxx-xxx-xxxx" />
-              <ErrorMessage name="phone" component="p" className="text-red-500" />
-            </div>
+                        <YearField label="School year" />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-6 gap-6">
+                      <div className="col-span-6 sm:col-span-3 overflow-x-visible">
+                        <MajorsField label="Major(s)" />
+                      </div>
 
-            <div>
-              {values.avatar && (
-                <img
-                  src={ URL.createObjectURL(values.avatar) }
-                  className="w-32 h-32 rounded-full m-2 border-black border-2"
-                  alt="Profile"
-                />
-              )}
-              <Dropzone
-                accept="image/jpeg, image/png, image/gif"
-                maxFiles={ 1 }
-                onDrop={ ([file]) => setFieldValue("avatar", file) }
-              >
-                {({ getRootProps, getInputProps }) => (
-                  /* eslint-disable react/jsx-props-no-spreading */
-                  <div { ...getRootProps() } className="p-4 bg-gray-300 border-black border-2 rounded-lg">
-                    <input { ...getInputProps() } />
-                    <p>
-                      Select a profile picture (*.jpeg, *.png, *.gif)
-                      {values.avatar && (
-                        <>
-                          :
-                          <b>
-                            {" "}
-                            {values.avatar.name}
-                          </b>
-                        </>
-                      )}
-                    </p>
-                    <ErrorMessage name="avatar" component="p" className="text-red-500" />
+                      <div className="col-span-6 sm:col-span-3">
+                        <MinorsField label="Minor(s) (optional)" />
+                      </div>
+                    </div>
+
+                    <button
+                      type="submit"
+                      disabled={ isSubmitting }
+                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    >
+                      {isSubmitting ? "Loading..." : "Next ›"}
+                    </button>
+                    {submitError && (
+                      <p className="text-red-500">{submitError}</p>
+                    )}
                   </div>
-                )}
-              </Dropzone>
+                </div>
+              </Form>
             </div>
-
-            <div>
-              <label htmlFor="year" className="block">School year</label>
-              <Field as="select" name="year">
-                <option value="" disabled hidden>
-                  Select your year
-                </option>
-                {Object.keys(Year).map((year) => (
-                  <option key={ year } value={ year }>{year}</option>
-                ))}
-              </Field>
-              <ErrorMessage name="year" component="p" className="text-red-500" />
-            </div>
-
-            <div>
-              <label htmlFor="majors" className="block">Major(s)</label>
-              <MultiSelect
-                name="majors"
-                options={ FIELDS_OF_STUDY }
-                placeholder="Select your major(s)"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="minors" className="block">Minor(s) (optional)</label>
-              <MultiSelect
-                name="minors"
-                // List of minors might be slightly different...fine for now
-                options={ FIELDS_OF_STUDY }
-                placeholder="Select your minor(s)"
-            />
-            </div>
-
-            <button type="submit" disabled={ isSubmitting }>
-              {isSubmitting ? "Loading..." : "Submit"}
-            </button>
-            {submitError && <p className="text-red-500">{submitError}</p>}
-          </Form>
-        )}
-      </Formik>
+          )}
+        </Formik>
+      </div>
     </div>
   );
 };
