@@ -7,9 +7,9 @@ import {
   EmailField,
   UsernameField,
   PhoneField,
-  YearField,
-  MajorsField,
-  MinorsField,
+  RolesField,
+  InterestsField,
+  AdditionalLinksField,
 } from "../profile/fields/ProfileFields";
 import ViewAvatar from "../profile/ViewAvatar";
 import { EditAvatar } from "../profile/fields/FileFields";
@@ -26,9 +26,9 @@ interface FormValues {
   username: string;
   phone: string;
   avatar: File | null;
-  year: string;
-  majors: string[];
-  minors: string[];
+  roles: string[],
+  interests: string[],
+  additionalLinks: string, // Optional
 }
 
 const Step1 = ({
@@ -75,10 +75,10 @@ const Step1 = ({
             name: initialName || "",
             username: email?.split("@")[0] || "",
             avatar: initialAvatar, // may change after fetching
-            year: "",
             phone: "",
-            majors: [],
-            minors: [],
+            roles: [],
+            interests: [],
+            additionalLinks: "",
           } as FormValues }
           validate={ () => setSubmitError(null) }
         // Don't want to query DB for username on every keystroke, so just do onBlur
@@ -109,11 +109,9 @@ const Step1 = ({
                 name: values.name,
                 username: values.username,
                 phone: values.phone,
-                year: values.year,
-                fields_of_study: {
-                  majors: values.majors,
-                  minors: values.minors,
-                },
+                roles: values.roles,
+                interests: values.interests,
+                website: values.additionalLinks,
                 updated_at: new Date(),
               }, {
                 returning: "minimal", // Don't return the value after inserting
@@ -158,17 +156,15 @@ const Step1 = ({
 
                     <div className="grid grid-cols-6 gap-6">
                       <div className="col-span-6 sm:col-span-3">
-
-                        <YearField label="School year" />
+                        <RolesField label="Which types of roles are you interested in?" />
+                      </div>
+                      <div className="col-span-6 sm:col-span-3">
+                        <InterestsField label="Which industries are you interested in?" />
                       </div>
                     </div>
-                    <div className="grid grid-cols-6 gap-6">
-                      <div className="col-span-6 sm:col-span-3 overflow-x-visible">
-                        <MajorsField label="Major(s)" />
-                      </div>
-
-                      <div className="col-span-6 sm:col-span-3">
-                        <MinorsField label="Minor(s) (optional)" />
+                    <div className="grid grid-cols-3 gap-6">
+                      <div className="col-span-3 sm:col-span-3">
+                        <AdditionalLinksField label="Any other links you'd like to share? (optional)" />
                       </div>
                     </div>
 

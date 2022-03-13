@@ -2,20 +2,20 @@ import { useState } from "react";
 import { Formik, Form } from "formik";
 import useSupabase from "../../hooks/useSupabase";
 import {
-  RolesField,
-  InterestsField,
   LinkedInField,
-  AdditionalLinksField,
+  YearField,
+  MajorsField,
+  MinorsField,
 } from "../profile/fields/ProfileFields";
 import ViewResume from "../profile/ViewResume";
 import { EditResume } from "../profile/fields/FileFields";
 
 interface FormValues {
-  roles: string[],
-  interests: string[],
   resume: File | null,
   linkedin: string, // Optional
-  additionalLinks: string, // Optional
+  year: string;
+  majors: string[];
+  minors: string[];
 }
 
 interface Step2Props {
@@ -35,11 +35,11 @@ const Step2 = ({ nextStep }: Step2Props) => {
       <h3 className="text-lg font-large font-bold text-center leading-6 text-V1gold pl-6 pt-4">We can&apos;t wait to learn more about you!</h3>
       <Formik
         initialValues={ {
-          roles: [],
-          interests: [],
           resume: null,
           linkedin: "",
-          additionalLinks: "",
+          year: "",
+          majors: [],
+          minors: [],
         } as FormValues }
         validate={ () => setSubmitError(null) }
         onSubmit={ async (values, { setSubmitting }) => {
@@ -67,10 +67,12 @@ const Step2 = ({ nextStep }: Step2Props) => {
           const { error } = await supabase
             .from("profiles")
             .update({
-              roles: values.roles,
-              interests: values.interests,
+              year: values.year,
+              fields_of_study: {
+                majors: values.majors,
+                minors: values.minors,
+              },
               linkedin: values.linkedin,
-              website: values.additionalLinks,
               updated_at: new Date(),
             }, {
               returning: "minimal", // Don't return the value after inserting
@@ -91,10 +93,10 @@ const Step2 = ({ nextStep }: Step2Props) => {
 
                 <div className="grid grid-cols-6 gap-6">
                   <div className="pl-6 col-span-6 sm:col-span-3 w-2/3">
-                    <RolesField label="Which types of roles are you interested in?" />
+                    <YearField label="School year" />
                   </div>
                   <div className="pl-6 col-span-6 sm:col-span-3 w-2/3">
-                    <InterestsField label="Which industries are you interested in?" />
+                    <LinkedInField label="LinkedIn profile (optional)" />
                   </div>
                 </div>
 
@@ -105,11 +107,11 @@ const Step2 = ({ nextStep }: Step2Props) => {
 
                 <div className="grid grid-cols-6 gap-6 pt-4">
                   <div className="pl-6 col-span-6 sm:col-span-3">
-                    <LinkedInField label="LinkedIn profile (optional)" />
+                    <MajorsField label="Major(s)" />
                   </div>
 
                   <div className="col-span-6 sm:col-span-3">
-                    <AdditionalLinksField label="Any other links you'd like to share? (optional)" />
+                    <MinorsField label="Minor(s) (optional)" />
                   </div>
                 </div>
                 <div className="pl-6 pt-4 pb-4">
