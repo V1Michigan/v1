@@ -73,7 +73,7 @@ const Dashboard: NextPage = () => {
       <div className="bg-gray-100">
         <div className="max-w-screen-xl mx-auto py-6 px-4">
           <div
-            className={`bg-blue-600 hover:bg-blue-500 items-center text-blue-100 leading-none rounded-full flex inline-flex mb-2 cursor-default`}
+            className={`bg-blue-600 hover:bg-blue-500 items-center text-blue-100 leading-none rounded-full flex mb-2 cursor-default`}
             role="alert"
           >
             <span className="flex rounded-full tracking-wide uppercase px-1 py-1 text-xs font-bold mr-2 ml-2">
@@ -176,10 +176,24 @@ const Dashboard: NextPage = () => {
                 {" "}
                 Resources &#8250;
               </h1>
+              <a className="block bg-gray-100 max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center text-lg hover:bg-gray-200 hover:opacity-75 transition-all" href="/community">
+                <img className="mb-1 inline-block w-8 mr-1 my-auto" src="/discord-gray-icon.webp" alt="discord icon" />
+                Join the <span className="font-semibold">V1 Discord &rsaquo;</span>
+              </a>
+              <a className="block bg-gray-100 max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center text-lg hover:bg-gray-200 hover:opacity-75 transition-all" href="/newsletter">
+                <img className="mb-1 inline-block w-8 mr-1 my-auto" src="/substackicon.webp" alt="discord icon" />
+                Read the <span className="font-semibold">V1 Newsletter &rsaquo;</span>
+              </a>
+              <div className="block bg-gray-300 max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center text-lg">
+                <span className="text-2xl">🔒 </span>Member Directory
+              </div>
+              <div className="block bg-gray-300 max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center text-lg">
+                <span className="text-2xl">🔒 </span>Alumni Directory
+              </div>
             </div>
-            </div>
+          </div>
         </div>
-        </div>
+      </div>
     </>
   );
 };
