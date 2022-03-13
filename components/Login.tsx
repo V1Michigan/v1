@@ -29,24 +29,47 @@ export default function Login() {
   };
 
   return (
-    <div className="bg-gradient flex h-screen items-center justify-center py-24 px-4 sm:px-6 lg:px-8">
-      <div className="h-full max-w-md w-full space-y-8">
-        <div>
+    <div className="bg-gradient h-full w-screen">
+      <div className="h-screen py-24 px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col gap-y-6 text-center text-white">
           <img
             src={ logo.src }
             className="mx-auto h-20 w-auto"
             alt="V1 logo"
           />
-          <h3 className="mt-6 text-center text-2xl font-medium text-white">Log in or sign up now &#8212; we love new faces!</h3>
-          <p className="mt-6 text-center text-white">It only takes 2 minutes 😀</p>
+          <h3 className="text-4xl">
+            Welcome to
+            {" "}
+            <b>V1</b>
+          </h3>
+          <div>
+            <p>
+              <b>Returning user?</b>
+              {" "}
+              We missed you &#8212; welcome back! 🎉
+            </p>
+            <p>
+              Click below to log in with your umich.edu Google account.
+            </p>
+          </div>
+          <div>
+            <p>
+              <b>Don&apos;t have an account yet?</b>
+              {" "}
+              We love new faces! 😀
+            </p>
+            <p>
+              Click below to sign up with your umich.edu Google account.
+            </p>
+          </div>
         </div>
-        <div className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2 data-width:300 data-height:400 data-longtitle:true">
+        <div className="group relative w-full flex justify-center mt-6 p-4 border border-transparent text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2 data-width:300 data-height:400 data-longtitle:true">
           <GoogleSignIn
             onClick={ handleGoogleSignup }
             disabled={ loading }
           />
+          {submitError && <p className="text-red-500">{submitError}</p>}
         </div>
-        {submitError && <p className="text-red-500">{submitError}</p>}
       </div>
     </div>
   );
