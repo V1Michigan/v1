@@ -1,6 +1,10 @@
 import { NextPage } from "next";
-import { events } from "../components/events.tsx";
-import { links } from "../components/links.tsx"
-const Dashboard: NextPage = () => {
 
-}
+const Dashboard: NextPage = () => (
+<main className="from-white to-black bg-gradient-to-t flex flex-col items-center pt-20"> 
+        <h1 className="text-6xl font-sans text-center">Good Evening, <br /> <b>User</b></h1>
+        <div>
+            Bob the Builder
+        </div>
+    </main>
+)
