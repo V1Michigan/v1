@@ -7,4 +7,6 @@ const Dashboard: NextPage = () => (
             Bob the Builder
         </div>
     </main>
-)
+);
+
+export default Dashboard;
