@@ -229,9 +229,9 @@ const InterestsField = ({ label }: LabelProps) => {
 const LinkedInField = ({ label }: LabelProps) => {
   const validateLinkedIn = (value: string) => {
     // Note that LinkedIn is optional
-    if (value && !/https:\/\/linkedin\.com\/in\/.{3,100}/.test(value)) {
+    if (value && !/https:\/\/(www\.)?linkedin\.com\/in\/.{3,100}/.test(value)) {
       return (
-        "Please enter a valid LinkedIn profile URL (e.g. https://www.linkedin.com/in/billymagic)"
+        "Please enter a valid LinkedIn profile URL (e.g. https://linkedin.com/in/billymagic)"
       );
     }
     return undefined;
