@@ -48,7 +48,7 @@ const Dashboard: NextPage = () => {
           setDataFetchErrors(["Unexpected status code: " + status]);
         } else {
           setData(dbData);
-          const { data: dbEvents, error: dbEventError, status: dbEventStatus } = await supabase.from("events").select(EVENT_COLUMNS);
+          const { data: dbEvents, error: dbEventError, status: dbEventStatus } = await supabase.from("events").select(EVENT_COLUMNS).order("date", { ascending: true });
           
           if ((dbEventError && dbEventStatus !== 406) || !dbEvents) {
             router.replace("/404");
