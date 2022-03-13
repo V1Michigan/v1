@@ -5,7 +5,7 @@ import useSupabase from "../hooks/useSupabase";
 
 const JoinPage: NextPage = () => {
   const { user } = useSupabase();
-  return user ? <Redirect route="/profile" /> : <SignUp />;
+  return user ? <Redirect route="/dashboard" /> : <SignUp />;
 };
 
 export default JoinPage;

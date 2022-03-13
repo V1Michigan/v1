@@ -5,7 +5,7 @@ import useSupabase from "../hooks/useSupabase";
 
 const LoginPage: NextPage = () => {
   const { user } = useSupabase();
-  return user ? <Redirect route="/profile" /> : <Login />;
+  return user ? <Redirect route="/dashboard" /> : <Login />;
 };
 
 export default LoginPage;
