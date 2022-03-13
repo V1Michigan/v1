@@ -145,18 +145,23 @@ const Dashboard: NextPage = () => {
                 <p className="">April 1st, 2022 @ 7 pm </p>
                 <p className="italic mb-2">ROSS Impact Studio</p>
                 <p className="mb-2">Think of the most epic description to place here. We're going to be doing some insane things. This is just the beginning. </p>
-                <button className="text-center text-sm block text-gray-100 font-semibold bg-gradient-to-r from-blue-600 to-blue-700 hover:bg-blue-500 shadow py-2 px-3 rounded mx-auto hover:opacity-75">RSVP &rsaquo;</button></div>
- </div>
+                <button className="text-center text-sm block text-gray-100 font-semibold bg-gradient-to-r from-blue-600 to-blue-700 hover:bg-blue-500 shadow py-2 px-3 rounded mx-auto hover:opacity-75">RSVP &rsaquo;</button>
+              </div>
+            </div>
 
             <div className="flex-1">
               <h1 className="text-3xl font-bold tracking-tight text-gray-800 mb-4 mt-8 text-center">
                 {" "}
                 Resources &#8250;
               </h1>
+              <div className="bg-gray-100 max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center text-lg">
+                <img className="mb-1 inline-block w-8 mr-1 my-0" src="/discord-gray-icon.webp" alt="discord icon" />
+                Join the <span className="font-semibold">V1 Discord &rsaquo;</span>
+              </div>
             </div>
-            </div>
+          </div>
         </div>
-        </div>
+      </div>
     </>
   );
 };
