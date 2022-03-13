@@ -107,3 +107,16 @@ background-position: 100% 50%
 background-position: 0% 50%
 }
 }
+
+@layer components {
+  .dash-link {
+    @apply max-w-xs text-lg rounded-3xl px-4 py-2 mb-2 text-center;
+  }
+  /* bro what u doin cool works - just trying to make styling the buttons easier so we don't have to make 50 changes every time i change one thing */
+  .unlocked {
+    @apply bg-white cursor-pointer hover:underline decoration-solid; 
+  }
+  .locked {
+    @apply bg-gray-200;
+  }
+}
