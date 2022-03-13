@@ -27,18 +27,45 @@ const navigation = [
     name: "Dashboard",
     href: "/dashboard",
     current: false,
-    right: true
+    right: true,
+    login: true
   },
   {
     name: "Profile",
     href: "/profile",
     current: false,
-    right: false
+    right: false,
+    login: true
+  },
+  {
+    name: "Login",
+    href: "/login",
+    current: false,
+    right: true,
+    noauth: true
+  },
+  {
+    name: "Sign Up",
+    href: "/join",
+    current: false,
+    right: false,
+    noauth: true,
+    signup:true
   }
-  
 ];
 
+
+
 export default function NavbarBuilder() {
+  let Decode = (input: string) => 0;
+  useEffect(() => {
+    Decode = (input: string) => {
+      var e = document.createElement('div');
+      e.innerHTML = input;
+      return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+    }
+  })
+  const { user } = useSupabase();
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open: disclosureOpen }) => (
@@ -65,17 +92,18 @@ export default function NavbarBuilder() {
                   <div className="flex flex-row space-x-4 w-full">
                     {navigation.map((item) => (
                       <a
+                        
                         key={ item.name }
                         href={ item.href }
                         className={ `${
                           item.current
                             ? "bg-gray-900 text-white"
                             : "text-gray-300 hover:bg-gray-700 hover:text-white"}
-                          px-3 py-2 rounded-md text-sm font-medium` }
+                          px-3 py-2 rounded-md text-sm font-medium ${item?.login && !user ? "hidden" : ""} ${item?.noauth && user ? "hidden" : ""} ${item?.signup ? "bg-gray-700":""}` }
                         aria-current={ item.current ? "page" : undefined }
                         style={item.right ? { marginLeft: "auto", marginRight: "0" } : {}}
                       >
-                        {item.name}
+                        {item.name} {item?.signup ? Decode("&rsaquo;") : ""}
                       </a>
                     ))}
                   </div>
