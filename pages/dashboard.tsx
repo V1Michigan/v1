@@ -126,6 +126,12 @@ const Dashboard: NextPage = () => {
                 {" "}
                 Upcoming Events &#8250;
               </h1>
+              <div className="bg-gray-100 max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center">
+                <h6 className="font-bold text-lg">April V1 Meetup</h6>
+                <p className="mb-2">April 1st, 2022 @ 7 pm</p>
+                <button className="text-center text-sm block text-gray-100 font-semibold bg-gradient-to-r from-blue-600 to-blue-700 hover:bg-blue-500 shadow py-2 px-3 rounded mx-auto hover:opacity-75">RSVP &rsaquo;</button>
+              </div>
+
             </div>
 
             <div className="flex-1">
