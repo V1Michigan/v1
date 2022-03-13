@@ -1,29 +1,25 @@
 import { useState } from "react";
-import {
-  Formik, Form, Field, ErrorMessage, FormikErrors,
-} from "formik";
-import Link from "next/link";
 import useSupabase from "../hooks/useSupabase";
-import GoogleSignIn from "./GoogleSignIn";
 import { HOSTNAME } from "../pages/_app";
-
-interface FormValues {
-  email: string;
-  password: string;
-}
+import GoogleSignIn from "./GoogleSignIn";
+import logo from "../public/V1_logo_round.png";
 
 const REDIRECT_URL = `${HOSTNAME}/profile`;
 
 export default function Login() {
   const { signIn } = useSupabase();
+
   const [loading, setLoading] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
-  const handleGoogleLogin = async (): Promise<void> => {
+  const handleGoogleSignup = async (): Promise<void> => {
     setSubmitError(null);
     setLoading(true);
     const { error } = await signIn(
       { provider: "google" },
+      // Redirect URLs must have the same hostname as the "Site URL" in the
+      // Supabase Auth settings or be present in the "Additional Redirect URLs"
+      // (additional redirects must match exactly)
       { redirectTo: REDIRECT_URL },
     );
     if (error) {
@@ -33,75 +29,25 @@ export default function Login() {
   };
 
   return (
-    <div className="row flex flex-col w-1/2 gap-y-4">
-      <div className="col-6 form-widget">
-        <Formik
-          initialValues={ {
-            email: "",
-            password: "",
-          } as FormValues }
-          validate={ (values) => {
-            setSubmitError(null);
-            const errors: FormikErrors<FormValues> = {};
-
-            if (!values.email) {
-              errors.email = "Please enter your email";
-            } else if (!/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(values.email)) {
-              errors.email = "Please enter a valid email";
-            }
-
-            if (!values.password) {
-              errors.password = "Please enter your password";
-            }
-
-            return errors;
-          } }
-          onSubmit={ async (values, { setSubmitting }) => {
-            setLoading(true);
-            const { error } = await signIn(
-              { email: values.email, password: values.password },
-              { redirectTo: REDIRECT_URL },
-            );
-            if (error) {
-              setSubmitError(error.message);
-            }
-            setLoading(false);
-            setSubmitting(false);
-          } }
-     >
-          {({ errors, isSubmitting }) => (
-            <Form className="flex flex-col w-1/2 gap-y-4">
-              <div>
-                <Field
-                  type="email"
-                  name="email"
-                  placeholder="Email"
-                  autoComplete="email" />
-                <ErrorMessage name="email" component="p" className="text-red-500" />
-              </div>
-              <div>
-                <Field
-                  type="password"
-                  name="password"
-                  placeholder="Password"
-                  autoComplete="current-password" />
-                <ErrorMessage name="password" component="p" className="text-red-500" />
-              </div>
-              <button type="submit" disabled={ isSubmitting || Object.keys(errors).length > 0 }>
-                {isSubmitting ? "Loading..." : "Login ›"}
-              </button>
-              {submitError && <p className="text-red-500">{submitError}</p>}
-            </Form>
-          )}
-        </Formik>
+    <div className="bg-gradient flex h-screen items-center justify-center py-24 px-4 sm:px-6 lg:px-8">
+      <div className="h-full max-w-md w-full space-y-8">
+        <div>
+          <img
+            src={ logo.src }
+            className="mx-auto h-20 w-auto"
+            alt="V1 logo"
+          />
+          <h3 className="mt-6 text-center text-2xl font-medium text-white">Log in or sign up now &#8212; we love new faces!</h3>
+          <p className="mt-6 text-center text-white">It only takes 2 minutes 😀</p>
+        </div>
+        <div className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2 data-width:300 data-height:400 data-longtitle:true">
+          <GoogleSignIn
+            onClick={ handleGoogleSignup }
+            disabled={ loading }
+          />
+        </div>
+        {submitError && <p className="text-red-500">{submitError}</p>}
       </div>
-      <GoogleSignIn
-        onClick={ handleGoogleLogin }
-        disabled={ loading }
-      />
-      <Link href="/join" passHref>
-        <p className="link">Don&apos;t have an account yet? Sign up</p>
-      </Link>
     </div>
   );
 }
