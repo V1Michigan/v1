@@ -1,18 +1,11 @@
-import { useRouter } from "next/router";
-import { useEffect } from "react";
 import { NextPage } from "next";
 import Login from "../components/Login";
+import Redirect from "../components/Redirect";
 import useSupabase from "../hooks/useSupabase";
 
 const LoginPage: NextPage = () => {
   const { user } = useSupabase();
-  const router = useRouter();
-  useEffect(() => {
-    if (user) {
-      router.replace("/profile");
-    }
-  }, [user, router]);
-  return <Login />;
+  return user ? <Redirect route="/profile" /> : <Login />;
 };
 
 export default LoginPage;

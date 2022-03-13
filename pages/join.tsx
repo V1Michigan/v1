@@ -1,18 +1,11 @@
-import { useRouter } from "next/router";
-import { useEffect } from "react";
 import { NextPage } from "next";
 import SignUp from "../components/SignUp";
+import Redirect from "../components/Redirect";
 import useSupabase from "../hooks/useSupabase";
 
 const JoinPage: NextPage = () => {
   const { user } = useSupabase();
-  const router = useRouter();
-  useEffect(() => {
-    if (user) {
-      router.replace("/profile");
-    }
-  }, [user, router]);
-  return <SignUp />;
+  return user ? <Redirect route="/profile" /> : <SignUp />;
 };
 
 export default JoinPage;
