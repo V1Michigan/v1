@@ -15,7 +15,7 @@ export type Data = {
 export type Event = {
   name: string;
   date: Date;
-  location: string;
+  place: string;
   description: string;
   link: string
 }
@@ -73,7 +73,7 @@ const Dashboard: NextPage = () => {
       <div className="bg-gray-100">
         <div className="max-w-screen-xl mx-auto py-6 px-4">
           <div
-            className={`bg-blue-600 hover:bg-blue-500 items-center text-blue-100 leading-none rounded-full flex mb-2 cursor-default`}
+            className={`bg-blue-600 hover:bg-blue-500 items-center text-blue-100 leading-none inline-block rounded-full mb-2 cursor-default`}
             role="alert"
           >
             <span className="flex rounded-full tracking-wide uppercase px-1 py-1 text-xs font-bold mr-2 ml-2">
@@ -150,19 +150,14 @@ const Dashboard: NextPage = () => {
                 {" "}
                 Upcoming Events &#8250;
               </h1>
-              {/* <div className="bg-gray-100 max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center">
-                <h6 className="font-bold text-lg">April V1 Meetup</h6>
-                <p className="">April 1st, 2022 @ 7 pm </p>
-                <p className="italic mb-2">ROSS Impact Studio</p>
-                <p className="mb-2">Think of the most epic description to place here. We're going to be doing some insane things. This is just the beginning. </p>
-                <button className="text-center text-sm block text-gray-100 font-semibold bg-gradient-to-r from-blue-600 to-blue-700 hover:bg-blue-500 shadow py-2 px-3 rounded mx-auto hover:opacity-75">RSVP &rsaquo;</button>
-              </div> */}
               {events.map((event) => {
                 return (
                   <div className="bg-gray-100 max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center">
                     <h6 className="font-bold text-lg">{event.name}</h6>
-                    <p className="">{event.date}</p>
-                    <p className="italic mb-2">{event.location}</p>
+                    <p className="">{
+                      new Date(event.date).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" })
+                    }</p>
+                    <p className="italic mb-2">{event.place}</p>
                     <p className="mb-2">{event.description}</p>
                     <button className="text-center text-sm block text-gray-100 font-semibold bg-gradient-to-r from-blue-600 to-blue-700 hover:bg-blue-500 shadow py-2 px-3 rounded mx-auto hover:opacity-75">RSVP &rsaquo;</button>
                   </div>
