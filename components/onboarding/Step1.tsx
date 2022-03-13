@@ -11,6 +11,7 @@ import {
   InterestsField,
   AdditionalLinksField,
 } from "../profile/fields/ProfileFields";
+import { FadeAllChildren } from "../Fade";
 import ViewAvatar from "../profile/ViewAvatar";
 import { EditAvatar } from "../profile/fields/FileFields";
 
@@ -119,56 +120,36 @@ const Step1 = ({
         } }
      >
         {({ values, isSubmitting }) => (
-          <Form className="mx-auto w-4/5 shadow rounded-md">
-            <div className="px-4 py-5 bg-white space-y-6 sm:p-6">
-              <div className="grid grid-cols-6 gap-6">
-                <div className="col-span-6 sm:col-span-3">
-                  <NameField label="Name" />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <EmailField value={ email } label="Email" />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-6 gap-6">
-                <div className="col-span-6 sm:col-span-3">
-                  <UsernameField label="Username" />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <PhoneField label="Phone" />
-                </div>
-              </div>
+          // Need large pb-32 to prevent FadeAllChildren from overflowing
+          <Form className="mx-auto w-4/5 px-16 py-8 pb-32 space-y-8 bg-white shadow rounded-md">
+            <FadeAllChildren>
+              <NameField label="Name" />
+              <EmailField value={ email } label="Email" />
+              <UsernameField label="Username" />
+              <PhoneField label="Phone" />
 
               <div className="w-full">
                 {values.avatar && <ViewAvatar avatar={ values.avatar } />}
                 <EditAvatar />
               </div>
 
-              <div className="grid grid-cols-6 gap-6">
-                <div className="col-span-6 sm:col-span-3">
-                  <RolesField label="Which types of roles are you interested in?" />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <InterestsField label="Which industries are you interested in?" />
-                </div>
-              </div>
-              <div className="grid grid-cols-3 gap-6">
-                <div className="col-span-3 sm:col-span-3">
-                  <AdditionalLinksField label="Any other links you'd like to share? (optional)" />
-                </div>
-              </div>
+              <RolesField label="Which types of roles are you interested in?" />
+              <InterestsField label="Which industries are you interested in?" />
+              <AdditionalLinksField label="Any other links you'd like to share? (optional)" />
 
-              <button
-                type="submit"
-                disabled={ isSubmitting }
-                className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    >
-                {isSubmitting ? "Loading..." : "Next ›"}
-              </button>
-              {submitError && (
-              <p className="text-red-500">{submitError}</p>
-              )}
-            </div>
+              <div>
+                <button
+                  type="submit"
+                  disabled={ isSubmitting }
+                  className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              >
+                  {isSubmitting ? "Loading..." : "Next ›"}
+                </button>
+                {submitError && (
+                  <p className="text-red-500">{submitError}</p>
+                )}
+              </div>
+            </FadeAllChildren>
           </Form>
         )}
       </Formik>

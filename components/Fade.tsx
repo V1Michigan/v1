@@ -6,7 +6,7 @@ interface FadeProps {
 }
 
 export default function Fade({ children }: FadeProps) {
-  const [isVisible, setVisible] = useState(true);
+  const [isVisible, setVisible] = useState(false);
   const domRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const domNode = domRef.current;
@@ -28,6 +28,18 @@ export default function Fade({ children }: FadeProps) {
     </div>
   );
 }
+
+const FadeAllChildren = ({ children }: {children: JSX.Element[]}) => (
+  <>
+    {children.map((child) => (
+      <Fade>
+        {child}
+      </Fade>
+    ))}
+  </>
+);
+
+export { FadeAllChildren };
 
 Fade.propTypes = {
   children: PropTypes.oneOfType([
