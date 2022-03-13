@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import ProtectedRoute from "../components/ProtectedRoute";
 import useSupabase from "../hooks/useSupabase";
 import NavbarBuilder from "../components/navbar";
+import { route } from "next/dist/server/router";
 
 export type Data = {
   name: string;
@@ -19,7 +20,7 @@ export type Event = {
   link: string
 }
 
-const EVENT_COLUMNS = `name, date, location, description, link`;
+const EVENT_COLUMNS = `name, date, place, description, link`;
 
 const Dashboard: NextPage = () => {
   const router = useRouter();
@@ -42,13 +43,22 @@ const Dashboard: NextPage = () => {
           .eq("id", user.id)
           .single()
         if ((dbError && status !== 406) || !dbData) { 
-          console.log(dbError, dbData);
-          // router.replace("/404");
+          router.replace("/404");
         } else if (status !== 200) {
           setDataFetchErrors(["Unexpected status code: " + status]);
         } else {
           setData(dbData);
           const { data: dbEvents, error: dbEventError, status: dbEventStatus } = await supabase.from("events").select(EVENT_COLUMNS);
+          
+          if ((dbEventError && dbEventStatus !== 406) || !dbEvents) {
+            router.replace("/404");
+          }
+          else if (dbEventStatus !== 200) {
+            setDataFetchErrors(["Unexpected status code: " + dbEventStatus]);
+          }
+          else {
+            setEvents(dbEvents);
+          }
         }
       }
     };
@@ -140,13 +150,26 @@ const Dashboard: NextPage = () => {
                 {" "}
                 Upcoming Events &#8250;
               </h1>
-              <div className="bg-gray-100 max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center">
+              {/* <div className="bg-gray-100 max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center">
                 <h6 className="font-bold text-lg">April V1 Meetup</h6>
                 <p className="">April 1st, 2022 @ 7 pm </p>
                 <p className="italic mb-2">ROSS Impact Studio</p>
                 <p className="mb-2">Think of the most epic description to place here. We're going to be doing some insane things. This is just the beginning. </p>
-                <button className="text-center text-sm block text-gray-100 font-semibold bg-gradient-to-r from-blue-600 to-blue-700 hover:bg-blue-500 shadow py-2 px-3 rounded mx-auto hover:opacity-75">RSVP &rsaquo;</button></div>
- </div>
+                <button className="text-center text-sm block text-gray-100 font-semibold bg-gradient-to-r from-blue-600 to-blue-700 hover:bg-blue-500 shadow py-2 px-3 rounded mx-auto hover:opacity-75">RSVP &rsaquo;</button>
+              </div> */}
+              {events.map((event) => {
+                return (
+                  <div className="bg-gray-100 max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center">
+                    <h6 className="font-bold text-lg">{event.name}</h6>
+                    <p className="">{event.date}</p>
+                    <p className="italic mb-2">{event.location}</p>
+                    <p className="mb-2">{event.description}</p>
+                    <button className="text-center text-sm block text-gray-100 font-semibold bg-gradient-to-r from-blue-600 to-blue-700 hover:bg-blue-500 shadow py-2 px-3 rounded mx-auto hover:opacity-75">RSVP &rsaquo;</button>
+                  </div>
+                );
+              })}
+
+          </div>
 
             <div className="flex-1">
               <h1 className="text-3xl font-bold tracking-tight text-gray-800 mb-4 mt-8 text-center">
