@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { NextPage } from "next";
 import useSupabase from "../hooks/useSupabase";
 import ProtectedRoute from "../components/ProtectedRoute";
@@ -8,14 +7,8 @@ import OnboardingComplete from "../components/onboarding/Complete";
 import { isGoogleUser } from "../contexts/SupabaseContext";
 
 const WelcomePage: NextPage = () => {
-  const { user, onboardingStep, setOnboardingStep } = useSupabase();
-
-  useEffect(() => {
-    if (onboardingStep === "REGISTERED") {
-      setOnboardingStep("SCREEN_1");
-    }
-  }, [onboardingStep, setOnboardingStep]);
-  if (!user || onboardingStep === "REGISTERED") {
+  const { user, rank, setRank } = useSupabase();
+  if (!user) {
     return null;
   }
 
@@ -23,19 +16,20 @@ const WelcomePage: NextPage = () => {
     ? [user.user_metadata.full_name, user.user_metadata.avatar_url]
     : [undefined, undefined];
 
-  if (onboardingStep === "SCREEN_1") {
+  if (!rank) { // May be null or 0
     return (
       <Step1
         email={ user.email }
         initialName={ initialName }
         initialAvatarUrl={ initialAvatarUrl }
-        nextStep={ () => setOnboardingStep("SCREEN_2") } />
+        nextStep={ () => setRank(1) } />
     );
   }
-  if (onboardingStep === "SCREEN_2") {
-    return <Step2 nextStep={ () => setOnboardingStep("COMPLETE") } />;
+  if (rank === 1) {
+    return <Step2 nextStep={ () => setRank(2) } />;
   }
-  // Else, onboardingStep === "COMPLETE"
+
+  // Else, rank >= 2
   return <OnboardingComplete />;
 };
 
