@@ -168,14 +168,16 @@ const UserProfile: NextPage = () => {
       onSubmit={ saveProfile }
     >
       {({ values, isSubmitting }) => (
-        <Form className="flex flex-col w-1/2 gap-y-4">
-
+        <div className="bg-gradient flex min-h-screen min-w-screen justify-center items-center text-white">
+          <Form>
+          <div>
           {values.avatar && (
             <>
               <ViewAvatar avatar={ values.avatar } />
               {editMode && <EditAvatar />}
             </>
           )}
+          </div>
 
           {/* Not allowing name or username changes for now */}
           <h2 className="text-2xl">
@@ -200,9 +202,9 @@ const UserProfile: NextPage = () => {
           {dataFetchErrors.map((error) => (
             <p key={ error } className="text-red-500">{ error }</p>
           ))}
-
+          <div className= "grid grid-cols-6 gap-6">
           {isCurrentUser && (
-            <div className="mt-4">
+            <div className="mt-4 col-span-6 sm:col-span-3">
               {editMode ? (
                 <>
                   <button
@@ -227,7 +229,7 @@ const UserProfile: NextPage = () => {
               )
                 : (
                   <button
-                    className="button block"
+                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-black hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     onClick={ () => setEditMode(true) }
                     type="button"
                    >
@@ -236,16 +238,18 @@ const UserProfile: NextPage = () => {
                 )}
             </div>
           )}
-          <div className="mt-4">
+          <div className="mt-4 col-span-6 sm:col-span-3">
             <button
-              className="button block"
+                  className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-black hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               onClick={ () => supabase.auth.signOut() }
               type="button"
             >
               Sign Out
             </button>
           </div>
+          </div>
         </Form>
+      </div>
       )}
     </Formik>
   );
