@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { NextPage } from "next";
-import Login from "../components/Login";
+import SignIn from "../components/SignIn";
 import useSupabase from "../hooks/useSupabase";
 
 const LoginPage: NextPage = () => {
@@ -12,7 +12,7 @@ const LoginPage: NextPage = () => {
       router.replace("/profile");
     }
   }, [user, router]);
-  return <Login />;
+  return <SignIn isLoginPage />;
 };
 
 export default LoginPage;

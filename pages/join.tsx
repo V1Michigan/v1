@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { NextPage } from "next";
-import SignUp from "../components/SignUp";
+import SignIn from "../components/SignIn";
 import useSupabase from "../hooks/useSupabase";
 
 const JoinPage: NextPage = () => {
@@ -12,7 +12,7 @@ const JoinPage: NextPage = () => {
       router.replace("/profile");
     }
   }, [user, router]);
-  return <SignUp />;
+  return <SignIn isLoginPage={ false } />;
 };
 
 export default JoinPage;
