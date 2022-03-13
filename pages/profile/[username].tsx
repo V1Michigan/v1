@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Formik, Form } from "formik";
 import type { PostgrestError, PostgrestSingleResponse } from "@supabase/supabase-js";
 import ProtectedRoute from "../../components/ProtectedRoute";
@@ -17,11 +17,11 @@ export type Profile = {
   id: string;
   email: string;
   name: string;
-  phone: string; // Not sure this should be public
+  phone?: string; // Not fetched if not current user
   // cohort: string;  For the future...
   year: string,
-  majors: string[],
   // These two are stored together in the DB as a single JSON field
+  majors: string[],
   minors: string[],
   linkedin: string,
   website: string,
@@ -29,9 +29,9 @@ export type Profile = {
   interests: string[],
   // These two need to be fetched separately, after the DB query
   avatar?: File,
-  resume?: File,
+  resume?: File, // Not fetched if not current user
 }
-const PROFILE_COLUMNS = "id, email, name, phone, year, fields_of_study, linkedin, website, roles, interests";
+const PROFILE_COLUMNS = (isCurrentUser: boolean) => `id, email, name, ${isCurrentUser ? "phone, " : ""}year, fields_of_study, linkedin, website, roles, interests`;
 type DBProfile = Omit<Profile, "minors" | "majors"> & {
   fields_of_study: {
     minors: string[];
@@ -51,12 +51,29 @@ const UserProfile: NextPage = () => {
   const [dataFetchErrors, setDataFetchErrors] = useState<string[]>([]);
   const [formSubmitErrors, setFormSubmitErrors] = useState<string[]>([]);
 
+  const downloadFromSupabase = useCallback(async (
+    bucket: string,
+    name: string,
+    filename: string,
+    filetype: string | undefined = undefined,
+  ) => {
+    const { data, error } = await supabase.storage.from(bucket).download(name);
+    if (error) {
+      setDataFetchErrors((errors) => [...errors, error.message]);
+      return undefined;
+    } if (!data) {
+      setDataFetchErrors((errors) => [...errors, `No data returned from ${bucket} bucket download`]);
+      return undefined;
+    }
+    return new File([data as BlobPart], filename, { type: filetype || data.type });
+  }, [supabase]);
+
   useEffect(() => {
     const fetchProfileData = async () => {
       setDataFetchErrors([]);
       const { data: dbData, error: dbError, status } = await supabase
         .from("profiles")
-        .select(PROFILE_COLUMNS)
+        .select(PROFILE_COLUMNS(isCurrentUser))
         .eq("username", profileUsername)
         .single() as PostgrestSingleResponse<DBProfile>;
 
@@ -67,26 +84,23 @@ const UserProfile: NextPage = () => {
         // Show the profile data from the DB, then start fetching the avatar and resume
         setInitialProfile(profile);
 
-        const [
-          { data: avatar, error: avatarError }, { data: resume, error: resumeError },
-        ] = await Promise.all([
-          supabase.storage.from("avatars").download(profile.id),
-          supabase.storage.from("resumes").download(`${profile.id}.pdf`),
-        ]);
-
-        setDataFetchErrors(
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-          ([avatarError, resumeError].filter(Boolean) as Error[]).map((error) => error.message),
-        );
+        const [avatar, resume] = await Promise.all([
+          downloadFromSupabase(
+            "avatars", profile.id, `${profileUsername} avatar`,
+          ),
+          // Don't fetch resume if not current user
+          isCurrentUser ? await downloadFromSupabase(
+            "resumes", `${profile.id}.pdf`, `${profileUsername} Resume.pdf`, "application/pdf",
+          ) : undefined]);
         setInitialProfile({
           ...profile,
-          avatar: avatar ? new File([avatar as BlobPart], `${profileUsername} avatar`, { type: avatar.type }) : undefined,
-          resume: resume ? new File([resume as BlobPart], `${profileUsername} Resume.pdf`, { type: "application/pdf" }) : undefined,
+          avatar,
+          resume,
         });
       }
     };
     fetchProfileData();
-  }, [supabase, profileUsername, router]);
+  }, [supabase, profileUsername, router, downloadFromSupabase, isCurrentUser]);
 
   const saveProfile = async (profileData: Profile) => {
     if (!initialProfile || isObjectEqual(initialProfile, profileData)) {
@@ -175,10 +189,11 @@ const UserProfile: NextPage = () => {
             ? <EditProfile profile={ values } />
             : <ViewProfile profile={ values } />}
 
-          {values.resume && (
+          {/* Don't want to show resume on public profile */}
+          {editMode && values.resume && (
             <>
               <ViewResume resume={ values.resume } />
-              {editMode && <EditResume />}
+              <EditResume />
             </>
           )}
 

@@ -14,9 +14,6 @@ const ViewProfile = ({ profile }: ViewProfileProps) => (
       <Link href={ `mailto:${profile.email}` } passHref>
         <img src="/profile/email.svg" alt="Email" />
       </Link>
-      <Link href={ `tel:${profile.phone}` } passHref>
-        <img src="/profile/phone.svg" alt="Phone" />
-      </Link>
       <Link href={ profile.linkedin } passHref>
         <img src="/profile/linkedin.svg" alt="LinkedIn" />
       </Link>
