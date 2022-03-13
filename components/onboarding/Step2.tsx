@@ -8,6 +8,7 @@ import {
   MinorsField,
 } from "../profile/fields/ProfileFields";
 import ViewResume from "../profile/ViewResume";
+import { FadeAllChildren } from "../Fade";
 import { EditResume } from "../profile/fields/FileFields";
 
 interface FormValues {
@@ -32,8 +33,8 @@ const Step2 = ({ nextStep }: Step2Props) => {
   }
 
   return (
-    <div className="h-screen bg-black">
-      <h3 className="text-lg font-large font-bold text-center leading-6 text-V1gold pt-4">
+    <div className="h-full bg-black">
+      <h3 className="py-6 text-lg font-large font-bold text-center text-V1gold">
         We can&apos;t wait to learn more about you!
       </h3>
       <Formik
@@ -90,46 +91,32 @@ const Step2 = ({ nextStep }: Step2Props) => {
         } }
       >
         {({ values, isSubmitting }) => (
-          <div className="grid grid-cols-6 gap-6 pt-4">
-            <div className="bg-white col-span-6 sm:col-start-2 col-end-6 center pt-2 mt-5 md:mt-0 rounded-md">
-              <Form className="px-4">
+          // Need large pb-32 to prevent FadeAllChildren from overflowing
+          <Form className="mx-auto w-4/5 px-16 py-8 pb-32 space-y-8 bg-white shadow rounded-md">
+            <FadeAllChildren>
+              <YearField label="School year" />
+              <LinkedInField label="LinkedIn profile (optional)" />
 
-                <div className="grid grid-cols-6 gap-6">
-                  <div className="pl-6 col-span-6 sm:col-span-3 w-2/3">
-                    <YearField label="School year" />
-                  </div>
-                  <div className="pl-6 col-span-6 sm:col-span-3 w-2/3">
-                    <LinkedInField label="LinkedIn profile (optional)" />
-                  </div>
-                </div>
+              <div className="pt-4 w-3/4 mx-auto">
+                {values.resume && <ViewResume resume={ values.resume } maxPages={ 1 } />}
+                <EditResume />
+              </div>
 
-                <div className="pt-4 w-3/4 mx-auto">
-                  {values.resume && <ViewResume resume={ values.resume } maxPages={ 1 } />}
-                  <EditResume />
-                </div>
+              <MajorsField label="Major(s)" />
+              <MinorsField label="Minor(s) (optional)" />
 
-                <div className="grid grid-cols-6 gap-6 pt-4">
-                  <div className="pl-6 col-span-6 sm:col-span-3">
-                    <MajorsField label="Major(s)" />
-                  </div>
-
-                  <div className="col-span-6 sm:col-span-3">
-                    <MinorsField label="Minor(s) (optional)" />
-                  </div>
-                </div>
-                <div className="pl-6 pt-4 pb-4">
-                  <button
-                    type="submit"
-                    disabled={ isSubmitting }
-                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              <div className="pl-6 pt-4 pb-4">
+                <button
+                  type="submit"
+                  disabled={ isSubmitting }
+                  className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                   >
-                    {isSubmitting ? "Loading..." : "Submit"}
-                  </button>
-                  {submitError && <p className="text-red-500">{submitError}</p>}
-                </div>
-              </Form>
-            </div>
-          </div>
+                  {isSubmitting ? "Loading..." : "Submit"}
+                </button>
+                {submitError && <p className="text-red-500">{submitError}</p>}
+              </div>
+            </FadeAllChildren>
+          </Form>
         )}
       </Formik>
     </div>
