@@ -28,55 +28,51 @@ export default function Login() {
   };
 
   return (
-    <div className="bg-gradient h-full w-screen">
-      <div className="h-screen py-24 px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col gap-y-6 text-center text-white">
-          <div className="flex gap-x-4 items-center justify-center">
-            <img
-              src="V1_logo_round.png"
-              className="h-20 w-auto"
-              alt="V1 logo"
+    <div className="bg-gradient h-screen flex flex-col items-center justify-center gap-y-6 px-8 text-center text-white">
+      <div className="flex gap-x-4 items-center justify-center">
+        <img
+          src="V1_logo_round.png"
+          className="h-20 w-auto"
+          alt="V1 logo"
             />
-            <h3 className="text-4xl">+</h3>
-            <img
-              src="block_m.svg"
-              className="h-14 w-auto"
-              alt="University of Michigan logo"
+        <h3 className="text-4xl">+</h3>
+        <img
+          src="block_m.svg"
+          className="h-14 w-auto"
+          alt="University of Michigan logo"
             />
-          </div>
-          <h3 className="text-4xl">
-            Welcome to
-            {" "}
-            <b>V1</b>
-          </h3>
-          <div>
-            <p>
-              <b>Returning user?</b>
-              {" "}
-              We missed you &#8212; welcome back! 🎉
-            </p>
-            <p>
-              Click below to log in with your umich.edu Google account.
-            </p>
-          </div>
-          <div>
-            <p>
-              <b>Don&apos;t have an account yet?</b>
-              {" "}
-              We love new faces! 😀
-            </p>
-            <p>
-              Click below to sign up with your umich.edu Google account.
-            </p>
-          </div>
-        </div>
-        <div className="group relative w-full flex justify-center mt-6 p-4 border border-transparent text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2 data-width:300 data-height:400 data-longtitle:true">
-          <GoogleSignIn
-            onClick={ handleGoogleSignup }
-            disabled={ loading }
+      </div>
+      <h3 className="text-4xl">
+        Welcome to
+        {" "}
+        <b>V1</b>
+      </h3>
+      <div>
+        <p>
+          <b>Returning user?</b>
+          {" "}
+          We missed you &#8212; welcome back! 🎉
+        </p>
+        <p>
+          Click below to log in with your umich.edu Google account.
+        </p>
+      </div>
+      <div>
+        <p>
+          <b>Don&apos;t have an account yet?</b>
+          {" "}
+          We love new faces! 😀
+        </p>
+        <p>
+          Click below to sign up with your umich.edu Google account.
+        </p>
+      </div>
+      <div className="flex items-center justify-center">
+        <GoogleSignIn
+          onClick={ handleGoogleSignup }
+          disabled={ loading }
           />
-          {submitError && <p className="text-red-500">{submitError}</p>}
-        </div>
+        {submitError && <p className="text-red-500">{submitError}</p>}
       </div>
     </div>
   );
