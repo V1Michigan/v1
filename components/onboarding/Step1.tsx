@@ -58,8 +58,8 @@ const Step1 = ({
   }
 
   return (
-    <div className="bg-black h-full">
-      <h3 className="py-6 text-lg font-large text-center text-V1gold font-bold">
+    <div className="bg-gradient h-full">
+      <h3 className="py-6 text-lg font-large text-center text-white font-bold">
         Let us get to know you better!
       </h3>
       <Formik
@@ -121,7 +121,7 @@ const Step1 = ({
      >
         {({ values, isSubmitting }) => (
           // Need large pb-32 to prevent FadeAllChildren from overflowing
-          <Form className="mx-auto w-4/5 px-16 py-8 pb-32 space-y-8 bg-white shadow rounded-md">
+          <Form className="mx-auto w-4/5 px-16 py-8 pb-32 space-y-8 bg-white shadow-lg rounded-md">
             <FadeAllChildren>
               <NameField label="Name" />
               <EmailField value={ email } label="Email" />

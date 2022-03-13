@@ -33,8 +33,8 @@ const Step2 = ({ nextStep }: Step2Props) => {
   }
 
   return (
-    <div className="h-full bg-black">
-      <h3 className="py-6 text-lg font-large font-bold text-center text-V1gold">
+    <div className="h-full bg-gradient">
+      <h3 className="py-6 text-lg font-large font-bold text-center text-white">
         We can&apos;t wait to learn more about you!
       </h3>
       <Formik
@@ -92,7 +92,7 @@ const Step2 = ({ nextStep }: Step2Props) => {
       >
         {({ values, isSubmitting }) => (
           // Need large pb-32 to prevent FadeAllChildren from overflowing
-          <Form className="mx-auto w-4/5 px-16 py-8 pb-32 space-y-8 bg-white shadow rounded-md">
+          <Form className="mx-auto w-4/5 px-16 py-8 pb-32 space-y-8 bg-white shadow-lg rounded-md">
             <FadeAllChildren>
               <YearField label="School year" />
               <LinkedInField label="LinkedIn profile (optional)" />
