@@ -4,16 +4,28 @@ import { useEffect, useState } from "react";
 import ProtectedRoute from "../components/ProtectedRoute";
 import useSupabase from "../hooks/useSupabase";
 import NavbarBuilder from "../components/navbar";
+
 export type Data = {
   name: string;
   // later change to rank as an integer
   rank: BigInt;
 };
 
+export type Event = {
+  name: string;
+  date: Date;
+  location: string;
+  description: string;
+  link: string
+}
+
+const EVENT_COLUMNS = `name, date, location, description, link`;
+
 const Dashboard: NextPage = () => {
   const router = useRouter();
   const { supabase, user } = useSupabase();
   const [data, setData] = useState<Data | null>(null);
+  const [events, setEvents] = useState<Event[]>([]);
   const [dataFetchErrors, setDataFetchErrors] = useState<string[]>([]);
 
   useEffect(() => {
@@ -28,24 +40,26 @@ const Dashboard: NextPage = () => {
           .from("profiles")
           .select("name, rank")
           .eq("id", user.id)
-          .single();
-        if ((dbError && status !== 406) || !dbData) {
+          .single()
+        if ((dbError && status !== 406) || !dbData) { 
           console.log(dbError, dbData);
-          router.replace("/404");
+          // router.replace("/404");
         } else if (status !== 200) {
           setDataFetchErrors(["Unexpected status code: " + status]);
         } else {
           setData(dbData);
+          const { data: dbEvents, error: dbEventError, status: dbEventStatus } = await supabase.from("events").select(EVENT_COLUMNS);
         }
       }
     };
     fetchData();
   }, [supabase, user, router]);
 
+  
+
   return (
     <>
       <NavbarBuilder />
-
       <div className="bg-gray-100">
         <div className="max-w-screen-xl mx-auto py-6 px-4">
           <div
@@ -128,11 +142,11 @@ const Dashboard: NextPage = () => {
               </h1>
               <div className="bg-gray-100 max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center">
                 <h6 className="font-bold text-lg">April V1 Meetup</h6>
-                <p className="mb-2">April 1st, 2022 @ 7 pm</p>
-                <button className="text-center text-sm block text-gray-100 font-semibold bg-gradient-to-r from-blue-600 to-blue-700 hover:bg-blue-500 shadow py-2 px-3 rounded mx-auto hover:opacity-75">RSVP &rsaquo;</button>
-              </div>
-
-            </div>
+                <p className="">April 1st, 2022 @ 7 pm </p>
+                <p className="italic mb-2">ROSS Impact Studio</p>
+                <p className="mb-2">Think of the most epic description to place here. We're going to be doing some insane things. This is just the beginning. </p>
+                <button className="text-center text-sm block text-gray-100 font-semibold bg-gradient-to-r from-blue-600 to-blue-700 hover:bg-blue-500 shadow py-2 px-3 rounded mx-auto hover:opacity-75">RSVP &rsaquo;</button></div>
+ </div>
 
             <div className="flex-1">
               <h1 className="text-3xl font-bold tracking-tight text-gray-800 mb-4 mt-8 text-center">
@@ -140,67 +154,13 @@ const Dashboard: NextPage = () => {
                 Resources &#8250;
               </h1>
             </div>
-          </div>
+            </div>
         </div>
-      </div>
-
-      {/* 
-      
-        <div className="flex flex-row justify-between w-full font-sans px-4 mt-4">
-          <div className="flex flex-col">
-            <h3 className="text-3xl font-semibold text-center mb-2">Links</h3>
-            <div className="dash-link unlocked">
-              Join the{" "}
-              <span className="font-semibold">V1 Discord &rsaquo;</span>
-            </div>
-            <div className="dash-link unlocked">
-              Sign Up for the
-              <span className="font-semibold"> V1 Newsletter &rsaquo;</span>
-            </div>
-            <div className="dash-link locked">Member Directory 🔒</div>
-            <div className="dash-link locked">Alum Directory 🔒</div>
-          </div>
-          <div className="flex flex-col">
-            <h3 className="text-3xl font-semibold mb-2 text-center">
-              Next Steps
-            </h3>
-            <div className="dash-link unlocked">
-              Complete Your
-              <span className="font-semibold"> V1 Profile &rsaquo;</span>
-            </div>
-            <div className="dash-link unlocked">
-              Schedule Your
-              <span className="font-semibold"> 1:1 Call </span> with a V1 member{" "}
-              <span className="font-semibold"> &rsaquo;</span>
-            </div>
-          </div>
-          <div className="flex flex-col">
-            <h3 className="text-3xl font-semibold text-center mb-2">Events</h3>
-            <div className="dash-link unlocked">
-              <p className="font-semibold">April V1 Meetup</p>
-              <p>April 1st, 2022 @ 7 pm</p>
-              <p className="font-semibold">RSVP &rsaquo;</p>
-            </div>
-            <div className="dash-link unlocked">
-              <p className="font-semibold">
-                UMich x Purdue x UIUC Pitch Contest
-              </p>
-              <p>April 32nd, 2022 @ 2 pm</p>
-              <p className="font-semibold">RSVP &rsaquo;</p>
-            </div>
-            <div className="dash-link unlocked flex flex-row items-center">
-              <span>
-                Level up to get access to{" "}
-                <span className="font-semibold">invite only events</span>
-              </span>
-              <span className="text-3xl">&rsaquo;</span>
-            </div>{" "}
-          </div>
         </div>
-      </div> */}
     </>
   );
 };
+
 export default () => (
   <ProtectedRoute>
     <Dashboard />
