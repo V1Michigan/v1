@@ -2,7 +2,6 @@ import { useState } from "react";
 import useSupabase from "../hooks/useSupabase";
 import { HOSTNAME } from "../pages/_app";
 import GoogleSignIn from "./GoogleSignIn";
-import logo from "../public/V1_logo_round.png";
 
 const REDIRECT_URL = `${HOSTNAME}/profile`;
 
@@ -32,11 +31,19 @@ export default function Login() {
     <div className="bg-gradient h-full w-screen">
       <div className="h-screen py-24 px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col gap-y-6 text-center text-white">
-          <img
-            src={ logo.src }
-            className="mx-auto h-20 w-auto"
-            alt="V1 logo"
-          />
+          <div className="flex gap-x-4 items-center justify-center">
+            <img
+              src="V1_logo_round.png"
+              className="h-20 w-auto"
+              alt="V1 logo"
+            />
+            <h3 className="text-4xl">+</h3>
+            <img
+              src="block_m.svg"
+              className="h-14 w-auto"
+              alt="University of Michigan logo"
+            />
+          </div>
           <h3 className="text-4xl">
             Welcome to
             {" "}
