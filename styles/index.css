@@ -58,8 +58,6 @@
 }
 
 .bg-gradient {
-  width: 100wh;
-  height: 100%;
   background: linear-gradient(-45deg, #efcd71, #212121);
   background-size: 400% 400%;
   -webkit-animation: Gradient 15s ease infinite;

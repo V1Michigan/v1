@@ -46,11 +46,6 @@ interface SupabaseContextInterface {
       error: ApiError | null
     }>
   );
-  signUp: ({ email, password }: UserCredentials, options: { redirectTo: string }) => Promise<{
-    user: User | null
-    session: Session | null
-    error: ApiError | null
-  }>;
   signOut: () => Promise<{ error: ApiError | null }>;
   // Would be nice if these weren't nullable under `ProtectedRoute`s
   // ...maybe a second UserContext that fetches all this data? :/
@@ -128,7 +123,6 @@ function SupabaseProvider({ children }: { children: ReactChild | ReactChildren }
       supabase,
       // Can't just say supabase.auth.signIn, gotta do bind()
       signIn: supabase.auth.signIn.bind(supabase.auth),
-      signUp: supabase.auth.signUp.bind(supabase.auth),
       signOut: supabase.auth.signOut.bind(supabase.auth),
       user: typedUser,
       username,
