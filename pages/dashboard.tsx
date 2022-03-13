@@ -42,7 +42,9 @@ const Dashboard: NextPage = () => {
   }, [supabase, user, router]);
 
   return (
-    <main className="font-sans text-black from-white to-black bg-gradient-to-t flex flex-col items-center pt-20">
+    <main>
+    <NavbarBuilder/>
+    <div className="w-full font-sans text-black from-white to-black bg-gradient-to-t flex flex-col items-center pt-20">
       <h1 className="text-white text-6xl font-sans text-center mb-4">
         Good Evening, <br /> <b>{data?.name.split(" ")[0]}</b>
       </h1>
@@ -107,6 +109,7 @@ const Dashboard: NextPage = () => {
           </div>{" "}
         </div>
       </div>
+    </div>
     </main>
   );
 };
