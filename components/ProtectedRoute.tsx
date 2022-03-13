@@ -5,15 +5,18 @@ import Redirect from "./Redirect";
 
 interface ProtectedRouteProps {
   children: JSX.Element;
+  minRank?: number;
 }
 
-export default function ProtectedRoute({ children }: ProtectedRouteProps) {
+export default function ProtectedRoute({ children, minRank = 1 }: ProtectedRouteProps) {
   const { user, rank } = useSupabase();
   const router = useRouter();
   if (user) {
-    // Rank may be null or 0
-    if (!rank && router.pathname !== "/welcome") {
+    if ((rank === null || rank === 0) && router.pathname !== "/welcome") {
       return <Redirect route="/welcome" />;
+    }
+    if (rank && minRank && rank < minRank) {
+      return <Redirect route="/dashboard" />;
     }
     return children;
   }
