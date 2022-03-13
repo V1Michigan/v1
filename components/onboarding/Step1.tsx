@@ -57,134 +57,121 @@ const Step1 = ({
   }
 
   return (
-    <div className="bg-black h-screen">
-      <div className="md:grid md:grid-cols-3 md:gap-6">
-        <div className="md:col-span-1 pl-8 pt-6">
-          <div className="px-4 sm:px-0">
-            <h3 className="text-lg font-large leading-6 text-V1gold font-bold">
-              Profile
-            </h3>
-            <p className="mt-1 text-m text-V1gold">
-              Let us get to know you better!
-            </p>
-          </div>
-        </div>
-        <Formik
-          enableReinitialize // to set avatar after fetching initialAvatarUrl
-          initialValues={ {
-            name: initialName || "",
-            username: email?.split("@")[0] || "",
-            avatar: initialAvatar, // may change after fetching
-            phone: "",
-            roles: [],
-            interests: [],
-            additionalLinks: "",
-          } as FormValues }
-          validate={ () => setSubmitError(null) }
+    <div className="bg-black h-full">
+      <h3 className="py-6 text-lg font-large text-center text-V1gold font-bold">
+        Let us get to know you better!
+      </h3>
+      <Formik
+        enableReinitialize // to set avatar after fetching initialAvatarUrl
+        initialValues={ {
+          name: initialName || "",
+          username: email?.split("@")[0] || "",
+          avatar: initialAvatar, // may change after fetching
+          phone: "",
+          roles: [],
+          interests: [],
+          additionalLinks: "",
+        } as FormValues }
+        validate={ () => setSubmitError(null) }
         // Don't want to query DB for username on every keystroke, so just do onBlur
-          validateOnChange={ false }
-          onSubmit={ async (values, { setSubmitting }) => {
+        validateOnChange={ false }
+        onSubmit={ async (values, { setSubmitting }) => {
           // Upload avatar to bucket
           // values.avatar is not null, would've been caught by validation
           // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-            const avatarFile = (values.avatar as File);
-            const { error: uploadError } = await supabase
-              .storage.from("avatars").upload(
+          const avatarFile = (values.avatar as File);
+          const { error: uploadError } = await supabase
+            .storage.from("avatars").upload(
               // Just save as `user.id`, not including file extension
               // since we may have PNG, JPG, etc
-                user.id, avatarFile, {
-                  contentType: avatarFile.type,
-                  cacheControl: "3600",
-                  upsert: true,
-                },
-              );
-            if (uploadError) {
-              setSubmitError(uploadError.message);
-              return;
-            }
+              user.id, avatarFile, {
+                contentType: avatarFile.type,
+                cacheControl: "3600",
+                upsert: true,
+              },
+            );
+          if (uploadError) {
+            setSubmitError(uploadError.message);
+            return;
+          }
 
-            const { error: dbError } = await supabase
-              .from("profiles")
-              .update({
-                name: values.name,
-                username: values.username,
-                phone: values.phone,
-                roles: values.roles,
-                interests: values.interests,
-                website: values.additionalLinks,
-                updated_at: new Date(),
-              }, {
-                returning: "minimal", // Don't return the value after inserting
-              })
-              .eq("id", user.id);
-            if (dbError) {
-              setSubmitError(dbError.message);
-            } else {
-              setUsername(values.username);
-              nextStep();
-            }
-            setSubmitting(false);
-          } }
+          const { error: dbError } = await supabase
+            .from("profiles")
+            .update({
+              name: values.name,
+              username: values.username,
+              phone: values.phone,
+              roles: values.roles,
+              interests: values.interests,
+              website: values.additionalLinks,
+              updated_at: new Date(),
+            }, {
+              returning: "minimal", // Don't return the value after inserting
+            })
+            .eq("id", user.id);
+          if (dbError) {
+            setSubmitError(dbError.message);
+          } else {
+            setUsername(values.username);
+            nextStep();
+          }
+          setSubmitting(false);
+        } }
      >
-          {({ values, isSubmitting }) => (
-            <div className="pt-6 mt-5 md:mt-0 md:col-start-2 col-end-4">
-              <Form className="pr-8">
-                <div className="shadow sm:rounded-md overflow-visible">
-                  <div className="px-4 py-5 bg-white space-y-6 sm:p-6">
-                    <div className="grid grid-cols-6 gap-6">
-                      <div className="col-span-6 sm:col-span-3">
-                        <NameField label="Name" />
-                      </div>
-                      <div className="col-span-6 sm:col-span-3">
-                        <EmailField value={ email } label="Email" />
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-6 gap-6">
-                      <div className="col-span-6 sm:col-span-3">
-                        <UsernameField label="Username" />
-                      </div>
-                      <div className="col-span-6 sm:col-span-3">
-                        <PhoneField label="Phone" />
-                      </div>
-                    </div>
-
-                    <div className="w-full">
-                      {values.avatar && <ViewAvatar avatar={ values.avatar } />}
-                      <EditAvatar />
-                    </div>
-
-                    <div className="grid grid-cols-6 gap-6">
-                      <div className="col-span-6 sm:col-span-3">
-                        <RolesField label="Which types of roles are you interested in?" />
-                      </div>
-                      <div className="col-span-6 sm:col-span-3">
-                        <InterestsField label="Which industries are you interested in?" />
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-3 gap-6">
-                      <div className="col-span-3 sm:col-span-3">
-                        <AdditionalLinksField label="Any other links you'd like to share? (optional)" />
-                      </div>
-                    </div>
-
-                    <button
-                      type="submit"
-                      disabled={ isSubmitting }
-                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    >
-                      {isSubmitting ? "Loading..." : "Next ›"}
-                    </button>
-                    {submitError && (
-                      <p className="text-red-500">{submitError}</p>
-                    )}
-                  </div>
+        {({ values, isSubmitting }) => (
+          <Form className="mx-auto w-4/5 shadow rounded-md">
+            <div className="px-4 py-5 bg-white space-y-6 sm:p-6">
+              <div className="grid grid-cols-6 gap-6">
+                <div className="col-span-6 sm:col-span-3">
+                  <NameField label="Name" />
                 </div>
-              </Form>
+                <div className="col-span-6 sm:col-span-3">
+                  <EmailField value={ email } label="Email" />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-6 gap-6">
+                <div className="col-span-6 sm:col-span-3">
+                  <UsernameField label="Username" />
+                </div>
+                <div className="col-span-6 sm:col-span-3">
+                  <PhoneField label="Phone" />
+                </div>
+              </div>
+
+              <div className="w-full">
+                {values.avatar && <ViewAvatar avatar={ values.avatar } />}
+                <EditAvatar />
+              </div>
+
+              <div className="grid grid-cols-6 gap-6">
+                <div className="col-span-6 sm:col-span-3">
+                  <RolesField label="Which types of roles are you interested in?" />
+                </div>
+                <div className="col-span-6 sm:col-span-3">
+                  <InterestsField label="Which industries are you interested in?" />
+                </div>
+              </div>
+              <div className="grid grid-cols-3 gap-6">
+                <div className="col-span-3 sm:col-span-3">
+                  <AdditionalLinksField label="Any other links you'd like to share? (optional)" />
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                disabled={ isSubmitting }
+                className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    >
+                {isSubmitting ? "Loading..." : "Next ›"}
+              </button>
+              {submitError && (
+              <p className="text-red-500">{submitError}</p>
+              )}
             </div>
-          )}
-        </Formik>
-      </div>
+          </Form>
+        )}
+      </Formik>
     </div>
   );
 };

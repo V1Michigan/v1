@@ -33,7 +33,9 @@ const Step2 = ({ nextStep }: Step2Props) => {
 
   return (
     <div className="h-screen bg-black">
-      <h3 className="text-lg font-large font-bold text-center leading-6 text-V1gold pl-6 pt-4">We can&apos;t wait to learn more about you!</h3>
+      <h3 className="text-lg font-large font-bold text-center leading-6 text-V1gold pt-4">
+        We can&apos;t wait to learn more about you!
+      </h3>
       <Formik
         initialValues={ {
           resume: null,
