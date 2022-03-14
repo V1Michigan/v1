@@ -59,7 +59,7 @@ const OnboardingCohortRegister = () => {
       </h2>
       {error && <p className="text-red-500">{error}</p>}
       <button
-        className="bg-gradient-to-r from-blue-600 to-blue-700 hover:bg-blue-500 text-gray-100 font-semibold py-3 px-4 rounded shadow mt-3 hover:opacity-75 hover:cursor-pointer"
+        className="bg-gradient-to-r from-blue-600 to-blue-700 hover:bg-blue-500 text-gray-100 font-semibold py-3 px-4 rounded shadow mt-3 hover:opacity-75 hover:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
         type="button"
         disabled={ submitted }
         onClick={ handleSubmit }

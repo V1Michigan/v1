@@ -24,8 +24,8 @@ const ViewResume = ({ resume: resume_, maxPages = Infinity }: ViewResumeProps) =
         {Array.from({ length: Math.min(numPages, maxPages) })
           .map((_, n) => n + 1)
           .map((n) => (
-            <div className="mx-auto">
-              <Page key={ n } pageNumber={ n } height={ 300 } />
+            <div className="mx-auto" key={ n }>
+              <Page pageNumber={ n } height={ 300 } />
             </div>
           ))}
       </div>
