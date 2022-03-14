@@ -232,11 +232,11 @@ const Dashboard: NextPage = () => {
                 {" "}
                 <span className="font-semibold">V1 Newsletter &rsaquo;</span>
               </a>
-              <div className="block bg-gray-300 max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center text-lg">
+              <div className="block bg-gray-300 max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center text-lg hover:cursor-not-allowed">
                 <span className="text-2xl">🔒 </span>
                 Member Directory
               </div>
-              <div className="block bg-gray-300 max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center text-lg">
+              <div className="block bg-gray-300 max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center text-lg hover:cursor-not-allowed">
                 <span className="text-2xl">🔒 </span>
                 Alumni Directory
               </div>
