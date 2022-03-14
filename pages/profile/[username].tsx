@@ -170,99 +170,101 @@ const UserProfile: NextPage = () => {
       {({ values, isSubmitting }) => (
         <div className="bg-gradient flex min-h-screen min-w-screen justify-center items-center text-white">
           <Form>
-
-            {values.avatar && (
+          
+          {values.avatar && (
             <>
-              <div className="grid grid-cols-8 gap-6 pb-4 items-center">
-                <div className="col-span-8 sm:col-span-3">
-                  <ViewAvatar avatar={ values.avatar } />
+              <div className="grid grid-cols-8 pb-4 items-center">
+              <div className="col-span-8x sm:col-span-4 pl-20">
+                <div className="pl-8">
+                <ViewAvatar avatar={ values.avatar } />
                 </div>
-                <div className="col-span-8 sm:col-span-5">
-                  {editMode && <EditAvatar />}
+              </div>
+              <div className="col-span-8x sm:col-span-4 pl-6">
+                {editMode && <EditAvatar />}
                 </div>
               </div>
             </>
-            )}
+          )}
 
-            {/* Not allowing name or username changes for now */}
-            <h2 className="text-2xl">
-              <span className="font-bold">{values.name}</span>
-              {" "}
-              (
-              {profileUsername}
-              )
-            </h2>
-            {editMode
-              ? <EditProfile profile={ values } />
-              : <ViewProfile profile={ values } />}
+          {/* Not allowing name or username changes for now */}
+          <h2 className="text-2xl">
+            <span className="font-bold">{values.name}</span>
+            {" "}
+            (
+            {profileUsername}
+            )
+          </h2>
+          {editMode
+            ? <EditProfile profile={ values } />
+            : <ViewProfile profile={ values } />}
 
-            {/* Don't want to show resume on public profile */}
-            {editMode && values.resume && (
+          {/* Don't want to show resume on public profile */}
+          {editMode && values.resume && (
             <>
               <div className="grid grid-cols-6 gap-6 pb-4 items-center justify-center items-center pt-4">
-                <div className="col-span-6 sm:col-span-3">
-                  <ViewResume resume={ values.resume } />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <EditResume />
-                </div>
+              <div className="col-span-6 sm:col-span-3">
+              <ViewResume resume={ values.resume } />
+              </div>
+              <div className="col-span-6 sm:col-span-3">
+              <EditResume />
+              </div>
               </div>
             </>
-            )}
+          )}
 
-            {dataFetchErrors.map((error) => (
-              <p key={ error } className="text-red-500">{ error }</p>
-            ))}
-            <div className="grid grid-cols-6 gap-6">
-              {isCurrentUser && (
-              <div className="mt-4 col-span-6 sm:col-span-3">
-                {editMode ? (
-                  <>
-                    <div className="grid grid-cols-3 gap-4 pl-10">
-                      <button
-                        className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-black hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                        disabled={ isSubmitting || isObjectEqual(values, initialProfile) }
-                        type="submit"
+          {dataFetchErrors.map((error) => (
+            <p key={ error } className="text-red-500">{ error }</p>
+          ))}
+          <div className= "grid grid-cols-6 gap-6">
+          {isCurrentUser && (
+            <div className="mt-4 col-span-6 sm:col-span-3">
+              {editMode ? (
+                <>
+                <div className="grid grid-cols-3 gap-4 pl-10">
+                  <button
+                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-black hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    disabled={ isSubmitting || isObjectEqual(values, initialProfile) }
+                    type="submit"
                   >
-                        {isSubmitting ? "Saving..." : "Save Profile"}
-                      </button>
-                      <button
-                        className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-black hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                        onClick={ () => setEditMode(false) }
-                        disabled={ isSubmitting }
-                        type="button"
+                    {isSubmitting ? "Saving..." : "Save Profile"}
+                  </button>
+                  <button
+                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-black hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    onClick={ () => setEditMode(false) }
+                    disabled={ isSubmitting }
+                    type="button"
                   >
-                        Cancel
-                      </button>
-                    </div>
-                    {formSubmitErrors.map((error) => (
-                      <p key={ error } className="text-red-500">{ error }</p>
-                    ))}
-                  </>
-                )
-                  : (
-                    <button
-                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-black hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                      onClick={ () => setEditMode(true) }
-                      type="button"
+                    Cancel
+                  </button>
+                  </div>
+                  {formSubmitErrors.map((error) => (
+                    <p key={ error } className="text-red-500">{ error }</p>
+                  ))}
+                </>
+              )
+                :  (
+                  <button
+                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-black hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    onClick={ () => setEditMode(true) }
+                    type="button"
                    >
-                      Edit Profile
-                    </button>
-                  )}
-              </div>
-              )}
-              <div className="mt-4 col-span-6 sm:col-span-3">
-                <button
-                  className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-black hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                  onClick={ () => supabase.auth.signOut() }
-                  type="button"
-            >
-                  Sign Out
-                </button>
-              </div>
+                    Edit Profile
+                  </button>
+                )}
             </div>
-          </Form>
-        </div>
+          )}
+          <div className="mt-4 col-span-6 sm:col-span-3">
+            <button
+              className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-black hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              onClick={ () => supabase.auth.signOut() }
+              type="button"
+            >
+              Sign Out
+            </button>
+          </div>
+          </div>
+        </Form>
+      </div>
       )}
     </Formik>
   );
