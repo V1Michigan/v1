@@ -7,21 +7,22 @@ import ProtectedRoute from "../components/ProtectedRoute";
 import useSupabase from "../hooks/useSupabase";
 import NavbarBuilder from "../components/NavBar";
 
-export type Data = {
+type Data = {
   name: string;
   // TODO: change to rank as an integer
   rank: BigInt;
 };
 
-export type Event = {
+type Event = {
   name: string;
   date: Date;
   place: string;
   description: string;
   link: string
 }
-
 const EVENT_COLUMNS = "name, date, place, description, link";
+
+const ONBOARDING_PROGRESS = 10;
 
 const Dashboard: NextPage = () => {
   const router = useRouter();
@@ -105,7 +106,8 @@ const Dashboard: NextPage = () => {
                 <span
                   className="text-xs font-semibold inline-block text-blue-800 ml-4"
                 >
-                  10%
+                  {ONBOARDING_PROGRESS}
+                  %
                 </span>
               </div>
             </div>
@@ -113,7 +115,7 @@ const Dashboard: NextPage = () => {
               className="overflow-hidden h-2 text-xs flex rounded bg-blue-100"
             >
               <div
-                style={ { width: `${10}%` } }
+                style={ { width: `${ONBOARDING_PROGRESS}%` } }
                 className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-600"
                />
             </div>
@@ -127,21 +129,19 @@ const Dashboard: NextPage = () => {
             <p key={ error } className="text-red-500">{ error }</p>
           ))}
           <h1 className="text-3xl font-bold tracking-tight text-gray-800 mb-4 text-center">
-            {" "}
             What&apos;s next &#8250;
           </h1>
 
           <div className="flex justify-center">
-            <div className="bg-gray-100 max-w-sm rounded-md p-4">
+            <div className="bg-gray-100 max-w-sm rounded-md p-4 text-center">
               <h1 className="font-bold tracking-tight text-xl text-gray-900 mb-2">
-                Join a V1 Onboarding Cohort.
+                Join a V1 Onboarding Cohort
               </h1>
               <h2 className="text-gray-800">
                 V1 provides the most driven students with an extraordinary
                 network, exclusive opportunities within startups, and mentorship
                 to grow and achieve great things, together. Start the process to
                 become an official V1 member today.
-                {" "}
               </h2>
 
               <button
@@ -159,7 +159,6 @@ const Dashboard: NextPage = () => {
           <div className="md:flex justify-center">
             <div className="flex-1">
               <h1 className="text-3xl font-bold tracking-tight text-gray-800 mb-4 mt-8 text-center">
-                {" "}
                 Upcoming Events &#8250;
               </h1>
               {events.map((event) => (
@@ -189,7 +188,6 @@ const Dashboard: NextPage = () => {
 
             <div className="flex-1">
               <h1 className="text-3xl font-bold tracking-tight text-gray-800 mb-4 mt-8 text-center">
-                {" "}
                 Resources &#8250;
               </h1>
               <Link href="/community" passHref>
@@ -233,3 +231,7 @@ export default () => (
 // TODO:
 // Replace Welcome with "Good morning", "Good afternoon", "Good evening".
 // Ranks -- replace "Registered" with correct rank names
+// Explain ranks, have a pop-up dialog with list/diagram
+// Nail down profile ranks and how that pertains to onboarding step
+// and profile access, they should default to null now?
+// Add sign-out somewhere on dashboard

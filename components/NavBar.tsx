@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
@@ -75,7 +76,9 @@ export default function NavbarBuilder() {
                 </Disclosure.Button>
               </div>
               <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
-                <img className="flex-shrink-0 w-5" src="/v1logowhite.svg" alt="v1 logo" />
+                <Link href="/" passHref>
+                  <img className="flex-shrink-0 w-5 hover:cursor-pointer hover:opacity-75" src="/v1logowhite.svg" alt="v1 logo" />
+                </Link>
                 <div className="hidden sm:block sm:ml-6 w-full">
                   <div className="flex flex-row space-x-4 w-full">
                     {navigation.map((item) => (

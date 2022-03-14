@@ -12,7 +12,7 @@ const GoogleSignIn = ({ text, onClick, disabled = false }: GoogleSignInProps) =>
   <button
     className={ `
       flex items-center justify-center py-2 px-4 rounded-md shadow-md
-      bg-white hover:bg-gray-200 transition-colors duration-300
+      bg-white hover:bg-gray-200 transition-colors duration-500
       text-gray-700 text-sm font-bold
       focus:outline-none focus:ring-2 focus:ring-offset-2
       ${disabled ? "opacity-50 cursor-not-allowed" : ""}
