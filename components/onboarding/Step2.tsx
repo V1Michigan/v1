@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Formik, Form } from "formik";
 import useSupabase from "../../hooks/useSupabase";
 import {
+  BioField,
   LinkedInField,
   YearField,
   MajorsField,
@@ -12,6 +13,7 @@ import { FadeAllChildren } from "../Fade";
 import { EditResume } from "../profile/fields/FileFields";
 
 interface FormValues {
+  bio: string,
   resume: File | null,
   linkedin: string, // Optional
   year: string;
@@ -38,9 +40,10 @@ const Step2 = ({ nextStep }: Step2Props) => {
       </h3>
       <Formik
         initialValues={ {
-          resume: null,
-          linkedin: "",
+          bio: "",
           year: "",
+          linkedin: "",
+          resume: null,
           majors: [],
           minors: [],
         } as FormValues }
@@ -53,8 +56,7 @@ const Step2 = ({ nextStep }: Step2Props) => {
             .storage.from("resumes").upload(
               bucketPath,
               // values.resume is not null, would've been caught by validation
-              // eslint-disable-next-line max-len
-              // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion, @typescript-eslint/no-non-null-assertion
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
               values.resume!,
               {
                 contentType: "application/pdf",
@@ -70,6 +72,7 @@ const Step2 = ({ nextStep }: Step2Props) => {
           const { error } = await supabase
             .from("profiles")
             .update({
+              bio: values.bio,
               year: values.year,
               fields_of_study: {
                 majors: values.majors,
@@ -93,6 +96,7 @@ const Step2 = ({ nextStep }: Step2Props) => {
           // Need large pb-32 to prevent FadeAllChildren from overflowing
           <Form className="mx-auto w-4/5 px-16 py-8 pb-32 space-y-8 bg-white shadow-lg rounded-md">
             <FadeAllChildren>
+              <BioField label="Bio" />
               <YearField label="School year" />
               <LinkedInField label="LinkedIn profile (optional)" />
 

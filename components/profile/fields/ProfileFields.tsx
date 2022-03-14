@@ -228,6 +228,30 @@ const InterestsField = ({ label }: LabelProps) => {
   );
 };
 
+const BioField = ({ label }: LabelProps) => {
+  const validateBio = (value: string) => {
+    if (!value) {
+      return "Please enter a short bio";
+    }
+    if (value.length > 150) {
+      return "Please enter a bio less than 150 characters";
+    }
+    return undefined;
+  };
+  return (
+    <div>
+      <label htmlFor="bio">{label}</label>
+      <Field
+        className="w-full mt-1 self-center focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+        type="text"
+        name="bio"
+        placeholder="I invented the personal computer, co-founded Apple, and had fun doing it"
+        validate={ validateBio } />
+      <ErrorMessage name="bio" component="p" className="text-red-500" />
+    </div>
+  );
+};
+
 const LinkedInField = ({ label }: LabelProps) => {
   const validateLinkedIn = (value: string) => {
     // Note that LinkedIn is optional
@@ -285,6 +309,7 @@ export {
   MinorsField,
   RolesField,
   InterestsField,
+  BioField,
   LinkedInField,
   AdditionalLinksField,
 };
