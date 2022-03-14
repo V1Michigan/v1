@@ -163,7 +163,10 @@ const Dashboard: NextPage = () => {
                 Upcoming Events &#8250;
               </h1>
               {events.map((event) => (
-                <div className="bg-gray-100 max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center">
+                <div
+                  className="bg-gray-100 max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center"
+                  key={ event.name }
+                >
                   <h6 className="font-bold text-lg">{event.name}</h6>
                   <p className="">
                     {
