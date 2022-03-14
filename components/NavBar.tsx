@@ -3,7 +3,8 @@ import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import useSupabase from "../hooks/useSupabase";
-
+import downloadFromSupabase from "../hooks/downloadFromSupabase";
+import { useState, useEffect, useMemo } from "react";
 const navigation = [
   // { name: 'V1 @ Michigan', href: '#', current: true },
   {
@@ -57,7 +58,20 @@ const navigation = [
 ];
 
 export default function NavbarBuilder() {
-  const { user } = useSupabase();
+  const { user, username, supabase } = useSupabase();
+  const [ profilePic, setProfilePic ] = useState<string>("");
+  useEffect(() => {
+    const grabProfilePic = async () => {
+      if(!user) return;
+      const { file: avatar, error } = await downloadFromSupabase("avatars", user.id, `${username} avatar`, supabase);
+      if(!avatar) return;
+      const avatarUrl = typeof avatar === "string" ? avatar : URL.createObjectURL(avatar);
+      setProfilePic(avatarUrl);
+    }
+    grabProfilePic();
+    
+  }, [user, username, downloadFromSupabase, profilePic]);
+    
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open: disclosureOpen }) => (
@@ -80,7 +94,7 @@ export default function NavbarBuilder() {
                   <img className="flex-shrink-0 w-5 hover:cursor-pointer hover:opacity-75" src="/v1logowhite.svg" alt="v1 logo" />
                 </Link>
                 <div className="hidden sm:block sm:ml-6 w-full">
-                  <div className="flex flex-row space-x-4 w-full">
+                  <div className="flex flex-row space-x-4 w-full items-center">
                     {navigation.map((item) => (
                       <a
                         key={ item.name }
@@ -98,6 +112,7 @@ export default function NavbarBuilder() {
                         {item?.signup && <>&rsaquo;</>}
                       </a>
                     ))}
+                    {user && (<a className="px-2 py-2 hover:bg-gray-700 rounded-full" href="/profile"><img className="flex-shrink-0 w-10 rounded-full cursor" src={profilePic}></img></a>)}
                   </div>
                 </div>
               </div>
