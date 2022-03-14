@@ -128,9 +128,11 @@ const Step1 = ({
               <UsernameField label="Username" />
               <PhoneField label="Phone" />
 
-              <div className="w-full">
+              <div>
                 {values.avatar && <ViewAvatar avatar={ values.avatar } />}
-                <EditAvatar />
+                <div className="mx-auto w-1/2">
+                  <EditAvatar />
+                </div>
               </div>
 
               <RolesField label="Which types of roles are you interested in?" />
@@ -143,7 +145,7 @@ const Step1 = ({
                   disabled={ isSubmitting }
                   className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
-                  {isSubmitting ? "Loading..." : "Next ›"}
+                  {isSubmitting ? "Loading..." : <>Submit &rsaquo;</>}
                 </button>
                 {submitError && (
                   <p className="text-red-500">{submitError}</p>

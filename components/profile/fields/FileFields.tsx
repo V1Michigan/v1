@@ -15,14 +15,12 @@ const EditAvatar = () => {
     return undefined;
   };
   return (
-    <div className="w-3/5">
-      <FormikDropzone
-        name="avatar"
-        message="Upload a profile picture"
-        fileType={ AVATAR_TYPES }
-        validate={ validate }
+    <FormikDropzone
+      name="avatar"
+      message="Upload a profile picture"
+      fileType={ AVATAR_TYPES }
+      validate={ validate }
     />
-    </div>
   );
 };
 
@@ -38,13 +36,13 @@ const EditResume = () => {
     return undefined;
   };
   return (
-    <div className="w-3/5 pl-2">
+    <div className="pl-2">
       <FormikDropzone
         name="resume"
         message="Upload your resume"
         fileType={ RESUME_TYPE }
         validate={ validate }
-  />
+      />
     </div>
   );
 };

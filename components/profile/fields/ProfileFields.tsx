@@ -54,7 +54,7 @@ const EmailField = ({ value, label }: {value: string} & LabelProps) => (
 );
 
 const UsernameField = ({ label }: LabelProps) => {
-  const { supabase } = useSupabase();
+  const { supabase, user } = useSupabase();
   // Memo to avoid repeated queries
   const [openUsernames, setOpenUsernames] = useState<{[key: string]: boolean}>({});
   const validateUsername = async (value: string) => {
@@ -68,6 +68,8 @@ const UsernameField = ({ label }: LabelProps) => {
       const { count, error, status } = await supabase
         .from("profiles")
         .select("username", { count: "exact", head: true })
+        // in case the user is editing their own profile...mostly for testing
+        .not("id", "eq", user?.id)
         .eq("username", value);
       if (error && status !== 406) {
         return error.message;

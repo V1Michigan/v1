@@ -241,7 +241,7 @@ export default function YC() {
                   } mx-auto` }
                   disabled={ submitted }
                 >
-                  Continue to YC Registration ›
+                  Continue to YC Registration &rsaquo;
                 </button>
                 <button
                   type="button"

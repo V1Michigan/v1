@@ -23,7 +23,6 @@ interface Step2Props {
   nextStep: () => void;
 }
 
-// TODO: Prompt user from dashboard to fill this out if they haven't yet
 const Step2 = ({ nextStep }: Step2Props) => {
   const { user, supabase } = useSupabase();
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -97,7 +96,7 @@ const Step2 = ({ nextStep }: Step2Props) => {
               <YearField label="School year" />
               <LinkedInField label="LinkedIn profile (optional)" />
 
-              <div className="pt-4 w-3/4 mx-auto">
+              <div className="pt-4 mx-auto w-1/2">
                 {values.resume && <ViewResume resume={ values.resume } maxPages={ 1 } />}
                 <EditResume />
               </div>
