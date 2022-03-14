@@ -1,15 +1,15 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { PostgrestSingleResponse } from "@supabase/supabase-js";
+import type { PostgrestSingleResponse } from "@supabase/supabase-js";
 import Link from "next/link";
 import ProtectedRoute from "../components/ProtectedRoute";
 import useSupabase from "../hooks/useSupabase";
 import NavbarBuilder from "../components/NavBar";
+import OnboardingCohortRegister from "../components/OnboardingCohortRegister";
 
 type Data = {
   name: string;
-  // TODO: change to rank as an integer
   rank: BigInt;
 };
 
@@ -132,29 +132,8 @@ const Dashboard: NextPage = () => {
             What&apos;s next &#8250;
           </h1>
 
-          <div className="flex justify-center">
-            <div className="bg-gray-100 max-w-sm rounded-md p-4 text-center">
-              <h1 className="font-bold tracking-tight text-xl text-gray-900 mb-2">
-                Join a V1 Onboarding Cohort
-              </h1>
-              <h2 className="text-gray-800">
-                V1 provides the most driven students with an extraordinary
-                network, exclusive opportunities within startups, and mentorship
-                to grow and achieve great things, together. Start the process to
-                become an official V1 member today.
-              </h2>
-
-              <button
-                className="bg-gradient-to-r from-blue-600 to-blue-700 hover:bg-blue-500 text-gray-100 font-semibold py-3 px-4 rounded shadow mt-3 hover:opacity-75"
-                type="button">
-                I&apos;m interested &#8250;
-              </button>
-
-              {/* TODO:
-                This should post to the onboarding table.
-                THe button should be disabled after click and say "Great. ✅
-                We'll reach out to you via email soon." */}
-            </div>
+          <div className="flex justify-center gap-x-4">
+            <OnboardingCohortRegister />
           </div>
           <div className="md:flex justify-center">
             <div className="flex-1">
