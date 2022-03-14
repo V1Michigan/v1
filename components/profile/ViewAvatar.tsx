@@ -10,7 +10,7 @@ const ViewAvatar = ({ avatar: avatar_ }: ViewAvatarProps) => {
   return (
     <img
       src={ avatarUrl }
-      className="w-32 h-32 rounded-full m-2 border-black border-2"
+      className="w-32 h-32 mx-auto rounded-full m-4 border-black border-2"
       alt="Profile"
     />
   );
