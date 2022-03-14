@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import type { PostgrestSingleResponse } from "@supabase/supabase-js";
+import type { PostgrestMaybeSingleResponse, PostgrestSingleResponse } from "@supabase/supabase-js";
 import Link from "next/link";
 import ProtectedRoute from "../components/ProtectedRoute";
 import useSupabase from "../hooks/useSupabase";
@@ -23,14 +23,23 @@ type Event = {
 }
 const EVENT_COLUMNS = "name, date, place, description, link";
 
-const ONBOARDING_PROGRESS = 10;
-
 const Dashboard: NextPage = () => {
   const router = useRouter();
-  const { supabase, user } = useSupabase();
+  const { supabase, user, rank } = useSupabase();
   const [data, setData] = useState<Data | null>(null);
   const [events, setEvents] = useState<Event[]>([]);
+  const [onboardingStatus, setOnboardingStatus] = useState<number | null | undefined>(undefined);
   const [dataFetchErrors, setDataFetchErrors] = useState<string[]>([]);
+
+  let onboardingProgress = 0;
+  if (rank === 0) {
+    onboardingProgress = 10;
+  } else if (rank === 1) {
+    onboardingProgress = 20;
+  }
+  if (onboardingStatus !== null) {
+    onboardingProgress += 10;
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -48,26 +57,57 @@ const Dashboard: NextPage = () => {
         if ((dbError && status !== 406) || !dbData) {
           router.replace("/404");
         } else if (status !== 200) {
-          setDataFetchErrors([`Unexpected status code: ${status}`]);
+          setDataFetchErrors((errors) => [...errors, `Unexpected status code: ${status}`]);
         } else {
           setData(dbData);
-          const {
-            data: dbEvents, error: dbEventError, status: dbEventStatus,
-          } = await supabase
-            .from("events")
-            .select(EVENT_COLUMNS)
-            .order("date", { ascending: true });
-
-          if ((dbEventError && dbEventStatus !== 406) || !dbEvents) {
-            setDataFetchErrors((errors) => [...errors, dbEventError.message]);
-          } else {
-            setEvents(dbEvents);
-          }
+          await Promise.all([
+            (async () => {
+              const {
+                data: dbEvents, error: dbEventError, status: dbEventStatus,
+              } = await supabase
+                .from("events")
+                .select(EVENT_COLUMNS)
+                .order("date", { ascending: true });
+              if ((dbEventError && dbEventStatus !== 406) || !dbEvents) {
+                setDataFetchErrors((errors) => [...errors, dbEventError.message]);
+              } else {
+                setEvents(dbEvents);
+              }
+            })(),
+            (async () => {
+              const { data: onboardingData, error: onboardingError } = await supabase
+                .from("onboarding")
+                .select("status")
+                .eq("user_id", user.id)
+                .maybeSingle() as PostgrestMaybeSingleResponse<{ status: number }>;
+              if (onboardingError) {
+                setDataFetchErrors((errors) => [...errors, onboardingError.message]);
+              }
+              setOnboardingStatus(onboardingData?.status ?? null);
+            })(),
+          ]);
         }
       }
     };
     fetchData();
   }, [supabase, user, router]);
+
+  // Type guard
+  if (!user) {
+    return null;
+  }
+
+  const handleCohortRegister = async () => {
+    const { error: upsertError } = await supabase.from("onboarding").upsert({
+      user_id: user.id,
+      status: 0,
+      created_at: new Date(),
+    });
+    if (upsertError) {
+      setDataFetchErrors((errors) => [...errors, upsertError.message]);
+    }
+    setOnboardingStatus(0);
+  };
 
   return (
     <>
@@ -107,7 +147,7 @@ const Dashboard: NextPage = () => {
                 <span
                   className="text-xs font-semibold inline-block text-blue-800 ml-4"
                 >
-                  {ONBOARDING_PROGRESS}
+                  {onboardingProgress}
                   %
                 </span>
               </div>
@@ -116,7 +156,7 @@ const Dashboard: NextPage = () => {
               className="overflow-hidden h-2 text-xs flex rounded bg-blue-100"
             >
               <div
-                style={ { width: `${ONBOARDING_PROGRESS}%` } }
+                style={ { width: `${onboardingProgress}%` } }
                 className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-600"
                />
             </div>
@@ -134,7 +174,12 @@ const Dashboard: NextPage = () => {
           </h1>
 
           <div className="flex justify-center gap-x-4">
-            <OnboardingCohortRegister />
+            {onboardingStatus !== undefined && (
+              <OnboardingCohortRegister
+                submitted={ onboardingStatus !== null }
+                handleSubmit={ handleCohortRegister }
+              />
+            )}
             <Step2Prompt />
           </div>
           <div className="md:flex justify-center">
@@ -175,14 +220,14 @@ const Dashboard: NextPage = () => {
                 <p
                   className="block bg-gray-100 max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center text-lg hover:bg-gray-200 hover:opacity-75 transition-all"
                 >
-                  <img className="mb-1 inline-block w-8 mr-1 my-auto" src="/discord-gray-icon.webp" alt="discord icon" />
+                  <img className="mb-1 inline-block w-8 mr-1 my-auto" src="/discord-gray-icon.webp" alt="Discord icon" />
                   Join the
                   {" "}
                   <span className="font-semibold">V1 Discord &rsaquo;</span>
                 </p>
               </Link>
               <a className="block bg-gray-100 max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center text-lg hover:bg-gray-200 hover:opacity-75 transition-all" href="/newsletter">
-                <img className="mb-1 inline-block w-8 mr-1 my-auto" src="/substackicon.webp" alt="discord icon" />
+                <img className="mb-1 inline-block w-8 mr-1 my-auto" src="/substackicon.webp" alt="Substack icon" />
                 Read the
                 {" "}
                 <span className="font-semibold">V1 Newsletter &rsaquo;</span>
