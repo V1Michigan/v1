@@ -7,12 +7,16 @@ import {
 } from "@supabase/supabase-js";
 import supabase from "../utils/supabaseClient";
 
-enum OnboardingStep {
-  REGISTERED = "REGISTERED",
-  SCREEN_1 = "SCREEN_1",
-  SCREEN_2 = "SCREEN_2",
-  COMPLETE = "COMPLETE",
-}
+// Rank breakdown:
+// 0: user exists, but hasn't completed sign-up Step 1 (this is the DB default)
+// 1: completed Step 1, now has dashboard access + can schedule 1:1 calls
+// 2, 3: in onboarding cohort
+// 4: General member
+// 5: Member++
+
+// TODO: How do we decide when to prompt to fill in more profile data? (Step 2 and beyond)
+// We could use Rank 2 for that, but we might want more data in the future
+// Should we just query the DB and check if the fields are empty?
 
 interface EmailUser extends User {
   email: string; // We know email isn't undefined
@@ -42,19 +46,14 @@ interface SupabaseContextInterface {
       error: ApiError | null
     }>
   );
-  signUp: ({ email, password }: UserCredentials, options: { redirectTo: string }) => Promise<{
-    user: User | null
-    session: Session | null
-    error: ApiError | null
-  }>;
   signOut: () => Promise<{ error: ApiError | null }>;
   // Would be nice if these weren't nullable under `ProtectedRoute`s
   // ...maybe a second UserContext that fetches all this data? :/
   user: EmailUser | GoogleUser | null;
   username: string | null;
   setUsername: (username: string) => void;
-  onboardingStep: OnboardingStep | null;
-  setOnboardingStep: (step: OnboardingStep | string) => void;
+  rank: number | null;
+  setRank: (rank: number) => void;
 }
 
 const SupabaseContext = createContext<SupabaseContextInterface | null>(null);
@@ -63,7 +62,7 @@ function SupabaseProvider({ children }: { children: ReactChild | ReactChildren }
   // Default value checks for an active session
   const [user, setUser] = useState<User | null>(supabase.auth.session()?.user ?? null);
   const [username, setUsername] = useState<string | null>(null);
-  const [onboardingStep, setOnboardingStep_] = useState<OnboardingStep | null>(null);
+  const [rank, setRank_] = useState<number | null>(null);
 
   useEffect(() => {
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -79,31 +78,28 @@ function SupabaseProvider({ children }: { children: ReactChild | ReactChildren }
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const { data, error, status } = await supabase
           .from("profiles")
-          .select("username, onboarding_step")
+          .select("username, rank")
           .eq("id", user.id)
-          .single() as PostgrestSingleResponse<{username: string, onboarding_step: OnboardingStep}>;
+          .single() as PostgrestSingleResponse<{username: string, rank: number}>;
 
         if (error && status !== 406) {
           throw error;
         }
 
         setUsername(data?.username ?? null);
-        setOnboardingStep_(
-          (data as {onboarding_step?: OnboardingStep})?.onboarding_step
-          || "REGISTERED" as OnboardingStep,
-        );
+        setRank_((data as {rank?: number})?.rank || 0);
       }
     }
     getUserData();
   }, [user]);
 
   // Update local state and Supabase DB
-  const setOnboardingStep = async (step: OnboardingStep | string) => {
+  const setRank = async (newRank: number) => {
     if (user) {
-      setOnboardingStep_(step as OnboardingStep);
+      setRank_(newRank);
       await supabase
         .from("profiles")
-        .update({ onboarding_step: step }, { returning: "minimal" })
+        .update({ rank: newRank }, { returning: "minimal" })
         .eq("id", user.id);
     }
   };
@@ -117,8 +113,8 @@ function SupabaseProvider({ children }: { children: ReactChild | ReactChildren }
     }
   }
 
-  // If we have user, wait to load onboardingStep before rendering (this feels kinda sketchy)
-  if (user && !onboardingStep) {
+  // If we have user, wait to load rank before rendering (this feels kinda sketchy)
+  if (user && rank === null) {
     return null;
   }
 
@@ -127,13 +123,12 @@ function SupabaseProvider({ children }: { children: ReactChild | ReactChildren }
       supabase,
       // Can't just say supabase.auth.signIn, gotta do bind()
       signIn: supabase.auth.signIn.bind(supabase.auth),
-      signUp: supabase.auth.signUp.bind(supabase.auth),
       signOut: supabase.auth.signOut.bind(supabase.auth),
       user: typedUser,
       username,
       setUsername,
-      onboardingStep,
-      setOnboardingStep,
+      rank,
+      setRank,
     } }>
       {children}
     </SupabaseContext.Provider>

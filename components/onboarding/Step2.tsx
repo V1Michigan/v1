@@ -2,26 +2,28 @@ import { useState } from "react";
 import { Formik, Form } from "formik";
 import useSupabase from "../../hooks/useSupabase";
 import {
-  RolesField,
-  InterestsField,
   LinkedInField,
-  AdditionalLinksField,
+  YearField,
+  MajorsField,
+  MinorsField,
 } from "../profile/fields/ProfileFields";
 import ViewResume from "../profile/ViewResume";
+import { FadeAllChildren } from "../Fade";
 import { EditResume } from "../profile/fields/FileFields";
 
 interface FormValues {
-  roles: string[],
-  interests: string[],
   resume: File | null,
   linkedin: string, // Optional
-  additionalLinks: string, // Optional
+  year: string;
+  majors: string[];
+  minors: string[];
 }
 
 interface Step2Props {
   nextStep: () => void;
 }
 
+// TODO: Prompt user from dashboard to fill this out if they haven't yet
 const Step2 = ({ nextStep }: Step2Props) => {
   const { user, supabase } = useSupabase();
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -31,15 +33,17 @@ const Step2 = ({ nextStep }: Step2Props) => {
   }
 
   return (
-    <div className="h-screen bg-black">
-      <h3 className="text-lg font-large font-bold text-center leading-6 text-V1gold pl-6 pt-4">We can&apos;t wait to learn more about you!</h3>
+    <div className="h-full bg-gradient">
+      <h3 className="py-6 text-lg font-large font-bold text-center text-white">
+        We can&apos;t wait to learn more about you!
+      </h3>
       <Formik
         initialValues={ {
-          roles: [],
-          interests: [],
           resume: null,
           linkedin: "",
-          additionalLinks: "",
+          year: "",
+          majors: [],
+          minors: [],
         } as FormValues }
         validate={ () => setSubmitError(null) }
         onSubmit={ async (values, { setSubmitting }) => {
@@ -67,10 +71,12 @@ const Step2 = ({ nextStep }: Step2Props) => {
           const { error } = await supabase
             .from("profiles")
             .update({
-              roles: values.roles,
-              interests: values.interests,
+              year: values.year,
+              fields_of_study: {
+                majors: values.majors,
+                minors: values.minors,
+              },
               linkedin: values.linkedin,
-              website: values.additionalLinks,
               updated_at: new Date(),
             }, {
               returning: "minimal", // Don't return the value after inserting
@@ -85,46 +91,32 @@ const Step2 = ({ nextStep }: Step2Props) => {
         } }
       >
         {({ values, isSubmitting }) => (
-          <div className="grid grid-cols-6 gap-6 pt-4">
-            <div className="bg-white col-span-6 sm:col-start-2 col-end-6 center pt-2 mt-5 md:mt-0 rounded-md">
-              <Form className="px-4">
+          // Need large pb-32 to prevent FadeAllChildren from overflowing
+          <Form className="mx-auto w-4/5 px-16 py-8 pb-32 space-y-8 bg-white shadow-lg rounded-md">
+            <FadeAllChildren>
+              <YearField label="School year" />
+              <LinkedInField label="LinkedIn profile (optional)" />
 
-                <div className="grid grid-cols-6 gap-6">
-                  <div className="pl-6 col-span-6 sm:col-span-3 w-2/3">
-                    <RolesField label="Which types of roles are you interested in?" />
-                  </div>
-                  <div className="pl-6 col-span-6 sm:col-span-3 w-2/3">
-                    <InterestsField label="Which industries are you interested in?" />
-                  </div>
-                </div>
+              <div className="pt-4 w-3/4 mx-auto">
+                {values.resume && <ViewResume resume={ values.resume } maxPages={ 1 } />}
+                <EditResume />
+              </div>
 
-                <div className="pt-4 w-3/4 mx-auto">
-                  {values.resume && <ViewResume resume={ values.resume } maxPages={ 1 } />}
-                  <EditResume />
-                </div>
+              <MajorsField label="Major(s)" />
+              <MinorsField label="Minor(s) (optional)" />
 
-                <div className="grid grid-cols-6 gap-6 pt-4">
-                  <div className="pl-6 col-span-6 sm:col-span-3">
-                    <LinkedInField label="LinkedIn profile (optional)" />
-                  </div>
-
-                  <div className="col-span-6 sm:col-span-3">
-                    <AdditionalLinksField label="Any other links you'd like to share? (optional)" />
-                  </div>
-                </div>
-                <div className="pl-6 pt-4 pb-4">
-                  <button
-                    type="submit"
-                    disabled={ isSubmitting }
-                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              <div className="pl-6 pt-4 pb-4">
+                <button
+                  type="submit"
+                  disabled={ isSubmitting }
+                  className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                   >
-                    {isSubmitting ? "Loading..." : "Submit"}
-                  </button>
-                  {submitError && <p className="text-red-500">{submitError}</p>}
-                </div>
-              </Form>
-            </div>
-          </div>
+                  {isSubmitting ? "Loading..." : "Submit"}
+                </button>
+                {submitError && <p className="text-red-500">{submitError}</p>}
+              </div>
+            </FadeAllChildren>
+          </Form>
         )}
       </Formik>
     </div>

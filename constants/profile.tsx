@@ -10,10 +10,14 @@ const Year: {[key: string]: string} = Object.fromEntries([
 ].map((x) => ([x, x])));
 
 const RoleType: {[key: string]: string} = {
-  eng: "Engineering",
+  eng: "Software Engineering",
+  ai: "AI/ML Engineering",
+  hw: "Hardware Engineering",
   ds: "Data Science",
   des: "UX/UI Design",
   bus: "Business",
+  mk: "Marketing",
+  sa: "Sales",
   gro: "Growth",
   pm: "Product Management",
 };

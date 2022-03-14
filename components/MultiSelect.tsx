@@ -28,6 +28,8 @@ const MultiSelect = ({
       onBlur={ () => setTouched(true) }
       options={ options }
       isMulti
+      menuPortalTarget={ document.body }
+      styles={ { menuPortal: (base) => ({ ...base, zIndex: 9999 }) } }
     />
   );
 };
