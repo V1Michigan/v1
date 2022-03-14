@@ -7,6 +7,7 @@ import ProtectedRoute from "../components/ProtectedRoute";
 import useSupabase from "../hooks/useSupabase";
 import NavbarBuilder from "../components/NavBar";
 import OnboardingCohortRegister from "../components/OnboardingCohortRegister";
+import Step2Prompt from "../components/Step2Prompt";
 
 type Data = {
   name: string;
@@ -134,6 +135,7 @@ const Dashboard: NextPage = () => {
 
           <div className="flex justify-center gap-x-4">
             <OnboardingCohortRegister />
+            <Step2Prompt />
           </div>
           <div className="md:flex justify-center">
             <div className="flex-1">
