@@ -2,21 +2,25 @@ import { useState } from "react";
 import { Formik, Form } from "formik";
 import useSupabase from "../../hooks/useSupabase";
 import {
+  BioField,
   LinkedInField,
   YearField,
   MajorsField,
   MinorsField,
+  PartnerSharingConsentField,
 } from "../profile/fields/ProfileFields";
 import ViewResume from "../profile/ViewResume";
 import { FadeAllChildren } from "../Fade";
 import { EditResume } from "../profile/fields/FileFields";
 
 interface FormValues {
+  bio: string,
   resume: File | null,
   linkedin: string, // Optional
   year: string;
   majors: string[];
   minors: string[];
+  partnerSharingConsent: boolean;
 }
 
 interface Step2Props {
@@ -38,11 +42,13 @@ const Step2 = ({ nextStep }: Step2Props) => {
       </h3>
       <Formik
         initialValues={ {
-          resume: null,
-          linkedin: "",
+          bio: "",
           year: "",
+          linkedin: "",
+          resume: null,
           majors: [],
           minors: [],
+          partnerSharingConsent: true,
         } as FormValues }
         validate={ () => setSubmitError(null) }
         onSubmit={ async (values, { setSubmitting }) => {
@@ -53,8 +59,7 @@ const Step2 = ({ nextStep }: Step2Props) => {
             .storage.from("resumes").upload(
               bucketPath,
               // values.resume is not null, would've been caught by validation
-              // eslint-disable-next-line max-len
-              // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion, @typescript-eslint/no-non-null-assertion
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
               values.resume!,
               {
                 contentType: "application/pdf",
@@ -70,12 +75,14 @@ const Step2 = ({ nextStep }: Step2Props) => {
           const { error } = await supabase
             .from("profiles")
             .update({
+              bio: values.bio,
               year: values.year,
               fields_of_study: {
                 majors: values.majors,
                 minors: values.minors,
               },
               linkedin: values.linkedin,
+              partner_sharing_consent: values.partnerSharingConsent,
               updated_at: new Date(),
             }, {
               returning: "minimal", // Don't return the value after inserting
@@ -93,6 +100,7 @@ const Step2 = ({ nextStep }: Step2Props) => {
           // Need large pb-32 to prevent FadeAllChildren from overflowing
           <Form className="mx-auto w-4/5 px-16 py-8 pb-32 space-y-8 bg-white shadow-lg rounded-md">
             <FadeAllChildren>
+              <BioField label="Bio" />
               <YearField label="School year" />
               <LinkedInField label="LinkedIn profile (optional)" />
 
@@ -103,6 +111,7 @@ const Step2 = ({ nextStep }: Step2Props) => {
 
               <MajorsField label="Major(s)" />
               <MinorsField label="Minor(s) (optional)" />
+              <PartnerSharingConsentField />
 
               <div className="pl-6 pt-4 pb-4">
                 <button
