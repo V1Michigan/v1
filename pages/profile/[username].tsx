@@ -45,7 +45,7 @@ const UserProfile: NextPage = () => {
   const { supabase, username: currentUsername } = useSupabase();
   const isCurrentUser = profileUsername === currentUsername;
 
-  const [editMode, setEditMode] = useState(false);
+  const [editMode, setEditMode] = useState(true);
   const [initialProfile, setInitialProfile] = useState<Profile | null>(null);
 
   const [dataFetchErrors, setDataFetchErrors] = useState<string[]>([]);
@@ -168,11 +168,10 @@ const UserProfile: NextPage = () => {
       onSubmit={ saveProfile }
     >
       {({ values, isSubmitting }) => (
-        <div className="bg-gradient flex min-h-screen min-w-screen justify-center items-center text-white">
+        <div className="bg-gradient min-h-screen min-w-screen p-10 flex justify-center items-center text-white">
           <Form>
 
             {values.avatar && (
-            <>
               <div className="grid grid-cols-8 pb-4 items-center">
                 <div className="col-span-8x sm:col-span-4 pl-20">
                   <div className="pl-8">
@@ -183,12 +182,11 @@ const UserProfile: NextPage = () => {
                   {editMode && <EditAvatar />}
                 </div>
               </div>
-            </>
             )}
 
             {/* Not allowing name or username changes for now */}
-            <h2 className="text-2xl">
-              <span className="font-bold">{values.name}</span>
+            <h2 className="text-2xl my-4">
+              <b>{values.name}</b>
               {" "}
               (
               {profileUsername}
@@ -215,25 +213,25 @@ const UserProfile: NextPage = () => {
             {dataFetchErrors.map((error) => (
               <p key={ error } className="text-red-500">{ error }</p>
             ))}
-            <div className="grid grid-cols-6 gap-6">
+            <div className="mt-4 grid grid-cols-6 gap-6">
               {isCurrentUser && (
-              <div className="mt-4 col-span-6 sm:col-span-3">
+              <div className="mx-auto col-span-6 sm:col-span-3">
                 {editMode ? (
                   <>
                     <div className="grid grid-cols-3 gap-4 pl-10">
                       <button
-                        className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-black hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        className="inline-flex justify-center py-2 px-4 border border-transparent shadow text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                         disabled={ isSubmitting || isObjectEqual(values, initialProfile) }
                         type="submit"
-                  >
+                      >
                         {isSubmitting ? "Saving..." : "Save Profile"}
                       </button>
                       <button
-                        className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-black hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        className="inline-flex justify-center py-2 px-4 border border-transparent shadow text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                         onClick={ () => setEditMode(false) }
                         disabled={ isSubmitting }
                         type="button"
-                  >
+                      >
                         Cancel
                       </button>
                     </div>
@@ -244,7 +242,7 @@ const UserProfile: NextPage = () => {
                 )
                   : (
                     <button
-                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-black hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                       onClick={ () => setEditMode(true) }
                       type="button"
                    >
@@ -253,12 +251,12 @@ const UserProfile: NextPage = () => {
                   )}
               </div>
               )}
-              <div className="mt-4 col-span-6 sm:col-span-3">
+              <div className="mx-auto col-span-6 sm:col-span-3">
                 <button
-                  className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-black hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  className="inline-flex justify-center py-2 px-4 border border-transparent shadow text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                   onClick={ () => supabase.auth.signOut() }
                   type="button"
-            >
+                >
                   Sign Out
                 </button>
               </div>

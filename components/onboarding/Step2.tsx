@@ -97,7 +97,7 @@ const Step2 = ({ nextStep }: Step2Props) => {
               <LinkedInField label="LinkedIn profile (optional)" />
 
               <div className="pt-4 mx-auto w-1/2">
-                {values.resume && <ViewResume resume={ values.resume } maxPages={ 1 } />}
+                {values.resume && <ViewResume resume={ values.resume } />}
                 <EditResume />
               </div>
 

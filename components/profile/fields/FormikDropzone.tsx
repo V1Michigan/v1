@@ -27,7 +27,7 @@ const FormikDropzone = ({
         /* eslint-disable react/jsx-props-no-spreading */
         <div
           { ...getRootProps({
-            className: "p-1 pl-2 block w-full cursor-pointer bg-gray-100 border border-gray-500 text-gray-900 focus:outline-none focus:border-transparent rounded-lg",
+            className: "m-2 p-1 pl-2 block w-full cursor-pointer bg-gray-100 border border-gray-500 text-gray-900 focus:outline-none focus:border-transparent rounded-lg",
           }) }
         >
           <input { ...getInputProps() } />
