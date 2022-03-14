@@ -34,10 +34,7 @@ export type Profile = {
   avatar?: File,
   resume?: File, // Not fetched if not current user
 }
-const PROFILE_COLUMNS = (isCurrentUser: boolean) => `id, email, name, ${isCurrentUser ? "phone, " : ""}year, fields_of_study, linkedin, website, roles, interests`;
-// const PROFILE_COLUMNS = (isCurrentUser: boolean) => `id, email, name, bio,
-// ${isCurrentUser ? "phone, " : ""}year,
-// fields_of_study, linkedin, website, roles, interests, partner_sharing_consent`;
+const PROFILE_COLUMNS = (isCurrentUser: boolean) => `id, email, name, bio, ${isCurrentUser ? "phone, " : ""}year, fields_of_study, linkedin, website, roles, interests, partner_sharing_consent`;
 type DBProfile = Omit<Profile, "minors" | "majors" | "partnerSharingConsent"> & {
   fields_of_study: {
     minors: string[];
