@@ -299,6 +299,17 @@ const AdditionalLinksField = ({ label }: LabelProps) => {
   );
 };
 
+const PartnerSharingConsentField = ({ label }: LabelProps) => (
+  <div className="flex">
+    <label htmlFor="additionalLinks">{label}</label>
+    <Field
+      className="mt-auto focus:ring-indigo-500 focus:border-indigo-500 block shadow-sm sm:text-sm border-gray-300 rounded-md"
+      type="checkbox"
+      name="partnerSharingConsent"
+    />
+  </div>
+);
+
 export {
   NameField,
   EmailField,
@@ -312,4 +323,5 @@ export {
   BioField,
   LinkedInField,
   AdditionalLinksField,
+  PartnerSharingConsentField,
 };

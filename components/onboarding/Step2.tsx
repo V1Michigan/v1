@@ -7,6 +7,7 @@ import {
   YearField,
   MajorsField,
   MinorsField,
+  PartnerSharingConsentField,
 } from "../profile/fields/ProfileFields";
 import ViewResume from "../profile/ViewResume";
 import { FadeAllChildren } from "../Fade";
@@ -19,6 +20,7 @@ interface FormValues {
   year: string;
   majors: string[];
   minors: string[];
+  partnerSharingConsent: boolean;
 }
 
 interface Step2Props {
@@ -46,6 +48,7 @@ const Step2 = ({ nextStep }: Step2Props) => {
           resume: null,
           majors: [],
           minors: [],
+          partnerSharingConsent: true,
         } as FormValues }
         validate={ () => setSubmitError(null) }
         onSubmit={ async (values, { setSubmitting }) => {
@@ -79,6 +82,7 @@ const Step2 = ({ nextStep }: Step2Props) => {
                 minors: values.minors,
               },
               linkedin: values.linkedin,
+              partner_sharing_consent: values.partnerSharingConsent,
               updated_at: new Date(),
             }, {
               returning: "minimal", // Don't return the value after inserting
@@ -107,6 +111,9 @@ const Step2 = ({ nextStep }: Step2Props) => {
 
               <MajorsField label="Major(s)" />
               <MinorsField label="Minor(s) (optional)" />
+              <PartnerSharingConsentField
+                label="To help you find your next best role, can we share your profile with select startups or other partner organizations?"
+              />
 
               <div className="pl-6 pt-4 pb-4">
                 <button
