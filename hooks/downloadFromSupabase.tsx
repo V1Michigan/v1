@@ -1,5 +1,3 @@
-import { useCallback, useEffect, useState } from "react";
-
 import { SupabaseClient } from "@supabase/supabase-js";
 
 const downloadFromSupabase = async (

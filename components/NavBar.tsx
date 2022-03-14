@@ -1,10 +1,9 @@
 import Link from "next/link";
-import { Fragment } from "react";
+import { useState, useEffect, Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import useSupabase from "../hooks/useSupabase";
 import downloadFromSupabase from "../hooks/downloadFromSupabase";
-import { useState, useEffect, useMemo } from "react";
 const navigation = [
   // { name: 'V1 @ Michigan', href: '#', current: true },
   {
@@ -58,7 +57,7 @@ const navigation = [
 ];
 
 export default function NavbarBuilder() {
-  const { user, username, supabase } = useSupabase();
+  const { user, username, supabase, rank } = useSupabase();
   const [ profilePic, setProfilePic ] = useState<string>("");
   useEffect(() => {
     const grabProfilePic = async () => {
