@@ -111,9 +111,7 @@ const Step2 = ({ nextStep }: Step2Props) => {
 
               <MajorsField label="Major(s)" />
               <MinorsField label="Minor(s) (optional)" />
-              <PartnerSharingConsentField
-                label="To help you find your next best role, can we share your profile with select startups or other partner organizations?"
-              />
+              <PartnerSharingConsentField />
 
               <div className="pl-6 pt-4 pb-4">
                 <button

@@ -299,14 +299,18 @@ const AdditionalLinksField = ({ label }: LabelProps) => {
   );
 };
 
-const PartnerSharingConsentField = ({ label }: LabelProps) => (
-  <div className="flex">
-    <label htmlFor="additionalLinks">{label}</label>
+const PartnerSharingConsentField = () => (
+  <div className="flex items-center justify-center gap-x-2">
+    <label htmlFor="partnerSharingConsent">
+      To help you find your next best role, can we share your
+      profile with select startups or other partner organizations?
+    </label>
     <Field
-      className="mt-auto focus:ring-indigo-500 focus:border-indigo-500 block shadow-sm sm:text-sm border-gray-300 rounded-md"
+      className="block shadow border-gray-300 rounded-md"
       type="checkbox"
       name="partnerSharingConsent"
-    />
+      id="partnerSharingConsent"
+      />
   </div>
 );
 

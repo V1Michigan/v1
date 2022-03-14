@@ -22,6 +22,7 @@ const ViewProfile = ({ profile }: ViewProfileProps) => (
     {/^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)$/.test(profile.website)
       ? <Link href={ profile.website }>{profile.website}</Link>
       : <p>{profile.website}</p>}
+    <p className="my-4">{profile.bio}</p>
     <p>
       Year:
       {" "}

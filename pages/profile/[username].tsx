@@ -11,12 +11,14 @@ import isObjectEqual from "../../utils/isObjectEqual";
 import useSupabase from "../../hooks/useSupabase";
 import EditProfile from "../../components/profile/EditProfile";
 import { EditAvatar, EditResume } from "../../components/profile/fields/FileFields";
+import { PartnerSharingConsentField } from "../../components/profile/fields/ProfileFields";
 
 // Username included separately
 export type Profile = {
   id: string;
   email: string;
   name: string;
+  bio: string;
   phone?: string; // Not fetched if not current user
   // cohort: string;  For the future...
   year: string,
@@ -27,16 +29,21 @@ export type Profile = {
   website: string,
   roles: string[],
   interests: string[],
+  partnerSharingConsent: boolean,
   // These two need to be fetched separately, after the DB query
   avatar?: File,
   resume?: File, // Not fetched if not current user
 }
 const PROFILE_COLUMNS = (isCurrentUser: boolean) => `id, email, name, ${isCurrentUser ? "phone, " : ""}year, fields_of_study, linkedin, website, roles, interests`;
-type DBProfile = Omit<Profile, "minors" | "majors"> & {
+// const PROFILE_COLUMNS = (isCurrentUser: boolean) => `id, email, name, bio,
+// ${isCurrentUser ? "phone, " : ""}year,
+// fields_of_study, linkedin, website, roles, interests, partner_sharing_consent`;
+type DBProfile = Omit<Profile, "minors" | "majors" | "partnerSharingConsent"> & {
   fields_of_study: {
     minors: string[];
     majors: string[];
   };
+  partner_sharing_consent: boolean;
 }
 
 const UserProfile: NextPage = () => {
@@ -80,7 +87,11 @@ const UserProfile: NextPage = () => {
       if ((dbError && status !== 406) || !dbData) {
         router.replace("/404");
       } else {
-        const profile = { ...dbData, ...dbData.fields_of_study } as Omit<Profile, "avatar" | "resume">;
+        const profile = {
+          ...dbData,
+          ...dbData.fields_of_study,
+          partnerSharingConsent: dbData.partner_sharing_consent,
+        } as Omit<Profile, "avatar" | "resume">;
         // Show the profile data from the DB, then start fetching the avatar and resume
         setInitialProfile(profile);
 
@@ -116,6 +127,7 @@ const UserProfile: NextPage = () => {
         .update({
           phone: profile.phone,
           linkedin: profile.linkedin,
+          bio: profile.bio,
           website: profile.website,
           year: profile.year,
           fields_of_study: {
@@ -124,6 +136,7 @@ const UserProfile: NextPage = () => {
           },
           roles: profile.roles,
           interests: profile.interests,
+          partner_sharing_consent: profile.partnerSharingConsent,
           updated_at: new Date(),
         }, {
           returning: "minimal",
@@ -211,6 +224,8 @@ const UserProfile: NextPage = () => {
               </div>
             </>
             )}
+
+            {editMode && <PartnerSharingConsentField />}
 
             {dataFetchErrors.map((error) => (
               <p key={ error } className="text-red-500">{ error }</p>
