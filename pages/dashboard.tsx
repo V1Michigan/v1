@@ -220,14 +220,14 @@ const Dashboard: NextPage = () => {
                 <p
                   className="block bg-gray-100 max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center text-lg hover:bg-gray-200 hover:opacity-75 transition-all"
                 >
-                  <img className="mb-1 inline-block w-8 mr-1 my-auto" src="/discord-gray-icon.webp" alt="discord icon" />
+                  <img className="mb-1 inline-block w-8 mr-1 my-auto" src="/discord-gray-icon.webp" alt="Discord icon" />
                   Join the
                   {" "}
                   <span className="font-semibold">V1 Discord &rsaquo;</span>
                 </p>
               </Link>
               <a className="block bg-gray-100 max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center text-lg hover:bg-gray-200 hover:opacity-75 transition-all" href="/newsletter">
-                <img className="mb-1 inline-block w-8 mr-1 my-auto" src="/substackicon.webp" alt="discord icon" />
+                <img className="mb-1 inline-block w-8 mr-1 my-auto" src="/substackicon.webp" alt="Substack icon" />
                 Read the
                 {" "}
                 <span className="font-semibold">V1 Newsletter &rsaquo;</span>
