@@ -23,7 +23,6 @@ interface Step2Props {
   nextStep: () => void;
 }
 
-// TODO: Prompt user from dashboard to fill this out if they haven't yet
 const Step2 = ({ nextStep }: Step2Props) => {
   const { user, supabase } = useSupabase();
   const [submitError, setSubmitError] = useState<string | null>(null);

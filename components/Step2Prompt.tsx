@@ -1,8 +1,6 @@
 import Link from "next/link";
 import useSupabase from "../hooks/useSupabase";
 
-// TODO: Deduplicate code between this and OnboardingCohortRegister,
-// nice reusable component
 const Step2Prompt = () => {
   const { rank } = useSupabase();
   if (rank !== 0) {
@@ -17,7 +15,6 @@ const Step2Prompt = () => {
       <h2 className="text-gray-800">
         Tell us more about you and what you&apos;re excited about
       </h2>
-      {/* TODO: Align to bottom of container */}
       <Link href="/welcome" passHref>
         <button
           className="bg-gradient-to-r from-blue-600 to-blue-700 hover:bg-blue-500 text-gray-100 font-semibold py-3 px-4 rounded shadow mt-3 hover:opacity-75"

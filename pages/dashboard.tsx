@@ -208,11 +208,3 @@ export default () => (
     <Dashboard />
   </ProtectedRoute>
 );
-
-// TODO:
-// Replace Welcome with "Good morning", "Good afternoon", "Good evening".
-// Ranks -- replace "Registered" with correct rank names
-// Explain ranks, have a pop-up dialog with list/diagram
-// Nail down profile ranks and how that pertains to onboarding step
-// and profile access, they should default to null now?
-// Add sign-out somewhere on dashboard
