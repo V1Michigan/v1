@@ -271,7 +271,7 @@ const UserProfile: NextPage = () => {
 };
 
 export default () => (
-  <ProtectedRoute minRank={ 2 }>
+  <ProtectedRoute minRank={ 1 }>
     <UserProfile />
   </ProtectedRoute>
 );

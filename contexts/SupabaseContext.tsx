@@ -8,8 +8,10 @@ import {
 import supabase from "../utils/supabaseClient";
 
 // Rank breakdown:
-// 0: user exists, but hasn't completed sign-up Step 1 (this is the DB default)
-// 1: completed Step 1, now has dashboard access + can schedule 1:1 calls
+// undefined: no user
+// null: user exists, but hasn't completed sign-up Step 1 (this is the DB default)
+// 0: completed Step 1, now has dashboard access + can schedule 1:1 calls
+// 1: completed Step 2, now can access /profile and isn't prompted to fill out Step 2
 // 2, 3: in onboarding cohort
 // 4: General member
 // 5: Member++
@@ -52,7 +54,7 @@ interface SupabaseContextInterface {
   user: EmailUser | GoogleUser | null;
   username: string | null;
   setUsername: (username: string) => void;
-  rank: number | null;
+  rank: number | null | undefined;
   setRank: (rank: number) => void;
 }
 
@@ -62,7 +64,7 @@ function SupabaseProvider({ children }: { children: ReactChild | ReactChildren }
   // Default value checks for an active session
   const [user, setUser] = useState<User | null>(supabase.auth.session()?.user ?? null);
   const [username, setUsername] = useState<string | null>(null);
-  const [rank, setRank_] = useState<number | null>(null);
+  const [rank, setRank_] = useState<number | null | undefined>(undefined);
 
   useEffect(() => {
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -87,7 +89,7 @@ function SupabaseProvider({ children }: { children: ReactChild | ReactChildren }
         }
 
         setUsername(data?.username ?? null);
-        setRank_((data as {rank?: number})?.rank || 0);
+        setRank_((data as {rank?: number})?.rank ?? null);
       }
     }
     getUserData();
@@ -114,7 +116,7 @@ function SupabaseProvider({ children }: { children: ReactChild | ReactChildren }
   }
 
   // If we have user, wait to load rank before rendering (this feels kinda sketchy)
-  if (user && rank === null) {
+  if (user && rank === undefined) {
     return null;
   }
 
