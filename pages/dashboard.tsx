@@ -1,14 +1,15 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { route } from "next/dist/server/router";
+import { PostgrestSingleResponse } from "@supabase/supabase-js";
+import Link from "next/link";
 import ProtectedRoute from "../components/ProtectedRoute";
 import useSupabase from "../hooks/useSupabase";
 import NavbarBuilder from "../components/NavBar";
 
 export type Data = {
   name: string;
-  // later change to rank as an integer
+  // TODO: change to rank as an integer
   rank: BigInt;
 };
 
@@ -41,19 +42,22 @@ const Dashboard: NextPage = () => {
           .from("profiles")
           .select("name, rank")
           .eq("id", user.id)
-          .single();
+          .single() as PostgrestSingleResponse<Data>;
         if ((dbError && status !== 406) || !dbData) {
           router.replace("/404");
         } else if (status !== 200) {
           setDataFetchErrors([`Unexpected status code: ${status}`]);
         } else {
           setData(dbData);
-          const { data: dbEvents, error: dbEventError, status: dbEventStatus } = await supabase.from("events").select(EVENT_COLUMNS).order("date", { ascending: true });
+          const {
+            data: dbEvents, error: dbEventError, status: dbEventStatus,
+          } = await supabase
+            .from("events")
+            .select(EVENT_COLUMNS)
+            .order("date", { ascending: true });
 
           if ((dbEventError && dbEventStatus !== 406) || !dbEvents) {
-            router.replace("/404");
-          } else if (dbEventStatus !== 200) {
-            setDataFetchErrors([`Unexpected status code: ${dbEventStatus}`]);
+            setDataFetchErrors((errors) => [...errors, dbEventError.message]);
           } else {
             setEvents(dbEvents);
           }
@@ -119,9 +123,12 @@ const Dashboard: NextPage = () => {
 
       <div className="bg-white">
         <div className="max-w-screen-xl mx-auto py-6 px-4">
+          {dataFetchErrors.map((error) => (
+            <p key={ error } className="text-red-500">{ error }</p>
+          ))}
           <h1 className="text-3xl font-bold tracking-tight text-gray-800 mb-4 text-center">
             {" "}
-            What's next &#8250;
+            What&apos;s next &#8250;
           </h1>
 
           <div className="flex justify-center">
@@ -137,11 +144,16 @@ const Dashboard: NextPage = () => {
                 {" "}
               </h2>
 
-              <button className="bg-gradient-to-r from-blue-600 to-blue-700 hover:bg-blue-500 text-gray-100 font-semibold py-3 px-4 rounded shadow mt-3 hover:opacity-75">
-                I'm interested &#8250;
+              <button
+                className="bg-gradient-to-r from-blue-600 to-blue-700 hover:bg-blue-500 text-gray-100 font-semibold py-3 px-4 rounded shadow mt-3 hover:opacity-75"
+                type="button">
+                I&apos;m interested &#8250;
               </button>
 
-              {/* This should post to the onboarding table. THe button should be disabled after click and say "Great. ✅	We'll reach out to you via email soon." */}
+              {/* TODO:
+                This should post to the onboarding table.
+                THe button should be disabled after click and say "Great. ✅
+                We'll reach out to you via email soon." */}
             </div>
           </div>
           <div className="md:flex justify-center">
@@ -162,7 +174,11 @@ const Dashboard: NextPage = () => {
                   </p>
                   <p className="italic mb-2">{event.place}</p>
                   <p className="mb-2">{event.description}</p>
-                  <button className="text-center text-sm block text-gray-100 font-semibold bg-gradient-to-r from-blue-600 to-blue-700 hover:bg-blue-500 shadow py-2 px-3 rounded mx-auto hover:opacity-75">RSVP &rsaquo;</button>
+                  <button
+                    type="button"
+                    className="text-center text-sm block text-gray-100 font-semibold bg-gradient-to-r from-blue-600 to-blue-700 hover:bg-blue-500 shadow py-2 px-3 rounded mx-auto hover:opacity-75">
+                    RSVP &rsaquo;
+                  </button>
                 </div>
               ))}
 
@@ -173,12 +189,16 @@ const Dashboard: NextPage = () => {
                 {" "}
                 Resources &#8250;
               </h1>
-              <a className="block bg-gray-100 max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center text-lg hover:bg-gray-200 hover:opacity-75 transition-all" href="/community">
-                <img className="mb-1 inline-block w-8 mr-1 my-auto" src="/discord-gray-icon.webp" alt="discord icon" />
-                Join the
-                {" "}
-                <span className="font-semibold">V1 Discord &rsaquo;</span>
-              </a>
+              <Link href="/community" passHref>
+                <p
+                  className="block bg-gray-100 max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center text-lg hover:bg-gray-200 hover:opacity-75 transition-all"
+                >
+                  <img className="mb-1 inline-block w-8 mr-1 my-auto" src="/discord-gray-icon.webp" alt="discord icon" />
+                  Join the
+                  {" "}
+                  <span className="font-semibold">V1 Discord &rsaquo;</span>
+                </p>
+              </Link>
               <a className="block bg-gray-100 max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center text-lg hover:bg-gray-200 hover:opacity-75 transition-all" href="/newsletter">
                 <img className="mb-1 inline-block w-8 mr-1 my-auto" src="/substackicon.webp" alt="discord icon" />
                 Read the
@@ -207,7 +227,6 @@ export default () => (
   </ProtectedRoute>
 );
 
-// Todo:
+// TODO:
 // Replace Welcome with "Good morning", "Good afternoon", "Good evening".
 // Ranks -- replace "Registered" with correct rank names
-// After Onboarding progress, there's a new progress bar for "member progress"

@@ -1,48 +1,49 @@
-import { Fragment, useEffect } from "react";
+import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import useSupabase from "../hooks/useSupabase";
+
 const navigation = [
   // { name: 'V1 @ Michigan', href: '#', current: true },
   {
     name: "Community",
     href: "/community",
     current: false,
-    right: false
+    right: false,
   },
   { name: "Studio", href: "https://studio.v1michigan.com", current: false },
   {
     name: "Startup Fair",
     href: "https://startupfair.v1michigan.com",
     current: false,
-    right: false
+    right: false,
   },
   {
     name: "Newsletter",
     href: "https://v1network.substack.com/",
     current: false,
-    right: false
+    right: false,
   },
   {
     name: "Dashboard",
     href: "/dashboard",
     current: false,
     right: true,
-    login: true
+    login: true,
   },
   {
     name: "Profile",
     href: "/profile",
     current: false,
     right: false,
-    login: true
+    login: true,
   },
   {
     name: "Login",
     href: "/login",
     current: false,
     right: true,
-    noauth: true
+    noauth: true,
   },
   {
     name: "Sign Up",
@@ -50,21 +51,11 @@ const navigation = [
     current: false,
     right: false,
     noauth: true,
-    signup:true
-  }
+    signup: true,
+  },
 ];
 
-
-
 export default function NavbarBuilder() {
-  let Decode = (input: string) => 0;
-  useEffect(() => {
-    Decode = (input: string) => {
-      var e = document.createElement('div');
-      e.innerHTML = input;
-      return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
-    }
-  })
   const { user } = useSupabase();
   return (
     <Disclosure as="nav" className="bg-gray-800">
@@ -84,26 +75,24 @@ export default function NavbarBuilder() {
                 </Disclosure.Button>
               </div>
               <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
-                {/* <div className="flex-shrink-0 flex items-center text-white text-2xl font-bold hover:opacity-50 hover:cursor-pointer">
-                  V1
-                </div> */}
                 <img className="flex-shrink-0 w-5" src="/v1logowhite.svg" alt="v1 logo" />
                 <div className="hidden sm:block sm:ml-6 w-full">
                   <div className="flex flex-row space-x-4 w-full">
                     {navigation.map((item) => (
                       <a
-                        
                         key={ item.name }
                         href={ item.href }
                         className={ `${
                           item.current
                             ? "bg-gray-900 text-white"
                             : "text-gray-300 hover:bg-gray-700 hover:text-white"}
-                          px-3 py-2 rounded-md text-sm font-medium ${item?.login && !user ? "hidden" : ""} ${item?.noauth && user ? "hidden" : ""} ${item?.signup ? "bg-gray-700":""}` }
+                          px-3 py-2 rounded-md text-sm font-medium ${item?.login && !user ? "hidden" : ""} ${item?.noauth && user ? "hidden" : ""} ${item?.signup ? "bg-gray-700" : ""}` }
                         aria-current={ item.current ? "page" : undefined }
-                        style={item.right ? { marginLeft: "auto", marginRight: "0" } : {}}
+                        style={ item.right ? { marginLeft: "auto", marginRight: "0" } : {} }
                       >
-                        {item.name} {item?.signup ? Decode("&rsaquo;") : ""}
+                        {item.name}
+                        {" "}
+                        {item?.signup && <>&rsaquo;</>}
                       </a>
                     ))}
                   </div>
