@@ -9,14 +9,12 @@ interface EditProfileProps {
 }
 
 const EditProfile = ({ profile }: EditProfileProps) => (
-  <div className="flex flex-col gap-y-4">
-    <div className="flex flex-col gap-y-2 p-2">
-      <EmailField value={ profile.email } label={ <img className="h-6" src="/profile/email.svg" alt="Email" /> } />
-      <PhoneField label={ <img className="h-6" src="/profile/phone.svg" alt="Phone" /> } />
-      <LinkedInField label={ <img className="h-6" src="/profile/linkedin.svg" alt="LinkedIn" /> } />
-    </div>
-    <AdditionalLinksField label="Additional links" />
+  <div className="grid grid-cols-2 gap-x-10 gap-y-2 justify-center items-center pl-10 pr-10">
+    {/* <EmailField value={ profile.email } label="Email" /> */}
+    <PhoneField label="Phone" />
     <YearField label="School year" />
+    <LinkedInField label="LinkedIn" />
+    <AdditionalLinksField label="Additional links" />
     <MajorsField label="Major(s)" />
     <MinorsField label="Minor(s)" />
     <RolesField label="Roles" />

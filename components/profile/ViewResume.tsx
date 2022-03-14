@@ -20,7 +20,7 @@ const ViewResume = ({ resume: resume_, maxPages = Infinity }: ViewResumeProps) =
       onLoadError={ () => setError(true) }
       error="Error loading resume"
     >
-      <div className="flex flex-row overflow-x-auto">
+      <div className="flex flex-row overflow-x-auto rounded-sm justify-left items-left pl-10">
         {Array.from({ length: Math.min(numPages, maxPages) })
           .map((_, n) => n + 1)
           .map((n) => (
