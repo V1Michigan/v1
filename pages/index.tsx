@@ -2,7 +2,7 @@ import Head from "next/head";
 import {
   What, Offer, Join,
 } from "../components/about";
-import NavbarBuilder from "../components/navbar";
+import NavbarBuilder from "../components/NavBar";
 import Calendar from "../components/calendarapi";
 
 export default function IndexPage() {

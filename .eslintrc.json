@@ -11,14 +11,12 @@
         "plugin:react-hooks/recommended",
         "airbnb",
         "plugin:@typescript-eslint/recommended",
-        "plugin:@typescript-eslint/recommended-requiring-type-checking",
-        "prettier"
+        "plugin:@typescript-eslint/recommended-requiring-type-checking"
     ],
     "plugins": [
         "react",
         "react-hooks",
-        "@typescript-eslint",
-        "prettier"
+        "@typescript-eslint"
     ],
     "rules": {
         "import/extensions": [
@@ -38,7 +36,6 @@
                 ]
             }
         ],
-        "prettier/prettier": "error",
         "no-restricted-syntax": [
             "error",
             "WithStatement"
