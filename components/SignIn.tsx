@@ -30,7 +30,8 @@ const GoogleSignIn = ({ text, onClick, disabled = false }: GoogleSignInProps) =>
   </button>
 );
 
-const REDIRECT_URL = `${HOSTNAME}/profile`;
+const LOGIN_REDIRECT_URL = `${HOSTNAME}/dashboard`;
+const SIGNUP_REDIRECT_URL = `${HOSTNAME}/welcome`;
 
 interface SignInProps {
   isLoginPage: boolean;
@@ -50,7 +51,7 @@ export default function SignIn({ isLoginPage }: SignInProps) {
       // Redirect URLs must have the same hostname as the "Site URL" in the
       // Supabase Auth settings or be present in the "Additional Redirect URLs"
       // (additional redirects must match exactly)
-      { redirectTo: REDIRECT_URL },
+      { redirectTo: isLoginPage ? LOGIN_REDIRECT_URL : SIGNUP_REDIRECT_URL },
     );
     if (error) {
       setSubmitError(error.message);

@@ -1,10 +1,9 @@
 import { NextPage } from "next";
 import useSupabase from "../hooks/useSupabase";
-import ProtectedRoute from "../components/ProtectedRoute";
-import Step1 from "../components/onboarding/Step1";
-import Step2 from "../components/onboarding/Step2";
-import OnboardingComplete from "../components/onboarding/Complete";
 import { isGoogleUser } from "../contexts/SupabaseContext";
+import ProtectedRoute from "../components/ProtectedRoute";
+import Redirect from "../components/Redirect";
+import Step1 from "../components/onboarding/Step1";
 
 const WelcomePage: NextPage = () => {
   const { user, rank, setRank } = useSupabase();
@@ -25,12 +24,8 @@ const WelcomePage: NextPage = () => {
         nextStep={ () => setRank(1) } />
     );
   }
-  if (rank === 1) {
-    return <Step2 nextStep={ () => setRank(2) } />;
-  }
-
-  // Else, rank >= 2
-  return <OnboardingComplete />;
+  // Else, rank >= 1
+  return <Redirect route="/dashboard" />;
 };
 
 export default () => (

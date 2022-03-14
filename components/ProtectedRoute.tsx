@@ -1,22 +1,26 @@
-import { useEffect } from "react";
-import PropTypes from "prop-types";
 import { useRouter } from "next/router";
+import PropTypes from "prop-types";
 import useSupabase from "../hooks/useSupabase";
+import Redirect from "./Redirect";
 
-export default function ProtectedRoute({ children }: { children: JSX.Element }) {
+interface ProtectedRouteProps {
+  children: JSX.Element;
+  minRank?: number;
+}
+
+export default function ProtectedRoute({ children, minRank = 1 }: ProtectedRouteProps) {
   const { user, rank } = useSupabase();
   const router = useRouter();
-  useEffect(() => {
-    if (user) {
-      // Rank may be null or 0
-      if (!rank && router.pathname !== "/welcome") {
-        router.replace("/welcome");
-      }
-    } else {
-      router.replace("/login");
+  if (user) {
+    if ((rank === null || rank === 0) && router.pathname !== "/welcome") {
+      return <Redirect route="/welcome" />;
     }
-  }, [user, rank, router]);
-  return user ? children : null;
+    if (rank && minRank && rank < minRank) {
+      return <Redirect route="/dashboard" />;
+    }
+    return children;
+  }
+  return <Redirect route="/login" />;
 }
 
 ProtectedRoute.propTypes = {
