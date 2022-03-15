@@ -133,7 +133,7 @@ const Dashboard: NextPage = () => {
             What&apos;s next &#8250;
           </h1>
 
-          <div className="flex justify-center gap-x-4">
+          <div className="flex flex-wrap justify-center gap-x-4 gap-y-2">
             <OnboardingCohortRegister />
             <Step2Prompt />
           </div>
@@ -173,7 +173,7 @@ const Dashboard: NextPage = () => {
               </h1>
               <Link href="/community" passHref>
                 <p
-                  className="block bg-gray-100 max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center text-lg hover:bg-gray-200 hover:opacity-75 transition-all"
+                  className="block bg-gray-100 max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center text-lg hover:bg-gray-200 hover:opacity-75 transition-all cursor-pointer"
                 >
                   <img className="mb-1 inline-block w-8 mr-1 my-auto" src="/discord-gray-icon.webp" alt="discord icon" />
                   Join the
@@ -181,7 +181,7 @@ const Dashboard: NextPage = () => {
                   <span className="font-semibold">V1 Discord &rsaquo;</span>
                 </p>
               </Link>
-              <a className="block bg-gray-100 max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center text-lg hover:bg-gray-200 hover:opacity-75 transition-all" href="/newsletter">
+              <a className="block bg-gray-100 max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center text-lg hover:bg-gray-200 hover:opacity-75 transition-all" href="https://v1network.substack.com/">
                 <img className="mb-1 inline-block w-8 mr-1 my-auto" src="/substackicon.webp" alt="discord icon" />
                 Read the
                 {" "}
