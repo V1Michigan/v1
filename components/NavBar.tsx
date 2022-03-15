@@ -1,10 +1,10 @@
 import Link from "next/link";
-import { useState, useEffect, useMemo, Fragment } from "react";
-import { Disclosure, Menu, Transition } from "@headlessui/react";
+import { useMemo } from "react";
+import { Disclosure } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
+import type { User } from "@supabase/supabase-js";
 import useSupabase from "../hooks/useSupabase";
 import useSupabaseDownload from "../hooks/useSupabaseDownload";
-import type { User } from "@supabase/supabase-js";
 
 const navigation = [
   // { name: 'V1 @ Michigan', href: '#', current: true },
@@ -58,22 +58,28 @@ const navigation = [
   },
 ];
 
-const ProfilePic = ({user, username}: {user: User, username: string}) => {
+const ProfilePic = ({ user, username }: {user: User, username: string}) => {
   const { file: avatar, loading, error } = useSupabaseDownload("avatars", user.id, `${username} avatar`);
   const avatarUrl = useMemo(() => (avatar && (typeof avatar === "string" ? avatar : URL.createObjectURL(avatar))),
-  [avatar]);
-  if(loading || error || !avatarUrl) {
-    return null
+    [avatar]);
+  if (loading || error || !avatarUrl) {
+    return null;
   }
   return (
-    <a className="px-2 py-2 hover:bg-gray-700 rounded-full" href="/profile">
-      <img className="flex-shrink-0 w-10 rounded-full cursor" src={avatarUrl} />
-    </a>
-  )
-}
+    <Link href="/profile" passHref>
+      <div className="px-2 py-2 hover:bg-gray-700 rounded-full">
+        <img
+          className="flex-shrink-0 w-10 rounded-full cursor"
+          src={ avatarUrl }
+          alt="User profile"
+        />
+      </div>
+    </Link>
+  );
+};
 
 export default function NavbarBuilder() {
-  const { user, username, supabase, rank } = useSupabase();
+  const { user, username } = useSupabase();
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open: disclosureOpen }) => (
@@ -114,11 +120,10 @@ export default function NavbarBuilder() {
                         {item?.signup && <>&rsaquo;</>}
                       </a>
                     ))}
-                    {user && username && <ProfilePic user={user} username={username} />}
+                    {user && username && <ProfilePic user={ user } username={ username } />}
                   </div>
                 </div>
               </div>
-              
             </div>
           </div>
 
