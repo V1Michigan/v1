@@ -8,7 +8,10 @@ interface ProtectedRouteProps {
   minRank?: number;
 }
 
-export default function ProtectedRoute({ children, minRank }: ProtectedRouteProps) {
+export default function ProtectedRoute({
+  children,
+  minRank,
+}: ProtectedRouteProps) {
   const { user, rank } = useSupabase();
   const router = useRouter();
   if (user) {
@@ -17,8 +20,8 @@ export default function ProtectedRoute({ children, minRank }: ProtectedRouteProp
       if (router.pathname !== "/welcome") {
         return <Redirect route="/welcome" />;
       }
-    // Assert rank !== undefined because we have user + rank !== null
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      // Assert rank !== undefined because we have user + rank !== null
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     } else if (minRank && rank! < minRank) {
       return <Redirect route="/dashboard" />;
     }

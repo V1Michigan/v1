@@ -6,14 +6,15 @@ import { SupabaseProvider } from "../contexts/SupabaseContext";
 
 import "../styles/index.css";
 
-export const HOSTNAME = process.env.NODE_ENV === "development"
-  ? "http://localhost:3000"
-  : (process.env.NEXT_PUBLIC_HOSTNAME || "");
+export const HOSTNAME =
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:3000"
+    : process.env.NEXT_PUBLIC_HOSTNAME || "";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <SupabaseProvider>
-      <Component { ...pageProps } />
+      <Component {...pageProps} />
     </SupabaseProvider>
   );
 }

@@ -1,9 +1,19 @@
 import {
-  createContext, useState, useEffect, ReactChild, ReactChildren,
+  createContext,
+  useState,
+  useEffect,
+  ReactChild,
+  ReactChildren,
 } from "react";
 import PropTypes from "prop-types";
 import {
-  SupabaseClient, Session, User, UserCredentials, Provider, ApiError, PostgrestSingleResponse,
+  SupabaseClient,
+  Session,
+  User,
+  UserCredentials,
+  Provider,
+  ApiError,
+  PostgrestSingleResponse,
 } from "@supabase/supabase-js";
 import supabase from "../utils/supabaseClient";
 
@@ -31,23 +41,25 @@ interface GoogleUser extends User {
     // Only defining the fields we need
     full_name: string;
     avatar_url: string;
-  }
+  };
 }
 
-export const isGoogleUser = (user: User | EmailUser | GoogleUser): user is GoogleUser => user.app_metadata.provider === "google";
+export const isGoogleUser = (
+  user: User | EmailUser | GoogleUser
+): user is GoogleUser => user.app_metadata.provider === "google";
 
 interface SupabaseContextInterface {
   supabase: SupabaseClient;
   signIn: (
-    (credentials: UserCredentials, options: { redirectTo: string }) =>
-    Promise<{
-      session: Session | null
-      user: User | null
-      provider?: Provider
-      url?: string | null
-      error: ApiError | null
-    }>
-  );
+    credentials: UserCredentials,
+    options: { redirectTo: string }
+  ) => Promise<{
+    session: Session | null;
+    user: User | null;
+    provider?: Provider;
+    url?: string | null;
+    error: ApiError | null;
+  }>;
   signOut: () => Promise<{ error: ApiError | null }>;
   // Would be nice if these weren't nullable under `ProtectedRoute`s
   // ...maybe a second UserContext that fetches all this data? :/
@@ -60,16 +72,24 @@ interface SupabaseContextInterface {
 
 const SupabaseContext = createContext<SupabaseContextInterface | null>(null);
 
-function SupabaseProvider({ children }: { children: ReactChild | ReactChildren }) {
+function SupabaseProvider({
+  children,
+}: {
+  children: ReactChild | ReactChildren;
+}) {
   // Default value checks for an active session
-  const [user, setUser] = useState<User | null>(supabase.auth.session()?.user ?? null);
+  const [user, setUser] = useState<User | null>(
+    supabase.auth.session()?.user ?? null
+  );
   const [username, setUsername] = useState<string | null>(null);
   const [rank, setRank_] = useState<number | null | undefined>(undefined);
 
   useEffect(() => {
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-    });
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setUser(session?.user ?? null);
+      }
+    );
     return () => listener?.unsubscribe();
   }, []);
 
@@ -78,18 +98,21 @@ function SupabaseProvider({ children }: { children: ReactChild | ReactChildren }
       if (user) {
         // TODO: Should be fixed with Supabase DB types
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        const { data, error, status } = await supabase
+        const { data, error, status } = (await supabase
           .from("profiles")
           .select("username, rank")
           .eq("id", user.id)
-          .single() as PostgrestSingleResponse<{username: string, rank: number}>;
+          .single()) as PostgrestSingleResponse<{
+          username: string;
+          rank: number;
+        }>;
 
         if (error && status !== 406) {
           throw error;
         }
 
         setUsername(data?.username ?? null);
-        setRank_((data as {rank?: number})?.rank ?? null);
+        setRank_((data as { rank?: number })?.rank ?? null);
       }
     }
     getUserData();
@@ -121,17 +144,19 @@ function SupabaseProvider({ children }: { children: ReactChild | ReactChildren }
   }
 
   return (
-    <SupabaseContext.Provider value={ {
-      supabase,
-      // Can't just say supabase.auth.signIn, gotta do bind()
-      signIn: supabase.auth.signIn.bind(supabase.auth),
-      signOut: supabase.auth.signOut.bind(supabase.auth),
-      user: typedUser,
-      username,
-      setUsername,
-      rank,
-      setRank,
-    } }>
+    <SupabaseContext.Provider
+      value={{
+        supabase,
+        // Can't just say supabase.auth.signIn, gotta do bind()
+        signIn: supabase.auth.signIn.bind(supabase.auth),
+        signOut: supabase.auth.signOut.bind(supabase.auth),
+        user: typedUser,
+        username,
+        setUsername,
+        rank,
+        setRank,
+      }}
+    >
       {children}
     </SupabaseContext.Provider>
   );

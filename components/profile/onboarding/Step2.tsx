@@ -14,9 +14,9 @@ import { FadeAllChildren } from "../../Fade";
 import { EditResume } from "../fields/FileFields";
 
 interface FormValues {
-  bio: string,
-  resume: File | null,
-  linkedin: string, // Optional
+  bio: string;
+  resume: File | null;
+  linkedin: string; // Optional
   year: string;
   majors: string[];
   minors: string[];
@@ -41,22 +41,25 @@ const Step2 = ({ nextStep }: Step2Props) => {
         We can&apos;t wait to learn more about you!
       </h3>
       <Formik
-        initialValues={ {
-          bio: "",
-          year: "",
-          linkedin: "",
-          resume: null,
-          majors: [],
-          minors: [],
-          partnerSharingConsent: true,
-        } as FormValues }
-        validate={ () => setSubmitError(null) }
-        onSubmit={ async (values, { setSubmitting }) => {
+        initialValues={
+          {
+            bio: "",
+            year: "",
+            linkedin: "",
+            resume: null,
+            majors: [],
+            minors: [],
+            partnerSharingConsent: true,
+          } as FormValues
+        }
+        validate={() => setSubmitError(null)}
+        onSubmit={async (values, { setSubmitting }) => {
           // Upload resume to bucket
           // TODO: For consistency with avatars, consider not using file extension
           const bucketPath = `${user.id}.pdf`;
-          const { error: uploadError } = await supabase
-            .storage.from("resumes").upload(
+          const { error: uploadError } = await supabase.storage
+            .from("resumes")
+            .upload(
               bucketPath,
               // values.resume is not null, would've been caught by validation
               // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -65,7 +68,7 @@ const Step2 = ({ nextStep }: Step2Props) => {
                 contentType: "application/pdf",
                 cacheControl: "3600",
                 upsert: true,
-              },
+              }
             );
           if (uploadError) {
             setSubmitError(uploadError.message);
@@ -74,19 +77,22 @@ const Step2 = ({ nextStep }: Step2Props) => {
 
           const { error } = await supabase
             .from("profiles")
-            .update({
-              bio: values.bio,
-              year: values.year,
-              fields_of_study: {
-                majors: values.majors,
-                minors: values.minors,
+            .update(
+              {
+                bio: values.bio,
+                year: values.year,
+                fields_of_study: {
+                  majors: values.majors,
+                  minors: values.minors,
+                },
+                linkedin: values.linkedin,
+                partner_sharing_consent: values.partnerSharingConsent,
+                updated_at: new Date(),
               },
-              linkedin: values.linkedin,
-              partner_sharing_consent: values.partnerSharingConsent,
-              updated_at: new Date(),
-            }, {
-              returning: "minimal", // Don't return the value after inserting
-            })
+              {
+                returning: "minimal", // Don't return the value after inserting
+              }
+            )
             .eq("id", user.id);
           if (error) {
             setSubmitError(error.message);
@@ -94,7 +100,7 @@ const Step2 = ({ nextStep }: Step2Props) => {
             nextStep();
           }
           setSubmitting(false);
-        } }
+        }}
       >
         {({ values, isSubmitting }) => (
           // Need large pb-32 to prevent FadeAllChildren from overflowing
@@ -105,7 +111,7 @@ const Step2 = ({ nextStep }: Step2Props) => {
               <LinkedInField label="LinkedIn profile (optional)" />
 
               <div className="pt-4 mx-auto w-1/2">
-                {values.resume && <ViewResume resume={ values.resume } />}
+                {values.resume && <ViewResume resume={values.resume} />}
                 <EditResume />
               </div>
 
@@ -116,9 +122,9 @@ const Step2 = ({ nextStep }: Step2Props) => {
               <div className="pl-6 pt-4 pb-4">
                 <button
                   type="submit"
-                  disabled={ isSubmitting }
+                  disabled={isSubmitting}
                   className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                  >
+                >
                   {isSubmitting ? "Loading..." : "Submit"}
                 </button>
                 {submitError && <p className="text-red-500">{submitError}</p>}

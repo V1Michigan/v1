@@ -3,7 +3,10 @@ import Swal from "sweetalert2";
 import Fade from "./Fade";
 import { ContentHeader } from "./content";
 
-type FormInputElement = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+type FormInputElement =
+  | HTMLInputElement
+  | HTMLSelectElement
+  | HTMLTextAreaElement;
 
 export default function Form() {
   const [invitationRequest, setInvitationRequest] = useState({
@@ -33,7 +36,7 @@ export default function Form() {
     <Fade>
       <form
         className="w-full max-w-2xl p-4"
-        onSubmit={ (e) => {
+        onSubmit={(e) => {
           e.preventDefault();
           setSubmitted(true);
           const data = new FormData();
@@ -43,22 +46,23 @@ export default function Form() {
 
           fetch(
             "https://script.google.com/macros/s/AKfycbyr9M13gnlVxM8UYocXy7wKJZQPnxd_iq043N2ZZPh0elrH4Bw/exec",
-            { method: "POST", body: data },
+            { method: "POST", body: data }
           )
             .then(() => {
               Swal.fire(
                 "Success!",
                 "Invitation request form submitted.",
-                "success",
+                "success"
               );
             })
             .catch(() => {
               Swal.fire(
                 "There was an error submitting the form.",
                 "Please try again later or contact us at version1@umich.edu",
-                "error",
+                "error"
               );
-            }).finally(() => {
+            })
+            .finally(() => {
               setSubmitted(false);
               setInvitationRequest({
                 name: "",
@@ -70,8 +74,7 @@ export default function Form() {
                 skills: "",
               });
             });
-        } }
-
+        }}
       >
         <ContentHeader title="Request to join now" />
         <div className="flex flex-wrap -mx-3 mb-6">
@@ -81,17 +84,15 @@ export default function Form() {
                 className="block text-gray-100 text-lg mb-2"
                 htmlFor="name"
               >
-                Name
-                {" "}
-                <span className="text-red-800">*</span>
+                Name <span className="text-red-800">*</span>
                 <input
                   name="name"
                   id="name"
                   className="mt-2 appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-gray-100"
                   type="text"
                   placeholder="Jim Harbaugh"
-                  onChange={ handleInputChange }
-                  value={ invitationRequest.name }
+                  onChange={handleInputChange}
+                  value={invitationRequest.name}
                   required
                 />
               </label>
@@ -101,17 +102,15 @@ export default function Form() {
                 className="block text-gray-100 text-lg mb-2"
                 htmlFor="email"
               >
-                Email
-                {" "}
-                <span className="text-red-800">*</span>
+                Email <span className="text-red-800">*</span>
                 <input
                   name="email"
                   id="email"
                   className="mt-2 appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-gray-100"
                   type="text"
                   placeholder="Email"
-                  onChange={ handleInputChange }
-                  value={ invitationRequest.email }
+                  onChange={handleInputChange}
+                  value={invitationRequest.email}
                   required
                 />
               </label>
@@ -121,17 +120,15 @@ export default function Form() {
                 className="block text-gray-100 text-lg mb-2"
                 htmlFor="major"
               >
-                Major
-                {" "}
-                <span className="text-red-800">*</span>
+                Major <span className="text-red-800">*</span>
                 <input
                   name="major"
                   id="major"
                   className="mt-2 appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-gray-100"
                   type="text"
                   placeholder="CS, UX, Business, Engineering, etc."
-                  onChange={ handleInputChange }
-                  value={ invitationRequest.major }
+                  onChange={handleInputChange}
+                  value={invitationRequest.major}
                   required
                 />
               </label>
@@ -141,15 +138,13 @@ export default function Form() {
                 className="block text-gray-100 text-lg mb-2"
                 htmlFor="role"
               >
-                Role
-                {" "}
-                <span className="text-red-800">*</span>
+                Role <span className="text-red-800">*</span>
                 <div className="relative mt-2">
                   <select
                     name="role"
                     id="role"
-                    onChange={ handleInputChange }
-                    value={ invitationRequest.role }
+                    onChange={handleInputChange}
+                    value={invitationRequest.role}
                     className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-gray-100 focus:border-gray-500"
                     required
                   >
@@ -177,17 +172,15 @@ export default function Form() {
                 className="mt-2 block text-gray-100 text-lg mb-2"
                 htmlFor="resume"
               >
-                Resume
-                {" "}
-                <span className="text-red-800">*</span>
+                Resume <span className="text-red-800">*</span>
                 <input
                   name="resume"
                   id="resume"
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-gray-100"
                   type="text"
                   placeholder="Link to Drive, Dropbox, etc. (e.g. https://drive.google.com/file/d/1BZq0nadzuQK6pttUwnW8RmYWIxmekgZG/view)"
-                  onChange={ handleInputChange }
-                  value={ invitationRequest.resume }
+                  onChange={handleInputChange}
+                  value={invitationRequest.resume}
                   required
                 />
               </label>
@@ -200,15 +193,14 @@ export default function Form() {
                   className="block text-gray-100 text-lg mb-2"
                   htmlFor="interests"
                 >
-                  What types of projects are you interested in?
-                  {" "}
+                  What types of projects are you interested in?{" "}
                   <span className="text-red-800">*</span>
                   <textarea
                     name="interests"
-                    onChange={ handleInputChange }
+                    onChange={handleInputChange}
                     className="mt-2 w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-gray-100 resize border rounded focus:outline-none focus:shadow-outline md:h-32 h-20"
                     placeholder="E.g. Consumer social products, tools for students, anything involving machine learning"
-                    value={ invitationRequest.interests }
+                    value={invitationRequest.interests}
                     required
                   />
                 </label>
@@ -218,16 +210,14 @@ export default function Form() {
                   className="block text-gray-100 text-lg mb-2"
                   htmlFor="skills"
                 >
-                  What are your skills?
-                  {" "}
-                  <span className="text-red-800">*</span>
+                  What are your skills? <span className="text-red-800">*</span>
                   <textarea
                     name="skills"
                     id="skills"
-                    onChange={ handleInputChange }
+                    onChange={handleInputChange}
                     className="mt-2 w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-gray-100 resize border rounded focus:outline-none focus:shadow-outline md:h-32 h-20"
                     placeholder="E.g. logo design, python, ReactJS, machine learning"
-                    value={ invitationRequest.skills }
+                    value={invitationRequest.skills}
                     required
                   />
                 </label>
@@ -239,7 +229,7 @@ export default function Form() {
           <button
             type="submit"
             className="bg-gradient-to-r from-yellow-200 to-yellow-500 hover:bg-blue-500 text-gray-800 font-semibold py-2 px-4 rounded shadow mb-4"
-            disabled={ submitted }
+            disabled={submitted}
           >
             Request an invite
           </button>

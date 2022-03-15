@@ -7,7 +7,7 @@ import useSupabase from "../../hooks/useSupabase";
 const ProfileIndex: NextPage = () => {
   const { username } = useSupabase();
   // username shouldn't be null since this is a ProtectedRoute, but might take a sec to load
-  return username ? <Redirect route={ `/profile/${username}` } /> : null;
+  return username ? <Redirect route={`/profile/${username}`} /> : null;
 };
 
 export default () => (

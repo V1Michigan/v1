@@ -21,18 +21,19 @@ const WelcomePage: NextPage = () => {
   if (rank === null) {
     return (
       <Step1
-        email={ user.email }
-        initialName={ initialName }
-        initialAvatarUrl={ initialAvatarUrl }
-        nextStep={ () => {
+        email={user.email}
+        initialName={initialName}
+        initialAvatarUrl={initialAvatarUrl}
+        nextStep={() => {
           setRank(0);
           router.push("/dashboard"); // instead of going to Step2
-        } } />
+        }}
+      />
     );
   }
   if (rank === 0) {
     // Not sure we should be use /welcome also for Step2
-    return <Step2 nextStep={ () => setRank(1) } />;
+    return <Step2 nextStep={() => setRank(1)} />;
   }
   // Else, rank >= 1
   return <Redirect route="/dashboard" />;

@@ -1,4 +1,8 @@
-const getFileFromUrl = async (url: string, name: string, defaultType = "image/jpeg") => {
+const getFileFromUrl = async (
+  url: string,
+  name: string,
+  defaultType = "image/jpeg"
+) => {
   try {
     // This occasionally causes CORS errors on localhost
     const response = await fetch(url);

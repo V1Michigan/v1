@@ -10,15 +10,18 @@
         "plugin:react/recommended",
         "plugin:react-hooks/recommended",
         "airbnb",
+        "prettier",
         "plugin:@typescript-eslint/recommended",
         "plugin:@typescript-eslint/recommended-requiring-type-checking"
     ],
     "plugins": [
         "react",
         "react-hooks",
+        "prettier",
         "@typescript-eslint"
     ],
     "rules": {
+        "prettier/prettier": "error",
         "import/extensions": [
             "error",
             "ignorePackages",
@@ -50,10 +53,6 @@
                     "Component"
                 ]
             }
-        ],
-        "react/jsx-curly-spacing": [
-            2,
-            "always"
         ],
         "react/prop-types": [
             "error"

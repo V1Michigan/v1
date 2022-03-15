@@ -5,40 +5,36 @@ import { ContentPage } from "./content";
 const What = () => (
   <ContentPage
     title="What is V1?"
-    textElement={ (
+    textElement={
       <div className="mx-auto max-w-2xl">
         <p className="text-2xl text-gray-900">
-          The University of Michigan is a big school. Currently, there are
-          a lot of entrepreneurial resources that incredibly valuable, yet niche
-          and selective. It&apos;s also difficult to connect and collaborate
-          with other builders across campus.
+          The University of Michigan is a big school. Currently, there are a lot
+          of entrepreneurial resources that incredibly valuable, yet niche and
+          selective. It&apos;s also difficult to connect and collaborate with
+          other builders across campus.
         </p>
 
         <p className="text-2xl text-gray-900 pt-10">
           <b>
             V1 is the community for ambitious student builders at the University
-            of Michigan.
-            {" "}
+            of Michigan.{" "}
           </b>
           At our core, we support students who are working on side-projects and
-          startups — those who are looking to build
-          {" "}
+          startups — those who are looking to build{" "}
           <i>
-            their
-            {" "}
-            <b>V1</b>
+            their <b>V1</b>
           </i>
           : the first version of their product.
         </p>
       </div>
-    ) }
+    }
   />
 );
 
 const Offer = () => (
   <ContentPage
     title="What does V1 offer?"
-    textElement={ (
+    textElement={
       <div className="mx-auto max-w-2xl">
         <p className="text-2xl text-gray-900">
           V1 offers an engaged online community for student builders to connect
@@ -53,7 +49,7 @@ const Offer = () => (
           more.
         </p>
       </div>
-    ) }
+    }
   />
 );
 
@@ -146,17 +142,17 @@ interface LeadersProps {
 
 const Leaders = ({ team, title }: LeadersProps) => (
   <ContentPage
-    title={ title }
-    textElement={ (
+    title={title}
+    textElement={
       <div className="mx-auto max-w-4xl">
         <div className="flex flex-wrap justify-center">
           {team.map((member) => (
-            <a className="m-2" href={ member.link }>
+            <a className="m-2" href={member.link}>
               <div className="h-full flex items-center border-gray-200 border p-4 rounded-lg m-2">
                 <img
                   className="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4"
-                  src={ member.image }
-                  alt={ `Profile for ${member.name}` }
+                  src={member.image}
+                  alt={`Profile for ${member.name}`}
                 />
                 <div className="flex-grow">
                   <h2 className="text-gray-900 title-font font-medium">
@@ -169,7 +165,7 @@ const Leaders = ({ team, title }: LeadersProps) => (
           ))}
         </div>
       </div>
-    ) }
+    }
   />
 );
 
@@ -180,14 +176,14 @@ Leaders.propTypes = {
       name: PropTypes.string.isRequired,
       role: PropTypes.string.isRequired,
       link: PropTypes.string.isRequired,
-    }),
+    })
   ).isRequired,
   title: PropTypes.string.isRequired,
 };
 
-const Leadership = () => <Leaders title="V1 Leadership" team={ TEAM_DATA } />;
+const Leadership = () => <Leaders title="V1 Leadership" team={TEAM_DATA} />;
 
-const Advisors = () => <Leaders title="V1 Advisors" team={ ADVISORS_DATA } />;
+const Advisors = () => <Leaders title="V1 Advisors" team={ADVISORS_DATA} />;
 
 const members = [
   "payal",
@@ -209,15 +205,15 @@ const members = [
 const Join = () => (
   <ContentPage
     title="You're in the right place."
-    textElement={ (
+    textElement={
       <div className="text-center">
         <div className="-space-x-4 mb-4 ">
           {members.sort().map((member) => (
             <img
               className="relative z-10 inline object-cover w-12 h-12 border-2 border-white rounded-full"
-              src={ `/community/${member}.jpg` }
-              alt={ `Profile for ${member}` }
-              key={ member }
+              src={`/community/${member}.jpg`}
+              alt={`Profile for ${member}`}
+              key={member}
             />
           ))}
         </div>
@@ -243,10 +239,8 @@ const Join = () => (
           </Link>
         </div>
       </div>
-    ) }
+    }
   />
 );
 
-export {
-  What, Leadership, Advisors, Join, Offer,
-};
+export { What, Leadership, Advisors, Join, Offer };

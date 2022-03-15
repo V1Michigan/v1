@@ -58,10 +58,18 @@ const navigation = [
   },
 ];
 
-const ProfilePic = ({ user, username }: {user: User, username: string}) => {
-  const { file: avatar, loading, error } = useSupabaseDownload("avatars", user.id, `${username} avatar`);
-  const avatarUrl = useMemo(() => (avatar && (typeof avatar === "string" ? avatar : URL.createObjectURL(avatar))),
-    [avatar]);
+const ProfilePic = ({ user, username }: { user: User; username: string }) => {
+  const {
+    file: avatar,
+    loading,
+    error,
+  } = useSupabaseDownload("avatars", user.id, `${username} avatar`);
+  const avatarUrl = useMemo(
+    () =>
+      avatar &&
+      (typeof avatar === "string" ? avatar : URL.createObjectURL(avatar)),
+    [avatar]
+  );
   if (loading || error || !avatarUrl) {
     return null;
   }
@@ -70,7 +78,7 @@ const ProfilePic = ({ user, username }: {user: User, username: string}) => {
       <div className="px-2 py-2 hover:bg-gray-700 rounded-full">
         <img
           className="flex-shrink-0 w-10 rounded-full cursor"
-          src={ avatarUrl }
+          src={avatarUrl}
           alt="User profile"
         />
       </div>
@@ -99,28 +107,41 @@ export default function NavbarBuilder() {
               </div>
               <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
                 <Link href="/" passHref>
-                  <img className="flex-shrink-0 w-5 hover:cursor-pointer hover:opacity-75" src="/v1logowhite.svg" alt="v1 logo" />
+                  <img
+                    className="flex-shrink-0 w-5 hover:cursor-pointer hover:opacity-75"
+                    src="/v1logowhite.svg"
+                    alt="v1 logo"
+                  />
                 </Link>
                 <div className="hidden sm:block sm:ml-6 w-full">
                   <div className="flex flex-row space-x-4 w-full items-center">
                     {navigation.map((item) => (
                       <a
-                        key={ item.name }
-                        href={ item.href }
-                        className={ `${
+                        key={item.name}
+                        href={item.href}
+                        className={`${
                           item.current
                             ? "bg-gray-900 text-white"
-                            : "text-gray-300 hover:bg-gray-700 hover:text-white"}
-                          px-3 py-2 rounded-md text-sm font-medium ${item?.login && !user ? "hidden" : ""} ${item?.noauth && user ? "hidden" : ""} ${item?.signup ? "bg-gray-700" : ""}` }
-                        aria-current={ item.current ? "page" : undefined }
-                        style={ item.right ? { marginLeft: "auto", marginRight: "0" } : {} }
+                            : "text-gray-300 hover:bg-gray-700 hover:text-white"
+                        }
+                          px-3 py-2 rounded-md text-sm font-medium ${
+                            item?.login && !user ? "hidden" : ""
+                          } ${item?.noauth && user ? "hidden" : ""} ${
+                          item?.signup ? "bg-gray-700" : ""
+                        }`}
+                        aria-current={item.current ? "page" : undefined}
+                        style={
+                          item.right
+                            ? { marginLeft: "auto", marginRight: "0" }
+                            : {}
+                        }
                       >
-                        {item.name}
-                        {" "}
-                        {item?.signup && <>&rsaquo;</>}
+                        {item.name} {item?.signup && <>&rsaquo;</>}
                       </a>
                     ))}
-                    {user && username && <ProfilePic user={ user } username={ username } />}
+                    {user && username && (
+                      <ProfilePic user={user} username={username} />
+                    )}
                   </div>
                 </div>
               </div>
@@ -131,14 +152,17 @@ export default function NavbarBuilder() {
             <div className="px-2 pt-2 pb-3 space-y-1">
               {navigation.map((item) => (
                 <a
-                  key={ item.name }
-                  href={ item.href }
-                  className={ `${
+                  key={item.name}
+                  href={item.href}
+                  className={`${
                     item.current
                       ? "bg-gray-900 text-white"
-                      : "text-gray-300 hover:bg-gray-700 hover:text-white"}
-                    block px-3 py-2 rounded-md text-base font-medium ${item.right ? "underline decoration-solid" : ""}` }
-                  aria-current={ item.current ? "page" : undefined }
+                      : "text-gray-300 hover:bg-gray-700 hover:text-white"
+                  }
+                    block px-3 py-2 rounded-md text-base font-medium ${
+                      item.right ? "underline decoration-solid" : ""
+                    }`}
+                  aria-current={item.current ? "page" : undefined}
                 >
                   {item.name}
                 </a>

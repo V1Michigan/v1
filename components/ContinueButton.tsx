@@ -22,22 +22,19 @@ const ContinueButton = ({
     {loading && (
       <ClipLoader css="position: absolute; right: 36px; margin-top: 16px;" />
     )}
-    <a href={ continueButtonLink }>
+    <a href={continueButtonLink}>
       <button
-        className={ `rounded-full overflow-hidden bg-yellow-100 shadow-xl p-3 hover:bg-yellow-200 ${
+        className={`rounded-full overflow-hidden bg-yellow-100 shadow-xl p-3 hover:bg-yellow-200 ${
           isHomepage ? "w-full" : ""
         } opacity-${
           // eslint-disable-next-line no-nested-ternary
           loading ? 0 : disabled ? 50 : 100
-        }` }
-        onClick={ onClick }
-        disabled={ disabled }
+        }`}
+        onClick={onClick}
+        disabled={disabled}
         type="button"
       >
-        <p className="text-black-900 font-bold text-2xl p-1">
-          {text}
-          {" "}
-        </p>
+        <p className="text-black-900 font-bold text-2xl p-1">{text} </p>
       </button>
     </a>
   </div>

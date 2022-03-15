@@ -16,7 +16,7 @@ const Welcome = () => (
     <div className="z-0">
       <Particles
         id="tsparticles"
-        options={ {
+        options={{
           particles: {
             number: {
               value: 80,
@@ -124,8 +124,8 @@ const Welcome = () => (
             },
           },
           retina_detect: true,
-        } }
-        />
+        }}
+      />
     </div>
   </div>
 );

@@ -1,7 +1,5 @@
 import Head from "next/head";
-import {
-  What, Offer, Join,
-} from "../components/about";
+import { What, Offer, Join } from "../components/about";
 import NavbarBuilder from "../components/NavBar";
 import Calendar from "../components/calendarapi";
 
@@ -76,7 +74,11 @@ export default function IndexPage() {
               </div>
             </div>
             <div className="max-w-xl p-4">
-              <img className="tilt shadow-md rounded-sm" src="/yc_event_gif.gif" alt="GIF from V1 event with YC President Geoff Ralston" />
+              <img
+                className="tilt shadow-md rounded-sm"
+                src="/yc_event_gif.gif"
+                alt="GIF from V1 event with YC President Geoff Ralston"
+              />
             </div>
           </div>
         </div>

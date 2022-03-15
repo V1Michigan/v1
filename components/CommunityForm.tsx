@@ -27,7 +27,7 @@ export default function Form() {
     <Fade>
       <form
         className="w-full p-4"
-        onSubmit={ (e) => {
+        onSubmit={(e) => {
           e.preventDefault();
           setSubmitted(true);
           const data = new FormData();
@@ -36,9 +36,9 @@ export default function Form() {
           }
 
           axios
-            .post<{result: string}>(
+            .post<{ result: string }>(
               "https://script.google.com/macros/s/AKfycbxcvZeIseDF-s5b6fNco4SZdZB68PLAM1P8zIDS4JDgIxWFECnQZJws/exec",
-              data,
+              data
             )
             .then((res) => {
               if (res.data.result === "success") {
@@ -47,7 +47,7 @@ export default function Form() {
                 Swal.fire(
                   "There was an error submitting the form.",
                   "Please try again later or contact us at team@v1michigan.com",
-                  "error",
+                  "error"
                 );
               }
             })
@@ -58,7 +58,7 @@ export default function Form() {
                 email: "",
               });
             });
-        } }
+        }}
       >
         <div>
           <div className="w-full">
@@ -67,19 +67,17 @@ export default function Form() {
                 className="block text-gray-100 text-lg mb-2"
                 htmlFor="name"
               >
-                Full Name
-                {" "}
-                <span className="text-red-800">*</span>
+                Full Name <span className="text-red-800">*</span>
                 <input
                   name="name"
                   id="name"
                   className="mt-2 appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-gray-100"
                   type="text"
                   placeholder="Billy Magic"
-                  onChange={ handleInputChange }
-                  value={ invitationRequest.name }
+                  onChange={handleInputChange}
+                  value={invitationRequest.name}
                   required
-                  disabled={ submitted }
+                  disabled={submitted}
                 />
               </label>
             </div>
@@ -88,43 +86,41 @@ export default function Form() {
                 className="block text-gray-100 text-lg mb-2"
                 htmlFor="email"
               >
-                Email
-                {" "}
-                <span className="text-red-800">*</span>
+                Email <span className="text-red-800">*</span>
                 <input
                   name="email"
                   id="email"
                   className="mt-2 appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-gray-100"
                   type="text"
                   placeholder="Email"
-                  onChange={ handleInputChange }
-                  value={ invitationRequest.email }
+                  onChange={handleInputChange}
+                  value={invitationRequest.email}
                   required
-                  disabled={ submitted }
+                  disabled={submitted}
                 />
               </label>
             </div>
             <div className="px-3 mt-10 mb-6">
               <button
                 type="submit"
-                className={ `bg-gradient-to-r from-yellow-200 to-yellow-500 hover:opacity-75 text-gray-800 font-semibold py-3 px-4 rounded shadow mb-4 ${
+                className={`bg-gradient-to-r from-yellow-200 to-yellow-500 hover:opacity-75 text-gray-800 font-semibold py-3 px-4 rounded shadow mb-4 ${
                   submitted ? "hidden" : "block"
-                } mx-auto` }
-                disabled={ submitted }
+                } mx-auto`}
+                disabled={submitted}
               >
                 Join the Discord
                 <img
                   src="/discord-logo.svg"
                   className="inline-block ml-2"
-                  style={ { height: "2rem" } }
+                  style={{ height: "2rem" }}
                   alt="Discord logo"
                 />
               </button>
               <button
                 type="button"
-                className={ `bg-gray-500 font-semibold text-gray-800 py-3 px-4 rounded shadow mb-4 ${
+                className={`bg-gray-500 font-semibold text-gray-800 py-3 px-4 rounded shadow mb-4 ${
                   submitted ? "block" : "hidden"
-                } mx-auto` }
+                } mx-auto`}
                 disabled
               >
                 <svg

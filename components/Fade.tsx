@@ -21,21 +21,19 @@ export default function Fade({ children }: FadeProps) {
   }, []);
   return (
     <div
-      className={ `fade-in-section ${isVisible ? "is-visible" : ""}` }
-      ref={ domRef }
+      className={`fade-in-section ${isVisible ? "is-visible" : ""}`}
+      ref={domRef}
     >
-      { children }
+      {children}
     </div>
   );
 }
 
-const FadeAllChildren = ({ children }: {children: JSX.Element[]}) => (
+const FadeAllChildren = ({ children }: { children: JSX.Element[] }) => (
   <>
     {children.map((child, i) => (
       // eslint-disable-next-line react/no-array-index-key
-      <Fade key={ i }>
-        {child}
-      </Fade>
+      <Fade key={i}>{child}</Fade>
     ))}
   </>
 );
@@ -44,17 +42,9 @@ export { FadeAllChildren };
 
 Fade.propTypes = {
   children: PropTypes.oneOfType([
-    PropTypes.arrayOf(
-      PropTypes.objectOf(
-        PropTypes.symbol,
-      ),
-    ),
-    PropTypes.objectOf(
-      PropTypes.symbol,
-    ),
-    PropTypes.arrayOf(
-      PropTypes.element,
-    ),
+    PropTypes.arrayOf(PropTypes.objectOf(PropTypes.symbol)),
+    PropTypes.objectOf(PropTypes.symbol),
+    PropTypes.arrayOf(PropTypes.element),
     PropTypes.element,
   ]).isRequired,
 };

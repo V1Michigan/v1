@@ -4,7 +4,7 @@ import { ContentPage } from "./content";
 
 async function getData() {
   const response = await fetch(
-    "https://damp-depths-59602.herokuapp.com/https://v1api-production.up.railway.app/events/",
+    "https://damp-depths-59602.herokuapp.com/https://v1api-production.up.railway.app/events/"
   );
   const data = response.json();
 
@@ -31,7 +31,7 @@ const Calendar = () => {
       {events && events.length > 0 && (
         <ContentPage
           title="Upcoming Events"
-          textElement={ (
+          textElement={
             <div className="mx-auto">
               {events.map((event) => (
                 <div className="w-full text-gray-900 bg-gray-200 p-4 m-4 rounded-md">
@@ -46,7 +46,7 @@ const Calendar = () => {
                 </div>
               ))}
             </div>
-          ) }
+          }
         />
       )}
     </>

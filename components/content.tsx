@@ -29,8 +29,8 @@ interface ContentPageProps {
 export const ContentPage = ({ textElement, title }: ContentPageProps) => (
   <div className="py-32 bg-gradient-to-r from-gray-200 to-white">
     <Fade>
-      <ContentHeader title={ title } />
-      <ContentBody textElement={ textElement } />
+      <ContentHeader title={title} />
+      <ContentBody textElement={textElement} />
     </Fade>
   </div>
 );

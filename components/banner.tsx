@@ -2,16 +2,12 @@ import { XIcon } from "@heroicons/react/outline";
 import PropTypes from "prop-types";
 
 interface BannerProps {
-  link: string,
-  largeLine: JSX.Element | string
-  smallLine: JSX.Element | string
+  link: string;
+  largeLine: JSX.Element | string;
+  smallLine: JSX.Element | string;
 }
 
-const Banner = ({
-  largeLine,
-  smallLine,
-  link,
-}: BannerProps) => (
+const Banner = ({ largeLine, smallLine, link }: BannerProps) => (
   <div className="bg-yellow-600 full_banner">
     <div className="max-w-7xl mx-auto py-3 px-3 sm:px-6 lg:px-8">
       <div className="flex items-center justify-between flex-wrap">
@@ -21,19 +17,13 @@ const Banner = ({
             <img className="h-6 w-6" src="/rocket_icon.png" alt="" />
           </span>
           <p className="ml-3 font-medium font-sans text-white truncate">
-            <span className="md:hidden">
-              {" "}
-              {smallLine}
-            </span>
-            <span className="hidden md:inline">
-              {" "}
-              {largeLine}
-            </span>
+            <span className="md:hidden"> {smallLine}</span>
+            <span className="hidden md:inline"> {largeLine}</span>
           </p>
         </div>
         <div className="order-3 mt-2 flex-shrink-0 w-full sm:order-2 sm:mt-0 sm:w-auto">
           <a
-            href={ link }
+            href={link}
             target="_blank"
             className="font-sans flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-yellow-600 bg-white hover:bg-yellow-50"
             rel="noreferrer"
@@ -45,12 +35,12 @@ const Banner = ({
           <button
             type="button"
             className="-mr-1 flex p-2 rounded-md hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-white sm:-mr-2"
-            onClick={ () => {
+            onClick={() => {
               // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
               document.querySelector<HTMLElement>(
-                ".full_banner",
+                ".full_banner"
               )!.style.display = "none";
-            } }
+            }}
           >
             <span className="sr-only">Dismiss</span>
             <XIcon className="h-6 w-6 text-white" aria-hidden="true" />
@@ -83,18 +73,12 @@ const ProductStudioBanner = () => (
 
 const StartupFairBanner = () => (
   <Banner
-    largeLine={ (
+    largeLine={
       <>
-        Apply by
-        {" "}
-        <span className="font-bold">January 22nd</span>
-        {" "}
-        to meet top
-        startups at
-        {" "}
-        <span className="font-bold">V1 Startup Fair</span>
+        Apply by <span className="font-bold">January 22nd</span> to meet top
+        startups at <span className="font-bold">V1 Startup Fair</span>
       </>
-    ) }
+    }
     smallLine="Meet top startups at V1 Startup Fair!"
     link="https://startupfair.v1michigan.com"
   />

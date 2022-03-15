@@ -1,16 +1,24 @@
 import type { Profile } from "../../pages/profile/[username]";
 import {
-  AdditionalLinksField, BioField, EmailField, InterestsField, LinkedInField, MajorsField,
-  MinorsField, PhoneField, RolesField, YearField,
+  AdditionalLinksField,
+  BioField,
+  EmailField,
+  InterestsField,
+  LinkedInField,
+  MajorsField,
+  MinorsField,
+  PhoneField,
+  RolesField,
+  YearField,
 } from "./fields/ProfileFields";
 
 interface EditProfileProps {
-  profile: Profile
+  profile: Profile;
 }
 
 const EditProfile = ({ profile }: EditProfileProps) => (
   <div className="grid grid-cols-2 gap-x-10 gap-y-2 justify-center items-center">
-    <EmailField value={ profile.email } label="Email" />
+    <EmailField value={profile.email} label="Email" />
     <PhoneField label="Phone" />
     <BioField label="Bio" />
     <YearField label="School year" />

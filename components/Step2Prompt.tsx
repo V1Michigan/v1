@@ -10,7 +10,7 @@ const Step2Prompt = () => {
   return (
     <NextStepCard
       title="Finish filling out your profile"
-      description="Tell us more about you and what you&apos;re excited about"
+      description="Tell us more about you and what you're excited about"
       href="/welcome"
       buttonText="Let's go"
     />

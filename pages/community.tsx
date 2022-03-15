@@ -31,7 +31,8 @@ export default function CommunityPage() {
               COMMUNITY
             </h2>
             <p className="text-2xl mt-8 text-blue-100 font-light leading-tight tracking-tight px-5">
-              The home for student-led entrepreneurship at the University of Michigan.
+              The home for student-led entrepreneurship at the University of
+              Michigan.
             </p>
           </div>
           <div className="w-full mt-10">
