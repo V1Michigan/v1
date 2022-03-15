@@ -28,7 +28,7 @@ const NameField = ({ label }: LabelProps) => {
       <div className="mt-1 rounded-md shadow-sm">
         <label htmlFor="name" className="block">{label}</label>
         <Field
-          className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+          className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md text-black"
           type="text"
           name="name"
           placeholder="Name"
@@ -90,7 +90,7 @@ const UsernameField = ({ label }: LabelProps) => {
       <div className="mt-1 rounded-md shadow-sm">
         <label htmlFor="username" className="block">{label}</label>
         <Field
-          className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+          className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md text-black"
           type="text"
           name="username"
           placeholder="Username"
@@ -115,7 +115,7 @@ const PhoneField = ({ label }: LabelProps) => {
       <div className="mt-1 rounded-md shadow-sm">
         <label htmlFor="phone" className="block">{label}</label>
         <Field
-          className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+          className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md text-black"
           type="tel"
           name="phone"
           placeholder="###-###-####"
@@ -137,7 +137,7 @@ const YearField = ({ label }: LabelProps) => {
     <div>
       <label htmlFor="year" className="block">{label}</label>
       <Field
-        className="mt-1 block w-full border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        className="mt-1 block w-full border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-black"
         as="select"
         name="year"
         validate={ validateYear }
@@ -228,6 +228,30 @@ const InterestsField = ({ label }: LabelProps) => {
   );
 };
 
+const BioField = ({ label }: LabelProps) => {
+  const validateBio = (value: string) => {
+    if (!value) {
+      return "Please enter a short bio";
+    }
+    if (value.length > 150) {
+      return "Please enter a bio less than 150 characters";
+    }
+    return undefined;
+  };
+  return (
+    <div>
+      <label htmlFor="bio">{label}</label>
+      <Field
+        className="w-full mt-1 self-center focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md text-black"
+        type="text"
+        name="bio"
+        placeholder="I invented the personal computer, co-founded Apple, and had fun doing it"
+        validate={ validateBio } />
+      <ErrorMessage name="bio" component="p" className="text-red-500" />
+    </div>
+  );
+};
+
 const LinkedInField = ({ label }: LabelProps) => {
   const validateLinkedIn = (value: string) => {
     // Note that LinkedIn is optional
@@ -242,7 +266,7 @@ const LinkedInField = ({ label }: LabelProps) => {
     <div>
       <label htmlFor="linkedin">{label}</label>
       <Field
-        className="w-full mt-1 self-center focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+        className="w-full mt-1 self-center focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md text-black"
         type="text"
         name="linkedin"
         placeholder="https://linkedin.com/in/billymagic"
@@ -264,7 +288,7 @@ const AdditionalLinksField = ({ label }: LabelProps) => {
     <div>
       <label htmlFor="additionalLinks">{label}</label>
       <Field
-        className="w-full justify-self-center mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+        className="w-full justify-self-center mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md text-black"
         type="text"
         name="additionalLinks"
         placeholder="E.g. personal site, Twitter, past projects..."
@@ -274,6 +298,21 @@ const AdditionalLinksField = ({ label }: LabelProps) => {
     </div>
   );
 };
+
+const PartnerSharingConsentField = () => (
+  <div className="flex items-center justify-center gap-x-2">
+    <label htmlFor="partnerSharingConsent">
+      To help you find your next best role, can we share your
+      profile with select startups or other partner organizations?
+    </label>
+    <Field
+      className="block shadow border-gray-300 rounded-md"
+      type="checkbox"
+      name="partnerSharingConsent"
+      id="partnerSharingConsent"
+      />
+  </div>
+);
 
 export {
   NameField,
@@ -285,6 +324,8 @@ export {
   MinorsField,
   RolesField,
   InterestsField,
+  BioField,
   LinkedInField,
   AdditionalLinksField,
+  PartnerSharingConsentField,
 };
