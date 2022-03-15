@@ -1,9 +1,11 @@
 import Link from "next/link";
-import { useState, useEffect, Fragment } from "react";
+import { useState, useEffect, useMemo, Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import useSupabase from "../hooks/useSupabase";
-import downloadFromSupabase from "../hooks/downloadFromSupabase";
+import useSupabaseDownload from "../hooks/useSupabaseDownload";
+import type { User } from "@supabase/supabase-js";
+
 const navigation = [
   // { name: 'V1 @ Michigan', href: '#', current: true },
   {
@@ -56,27 +58,28 @@ const navigation = [
   },
 ];
 
+const ProfilePic = ({user, username}: {user: User, username: string}) => {
+  const { file: avatar, loading, error } = useSupabaseDownload("avatars", user.id, `${username} avatar`);
+  const avatarUrl = useMemo(() => (avatar && (typeof avatar === "string" ? avatar : URL.createObjectURL(avatar))),
+  [avatar]);
+  if(loading || error || !avatarUrl) {
+    return null
+  }
+  return (
+    <a className="px-2 py-2 hover:bg-gray-700 rounded-full" href="/profile">
+      <img className="flex-shrink-0 w-10 rounded-full cursor" src={avatarUrl} />
+    </a>
+  )
+}
+
 export default function NavbarBuilder() {
   const { user, username, supabase, rank } = useSupabase();
-  const [ profilePic, setProfilePic ] = useState<string>("");
-  useEffect(() => {
-    const grabProfilePic = async () => {
-      if(!user) return;
-      const { file: avatar, error } = await downloadFromSupabase("avatars", user.id, `${username} avatar`, supabase);
-      if(!avatar) return;
-      const avatarUrl = typeof avatar === "string" ? avatar : URL.createObjectURL(avatar);
-      setProfilePic(avatarUrl);
-    }
-    grabProfilePic();
-    
-  }, [user, username, downloadFromSupabase, profilePic]);
-    
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open: disclosureOpen }) => (
         <>
-          <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
-            <div className="relative flex items-center justify-between h-16 ">
+          <div className="mx-auto px-2 sm:px-6 lg:px-8 justify-around">
+            <div className="relative flex items-center justify-between h-16">
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                 {/* Mobile menu button */}
                 <Disclosure.Button className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
@@ -111,79 +114,11 @@ export default function NavbarBuilder() {
                         {item?.signup && <>&rsaquo;</>}
                       </a>
                     ))}
-                    {user && (<a className="px-2 py-2 hover:bg-gray-700 rounded-full" href="/profile"><img className="flex-shrink-0 w-10 rounded-full cursor" src={profilePic}></img></a>)}
+                    {user && username && <ProfilePic user={user} username={username} />}
                   </div>
                 </div>
               </div>
-              <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                {/* <button className="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white
-                  focus:outline-none
-                  focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
-                                      <span className="sr-only">View notifications</span>
-                                      <BellIcon className="h-6 w-6" aria-hidden="true" />
-                                  </button> */}
-
-                {/* Profile dropdown */}
-                <Menu as="div" className="ml-3 relative">
-                  {({ open: menuOpen }) => (
-                    <>
-                      {/* <Menu.Button
-                            className="bg-gray-800 flex text-sm rounded-full
-                            focus:outline-none focus:ring-2
-                            focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
-                                <span className="sr-only">Open user menu</span>
-                                <img
-                                    className="h-8 w-8 rounded-full"
-                                    src="https://upload.wikimedia.org/wikipedia/en/c/c8/Very_Black_screen.jpg"
-                                    alt=""
-                                />
-                            </Menu.Button> */}
-                      <Transition
-                        show={ menuOpen }
-                        as={ Fragment }
-                        enter="transition ease-out duration-100"
-                        enterFrom="transform opacity-0 scale-95"
-                        enterTo="transform opacity-100 scale-100"
-                        leave="transition ease-in duration-75"
-                        leaveFrom="transform opacity-100 scale-100"
-                        leaveTo="transform opacity-0 scale-95"
-                      >
-                        <Menu.Items
-                          static
-                          className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
-                        >
-                          {navigation.map((item) => (
-                            <Menu.Item key={ item.href }>
-                              {({ active }) => (
-                                <a
-                                  href={ item.href }
-                                  className={ `${active ? "bg-gray-100" : ""}
-                                    block px-4 py-2 text-sm text-gray-700` }
-                              >
-                                  {item.name}
-                                </a>
-                              )}
-                            </Menu.Item>
-                          ))}
-                          {/* <Menu.Item>
-                              {({ active }) => (
-                                <a
-                                  href="#"
-                                  className={ classNames(
-                                    active ? 'bg-gray-100' : '',
-                                    'block px-4 py-2 text-sm text-gray-700',
-                                  ) }
-                                >
-                                  Events
-                                </a>
-                              )}
-                            </Menu.Item> */}
-                        </Menu.Items>
-                      </Transition>
-                    </>
-                  )}
-                </Menu>
-              </div>
+              
             </div>
           </div>
 
