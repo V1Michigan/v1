@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Formik, Form } from "formik";
-import useSupabase from "../../hooks/useSupabase";
-import getFileFromUrl from "../../utils/getFileFromUrl";
+import useSupabase from "../../../hooks/useSupabase";
+import getFileFromUrl from "../../../utils/getFileFromUrl";
 import {
   NameField,
   EmailField,
@@ -10,10 +10,10 @@ import {
   RolesField,
   InterestsField,
   AdditionalLinksField,
-} from "../profile/fields/ProfileFields";
-import { FadeAllChildren } from "../Fade";
-import ViewAvatar from "../profile/ViewAvatar";
-import { EditAvatar } from "../profile/fields/FileFields";
+} from "../fields/ProfileFields";
+import { FadeAllChildren } from "../../Fade";
+import ViewAvatar from "../ViewAvatar";
+import { EditAvatar } from "../fields/FileFields";
 
 interface Step1Props {
   email: string;

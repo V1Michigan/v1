@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Formik, Form } from "formik";
-import useSupabase from "../../hooks/useSupabase";
+import useSupabase from "../../../hooks/useSupabase";
 import {
   BioField,
   LinkedInField,
@@ -8,10 +8,10 @@ import {
   MajorsField,
   MinorsField,
   PartnerSharingConsentField,
-} from "../profile/fields/ProfileFields";
-import ViewResume from "../profile/ViewResume";
-import { FadeAllChildren } from "../Fade";
-import { EditResume } from "../profile/fields/FileFields";
+} from "../fields/ProfileFields";
+import ViewResume from "../ViewResume";
+import { FadeAllChildren } from "../../Fade";
+import { EditResume } from "../fields/FileFields";
 
 interface FormValues {
   bio: string,

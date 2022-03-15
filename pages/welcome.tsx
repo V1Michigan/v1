@@ -4,8 +4,8 @@ import useSupabase from "../hooks/useSupabase";
 import { isGoogleUser } from "../contexts/SupabaseContext";
 import ProtectedRoute from "../components/ProtectedRoute";
 import Redirect from "../components/Redirect";
-import Step1 from "../components/onboarding/Step1";
-import Step2 from "../components/onboarding/Step2";
+import Step1 from "../components/profile/onboarding/Step1";
+import Step2 from "../components/profile/onboarding/Step2";
 
 const WelcomePage: NextPage = () => {
   const { user, rank, setRank } = useSupabase();
