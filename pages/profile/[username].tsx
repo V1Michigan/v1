@@ -78,6 +78,13 @@ const UserProfile: NextPage = () => {
         .from(bucket)
         .download(name);
       if (error) {
+        if (
+          bucket === "resumes" &&
+          error.message === "The resource was not found"
+        ) {
+          // OK, resume is optional, don't show error
+          return undefined;
+        }
         setDataFetchErrors((errors) => [...errors, error.message]);
         return undefined;
       }
@@ -244,17 +251,17 @@ const UserProfile: NextPage = () => {
             )}
 
             {/* Don't want to show resume on public profile */}
-            {editMode && values.resume && (
-              <>
-                <div className="grid grid-cols-6 gap-6 pb-4 items-center justify-center items-center pt-4">
+            {editMode && (
+              <div className="grid grid-cols-6 gap-6 pb-4 items-center justify-center items-center pt-4">
+                {values.resume && (
                   <div className="col-span-6 sm:col-span-3">
                     <ViewResume resume={values.resume} />
                   </div>
-                  <div className="col-span-6 sm:col-span-3">
-                    <EditResume />
-                  </div>
+                )}
+                <div className="col-span-6 sm:col-span-3">
+                  <EditResume label="Upload your resume" />
                 </div>
-              </>
+              </div>
             )}
 
             {editMode && <PartnerSharingConsentField />}

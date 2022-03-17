@@ -26,16 +26,16 @@ const EditAvatar = () => {
   );
 };
 
-const EditResume = () => {
+const EditResume = ({ label }: { label: string }) => {
   const validate = (resume: File) => {
-    if (!resume) {
-      return "Please upload your resume";
-    }
-    if (resume.type !== "application/pdf") {
-      return "Please upload a PDF resume";
-    }
-    if (resume.size > 5 * 1024 * 1024) {
-      return "Please limit resume size to 5 MB";
+    // Note that resume is optional
+    if (resume) {
+      if (resume.type !== "application/pdf") {
+        return "Please upload a PDF resume";
+      }
+      if (resume.size > 5 * 1024 * 1024) {
+        return "Please limit resume size to 5 MB";
+      }
     }
     return undefined;
   };
@@ -43,7 +43,7 @@ const EditResume = () => {
     <div className="pl-2">
       <FormikDropzone
         name="resume"
-        message="Upload your resume"
+        message={label}
         fileType={RESUME_TYPE}
         validate={validate}
       />

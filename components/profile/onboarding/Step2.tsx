@@ -15,7 +15,7 @@ import { EditResume } from "../fields/FileFields";
 
 interface FormValues {
   bio: string;
-  resume: File | null;
+  resume: File | null; // Optional
   linkedin: string; // Optional
   year: string;
   majors: string[];
@@ -54,25 +54,22 @@ const Step2 = ({ nextStep }: Step2Props) => {
         }
         validate={() => setSubmitError(null)}
         onSubmit={async (values, { setSubmitting }) => {
-          // Upload resume to bucket
-          // TODO: For consistency with avatars, consider not using file extension
-          const bucketPath = `${user.id}.pdf`;
-          const { error: uploadError } = await supabase.storage
-            .from("resumes")
-            .upload(
-              bucketPath,
-              // values.resume is not null, would've been caught by validation
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              values.resume!,
-              {
+          if (values.resume) {
+            // Upload resume to bucket
+            // TODO: For consistency with avatars, consider not using file extension
+            // TODO: This upload could be done in parallel with DB update
+            const bucketPath = `${user.id}.pdf`;
+            const { error: uploadError } = await supabase.storage
+              .from("resumes")
+              .upload(bucketPath, values.resume, {
                 contentType: "application/pdf",
                 cacheControl: "3600",
                 upsert: true,
-              }
-            );
-          if (uploadError) {
-            setSubmitError(uploadError.message);
-            return;
+              });
+            if (uploadError) {
+              setSubmitError(uploadError.message);
+              return;
+            }
           }
 
           const { error } = await supabase
@@ -112,7 +109,7 @@ const Step2 = ({ nextStep }: Step2Props) => {
 
               <div className="pt-4 mx-auto w-1/2">
                 {values.resume && <ViewResume resume={values.resume} />}
-                <EditResume />
+                <EditResume label="Upload your resume (optional)" />
               </div>
 
               <MajorsField label="Major(s)" />
