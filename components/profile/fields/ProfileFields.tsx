@@ -318,9 +318,10 @@ const LinkedInField = ({ label }: LabelProps) => {
   );
 };
 
+// Note: current DB column name is `website`, not `additional_links`
 const AdditionalLinksField = ({ label }: LabelProps) => {
   const validateAdditionalLinks = (value: string) => {
-    // Note that additionalLinks is optional
+    // Note that "additional links" is optional
     if (value && value.length > 500) {
       return "Please limit additional links to 500 characters";
     }
@@ -328,19 +329,15 @@ const AdditionalLinksField = ({ label }: LabelProps) => {
   };
   return (
     <div>
-      <label htmlFor="additionalLinks">{label}</label>
+      <label htmlFor="website">{label}</label>
       <Field
         className="w-full justify-self-center mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md text-black"
         type="text"
-        name="additionalLinks"
+        name="website"
         placeholder="E.g. personal site, Twitter, past projects..."
         validate={validateAdditionalLinks}
       />
-      <ErrorMessage
-        name="additionalLinks"
-        component="p"
-        className="text-red-500"
-      />
+      <ErrorMessage name="website" component="p" className="text-red-500" />
     </div>
   );
 };

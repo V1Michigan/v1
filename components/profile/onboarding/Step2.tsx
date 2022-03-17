@@ -56,12 +56,10 @@ const Step2 = ({ nextStep }: Step2Props) => {
         onSubmit={async (values, { setSubmitting }) => {
           if (values.resume) {
             // Upload resume to bucket
-            // TODO: For consistency with avatars, consider not using file extension
             // TODO: This upload could be done in parallel with DB update
-            const bucketPath = `${user.id}.pdf`;
             const { error: uploadError } = await supabase.storage
               .from("resumes")
-              .upload(bucketPath, values.resume, {
+              .upload(user.id, values.resume, {
                 contentType: "application/pdf",
                 cacheControl: "3600",
                 upsert: true,

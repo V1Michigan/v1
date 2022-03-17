@@ -29,7 +29,7 @@ interface FormValues {
   avatar: File | null;
   roles: string[];
   interests: string[];
-  additionalLinks: string; // Optional
+  website: string; // Optional
 }
 
 const Step1 = ({
@@ -75,7 +75,7 @@ const Step1 = ({
             phone: "",
             roles: [],
             interests: [],
-            additionalLinks: "",
+            website: "",
           } as FormValues
         }
         validate={() => setSubmitError(null)}
@@ -113,7 +113,7 @@ const Step1 = ({
                 phone: values.phone,
                 roles: values.roles,
                 interests: values.interests,
-                website: values.additionalLinks,
+                website: values.website,
                 updated_at: new Date(),
               },
               {
