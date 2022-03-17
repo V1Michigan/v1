@@ -12,7 +12,7 @@ const Step2Prompt = () => {
       title="Finish filling out your profile"
       description="Tell us more about you and what you're excited about"
       href="/welcome"
-      buttonText="Let's go"
+      buttonText="Let's go &rsaquo;"
     />
   );
 };

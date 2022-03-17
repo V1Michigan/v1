@@ -319,7 +319,6 @@ const UserProfile: NextPage = () => {
                   )}
                 </div>
               )}
-              <div className="mx-auto col-span-6 sm:col-span-3" />
             </div>
           </Form>
         </div>
