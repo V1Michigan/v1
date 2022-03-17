@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useState } from "react";
 import useSupabase from "../hooks/useSupabase";
 import { HOSTNAME } from "../pages/_app";
@@ -45,6 +46,7 @@ interface SignInProps {
   isLoginPage: boolean;
 }
 
+// Used for both /login and /join, since the OAuth code is the same
 export default function SignIn({ isLoginPage }: SignInProps) {
   const { signIn } = useSupabase();
 
@@ -98,6 +100,24 @@ export default function SignIn({ isLoginPage }: SignInProps) {
         />
         {submitError && <p className="text-red-500">{submitError}</p>}
       </div>
+      {/* The login/signup flow is exactly the same, but people may not understand that */}
+      <p className="mt-4 text-center text-white">
+        {isLoginPage ? (
+          <Link href="/join">
+            <p className="link">
+              Don&apos;t have an account?{" "}
+              <span className="font-bold">Sign up here</span>
+            </p>
+          </Link>
+        ) : (
+          <Link href="/login">
+            <p className="link">
+              Already have an account?{" "}
+              <span className="font-bold">Log in here</span>
+            </p>
+          </Link>
+        )}
+      </p>
     </div>
   );
 }

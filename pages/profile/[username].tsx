@@ -32,7 +32,7 @@ export type Profile = {
   majors: string[];
   minors: string[];
   linkedin: string;
-  website: string;
+  website: string; // a.k.a "additional links"
   roles: string[];
   interests: string[];
   partnerSharingConsent: boolean;
@@ -78,6 +78,13 @@ const UserProfile: NextPage = () => {
         .from(bucket)
         .download(name);
       if (error) {
+        if (
+          bucket === "resumes" &&
+          error.message === "The resource was not found"
+        ) {
+          // OK, resume is optional, don't show error
+          return undefined;
+        }
         setDataFetchErrors((errors) => [...errors, error.message]);
         return undefined;
       }
@@ -129,7 +136,7 @@ const UserProfile: NextPage = () => {
           isCurrentUser
             ? await downloadFromSupabase(
                 "resumes",
-                `${profile.id}.pdf`,
+                profile.id,
                 `${profileUsername} Resume.pdf`,
                 "application/pdf"
               )
@@ -244,17 +251,17 @@ const UserProfile: NextPage = () => {
             )}
 
             {/* Don't want to show resume on public profile */}
-            {editMode && values.resume && (
-              <>
-                <div className="grid grid-cols-6 gap-6 pb-4 items-center justify-center items-center pt-4">
+            {editMode && (
+              <div className="grid grid-cols-6 gap-6 pb-4 items-center justify-center items-center pt-4">
+                {values.resume && (
                   <div className="col-span-6 sm:col-span-3">
                     <ViewResume resume={values.resume} />
                   </div>
-                  <div className="col-span-6 sm:col-span-3">
-                    <EditResume />
-                  </div>
+                )}
+                <div className="col-span-6 sm:col-span-3">
+                  <EditResume label="Upload your resume" />
                 </div>
-              </>
+              </div>
             )}
 
             {editMode && <PartnerSharingConsentField />}
@@ -271,7 +278,9 @@ const UserProfile: NextPage = () => {
                     <>
                       <div className="grid grid-cols-3 gap-4 pl-10">
                         <button
-                          className="inline-flex justify-center py-2 px-4 border border-transparent shadow text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                          className="inline-flex justify-center py-2 px-4 border border-transparent shadow text-sm font-medium rounded-md
+                            text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
+                            disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-indigo-600"
                           disabled={
                             isSubmitting ||
                             isObjectEqual(values, initialProfile)
@@ -281,7 +290,9 @@ const UserProfile: NextPage = () => {
                           {isSubmitting ? "Saving..." : "Save Profile"}
                         </button>
                         <button
-                          className="inline-flex justify-center py-2 px-4 border border-transparent shadow text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                          className="inline-flex justify-center py-2 px-4 border border-transparent shadow text-sm font-medium rounded-md
+                            text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
+                            disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-indigo-600"
                           onClick={() => setEditMode(false)}
                           disabled={isSubmitting}
                           type="button"
@@ -297,7 +308,9 @@ const UserProfile: NextPage = () => {
                     </>
                   ) : (
                     <button
-                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow text-sm font-medium rounded-md
+                        text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
+                        disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-indigo-600"
                       onClick={() => setEditMode(true)}
                       type="button"
                     >

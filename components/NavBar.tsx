@@ -42,14 +42,14 @@ const navigation = [
     login: true,
   },
   {
-    name: "Login",
+    name: "Log in",
     href: "/login",
     current: false,
     right: true,
     noauth: true,
   },
   {
-    name: "Sign Up",
+    name: "Sign up",
     href: "/join",
     current: false,
     right: false,
