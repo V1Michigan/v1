@@ -55,12 +55,10 @@ const Step2 = ({ nextStep }: Step2Props) => {
         validate={() => setSubmitError(null)}
         onSubmit={async (values, { setSubmitting }) => {
           // Upload resume to bucket
-          // TODO: For consistency with avatars, consider not using file extension
-          const bucketPath = `${user.id}.pdf`;
           const { error: uploadError } = await supabase.storage
             .from("resumes")
             .upload(
-              bucketPath,
+              user.id,
               // values.resume is not null, would've been caught by validation
               // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
               values.resume!,

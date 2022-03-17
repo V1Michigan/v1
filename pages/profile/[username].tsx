@@ -129,7 +129,7 @@ const UserProfile: NextPage = () => {
           isCurrentUser
             ? await downloadFromSupabase(
                 "resumes",
-                `${profile.id}.pdf`,
+                profile.id,
                 `${profileUsername} Resume.pdf`,
                 "application/pdf"
               )
