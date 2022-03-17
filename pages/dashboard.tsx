@@ -143,7 +143,7 @@ const Dashboard: NextPage = () => {
             </span>
           </div>
 
-          <h1 className="text-3xl tracking-tight text-gray-900">
+          <h1 className="text-xl tracking-tight text-gray-900">
             Welcome,{" "}
             <span className="font-bold text-gray-900">
               {" "}
@@ -181,7 +181,7 @@ const Dashboard: NextPage = () => {
               {error}
             </p>
           ))}
-          <h1 className="text-3xl font-bold tracking-tight text-gray-800 mb-4 text-center">
+          <h1 className="text-4xl font-bold tracking-tight text-gray-800 mb-4 text-center">
             What&apos;s next &#8250;
           </h1>
 
@@ -196,7 +196,7 @@ const Dashboard: NextPage = () => {
           </div>
           <div className="md:flex justify-center">
             <div className="flex-1">
-              <h1 className="text-3xl font-bold tracking-tight text-gray-800 mb-4 mt-8 text-center">
+              <h1 className="text-2xl font-bold tracking-tight text-gray-800 mb-4 mt-8 text-center">
                 Upcoming Events &#8250;
               </h1>
               {events.map((event) => (
@@ -227,7 +227,7 @@ const Dashboard: NextPage = () => {
             </div>
 
             <div className="flex-1">
-              <h1 className="text-3xl font-bold tracking-tight text-gray-800 mb-4 mt-8 text-center">
+              <h1 className="text-2xl font-bold tracking-tight text-gray-800 mb-4 mt-8 text-center">
                 Resources &#8250;
               </h1>
               <Link href="/community" passHref>
