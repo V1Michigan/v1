@@ -5,8 +5,9 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "lint:check": "eslint '**/*.{js,jsx,ts,tsx}'",
-    "lint:fix": "eslint --fix '**/*.{js,jsx,ts,tsx}'"
+    "check-types": "tsc --noEmit",
+    "lint:check": "eslint '**/*.{js,jsx,ts,tsx}' && npm run check-types",
+    "lint:fix": "eslint --fix '**/*.{js,jsx,ts,tsx}' && npm run check-types"
   },
   "dependencies": {
     "@headlessui/react": "^1.2.0",
