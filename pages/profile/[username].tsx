@@ -32,7 +32,7 @@ export type Profile = {
   majors: string[];
   minors: string[];
   linkedin: string;
-  website: string;
+  website: string; // a.k.a "additional links"
   roles: string[];
   interests: string[];
   partnerSharingConsent: boolean;
