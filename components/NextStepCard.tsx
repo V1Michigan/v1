@@ -18,7 +18,7 @@ const ConditionalLink = ({
 interface NextStepCardProps {
   title: string;
   description: string;
-  buttonText: string; // Omit right chevron icon, that's included in the button :)
+  buttonText: string;
   disabled?: boolean;
   // Provide exactly one of these
   href?: string;
@@ -50,7 +50,7 @@ const NextStepCard = ({
           disabled={disabled}
           type="button"
         >
-          {buttonText} &rsaquo;
+          {buttonText}
         </button>
       </ConditionalLink>
     </div>
