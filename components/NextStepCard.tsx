@@ -50,7 +50,7 @@ const NextStepCard = ({
           disabled={disabled}
           type="button"
         >
-          {buttonText} &rsaquo;
+          {buttonText}
         </button>
       </ConditionalLink>
     </div>

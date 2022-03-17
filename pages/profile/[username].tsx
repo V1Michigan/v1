@@ -319,15 +319,7 @@ const UserProfile: NextPage = () => {
                   )}
                 </div>
               )}
-              <div className="mx-auto col-span-6 sm:col-span-3">
-                <button
-                  className="inline-flex justify-center py-2 px-4 border border-transparent shadow text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                  onClick={() => supabase.auth.signOut()}
-                  type="button"
-                >
-                  Sign Out
-                </button>
-              </div>
+              <div className="mx-auto col-span-6 sm:col-span-3" />
             </div>
           </Form>
         </div>
