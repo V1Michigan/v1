@@ -1,57 +1,53 @@
 import Link from "next/link";
 import { useMemo } from "react";
 import { Disclosure } from "@headlessui/react";
+import { useRouter } from "next/router";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import type { User } from "@supabase/supabase-js";
 import useSupabase from "../hooks/useSupabase";
 import useSupabaseDownload from "../hooks/useSupabaseDownload";
+import { Rank, rankLessThan } from "../constants/rank";
 
-const navigation = [
+const NAVIGATION = [
   // { name: 'V1 @ Michigan', href: '#', current: true },
   {
     name: "Community",
     href: "/community",
-    current: false,
     right: false,
   },
-  { name: "Studio", href: "https://studio.v1michigan.com", current: false },
+  { name: "Studio", href: "https://studio.v1michigan.com" },
   {
     name: "Startup Fair",
     href: "https://startupfair.v1michigan.com",
-    current: false,
     right: false,
   },
   {
     name: "Newsletter",
     href: "https://v1network.substack.com/",
-    current: false,
     right: false,
   },
   {
     name: "Dashboard",
     href: "/dashboard",
-    current: false,
     right: true,
     login: true,
   },
   {
     name: "Profile",
     href: "/profile",
-    current: false,
+    rank: Rank.RANK_1_ONBOARDING_1,
     right: false,
     login: true,
   },
   {
     name: "Log in",
     href: "/login",
-    current: false,
     right: true,
     noauth: true,
   },
   {
     name: "Sign up",
     href: "/join",
-    current: false,
     right: false,
     noauth: true,
     signup: true,
@@ -87,7 +83,8 @@ const ProfilePic = ({ user, username }: { user: User; username: string }) => {
 };
 
 export default function NavbarBuilder() {
-  const { user, username } = useSupabase();
+  const router = useRouter();
+  const { user, username, rank } = useSupabase();
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open: disclosureOpen }) => (
@@ -115,12 +112,12 @@ export default function NavbarBuilder() {
                 </Link>
                 <div className="hidden sm:block sm:ml-6 w-full">
                   <div className="flex flex-row space-x-4 w-full items-center">
-                    {navigation.map((item) => (
+                    {NAVIGATION.map((item) => (
                       <a
                         key={item.name}
                         href={item.href}
                         className={`${
-                          item.current
+                          router.pathname === item.href
                             ? "bg-gray-900 text-white"
                             : "text-gray-300 hover:bg-gray-700 hover:text-white"
                         }
@@ -128,8 +125,14 @@ export default function NavbarBuilder() {
                             item?.login && !user ? "hidden" : ""
                           } ${item?.noauth && user ? "hidden" : ""} ${
                           item?.signup ? "bg-gray-700" : ""
+                        }  ${
+                          item?.rank && rank && rankLessThan(rank, item.rank)
+                            ? "hidden"
+                            : ""
                         }`}
-                        aria-current={item.current ? "page" : undefined}
+                        aria-current={
+                          router.pathname === item.href ? "page" : undefined
+                        }
                         style={
                           item.right
                             ? { marginLeft: "auto", marginRight: "0" }
@@ -150,19 +153,19 @@ export default function NavbarBuilder() {
 
           <Disclosure.Panel className="sm:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1">
-              {navigation.map((item) => (
+              {NAVIGATION.map((item) => (
                 <a
                   key={item.name}
                   href={item.href}
                   className={`${
-                    item.current
-                      ? "bg-gray-900 text-white"
+                    router.pathname === item.href
+                      ? "bg-gray-900 text-white underline decoration-solid"
                       : "text-gray-300 hover:bg-gray-700 hover:text-white"
                   }
-                    block px-3 py-2 rounded-md text-base font-medium ${
-                      item.right ? "underline decoration-solid" : ""
-                    }`}
-                  aria-current={item.current ? "page" : undefined}
+                    block px-3 py-2 rounded-md text-base font-medium`}
+                  aria-current={
+                    router.pathname === item.href ? "page" : undefined
+                  }
                 >
                   {item.name}
                 </a>

@@ -8,6 +8,7 @@ import type {
   PostgrestSingleResponse,
 } from "@supabase/supabase-js";
 import Link from "next/link";
+import Head from "../../components/Head";
 import ProtectedRoute from "../../components/ProtectedRoute";
 import ViewProfile from "../../components/profile/ViewProfile";
 import ViewResume from "../../components/profile/ViewResume";
@@ -242,6 +243,7 @@ const UserProfile: NextPage = () => {
     >
       {({ values, isSubmitting }) => (
         <div className="bg-gradient min-h-screen min-w-screen p-4 md:p-8 flex justify-center items-center text-white">
+          <Head title={profileUsername} />
           <Form>
             {values.avatar && (
               <div className="flex flex-col md:flex-row justify-around items-center">

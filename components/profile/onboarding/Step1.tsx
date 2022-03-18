@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Formik, Form } from "formik";
 import ReactGA from "react-ga4";
+import Head from "../../Head";
 import useSupabase from "../../../hooks/useSupabase";
 import getFileFromUrl from "../../../utils/getFileFromUrl";
 import {
@@ -63,6 +64,7 @@ const Step1 = ({
 
   return (
     <div className="bg-gradient h-full">
+      <Head title="Welcome" />
       <h3 className="py-2 md:py-6 text-lg font-large text-center text-white font-bold">
         Let us get to know you better!
       </h3>
