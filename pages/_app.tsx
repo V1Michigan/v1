@@ -16,7 +16,11 @@ export const HOSTNAME =
 function MyApp({ Component, pageProps }: AppProps) {
   useEffect(
     // "V1 website" property automatically tracks some events, e.g. page views
-    () => ReactGA.initialize(process.env.NEXT_PUBLIC_GA_ID || ""),
+    () => {
+      if (process.env.NODE_ENV !== "development") {
+        ReactGA.initialize(process.env.NEXT_PUBLIC_GA_ID || "");
+      }
+    },
     []
   );
   return (
