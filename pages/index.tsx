@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Head from "next/head";
+import ReactGA from "react-ga4";
 import { What, Offer, Join } from "../components/about";
 import NavbarBuilder from "../components/NavBar";
 import Calendar from "../components/calendarapi";
@@ -78,8 +79,14 @@ export default function IndexPage() {
                   <div className="block">
                     <Link href="/join" passHref>
                       <button
-                        type="button"
                         className="bg-gradient-to-r from-yellow-600 to-yellow-700 hover:bg-blue-500 text-gray-100 font-semibold py-3 px-4 rounded shadow mt-5 hover:opacity-75"
+                        onClick={() =>
+                          ReactGA.event({
+                            category: "Sign up",
+                            action: "Clicked landing page Sign up button",
+                          })
+                        }
+                        type="button"
                       >
                         Sign up &rsaquo;
                       </button>

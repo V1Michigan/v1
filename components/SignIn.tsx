@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { useState } from "react";
+import ReactGA from "react-ga4";
 import useSupabase from "../hooks/useSupabase";
 import { HOSTNAME } from "../pages/_app";
 
@@ -54,6 +55,10 @@ export default function SignIn({ isLoginPage }: SignInProps) {
   const [submitError, setSubmitError] = useState<string | null>(null);
 
   const handleGoogleSignIn = async (): Promise<void> => {
+    ReactGA.event({
+      category: isLoginPage ? "Log in" : "Sign up",
+      action: `Clicked ${isLoginPage ? "Log in" : "Sign up"} button`,
+    });
     setSubmitError(null);
     setLoading(true);
     const { error } = await signIn(
