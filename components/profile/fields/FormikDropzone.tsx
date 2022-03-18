@@ -24,8 +24,10 @@ const FormikDropzone = ({
       accept={fileType.join(", ")}
       maxFiles={1}
       onDrop={([file]) => {
-        setTouched(true);
+        // Order of these two statements is important for some reason,
+        // otherwise the value is updated but validate() receives the old value
         setValue(file);
+        setTouched(true);
       }}
       onFileDialogCancel={() => setTouched(true)}
     >
