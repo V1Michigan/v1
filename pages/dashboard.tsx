@@ -5,7 +5,7 @@ import type { PostgrestSingleResponse } from "@supabase/supabase-js";
 import Link from "next/link";
 import ProtectedRoute from "../components/ProtectedRoute";
 import useSupabase from "../hooks/useSupabase";
-import { Rank, rankLessThan, rankToNumber } from "../constants/rank";
+import { Rank, rankToNumber } from "../constants/rank";
 import NavbarBuilder from "../components/NavBar";
 import OnboardingCohortRegister from "../components/dashboard/OnboardingCohortRegister";
 import Step2Prompt from "../components/dashboard/Step2Prompt";
@@ -50,7 +50,7 @@ const ONBOARDING_PROGRESS = {
 
 const Dashboard: NextPage = () => {
   const router = useRouter();
-  const { supabase, user, rank, setRank } = useSupabase();
+  const { supabase, user, rank } = useSupabase();
   const [name, setName] = useState<string | null>(null);
   const [events, setEvents] = useState<Event[]>([]);
   const [dataFetchErrors, setDataFetchErrors] = useState<string[]>([]);
@@ -155,12 +155,7 @@ const Dashboard: NextPage = () => {
           </h1>
 
           <div className="flex flex-wrap justify-center gap-x-4 gap-y-2">
-            {rank && rankLessThan(rank, Rank.RANK_2_ONBOARDING_0) && (
-              <OnboardingCohortRegister
-                submitted={rankLessThan(Rank.RANK_0, rank)}
-                handleSubmit={() => setRank(Rank.RANK_1_ONBOARDING_0)}
-              />
-            )}
+            <OnboardingCohortRegister />
             <Step2Prompt />
           </div>
           <div className="md:flex justify-center">
