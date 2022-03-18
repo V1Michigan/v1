@@ -7,7 +7,7 @@ import ProtectedRoute from "../components/ProtectedRoute";
 import useSupabase from "../hooks/useSupabase";
 import { Rank, rankToNumber } from "../constants/rank";
 import NavbarBuilder from "../components/NavBar";
-import OnboardingCohortRegister from "../components/dashboard/OnboardingCohortRegister";
+import CoffeeChatRegister from "../components/dashboard/CoffeeChatRegister";
 import Step2Prompt from "../components/dashboard/Step2Prompt";
 
 type Event = {
@@ -155,7 +155,7 @@ const Dashboard: NextPage = () => {
           </h1>
 
           <div className="flex flex-wrap justify-center gap-x-4 gap-y-2">
-            <OnboardingCohortRegister />
+            <CoffeeChatRegister />
             <Step2Prompt />
           </div>
           <div className="md:flex justify-center">

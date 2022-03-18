@@ -17,7 +17,7 @@ const ConditionalLink = ({
 
 interface NextStepCardProps {
   title: string;
-  description: string;
+  description: string | JSX.Element;
   buttonText?: string; // Don't show button if not provided
   disabled?: boolean;
   // Provide exactly one of these
@@ -37,7 +37,7 @@ const NextStepCard = ({
     <h1 className="font-bold tracking-tight text-xl text-gray-900 mb-2">
       {title}
     </h1>
-    <h2 className="text-gray-800 px-4">{description}</h2>
+    <h2 className="text-gray-800 px-4 text-md">{description}</h2>
     {buttonText && (
       <div className="mt-auto">
         <ConditionalLink href={href}>
