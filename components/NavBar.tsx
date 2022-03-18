@@ -162,7 +162,11 @@ export default function NavbarBuilder() {
                       ? "bg-gray-900 text-white underline decoration-solid"
                       : "text-gray-300 hover:bg-gray-700 hover:text-white"
                   }
-                    block px-3 py-2 rounded-md text-base font-medium`}
+                    block px-3 py-2 rounded-md text-base font-medium ${
+                      item?.rank && rank && rankLessThan(rank, item.rank)
+                        ? "hidden"
+                        : ""
+                    }`}
                   aria-current={
                     router.pathname === item.href ? "page" : undefined
                   }

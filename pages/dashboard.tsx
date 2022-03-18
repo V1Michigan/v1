@@ -119,7 +119,8 @@ const Dashboard: NextPage = () => {
       <NavbarBuilder />
       <div className="bg-gray-100">
         <div className="max-w-screen-xl mx-auto py-6 px-4">
-          <div
+          {/* TODO: Turn this back on */}
+          {/* <div
             className="bg-blue-600 hover:bg-blue-500 items-center text-blue-100 leading-none inline-block rounded-full mb-2 cursor-default"
             role="alert"
           >
@@ -127,7 +128,7 @@ const Dashboard: NextPage = () => {
               REGISTERED (R
               {rankToNumber(rank).rank})
             </span>
-          </div>
+          </div> */}
 
           <Welcome name={name} />
           <div className="pb-2 pt-1">
