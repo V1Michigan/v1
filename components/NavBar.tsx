@@ -6,6 +6,7 @@ import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import type { User } from "@supabase/supabase-js";
 import useSupabase from "../hooks/useSupabase";
 import useSupabaseDownload from "../hooks/useSupabaseDownload";
+import { Rank, rankLessThan } from "../constants/rank";
 
 const NAVIGATION = [
   // { name: 'V1 @ Michigan', href: '#', current: true },
@@ -34,6 +35,7 @@ const NAVIGATION = [
   {
     name: "Profile",
     href: "/profile",
+    rank: Rank.RANK_1_ONBOARDING_1,
     right: false,
     login: true,
   },
@@ -82,7 +84,7 @@ const ProfilePic = ({ user, username }: { user: User; username: string }) => {
 
 export default function NavbarBuilder() {
   const router = useRouter();
-  const { user, username } = useSupabase();
+  const { user, username, rank } = useSupabase();
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open: disclosureOpen }) => (
@@ -123,6 +125,10 @@ export default function NavbarBuilder() {
                             item?.login && !user ? "hidden" : ""
                           } ${item?.noauth && user ? "hidden" : ""} ${
                           item?.signup ? "bg-gray-700" : ""
+                        }  ${
+                          item?.rank && rank && rankLessThan(rank, item.rank)
+                            ? "hidden"
+                            : ""
                         }`}
                         aria-current={
                           router.pathname === item.href ? "page" : undefined
