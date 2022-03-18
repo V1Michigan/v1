@@ -6,6 +6,7 @@ import type {
   PostgrestError,
   PostgrestSingleResponse,
 } from "@supabase/supabase-js";
+import Link from "next/link";
 import ProtectedRoute from "../../components/ProtectedRoute";
 import ViewProfile from "../../components/profile/ViewProfile";
 import ViewResume from "../../components/profile/ViewResume";
@@ -271,55 +272,62 @@ const UserProfile: NextPage = () => {
                 {error}
               </p>
             ))}
-            <div className="mt-4 grid grid-cols-6 gap-6">
-              {isCurrentUser && (
-                <div className="mx-auto col-span-6 sm:col-span-3">
-                  {editMode ? (
-                    <>
-                      <div className="grid grid-cols-3 gap-4 pl-10">
-                        <button
-                          className="inline-flex justify-center py-2 px-4 border border-transparent shadow text-sm font-medium rounded-md
-                            text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
-                            disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-indigo-600"
-                          disabled={
-                            isSubmitting ||
-                            isObjectEqual(values, initialProfile)
-                          }
-                          type="submit"
-                        >
-                          {isSubmitting ? "Saving..." : "Save Profile"}
-                        </button>
-                        <button
-                          className="inline-flex justify-center py-2 px-4 border border-transparent shadow text-sm font-medium rounded-md
-                            text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
-                            disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-indigo-600"
-                          onClick={() => setEditMode(false)}
-                          disabled={isSubmitting}
-                          type="button"
-                        >
-                          Cancel
-                        </button>
-                      </div>
-                      {formSubmitErrors.map((error) => (
-                        <p key={error} className="text-red-500">
-                          {error}
-                        </p>
-                      ))}
-                    </>
-                  ) : (
+            {isCurrentUser && (
+              <div className="mt-4 flex justify-around items-center">
+                {editMode ? (
+                  <>
                     <button
                       className="inline-flex justify-center py-2 px-4 border border-transparent shadow text-sm font-medium rounded-md
                         text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
                         disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-indigo-600"
+                      onClick={() => setEditMode(false)}
+                      disabled={isSubmitting}
+                      type="button"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow text-sm font-medium rounded-md
+                        text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
+                        disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-indigo-600"
+                      disabled={
+                        isSubmitting || isObjectEqual(values, initialProfile)
+                      }
+                      type="submit"
+                    >
+                      {isSubmitting ? "Saving..." : "Save Profile"}
+                    </button>
+                    {formSubmitErrors.map((error) => (
+                      <p key={error} className="text-red-500">
+                        {error}
+                      </p>
+                    ))}
+                  </>
+                ) : (
+                  <>
+                    <Link href="/dashboard" passHref>
+                      <button
+                        className="inline-flex justify-center py-2 px-4 border border-transparent shadow text-sm font-medium rounded-md
+                          text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
+                          disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-indigo-600"
+                        type="button"
+                      >
+                        Back
+                      </button>
+                    </Link>
+                    <button
+                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow text-sm font-medium rounded-md
+                          text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
+                          disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-indigo-600"
                       onClick={() => setEditMode(true)}
                       type="button"
                     >
                       Edit Profile
                     </button>
-                  )}
-                </div>
-              )}
-            </div>
+                  </>
+                )}
+              </div>
+            )}
           </Form>
         </div>
       )}
