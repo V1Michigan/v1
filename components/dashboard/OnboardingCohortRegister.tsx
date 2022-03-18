@@ -22,7 +22,7 @@ const OnboardingCohortRegister = ({
         become an official V1 member today.
       `
     }
-    buttonText="I'm interested"
+    buttonText={submitted ? undefined : "I'm interested"}
     disabled={submitted}
     onClick={handleSubmit}
   />
