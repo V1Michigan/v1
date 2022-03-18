@@ -1,6 +1,6 @@
-import useSupabase from "../hooks/useSupabase";
+import useSupabase from "../../hooks/useSupabase";
 import NextStepCard from "./NextStepCard";
-import { Rank } from "../constants/rank";
+import { Rank } from "../../constants/rank";
 
 const Step2Prompt = () => {
   const { rank } = useSupabase();

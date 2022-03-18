@@ -7,8 +7,8 @@ import ProtectedRoute from "../components/ProtectedRoute";
 import useSupabase from "../hooks/useSupabase";
 import { Rank, rankLessThan, rankToNumber } from "../constants/rank";
 import NavbarBuilder from "../components/NavBar";
-import OnboardingCohortRegister from "../components/OnboardingCohortRegister";
-import Step2Prompt from "../components/Step2Prompt";
+import OnboardingCohortRegister from "../components/dashboard/OnboardingCohortRegister";
+import Step2Prompt from "../components/dashboard/Step2Prompt";
 
 type Event = {
   name: string;
