@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useState } from "react";
 import { Formik, Form } from "formik";
 import useSupabase from "../../../hooks/useSupabase";
@@ -114,15 +115,28 @@ const Step2 = ({ nextStep }: Step2Props) => {
               <PartnerSharingConsentField />
 
               <div>
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="inline-flex justify-center py-2 px-4 border border-transparent shadow text-sm font-medium rounded-md
-                    text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
-                    disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-indigo-600"
-                >
-                  {isSubmitting ? "Loading..." : <>Submit &rsaquo;</>}
-                </button>
+                <div className="flex justify-between items-center">
+                  <Link href="/dashboard" passHref>
+                    <button
+                      type="button"
+                      disabled={isSubmitting}
+                      className="inline-flex justify-center py-2 px-4 border border-black shadow text-sm font-medium rounded-md
+                        text-black bg-white-600 hover:bg-white-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white-500
+                        disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-white-600"
+                    >
+                      Back
+                    </button>
+                  </Link>
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow text-sm font-medium rounded-md
+                      text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
+                      disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-indigo-600"
+                  >
+                    {isSubmitting ? "Loading..." : <>Submit &rsaquo;</>}
+                  </button>
+                </div>
                 {submitError && <p className="text-red-500">{submitError}</p>}
               </div>
             </Form>

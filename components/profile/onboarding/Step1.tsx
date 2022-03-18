@@ -149,7 +149,7 @@ const Step1 = ({
               <InterestsField label="Which industries are you interested in?" />
               <AdditionalLinksField label="Any other links you'd like to share? (optional)" />
 
-              <div>
+              <div className="flex justify-end items-center">
                 <button
                   type="submit"
                   disabled={isSubmitting}
