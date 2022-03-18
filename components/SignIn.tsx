@@ -1,7 +1,8 @@
 import { useState } from "react";
 import useSupabase from "../hooks/useSupabase";
 import { HOSTNAME } from "../pages/_app";
-import Header from "../components/Head";
+import Header from "./Head";
+
 interface GoogleSignInProps {
   text: string;
   disabled: boolean;
@@ -61,47 +62,47 @@ export default function SignIn({ isLoginPage }: SignInProps) {
 
   return (
     <>
-    <Header title={isLoginPage ? "Sign In" : "Sign Up"} />
-    <div className="bg-gradient h-screen flex flex-col items-center justify-center gap-y-6 px-8 text-center text-white">
-      <img
-        src="V1_logo_round.png"
-        className="h-20 w-auto rounded-full shadow-md"
-        alt="V1 logo"
+      <Header title={ isLoginPage ? "Sign In" : "Sign Up" } />
+      <div className="bg-gradient h-screen flex flex-col items-center justify-center gap-y-6 px-8 text-center text-white">
+        <img
+          src="V1_logo_round.png"
+          className="h-20 w-auto rounded-full shadow-md"
+          alt="V1 logo"
       />
-      <h3 className="text-4xl">
-        Welcome to
-        {" "}
-        <b>V1</b>
-      </h3>
-      {isLoginPage ? (
-        <p>
-          <b>
-            We missed you &#8212; welcome back! 🎉
-          </b>
-        </p>
-      ) : (
-        <p>
-          <b>Don&apos;t have an account yet?</b>
+        <h3 className="text-4xl">
+          Welcome to
           {" "}
-          We love new faces! 😀
+          <b>V1</b>
+        </h3>
+        {isLoginPage ? (
+          <p>
+            <b>
+              We missed you &#8212; welcome back! 🎉
+            </b>
+          </p>
+        ) : (
+          <p>
+            <b>Don&apos;t have an account yet?</b>
+            {" "}
+            We love new faces! 😀
+          </p>
+        )}
+        <p>
+          Click below to
+          {" "}
+          {isLoginPage ? "log in" : "sign up"}
+          {" "}
+          with your umich.edu Google account.
         </p>
-      )}
-      <p>
-        Click below to
-        {" "}
-        {isLoginPage ? "log in" : "sign up"}
-        {" "}
-        with your umich.edu Google account.
-      </p>
-      <div className="flex items-center justify-center">
-        <GoogleSignIn
-          text={ `Sign ${isLoginPage ? "in" : "up"} with umich.edu` }
-          onClick={ handleGoogleSignIn }
-          disabled={ loading }
+        <div className="flex items-center justify-center">
+          <GoogleSignIn
+            text={ `Sign ${isLoginPage ? "in" : "up"} with umich.edu` }
+            onClick={ handleGoogleSignIn }
+            disabled={ loading }
         />
-        {submitError && <p className="text-red-500">{submitError}</p>}
+          {submitError && <p className="text-red-500">{submitError}</p>}
+        </div>
       </div>
-    </div>
     </>
   );
 }

@@ -1,9 +1,9 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import Header from "../components/Head";
 import { useEffect, useState } from "react";
 import type { PostgrestSingleResponse } from "@supabase/supabase-js";
 import Link from "next/link";
+import Header from "../components/Head";
 import ProtectedRoute from "../components/ProtectedRoute";
 import useSupabase from "../hooks/useSupabase";
 import NavbarBuilder from "../components/NavBar";
@@ -28,8 +28,7 @@ const ONBOARDING_PROGRESS = 10;
 
 const Dashboard: NextPage = () => {
   const router = useRouter();
-  const { supabase, user, username } = useSupabase();
-  const title = `${username}'s Dashboard`;
+  const { supabase, user } = useSupabase();
   const [data, setData] = useState<Data | null>(null);
   const [events, setEvents] = useState<Event[]>([]);
   const [dataFetchErrors, setDataFetchErrors] = useState<string[]>([]);
@@ -73,7 +72,7 @@ const Dashboard: NextPage = () => {
 
   return (
     <>
-      <Header title={title} />
+      <Header title="Dashboard" />
       <NavbarBuilder />
       <div className="bg-gray-100">
         <div className="max-w-screen-xl mx-auto py-6 px-4">
