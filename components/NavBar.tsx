@@ -26,31 +26,27 @@ const ProfilePic = ({ user, username }: {user: User, username: string}) => {
   );
 };
 
-const navigation = [
+const NAVIGATION = [
   // { name: 'V1 @ Michigan', href: '#', current: true },
   {
     name: "Community",
     href: "/community",
-    current: false,
     right: false,
   },
-  { name: "Studio", href: "https://studio.v1michigan.com", current: false },
+  { name: "Studio", href: "https://studio.v1michigan.com" },
   {
     name: "Startup Fair",
     href: "https://startupfair.v1michigan.com",
-    current: false,
     right: false,
   },
   {
     name: "Newsletter",
     href: "https://v1network.substack.com/",
-    current: false,
     right: false,
   },
   {
     name: "Dashboard",
     href: "/dashboard",
-    current: false,
     right: true,
     login: true,
   },
@@ -58,21 +54,18 @@ const navigation = [
     name: "Profile",
     href: "/profile",
     rank: true,
-    current: false,
     right: false,
     login: true,
   },
   {
     name: "Login",
     href: "/login",
-    current: false,
     right: true,
     noauth: true,
   },
   {
     name: "Sign Up",
     href: "/join",
-    current: false,
     right: false,
     noauth: true,
     signup: true,
@@ -81,11 +74,6 @@ const navigation = [
 
 export default function NavbarBuilder() {
   const router = useRouter();
-  const nav = useMemo(
-    () => navigation.find((obj) => obj.href === router.pathname),
-    [router.pathname],
-  );
-  nav ? nav.current = true : null;
   const { user, username, rank } = useSupabase();
   return (
     <Disclosure as="nav" className="bg-gray-800">
@@ -110,16 +98,16 @@ export default function NavbarBuilder() {
                 </Link>
                 <div className="hidden sm:block sm:ml-6 w-full">
                   <div className="flex flex-row space-x-4 w-full items-center">
-                    {navigation.map((item) => (
+                    {NAVIGATION.map((item) => (
                       <a
                         key={ item.name }
                         href={ item.href }
                         className={ `${
-                          item.current
+                          router.pathname === item.href
                             ? "bg-gray-900 text-white"
                             : "text-gray-300 hover:bg-gray-700 hover:text-white"}
                           px-3 py-2 rounded-md text-sm font-medium ${item?.login && !user ? "hidden" : ""} ${item?.noauth && user ? "hidden" : ""} ${item?.signup ? "bg-gray-700" : ""} ${item?.rank && rank && rank <= 0 ? "hidden" : ""}` }
-                        aria-current={ item.current ? "page" : undefined }
+                        aria-current={ router.pathname === item.href ? "page" : undefined }
                         style={ item.right ? { marginLeft: "auto", marginRight: "0" } : {} }
                       >
                         {item.name}
@@ -137,16 +125,16 @@ export default function NavbarBuilder() {
 
           <Disclosure.Panel className="sm:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1">
-              {navigation.map((item) => (
+              {NAVIGATION.map((item) => (
                 <a
                   key={ item.name }
                   href={ item.href }
                   className={ `${
-                    item.current
-                      ? "bg-gray-900 text-white"
+                    router.pathname === item.href
+                      ? "bg-gray-900 text-white underline decoration-solid"
                       : "text-gray-300 hover:bg-gray-700 hover:text-white"}
-                    block px-3 py-2 rounded-md text-base font-medium ${item.current ? "underline decoration-solid" : ""} ${item?.login && !user ? "hidden" : ""} ${item?.noauth && user ? "hidden" : ""} ${item?.signup ? "bg-gray-700" : ""} ${item?.rank ? "hidden" : ""}` }
-                  aria-current={ item.current ? "page" : undefined }
+                    block px-3 py-2 rounded-md text-base font-medium ${item?.login && !user ? "hidden" : ""} ${item?.noauth && user ? "hidden" : ""} ${item?.signup ? "bg-gray-700" : ""} ${item?.rank ? "hidden" : ""}` }
+                  aria-current={ router.pathname === item.href ? "page" : undefined }
                 >
                   {item.name}
                 </a>
