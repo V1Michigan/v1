@@ -14,7 +14,7 @@ import OnboardingCohortRegister from "../components/dashboard/OnboardingCohortRe
 
 type Event = {
   name: string;
-  date: Date;
+  date: string;
   place: string;
   description: string;
   link: string;
@@ -95,7 +95,12 @@ const Dashboard: NextPage = () => {
           } else if (!dbEvents) {
             setDataFetchErrors((errors) => [...errors, "No events found"]);
           } else {
-            setEvents(dbEvents);
+            // TODO: Filter dates in query
+            setEvents(
+              (dbEvents as Event[]).filter(
+                (event) => new Date(event.date) > new Date()
+              )
+            );
           }
         }
       }
@@ -176,7 +181,7 @@ const Dashboard: NextPage = () => {
               {events.map((event) => (
                 <div
                   className="bg-gray-100 max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center"
-                  key={event.name}
+                  key={event.name + event.date}
                 >
                   <h6 className="font-bold text-lg">{event.name}</h6>
                   <p className="">
@@ -190,12 +195,14 @@ const Dashboard: NextPage = () => {
                   </p>
                   <p className="italic mb-2">{event.place}</p>
                   <p className="mb-2">{event.description}</p>
-                  <button
-                    type="button"
-                    className="text-center text-sm block text-gray-100 font-semibold bg-gradient-to-r from-blue-600 to-blue-700 hover:bg-blue-500 shadow py-2 px-3 rounded mx-auto hover:opacity-75"
-                  >
-                    RSVP &rsaquo;
-                  </button>
+                  <Link href={event.link} passHref>
+                    <button
+                      type="button"
+                      className="text-center text-sm block text-gray-100 font-semibold bg-gradient-to-r from-blue-600 to-blue-700 hover:bg-blue-500 shadow py-2 px-3 rounded mx-auto hover:opacity-75"
+                    >
+                      RSVP &rsaquo;
+                    </button>
+                  </Link>
                 </div>
               ))}
             </div>
