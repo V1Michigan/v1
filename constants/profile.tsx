@@ -4,7 +4,7 @@ const Year: {[key: string]: string} = Object.fromEntries([
   "Junior",
   "Senior",
   "Alumni",
-  "Grad student",
+  "Grad Student",
   "Dropout",
   "Faculty",
 ].map((x) => ([x, x])));
