@@ -136,7 +136,11 @@ const Dashboard: NextPage = () => {
             </div>
             <div className="overflow-hidden h-2 text-xs flex rounded bg-blue-100">
               <div
-                style={{ width: `${onboardingProgress}%` }}
+                style={{
+                  width: `${onboardingProgress}%`,
+                  transitionProperty: "width",
+                  transitionDuration: "1s",
+                }}
                 className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-600"
               />
             </div>
