@@ -38,8 +38,10 @@ const WelcomePage: NextPage = () => {
   return <Redirect route="/dashboard" />;
 };
 
-export default () => (
+const ProtectedWelcome = () => (
   <ProtectedRoute>
     <WelcomePage />
   </ProtectedRoute>
 );
+
+export default ProtectedWelcome;

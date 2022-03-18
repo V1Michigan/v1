@@ -22,6 +22,7 @@
     ],
     "rules": {
         "prettier/prettier": "error",
+        "import/no-anonymous-default-export": "error",
         "import/extensions": [
             "error",
             "ignorePackages",

@@ -241,8 +241,10 @@ const Dashboard: NextPage = () => {
   );
 };
 
-export default () => (
+const ProtectedDashboard = () => (
   <ProtectedRoute>
     <Dashboard />
   </ProtectedRoute>
 );
+
+export default ProtectedDashboard;

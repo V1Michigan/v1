@@ -358,8 +358,10 @@ const UserProfile: NextPage = () => {
   );
 };
 
-export default () => (
+const ProtectedProfile = () => (
   <ProtectedRoute minRank={Rank.RANK_1_ONBOARDING_1}>
     <UserProfile />
   </ProtectedRoute>
 );
+
+export default ProtectedProfile;

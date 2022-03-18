@@ -11,8 +11,10 @@ const ProfileIndex: NextPage = () => {
   return username ? <Redirect route={`/profile/${username}`} /> : null;
 };
 
-export default () => (
+const ProtectedProfileIndex = () => (
   <ProtectedRoute minRank={Rank.RANK_1_ONBOARDING_1}>
     <ProfileIndex />
   </ProtectedRoute>
 );
+
+export default ProtectedProfileIndex;
