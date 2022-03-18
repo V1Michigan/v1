@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import type { PostgrestSingleResponse } from "@supabase/supabase-js";
+import type { PostgrestMaybeSingleResponse } from "@supabase/supabase-js";
 import Link from "next/link";
 import ProtectedRoute from "../components/ProtectedRoute";
 import useSupabase from "../hooks/useSupabase";
@@ -70,7 +70,7 @@ const Dashboard: NextPage = () => {
           .from("profiles")
           .select("name")
           .eq("id", user.id)
-          .single()) as PostgrestSingleResponse<{ name: string }>;
+          .maybeSingle()) as PostgrestMaybeSingleResponse<{ name: string }>;
         if ((dbError && status !== 406) || !data) {
           router.replace("/404");
         } else if (status !== 200) {
@@ -89,8 +89,10 @@ const Dashboard: NextPage = () => {
             .from("events")
             .select(EVENT_COLUMNS)
             .order("date", { ascending: true });
-          if ((dbEventError && dbEventStatus !== 406) || !dbEvents) {
+          if (dbEventError && dbEventStatus !== 406) {
             setDataFetchErrors((errors) => [...errors, dbEventError.message]);
+          } else if (!dbEvents) {
+            setDataFetchErrors((errors) => [...errors, "No events found"]);
           } else {
             setEvents(dbEvents);
           }

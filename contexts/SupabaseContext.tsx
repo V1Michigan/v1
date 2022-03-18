@@ -124,6 +124,7 @@ function SupabaseProvider({
   useEffect(() => {
     async function getUserData() {
       if (user) {
+        setLoading(true);
         const { data, error, status } = (await supabase
           .from("profiles")
           .select(
@@ -170,7 +171,7 @@ function SupabaseProvider({
     }
   }
 
-  // Don't want to render children still loading (rank may be undefined)
+  // Don't want to render children if still loading (rank may be undefined)
   if (user && loading) {
     return null;
   }
