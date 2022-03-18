@@ -16,19 +16,12 @@ import {
   PostgrestSingleResponse,
 } from "@supabase/supabase-js";
 import supabase from "../utils/supabaseClient";
-
-// Rank breakdown:
-// undefined: no user
-// null: user exists, but hasn't completed sign-up Step 1 (this is the DB default)
-// 0: completed Step 1, now has dashboard access + can schedule 1:1 calls
-// 1: completed Step 2, now can access /profile and isn't prompted to fill out Step 2
-// 2, 3: in onboarding cohort
-// 4: General member
-// 5: Member++
-
-// TODO: How do we decide when to prompt to fill in more profile data? (Step 2 and beyond)
-// We could use Rank 2 for that, but we might want more data in the future
-// Should we just query the DB and check if the fields are empty?
+import {
+  Rank,
+  numberToRank,
+  rankToNumber,
+  rankLessThan,
+} from "../constants/rank";
 
 interface EmailUser extends User {
   email: string; // We know email isn't undefined
@@ -66,8 +59,8 @@ interface SupabaseContextInterface {
   user: EmailUser | GoogleUser | null;
   username: string | null;
   setUsername: (username: string) => void;
-  rank: number | null | undefined;
-  setRank: (rank: number) => void;
+  rank: Rank | undefined;
+  setRank: (rank: Rank) => void;
 }
 
 const SupabaseContext = createContext<SupabaseContextInterface | null>(null);
@@ -82,12 +75,47 @@ function SupabaseProvider({
     supabase.auth.session()?.user ?? null
   );
   const [username, setUsername] = useState<string | null>(null);
-  const [rank, setRank_] = useState<number | null | undefined>(undefined);
+
+  const [rank, setRank_] = useState<Rank | undefined>(undefined);
+  const [loading, setLoading] = useState(true);
+  const setRank = async (newRank: Rank) => {
+    // Update local state and Supabase DB
+    if (user && rank !== newRank) {
+      setRank_(newRank);
+      const { rank: rankNumber, onboardingStatus } = rankToNumber(newRank);
+      await Promise.all([
+        supabase
+          .from("profiles")
+          .update({ rank: rankNumber }, { returning: "minimal" })
+          .eq("id", user.id),
+        // First time user has an onboarding status
+        newRank === Rank.RANK_1_ONBOARDING_0 &&
+          supabase.from("onboarding").upsert(
+            {
+              user_id: user.id,
+              status: onboardingStatus,
+              created_at: new Date(),
+            },
+            { returning: "minimal" }
+          ),
+        // Update an existing onboarding status
+        rankLessThan(Rank.RANK_1_ONBOARDING_0, newRank) &&
+          supabase
+            .from("onboarding")
+            .update(
+              { status: onboardingStatus ?? null },
+              { returning: "minimal" }
+            )
+            .eq("user_id", user.id),
+      ]);
+    }
+  };
 
   useEffect(() => {
     const { data: listener } = supabase.auth.onAuthStateChange(
       (_event, session) => {
         setUser(session?.user ?? null);
+        setLoading(true);
       }
     );
     return () => listener?.unsubscribe();
@@ -96,40 +124,45 @@ function SupabaseProvider({
   useEffect(() => {
     async function getUserData() {
       if (user) {
-        // TODO: Should be fixed with Supabase DB types
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        setLoading(true);
         const { data, error, status } = (await supabase
           .from("profiles")
-          .select("username, rank")
+          .select(
+            `
+            username,
+            rank,
+            onboarding (
+              status
+            )
+          `
+          )
           .eq("id", user.id)
+          .eq("onboarding.user_id", user.id)
           .single()) as PostgrestSingleResponse<{
           username: string;
           rank: number;
+          onboarding: { status: number }[];
         }>;
 
         if (error && status !== 406) {
           throw error;
+        } else if (!data) {
+          throw new Error("No user data found");
         }
 
-        setUsername(data?.username ?? null);
-        setRank_((data as { rank?: number })?.rank ?? null);
+        const { username: username_, rank: rank_, onboarding } = data;
+        const onboardStatus =
+          onboarding.length > 0 ? onboarding[0].status : null;
+
+        setUsername(username_ ?? null);
+        setRank_(numberToRank(rank_ ?? null, onboardStatus));
       }
+      setLoading(false);
     }
     getUserData();
   }, [user]);
 
-  // Update local state and Supabase DB
-  const setRank = async (newRank: number) => {
-    if (user) {
-      setRank_(newRank);
-      await supabase
-        .from("profiles")
-        .update({ rank: newRank }, { returning: "minimal" })
-        .eq("id", user.id);
-    }
-  };
-
-  let typedUser = null as GoogleUser | EmailUser | null;
+  let typedUser: GoogleUser | EmailUser | null = null;
   if (user) {
     if (isGoogleUser(user)) {
       typedUser = user;
@@ -138,8 +171,8 @@ function SupabaseProvider({
     }
   }
 
-  // If we have user, wait to load rank before rendering (this feels kinda sketchy)
-  if (user && rank === undefined) {
+  // Don't want to render children if still loading (rank may be undefined)
+  if (user && loading) {
     return null;
   }
 

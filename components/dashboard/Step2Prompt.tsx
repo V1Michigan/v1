@@ -1,10 +1,11 @@
-import useSupabase from "../hooks/useSupabase";
+import ReactGA from "react-ga4";
+import useSupabase from "../../hooks/useSupabase";
 import NextStepCard from "./NextStepCard";
+import { Rank } from "../../constants/rank";
 
 const Step2Prompt = () => {
   const { rank } = useSupabase();
-  if (rank !== 0) {
-    // If rank > 0, should we show this, but "checked off"?
+  if (rank !== Rank.RANK_1_ONBOARDING_0) {
     return null;
   }
   return (
@@ -12,6 +13,12 @@ const Step2Prompt = () => {
       title="Finish filling out your profile"
       description="Tell us more about you and what you're excited about"
       href="/welcome"
+      onClick={() => {
+        ReactGA.event({
+          category: "Onboarding",
+          action: "Clicked to start Step 2",
+        });
+      }}
       buttonText="Let's go &rsaquo;"
     />
   );

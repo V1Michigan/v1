@@ -1,16 +1,17 @@
 import { NextPage } from "next";
-import { useRouter } from "next/router";
 import useSupabase from "../hooks/useSupabase";
 import { isGoogleUser } from "../contexts/SupabaseContext";
 import ProtectedRoute from "../components/ProtectedRoute";
 import Redirect from "../components/Redirect";
 import Step1 from "../components/profile/onboarding/Step1";
 import Step2 from "../components/profile/onboarding/Step2";
+import { Rank } from "../constants/rank";
 
 const WelcomePage: NextPage = () => {
   const { user, rank, setRank } = useSupabase();
-  const router = useRouter();
-  if (!user) {
+
+  // Type guard
+  if (!user || rank === undefined) {
     return null;
   }
 
@@ -18,24 +19,22 @@ const WelcomePage: NextPage = () => {
     ? [user.user_metadata.full_name, user.user_metadata.avatar_url]
     : [undefined, undefined];
 
-  if (rank === null) {
+  if (rank === Rank.RANK_NULL) {
     return (
       <Step1
         email={user.email}
         initialName={initialName}
         initialAvatarUrl={initialAvatarUrl}
-        nextStep={() => {
-          setRank(0);
-          router.push("/dashboard"); // instead of going to Step2
-        }}
+        nextStep={() => setRank(Rank.RANK_0)}
       />
     );
   }
-  if (rank === 0) {
-    // Not sure we should be use /welcome also for Step2
-    return <Step2 nextStep={() => setRank(1)} />;
+  if (rank === Rank.RANK_1_ONBOARDING_0) {
+    // Not sure we should be using /welcome also for Step2
+    return <Step2 nextStep={() => setRank(Rank.RANK_1_ONBOARDING_1)} />;
   }
-  // Else, rank >= 1
+  // Else, rank === RANK_0 (not prompted to fill Step2)
+  // or they've already filled it (rank >= Rank.RANK_1_ONBOARDING_1)
   return <Redirect route="/dashboard" />;
 };
 
