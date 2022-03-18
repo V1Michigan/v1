@@ -16,9 +16,7 @@ interface ContentBodyProps {
 }
 
 export const ContentBody = ({ textElement }: ContentBodyProps) => (
-  <div className="flex justify-center w-10/12 md:w-3/4 lg:w-2/3 mx-auto">
-    {textElement}
-  </div>
+  <div className="mx-auto w-10/12 md:w-3/4 lg:w-2/3">{textElement}</div>
 );
 
 interface ContentPageProps {
