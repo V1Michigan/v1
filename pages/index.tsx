@@ -3,8 +3,10 @@ import Head from "next/head";
 import { What, Offer, Join } from "../components/about";
 import NavbarBuilder from "../components/NavBar";
 import Calendar from "../components/calendarapi";
+import useSupabase from "../hooks/useSupabase";
 
 export default function IndexPage() {
+  const { user } = useSupabase();
   return (
     <main>
       <Head>
@@ -72,16 +74,18 @@ export default function IndexPage() {
                   The community for ambitious student builders at the University
                   of Michigan.
                 </p>
-                <div className="block">
-                  <Link href="/join" passHref>
-                    <button
-                      type="button"
-                      className="bg-gradient-to-r from-yellow-600 to-yellow-700 hover:bg-blue-500 text-gray-100 font-semibold py-3 px-4 rounded shadow mt-5 hover:opacity-75"
-                    >
-                      Sign up &rsaquo;
-                    </button>
-                  </Link>
-                </div>
+                {!user && (
+                  <div className="block">
+                    <Link href="/join" passHref>
+                      <button
+                        type="button"
+                        className="bg-gradient-to-r from-yellow-600 to-yellow-700 hover:bg-blue-500 text-gray-100 font-semibold py-3 px-4 rounded shadow mt-5 hover:opacity-75"
+                      >
+                        Sign up &rsaquo;
+                      </button>
+                    </Link>
+                  </div>
+                )}
               </div>
             </div>
             <div className="max-w-xl p-4">
