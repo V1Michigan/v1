@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Formik, Form } from "formik";
+import ReactGA from "react-ga4";
 import useSupabase from "../../../hooks/useSupabase";
 import getFileFromUrl from "../../../utils/getFileFromUrl";
 import {
@@ -125,6 +126,10 @@ const Step1 = ({
             setSubmitError(dbError.message);
           } else {
             setUsername(values.username);
+            ReactGA.event({
+              category: "Onboarding",
+              action: "Submitted Step 1 form",
+            });
             nextStep();
           }
           setSubmitting(false);
