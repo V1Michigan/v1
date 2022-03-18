@@ -37,10 +37,10 @@ const Offer = () => (
     textElement={
       <div className="mx-auto max-w-2xl">
         <p className="text-2xl text-gray-900">
-          V1 offers an engaged online community for student builders to connect
-          and collaborate. Not only do we share exclusive opportunities, but we
-          also host weekly fireside chats with industry leaders and Michigan
-          alum. Lastly, we offer a number of internal resources to help student
+          V1 offers an engaged community for student builders to connect and
+          collaborate. Not only do we share exclusive opportunities, but we also
+          host weekly fireside chats with industry leaders and Michigan alum.
+          Lastly, we offer a number of internal resources to help student
           builders navigate the Michigan entrepreneurial ecosystem.
         </p>
         <p className="text-2xl text-gray-900 pt-10">
