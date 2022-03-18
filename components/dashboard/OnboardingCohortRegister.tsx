@@ -1,3 +1,4 @@
+import ReactGA from "react-ga4";
 import useSupabase from "../../hooks/useSupabase";
 import NextStepCard from "./NextStepCard";
 import { Rank, rankLessThan } from "../../constants/rank";
@@ -15,6 +16,13 @@ const OnboardingCohortRegister = () => {
     return null;
   }
   const submitted = rankLessThan(Rank.RANK_2_ONBOARDING_0, rank);
+  const handleSubmit = () => {
+    ReactGA.event({
+      category: "Onboarding",
+      action: "Registered for cohort",
+    });
+    setRank(Rank.RANK_2_ONBOARDING_1);
+  };
   return (
     <NextStepCard
       title="Join a V1 Onboarding Cohort"
@@ -29,7 +37,7 @@ const OnboardingCohortRegister = () => {
       }
       buttonText={submitted ? undefined : "Sign me up! 🚀"}
       disabled={submitted}
-      onClick={() => setRank(Rank.RANK_2_ONBOARDING_1)}
+      onClick={handleSubmit}
     />
   );
 };

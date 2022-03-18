@@ -1,3 +1,4 @@
+import ReactGA from "react-ga4";
 import useSupabase from "../../hooks/useSupabase";
 import NextStepCard from "./NextStepCard";
 import { Rank, rankLessThan } from "../../constants/rank";
@@ -9,6 +10,13 @@ const CoffeeChatRegister = () => {
     return null;
   }
   const submitted = rankLessThan(Rank.RANK_0, rank);
+  const handleSubmit = () => {
+    ReactGA.event({
+      category: "Onboarding",
+      action: "Registered for coffee chat",
+    });
+    setRank(Rank.RANK_1_ONBOARDING_0);
+  };
   return (
     <NextStepCard
       title="Schedule a coffee chat with V1 Leadership ☕️"
@@ -30,7 +38,7 @@ const CoffeeChatRegister = () => {
       }
       buttonText={submitted ? undefined : "I'm interested"}
       disabled={submitted}
-      onClick={() => setRank(Rank.RANK_1_ONBOARDING_0)}
+      onClick={handleSubmit}
     />
   );
 };
