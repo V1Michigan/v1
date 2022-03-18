@@ -226,18 +226,14 @@ const UserProfile: NextPage = () => {
       onSubmit={saveProfile}
     >
       {({ values, isSubmitting }) => (
-        <div className="bg-gradient min-h-screen min-w-screen p-10 flex justify-center items-center text-white">
+        <div className="bg-gradient min-h-screen min-w-screen p-4 md:p-8 flex justify-center items-center text-white">
           <Form>
             {values.avatar && (
-              <div className="grid grid-cols-8 pb-4 items-center">
-                <div className="col-span-8x sm:col-span-4 pl-20">
-                  <div className="pl-8">
-                    <ViewAvatar avatar={values.avatar} />
-                  </div>
+              <div className="flex flex-col md:flex-row justify-around items-center">
+                <div className="flex-1">
+                  <ViewAvatar avatar={values.avatar} />
                 </div>
-                <div className="col-span-8x sm:col-span-4 pl-6">
-                  {editMode && <EditAvatar />}
-                </div>
+                <div className="flex-1">{editMode && <EditAvatar />}</div>
               </div>
             )}
 
@@ -273,7 +269,7 @@ const UserProfile: NextPage = () => {
               </p>
             ))}
             {isCurrentUser && (
-              <div className="mt-4 flex justify-around items-center">
+              <div className="mt-8 flex justify-around items-center">
                 {editMode ? (
                   <>
                     <button
