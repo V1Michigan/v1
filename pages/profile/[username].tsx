@@ -1,3 +1,4 @@
+import ReactGA from "react-ga4";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
@@ -18,6 +19,7 @@ import {
   EditResume,
 } from "../../components/profile/fields/FileFields";
 import { PartnerSharingConsentField } from "../../components/profile/fields/ProfileFields";
+import { Rank } from "../../constants/rank";
 
 // Username included separately
 export type Profile = {
@@ -61,7 +63,7 @@ const UserProfile: NextPage = () => {
   const { supabase, username: currentUsername } = useSupabase();
   const isCurrentUser = profileUsername === currentUsername;
 
-  const [editMode, setEditMode] = useState(true);
+  const [editMode, setEditMode] = useState(false);
   const [initialProfile, setInitialProfile] = useState<Profile | null>(null);
 
   const [dataFetchErrors, setDataFetchErrors] = useState<string[]>([]);
@@ -209,6 +211,15 @@ const UserProfile: NextPage = () => {
     }
   };
 
+  useEffect(() => {
+    if (!isCurrentUser) {
+      ReactGA.event({
+        category: "Profile",
+        action: "Viewed another user's profile",
+      });
+    }
+  });
+
   if (
     !profileUsername ||
     typeof profileUsername !== "string" ||
@@ -293,7 +304,13 @@ const UserProfile: NextPage = () => {
                           className="inline-flex justify-center py-2 px-4 border border-transparent shadow text-sm font-medium rounded-md
                             text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
                             disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-indigo-600"
-                          onClick={() => setEditMode(false)}
+                          onClick={() => {
+                            ReactGA.event({
+                              category: "Profile",
+                              action: "Exited edit mode",
+                            });
+                            setEditMode(false);
+                          }}
                           disabled={isSubmitting}
                           type="button"
                         >
@@ -311,7 +328,13 @@ const UserProfile: NextPage = () => {
                       className="inline-flex justify-center py-2 px-4 border border-transparent shadow text-sm font-medium rounded-md
                         text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
                         disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-indigo-600"
-                      onClick={() => setEditMode(true)}
+                      onClick={() => {
+                        ReactGA.event({
+                          category: "Profile",
+                          action: "Entered edit mode",
+                        });
+                        setEditMode(true);
+                      }}
                       type="button"
                     >
                       Edit Profile
@@ -328,7 +351,7 @@ const UserProfile: NextPage = () => {
 };
 
 export default () => (
-  <ProtectedRoute minRank={1}>
+  <ProtectedRoute minRank={Rank.RANK_1_ONBOARDING_1}>
     <UserProfile />
   </ProtectedRoute>
 );
