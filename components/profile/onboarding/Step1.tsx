@@ -11,7 +11,7 @@ import {
   InterestsField,
   AdditionalLinksField,
 } from "../fields/ProfileFields";
-import { FadeAllChildren } from "../../Fade";
+import Fade from "../../Fade";
 import ViewAvatar from "../ViewAvatar";
 import { EditAvatar } from "../fields/FileFields";
 
@@ -131,9 +131,8 @@ const Step1 = ({
         }}
       >
         {({ values, isSubmitting }) => (
-          // Need large pb-32 to prevent FadeAllChildren from overflowing
-          <Form className="mx-auto w-4/5 px-16 py-8 pb-32 space-y-8 bg-white shadow-lg rounded-md">
-            <FadeAllChildren>
+          <Fade>
+            <Form className="mx-auto w-4/5 px-16 py-8 space-y-8 bg-white shadow-lg rounded-md">
               <NameField label="Name" />
               <EmailField value={email} label="Email" />
               <UsernameField label="Username" />
@@ -160,8 +159,8 @@ const Step1 = ({
                 </button>
                 {submitError && <p className="text-red-500">{submitError}</p>}
               </div>
-            </FadeAllChildren>
-          </Form>
+            </Form>
+          </Fade>
         )}
       </Formik>
     </div>

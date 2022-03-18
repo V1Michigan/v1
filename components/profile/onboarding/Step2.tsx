@@ -10,7 +10,7 @@ import {
   PartnerSharingConsentField,
 } from "../fields/ProfileFields";
 import ViewResume from "../ViewResume";
-import { FadeAllChildren } from "../../Fade";
+import Fade from "../../Fade";
 import { EditResume } from "../fields/FileFields";
 
 interface FormValues {
@@ -98,9 +98,8 @@ const Step2 = ({ nextStep }: Step2Props) => {
         }}
       >
         {({ values, isSubmitting }) => (
-          // Need large pb-32 to prevent FadeAllChildren from overflowing
-          <Form className="mx-auto w-4/5 px-16 py-8 pb-32 space-y-8 bg-white shadow-lg rounded-md">
-            <FadeAllChildren>
+          <Fade>
+            <Form className="mx-auto w-4/5 px-16 py-8 space-y-8 bg-white shadow-lg rounded-md">
               <BioField label="Bio" />
               <YearField label="School year" />
               <MajorsField label="Major(s)" />
@@ -124,8 +123,8 @@ const Step2 = ({ nextStep }: Step2Props) => {
                 </button>
                 {submitError && <p className="text-red-500">{submitError}</p>}
               </div>
-            </FadeAllChildren>
-          </Form>
+            </Form>
+          </Fade>
         )}
       </Formik>
     </div>

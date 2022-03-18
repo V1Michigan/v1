@@ -29,17 +29,6 @@ export default function Fade({ children }: FadeProps) {
   );
 }
 
-const FadeAllChildren = ({ children }: { children: JSX.Element[] }) => (
-  <>
-    {children.map((child, i) => (
-      // eslint-disable-next-line react/no-array-index-key
-      <Fade key={i}>{child}</Fade>
-    ))}
-  </>
-);
-
-export { FadeAllChildren };
-
 Fade.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.objectOf(PropTypes.symbol)),
