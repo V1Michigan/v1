@@ -113,13 +113,15 @@ const Step2 = ({ nextStep }: Step2Props) => {
 
               <PartnerSharingConsentField />
 
-              <div className="pl-6 pt-4 pb-4">
+              <div>
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  className="inline-flex justify-center py-2 px-4 border border-transparent shadow text-sm font-medium rounded-md
+                    text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
+                    disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-indigo-600"
                 >
-                  {isSubmitting ? "Loading..." : "Submit"}
+                  {isSubmitting ? "Loading..." : <>Submit &rsaquo;</>}
                 </button>
                 {submitError && <p className="text-red-500">{submitError}</p>}
               </div>
