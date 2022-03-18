@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import type { PostgrestMaybeSingleResponse } from "@supabase/supabase-js";
 import Link from "next/link";
+import Head from "../components/Head";
 import ProtectedRoute from "../components/ProtectedRoute";
 import useSupabase from "../hooks/useSupabase";
 import { Rank, rankToNumber } from "../constants/rank";
@@ -36,7 +37,7 @@ const Welcome = ({ name }: { name: string | null }) => {
   );
 };
 
-const ONBOARDING_PROGRESS = {
+const ONBOARDING_PROGRESS: { [key: string]: number } = {
   [Rank.RANK_NULL]: 0,
   [Rank.RANK_0]: 10,
   [Rank.RANK_1_ONBOARDING_0]: 20,
@@ -109,6 +110,7 @@ const Dashboard: NextPage = () => {
 
   return (
     <>
+      <Head title="Dashboard" />
       <NavbarBuilder />
       <div className="bg-gray-100">
         <div className="max-w-screen-xl mx-auto py-6 px-4">
