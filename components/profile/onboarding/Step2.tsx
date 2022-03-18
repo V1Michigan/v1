@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Formik, Form } from "formik";
+import ReactGA from "react-ga4";
 import useSupabase from "../../../hooks/useSupabase";
 import {
   BioField,
@@ -92,6 +93,10 @@ const Step2 = ({ nextStep }: Step2Props) => {
           if (error) {
             setSubmitError(error.message);
           } else {
+            ReactGA.event({
+              category: "Onboarding",
+              action: "Submitted Step 2 form",
+            });
             nextStep();
           }
           setSubmitting(false);

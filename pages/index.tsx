@@ -1,9 +1,13 @@
+import Link from "next/link";
 import Head from "next/head";
+import ReactGA from "react-ga4";
 import { What, Offer, Join } from "../components/about";
 import NavbarBuilder from "../components/NavBar";
 import Calendar from "../components/calendarapi";
+import useSupabase from "../hooks/useSupabase";
 
 export default function IndexPage() {
+  const { user } = useSupabase();
   return (
     <main>
       <Head>
@@ -60,17 +64,35 @@ export default function IndexPage() {
   </Link> */}
           <div className="md:flex">
             <div className="flex-1 p-8 flex items-center">
-              <div className="">
+              <div>
                 <h1 className="text-6xl tracking-tight font-bold font-logo text-gray-900 leading-none">
                   V1
                 </h1>
                 <h2 className="text-2xl tracking-tight font-bold italic text-gradient bg-gradient-to-r from-yellow-600 to-yellow-700">
                   at Michigan
                 </h2>
-                <p className="text-2xl mt-8 text-gray-900 font-bold tracking-tight mb-3">
+                <p className="text-2xl mt-6 text-gray-900 font-bold tracking-tight mb-3">
                   The community for ambitious student builders at the University
                   of Michigan.
                 </p>
+                {!user && (
+                  <div className="block">
+                    <Link href="/join" passHref>
+                      <button
+                        className="bg-gradient-to-r from-yellow-600 to-yellow-700 hover:bg-blue-500 text-gray-100 font-semibold py-3 px-4 rounded shadow mt-5 hover:opacity-75"
+                        onClick={() =>
+                          ReactGA.event({
+                            category: "Sign up",
+                            action: "Clicked landing page Sign up button",
+                          })
+                        }
+                        type="button"
+                      >
+                        Sign up &rsaquo;
+                      </button>
+                    </Link>
+                  </div>
+                )}
               </div>
             </div>
             <div className="max-w-xl p-4">
