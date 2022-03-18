@@ -9,6 +9,7 @@ import { Rank, rankToNumber } from "../constants/rank";
 import NavbarBuilder from "../components/NavBar";
 import CoffeeChatRegister from "../components/dashboard/CoffeeChatRegister";
 import Step2Prompt from "../components/dashboard/Step2Prompt";
+import OnboardingCohortRegister from "../components/dashboard/OnboardingCohortRegister";
 
 type Event = {
   name: string;
@@ -157,6 +158,7 @@ const Dashboard: NextPage = () => {
           <div className="flex flex-wrap justify-center gap-x-4 gap-y-2">
             <CoffeeChatRegister />
             <Step2Prompt />
+            <OnboardingCohortRegister />
           </div>
           <div className="md:flex justify-center">
             <div className="flex-1">

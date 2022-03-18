@@ -5,7 +5,7 @@ import { Rank, rankLessThan } from "../../constants/rank";
 const CoffeeChatRegister = () => {
   const { rank, setRank } = useSupabase();
   // Only show if rank < 2 (undefined check is a type guard)
-  if (rank === undefined || rankLessThan(Rank.RANK_1_ONBOARDING_1, rank)) {
+  if (rank === undefined || !rankLessThan(rank, Rank.RANK_2_ONBOARDING_0)) {
     return null;
   }
   const submitted = rankLessThan(Rank.RANK_0, rank);
