@@ -103,6 +103,8 @@ const Step2 = ({ nextStep }: Step2Props) => {
             <FadeAllChildren>
               <BioField label="Bio" />
               <YearField label="School year" />
+              <MajorsField label="Major(s)" />
+              <MinorsField label="Minor(s) (optional)" />
               <LinkedInField label="LinkedIn profile (optional)" />
 
               <div className="pt-4 mx-auto w-1/2">
@@ -110,8 +112,6 @@ const Step2 = ({ nextStep }: Step2Props) => {
                 <EditResume label="Upload your resume (optional)" />
               </div>
 
-              <MajorsField label="Major(s)" />
-              <MinorsField label="Minor(s) (optional)" />
               <PartnerSharingConsentField />
 
               <div className="pl-6 pt-4 pb-4">
