@@ -1,7 +1,7 @@
 import { useState } from "react";
 import useSupabase from "../hooks/useSupabase";
 import { HOSTNAME } from "../pages/_app";
-
+import Header from "../components/Head";
 interface GoogleSignInProps {
   text: string;
   disabled: boolean;
@@ -60,6 +60,8 @@ export default function SignIn({ isLoginPage }: SignInProps) {
   };
 
   return (
+    <>
+    <Header title={isLoginPage ? "Sign In" : "Sign Up"} />
     <div className="bg-gradient h-screen flex flex-col items-center justify-center gap-y-6 px-8 text-center text-white">
       <img
         src="V1_logo_round.png"
@@ -100,5 +102,6 @@ export default function SignIn({ isLoginPage }: SignInProps) {
         {submitError && <p className="text-red-500">{submitError}</p>}
       </div>
     </div>
+    </>
   );
 }

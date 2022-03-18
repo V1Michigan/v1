@@ -1,5 +1,6 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
+import Header from "next/head";
 import useSupabase from "../hooks/useSupabase";
 import { isGoogleUser } from "../contexts/SupabaseContext";
 import ProtectedRoute from "../components/ProtectedRoute";

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Formik, Form } from "formik";
 import useSupabase from "../../hooks/useSupabase";
+import Header from "../Head";
 import {
   LinkedInField,
   YearField,
@@ -32,6 +33,8 @@ const Step2 = ({ nextStep }: Step2Props) => {
   }
 
   return (
+    <>
+    <Header title="Welcome | Fill Out Profile" />
     <div className="h-full bg-gradient">
       <h3 className="py-6 text-lg font-large font-bold text-center text-white">
         We can&apos;t wait to learn more about you!
@@ -119,6 +122,7 @@ const Step2 = ({ nextStep }: Step2Props) => {
         )}
       </Formik>
     </div>
+    </>
   );
 };
 

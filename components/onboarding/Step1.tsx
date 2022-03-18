@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Header from "../Head";
 import { Formik, Form } from "formik";
 import useSupabase from "../../hooks/useSupabase";
 import getFileFromUrl from "../../utils/getFileFromUrl";
@@ -58,6 +59,8 @@ const Step1 = ({
   }
 
   return (
+    <>
+    <Header title="Sign Up | Welcome" />
     <div className="bg-gradient h-full">
       <h3 className="py-6 text-lg font-large text-center text-white font-bold">
         Let us get to know you better!
@@ -156,6 +159,7 @@ const Step1 = ({
         )}
       </Formik>
     </div>
+    </>
   );
 };
 
