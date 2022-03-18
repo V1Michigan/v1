@@ -77,7 +77,7 @@ export default function SignIn({ isLoginPage }: SignInProps) {
 
   return (
     <div className="bg-gradient h-screen flex flex-col items-center justify-center gap-y-6 px-8 text-center text-white">
-      <Head title={isLoginPage ? "Sign In" : "Sign Up"} />
+      <Head title={isLoginPage ? "Log in" : "Sign up"} />
       <img
         src="V1_logo_round.png"
         className="h-20 w-auto rounded-full shadow-md"

@@ -40,7 +40,7 @@ const Step2 = ({ nextStep }: Step2Props) => {
 
   return (
     <div className="h-full bg-gradient">
-      <Head title="Complete your profile" />
+      <Head title="Complete profile" />
       <h3 className="py-2 md:py-6 text-lg font-large text-center text-white font-bold">
         We can&apos;t wait to learn more about you!
       </h3>
