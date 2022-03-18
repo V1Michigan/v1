@@ -37,7 +37,7 @@ const Step2 = ({ nextStep }: Step2Props) => {
 
   return (
     <div className="h-full bg-gradient">
-      <h3 className="py-6 text-lg font-large font-bold text-center text-white">
+      <h3 className="py-2 md:py-6 text-lg font-large text-center text-white font-bold">
         We can&apos;t wait to learn more about you!
       </h3>
       <Formik
@@ -99,14 +99,14 @@ const Step2 = ({ nextStep }: Step2Props) => {
       >
         {({ values, isSubmitting }) => (
           <Fade>
-            <Form className="mx-auto w-4/5 px-16 py-8 space-y-8 bg-white shadow-lg rounded-md">
+            <Form className="md:w-4/5 mx-2 md:mx-auto p-4 md:p-8 space-y-8 bg-white shadow-lg rounded-t-lg">
               <BioField label="Bio" />
               <YearField label="School year" />
               <MajorsField label="Major(s)" />
               <MinorsField label="Minor(s) (optional)" />
               <LinkedInField label="LinkedIn profile (optional)" />
 
-              <div className="pt-4 mx-auto w-1/2">
+              <div className="mx-auto">
                 {values.resume && <ViewResume resume={values.resume} />}
                 <EditResume label="Upload your resume (optional)" />
               </div>

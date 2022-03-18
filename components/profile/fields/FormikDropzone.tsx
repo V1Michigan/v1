@@ -36,7 +36,7 @@ const FormikDropzone = ({
         <div
           {...getRootProps({
             className:
-              "m-2 p-1 pl-2 block w-full cursor-pointer bg-gray-100 border border-gray-500 text-gray-900 focus:outline-none focus:border-transparent rounded-lg",
+              "m-2 p-1 md:pl-2 block cursor-pointer bg-gray-100 hover:bg-gray-200 border border-gray-500 text-gray-900 focus:outline-none focus:border-transparent rounded-lg",
           })}
         >
           <input {...getInputProps()} />

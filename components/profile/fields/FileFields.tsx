@@ -40,14 +40,12 @@ const EditResume = ({ label }: { label: string }) => {
     return undefined;
   };
   return (
-    <div className="pl-2">
-      <FormikDropzone
-        name="resume"
-        message={label}
-        fileType={RESUME_TYPE}
-        validate={validate}
-      />
-    </div>
+    <FormikDropzone
+      name="resume"
+      message={label}
+      fileType={RESUME_TYPE}
+      validate={validate}
+    />
   );
 };
 

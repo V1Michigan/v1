@@ -62,7 +62,7 @@ const Step1 = ({
 
   return (
     <div className="bg-gradient h-full">
-      <h3 className="py-6 text-lg font-large text-center text-white font-bold">
+      <h3 className="py-2 md:py-6 text-lg font-large text-center text-white font-bold">
         Let us get to know you better!
       </h3>
       <Formik
@@ -132,7 +132,7 @@ const Step1 = ({
       >
         {({ values, isSubmitting }) => (
           <Fade>
-            <Form className="mx-auto w-4/5 px-16 py-8 space-y-8 bg-white shadow-lg rounded-md">
+            <Form className="md:w-4/5 mx-2 md:mx-auto p-4 md:p-8 space-y-8 bg-white shadow-lg rounded-t-lg">
               <NameField label="Name" />
               <EmailField value={email} label="Email" />
               <UsernameField label="Username" />
@@ -140,7 +140,7 @@ const Step1 = ({
 
               <div>
                 {values.avatar && <ViewAvatar avatar={values.avatar} />}
-                <div className="mx-auto w-1/2">
+                <div className="mx-auto">
                   <EditAvatar />
                 </div>
               </div>
