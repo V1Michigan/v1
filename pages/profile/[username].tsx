@@ -7,6 +7,7 @@ import type {
   PostgrestError,
   PostgrestSingleResponse,
 } from "@supabase/supabase-js";
+import Link from "next/link";
 import ProtectedRoute from "../../components/ProtectedRoute";
 import ViewProfile from "../../components/profile/ViewProfile";
 import ViewResume from "../../components/profile/ViewResume";
@@ -208,6 +209,10 @@ const UserProfile: NextPage = () => {
     } else {
       setInitialProfile(profileData);
       setEditMode(false);
+      ReactGA.event({
+        category: "Profile",
+        action: "Edited profile",
+      });
     }
   };
 
@@ -236,18 +241,14 @@ const UserProfile: NextPage = () => {
       onSubmit={saveProfile}
     >
       {({ values, isSubmitting }) => (
-        <div className="bg-gradient min-h-screen min-w-screen p-10 flex justify-center items-center text-white">
+        <div className="bg-gradient min-h-screen min-w-screen p-4 md:p-8 flex justify-center items-center text-white">
           <Form>
             {values.avatar && (
-              <div className="grid grid-cols-8 pb-4 items-center">
-                <div className="col-span-8x sm:col-span-4 pl-20">
-                  <div className="pl-8">
-                    <ViewAvatar avatar={values.avatar} />
-                  </div>
+              <div className="flex flex-col md:flex-row justify-around items-center">
+                <div className="flex-1">
+                  <ViewAvatar avatar={values.avatar} />
                 </div>
-                <div className="col-span-8x sm:col-span-4 pl-6">
-                  {editMode && <EditAvatar />}
-                </div>
+                <div className="flex-1">{editMode && <EditAvatar />}</div>
               </div>
             )}
 
@@ -282,52 +283,59 @@ const UserProfile: NextPage = () => {
                 {error}
               </p>
             ))}
-            <div className="mt-4 grid grid-cols-6 gap-6">
-              {isCurrentUser && (
-                <div className="mx-auto col-span-6 sm:col-span-3">
-                  {editMode ? (
-                    <>
-                      <div className="grid grid-cols-3 gap-4 pl-10">
-                        <button
-                          className="inline-flex justify-center py-2 px-4 border border-transparent shadow text-sm font-medium rounded-md
-                            text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
-                            disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-indigo-600"
-                          disabled={
-                            isSubmitting ||
-                            isObjectEqual(values, initialProfile)
-                          }
-                          type="submit"
-                        >
-                          {isSubmitting ? "Saving..." : "Save Profile"}
-                        </button>
-                        <button
-                          className="inline-flex justify-center py-2 px-4 border border-transparent shadow text-sm font-medium rounded-md
-                            text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
-                            disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-indigo-600"
-                          onClick={() => {
-                            ReactGA.event({
-                              category: "Profile",
-                              action: "Exited edit mode",
-                            });
-                            setEditMode(false);
-                          }}
-                          disabled={isSubmitting}
-                          type="button"
-                        >
-                          Cancel
-                        </button>
-                      </div>
-                      {formSubmitErrors.map((error) => (
-                        <p key={error} className="text-red-500">
-                          {error}
-                        </p>
-                      ))}
-                    </>
-                  ) : (
+            {isCurrentUser && (
+              <div className="mt-8 flex justify-around items-center">
+                {editMode ? (
+                  <>
                     <button
                       className="inline-flex justify-center py-2 px-4 border border-transparent shadow text-sm font-medium rounded-md
                         text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
                         disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-indigo-600"
+                      onClick={() => {
+                        ReactGA.event({
+                          category: "Profile",
+                          action: "Exited edit mode",
+                        });
+                        setEditMode(false);
+                      }}
+                      disabled={isSubmitting}
+                      type="button"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow text-sm font-medium rounded-md
+                        text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
+                        disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-indigo-600"
+                      disabled={
+                        isSubmitting || isObjectEqual(values, initialProfile)
+                      }
+                      type="submit"
+                    >
+                      {isSubmitting ? "Saving..." : "Save Profile"}
+                    </button>
+                    {formSubmitErrors.map((error) => (
+                      <p key={error} className="text-red-500">
+                        {error}
+                      </p>
+                    ))}
+                  </>
+                ) : (
+                  <>
+                    <Link href="/dashboard" passHref>
+                      <button
+                        className="inline-flex justify-center py-2 px-4 border border-transparent shadow text-sm font-medium rounded-md
+                          text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
+                          disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-indigo-600"
+                        type="button"
+                      >
+                        Back
+                      </button>
+                    </Link>
+                    <button
+                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow text-sm font-medium rounded-md
+                          text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
+                          disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-indigo-600"
                       onClick={() => {
                         ReactGA.event({
                           category: "Profile",
@@ -339,10 +347,10 @@ const UserProfile: NextPage = () => {
                     >
                       Edit Profile
                     </button>
-                  )}
-                </div>
-              )}
-            </div>
+                  </>
+                )}
+              </div>
+            )}
           </Form>
         </div>
       )}

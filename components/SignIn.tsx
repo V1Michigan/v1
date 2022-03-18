@@ -106,23 +106,21 @@ export default function SignIn({ isLoginPage }: SignInProps) {
         {submitError && <p className="text-red-500">{submitError}</p>}
       </div>
       {/* The login/signup flow is exactly the same, but people may not understand that */}
-      <p className="mt-4 text-center text-white">
-        {isLoginPage ? (
-          <Link href="/join" passHref>
-            <p className="link">
-              Don&apos;t have an account?{" "}
-              <span className="font-bold">Sign up here</span>
-            </p>
-          </Link>
-        ) : (
-          <Link href="/login" passHref>
-            <p className="link">
-              Already have an account?{" "}
-              <span className="font-bold">Log in here</span>
-            </p>
-          </Link>
-        )}
-      </p>
+      {isLoginPage ? (
+        <Link href="/join" passHref>
+          <p className="mt-4 text-center text-white link">
+            Don&apos;t have an account?{" "}
+            <span className="font-bold">Sign up here</span>
+          </p>
+        </Link>
+      ) : (
+        <Link href="/login" passHref>
+          <p className="mt-4 text-center text-white link">
+            Already have an account?{" "}
+            <span className="font-bold">Log in here</span>
+          </p>
+        </Link>
+      )}
     </div>
   );
 }

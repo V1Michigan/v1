@@ -17,7 +17,7 @@ interface EditProfileProps {
 }
 
 const EditProfile = ({ profile }: EditProfileProps) => (
-  <div className="grid grid-cols-2 gap-x-10 gap-y-2 justify-center items-center">
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-2 justify-center items-center">
     <EmailField value={profile.email} label="Email" />
     <PhoneField label="Phone" />
     <BioField label="Bio" />

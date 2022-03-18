@@ -12,7 +12,7 @@ import {
   InterestsField,
   AdditionalLinksField,
 } from "../fields/ProfileFields";
-import { FadeAllChildren } from "../../Fade";
+import Fade from "../../Fade";
 import ViewAvatar from "../ViewAvatar";
 import { EditAvatar } from "../fields/FileFields";
 
@@ -63,7 +63,7 @@ const Step1 = ({
 
   return (
     <div className="bg-gradient h-full">
-      <h3 className="py-6 text-lg font-large text-center text-white font-bold">
+      <h3 className="py-2 md:py-6 text-lg font-large text-center text-white font-bold">
         Let us get to know you better!
       </h3>
       <Formik
@@ -136,9 +136,8 @@ const Step1 = ({
         }}
       >
         {({ values, isSubmitting }) => (
-          // Need large pb-32 to prevent FadeAllChildren from overflowing
-          <Form className="mx-auto w-4/5 px-16 py-8 pb-32 space-y-8 bg-white shadow-lg rounded-md">
-            <FadeAllChildren>
+          <Fade>
+            <Form className="md:w-4/5 mx-2 md:mx-auto p-4 md:p-8 space-y-8 bg-white shadow-lg rounded-t-lg">
               <NameField label="Name" />
               <EmailField value={email} label="Email" />
               <UsernameField label="Username" />
@@ -146,7 +145,7 @@ const Step1 = ({
 
               <div>
                 {values.avatar && <ViewAvatar avatar={values.avatar} />}
-                <div className="mx-auto w-1/2">
+                <div className="mx-auto">
                   <EditAvatar />
                 </div>
               </div>
@@ -155,18 +154,20 @@ const Step1 = ({
               <InterestsField label="Which industries are you interested in?" />
               <AdditionalLinksField label="Any other links you'd like to share? (optional)" />
 
-              <div>
+              <div className="flex justify-end items-center">
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  className="inline-flex justify-center py-2 px-4 border border-transparent shadow text-sm font-medium rounded-md
+                    text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
+                    disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-indigo-600"
                 >
                   {isSubmitting ? "Loading..." : <>Submit &rsaquo;</>}
                 </button>
                 {submitError && <p className="text-red-500">{submitError}</p>}
               </div>
-            </FadeAllChildren>
-          </Form>
+            </Form>
+          </Fade>
         )}
       </Formik>
     </div>

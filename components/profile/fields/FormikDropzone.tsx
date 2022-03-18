@@ -24,8 +24,10 @@ const FormikDropzone = ({
       accept={fileType.join(", ")}
       maxFiles={1}
       onDrop={([file]) => {
-        setTouched(true);
+        // Order of these two statements is important for some reason,
+        // otherwise the value is updated but validate() receives the old value
         setValue(file);
+        setTouched(true);
       }}
       onFileDialogCancel={() => setTouched(true)}
     >
@@ -34,7 +36,7 @@ const FormikDropzone = ({
         <div
           {...getRootProps({
             className:
-              "m-2 p-1 pl-2 block w-full cursor-pointer bg-gray-100 border border-gray-500 text-gray-900 focus:outline-none focus:border-transparent rounded-lg",
+              "m-2 p-1 md:pl-2 block cursor-pointer bg-gray-100 hover:bg-gray-200 border border-gray-500 text-gray-900 focus:outline-none focus:border-transparent rounded-lg",
           })}
         >
           <input {...getInputProps()} />

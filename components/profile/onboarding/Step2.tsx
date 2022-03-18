@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useState } from "react";
 import { Formik, Form } from "formik";
 import ReactGA from "react-ga4";
@@ -11,7 +12,7 @@ import {
   PartnerSharingConsentField,
 } from "../fields/ProfileFields";
 import ViewResume from "../ViewResume";
-import { FadeAllChildren } from "../../Fade";
+import Fade from "../../Fade";
 import { EditResume } from "../fields/FileFields";
 
 interface FormValues {
@@ -38,7 +39,7 @@ const Step2 = ({ nextStep }: Step2Props) => {
 
   return (
     <div className="h-full bg-gradient">
-      <h3 className="py-6 text-lg font-large font-bold text-center text-white">
+      <h3 className="py-2 md:py-6 text-lg font-large text-center text-white font-bold">
         We can&apos;t wait to learn more about you!
       </h3>
       <Formik
@@ -103,34 +104,48 @@ const Step2 = ({ nextStep }: Step2Props) => {
         }}
       >
         {({ values, isSubmitting }) => (
-          // Need large pb-32 to prevent FadeAllChildren from overflowing
-          <Form className="mx-auto w-4/5 px-16 py-8 pb-32 space-y-8 bg-white shadow-lg rounded-md">
-            <FadeAllChildren>
+          <Fade>
+            <Form className="md:w-4/5 mx-2 md:mx-auto p-4 md:p-8 space-y-8 bg-white shadow-lg rounded-t-lg">
               <BioField label="Bio" />
               <YearField label="School year" />
+              <MajorsField label="Major(s)" />
+              <MinorsField label="Minor(s) (optional)" />
               <LinkedInField label="LinkedIn profile (optional)" />
 
-              <div className="pt-4 mx-auto w-1/2">
+              <div className="mx-auto">
                 {values.resume && <ViewResume resume={values.resume} />}
                 <EditResume label="Upload your resume (optional)" />
               </div>
 
-              <MajorsField label="Major(s)" />
-              <MinorsField label="Minor(s) (optional)" />
               <PartnerSharingConsentField />
 
-              <div className="pl-6 pt-4 pb-4">
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
-                  {isSubmitting ? "Loading..." : "Submit"}
-                </button>
+              <div>
+                <div className="flex justify-between items-center">
+                  <Link href="/dashboard" passHref>
+                    <button
+                      type="button"
+                      disabled={isSubmitting}
+                      className="inline-flex justify-center py-2 px-4 border border-black shadow text-sm font-medium rounded-md
+                        text-black bg-white-600 hover:bg-white-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white-500
+                        disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-white-600"
+                    >
+                      Back
+                    </button>
+                  </Link>
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow text-sm font-medium rounded-md
+                      text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
+                      disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-indigo-600"
+                  >
+                    {isSubmitting ? "Loading..." : <>Submit &rsaquo;</>}
+                  </button>
+                </div>
                 {submitError && <p className="text-red-500">{submitError}</p>}
               </div>
-            </FadeAllChildren>
-          </Form>
+            </Form>
+          </Fade>
         )}
       </Formik>
     </div>

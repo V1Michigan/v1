@@ -3,7 +3,7 @@ import Head from "next/head";
 import ReactGA from "react-ga4";
 import { What, Offer, Join } from "../components/about";
 import NavbarBuilder from "../components/NavBar";
-import Calendar from "../components/calendarapi";
+import Calendar from "../components/Calendar";
 import useSupabase from "../hooks/useSupabase";
 
 export default function IndexPage() {
