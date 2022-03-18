@@ -18,6 +18,7 @@ import {
   EditResume,
 } from "../../components/profile/fields/FileFields";
 import { PartnerSharingConsentField } from "../../components/profile/fields/ProfileFields";
+import { Rank } from "../../constants/rank";
 
 // Username included separately
 export type Profile = {
@@ -61,7 +62,7 @@ const UserProfile: NextPage = () => {
   const { supabase, username: currentUsername } = useSupabase();
   const isCurrentUser = profileUsername === currentUsername;
 
-  const [editMode, setEditMode] = useState(true);
+  const [editMode, setEditMode] = useState(false);
   const [initialProfile, setInitialProfile] = useState<Profile | null>(null);
 
   const [dataFetchErrors, setDataFetchErrors] = useState<string[]>([]);
@@ -328,7 +329,7 @@ const UserProfile: NextPage = () => {
 };
 
 export default () => (
-  <ProtectedRoute minRank={1}>
+  <ProtectedRoute minRank={Rank.RANK_1_ONBOARDING_1}>
     <UserProfile />
   </ProtectedRoute>
 );

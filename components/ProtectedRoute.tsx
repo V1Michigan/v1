@@ -2,10 +2,11 @@ import { useRouter } from "next/router";
 import PropTypes from "prop-types";
 import useSupabase from "../hooks/useSupabase";
 import Redirect from "./Redirect";
+import { Rank, rankLessThan } from "../constants/rank";
 
 interface ProtectedRouteProps {
   children: JSX.Element;
-  minRank?: number;
+  minRank?: Rank;
 }
 
 export default function ProtectedRoute({
@@ -15,14 +16,12 @@ export default function ProtectedRoute({
   const { user, rank } = useSupabase();
   const router = useRouter();
   if (user) {
-    /* eslint-disable no-else-return */
-    if (rank === null) {
+    // undefined check is mostly a type guard; if `user`, then `rank` !== undefined
+    if (rank === undefined || rank === Rank.RANK_NULL) {
       if (router.pathname !== "/welcome") {
         return <Redirect route="/welcome" />;
       }
-      // Assert rank !== undefined because we have user + rank !== null
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    } else if (minRank && rank! < minRank) {
+    } else if (minRank && rankLessThan(rank, minRank)) {
       return <Redirect route="/dashboard" />;
     }
     return children;

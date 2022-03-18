@@ -1,21 +1,14 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import type {
-  PostgrestMaybeSingleResponse,
-  PostgrestSingleResponse,
-} from "@supabase/supabase-js";
+import type { PostgrestSingleResponse } from "@supabase/supabase-js";
 import Link from "next/link";
 import ProtectedRoute from "../components/ProtectedRoute";
 import useSupabase from "../hooks/useSupabase";
+import { Rank, rankLessThan, rankToNumber } from "../constants/rank";
 import NavbarBuilder from "../components/NavBar";
 import OnboardingCohortRegister from "../components/OnboardingCohortRegister";
 import Step2Prompt from "../components/Step2Prompt";
-
-type Data = {
-  name: string;
-  rank: BigInt;
-};
 
 type Event = {
   name: string;
@@ -26,40 +19,58 @@ type Event = {
 };
 const EVENT_COLUMNS = "name, date, place, description, link";
 
+const Welcome = ({ name }: { name: string | null }) => {
+  const firstName = name?.split(" ")[0] || name;
+  return (
+    <h1 className="text-xl tracking-tight text-gray-900">
+      Welcome
+      {firstName ? (
+        <>
+          , <span className="font-bold"> {firstName}</span>.
+        </>
+      ) : (
+        "!"
+      )}
+    </h1>
+  );
+};
+
+const ONBOARDING_PROGRESS = {
+  [Rank.RANK_NULL]: 0,
+  [Rank.RANK_0]: 10,
+  [Rank.RANK_1_ONBOARDING_0]: 20,
+  [Rank.RANK_1_ONBOARDING_1]: 30,
+  [Rank.RANK_2_ONBOARDING_0]: 50,
+  [Rank.RANK_2_ONBOARDING_1]: 60,
+  [Rank.RANK_3]: 80,
+  [Rank.MEMBER]: 100,
+  [Rank.BUILDER]: 100,
+  [Rank.LEADERSHIP]: 100,
+};
+
 const Dashboard: NextPage = () => {
   const router = useRouter();
-  const { supabase, user, rank } = useSupabase();
-  const [data, setData] = useState<Data | null>(null);
+  const { supabase, user, rank, setRank } = useSupabase();
+  const [name, setName] = useState<string | null>(null);
   const [events, setEvents] = useState<Event[]>([]);
-  const [onboardingStatus, setOnboardingStatus] = useState<
-    number | null | undefined
-  >(undefined);
   const [dataFetchErrors, setDataFetchErrors] = useState<string[]>([]);
 
-  let onboardingProgress = 0;
-  if (rank === 0) {
-    onboardingProgress = 10;
-  } else if (rank === 1) {
-    onboardingProgress = 20;
-  }
-  if (onboardingStatus !== null) {
-    onboardingProgress += 10;
-  }
+  const onboardingProgress = ONBOARDING_PROGRESS[rank || Rank.RANK_NULL];
 
   useEffect(() => {
     const fetchData = async () => {
       setDataFetchErrors([]);
       if (user) {
         const {
-          data: dbData,
+          data,
           error: dbError,
           status,
         } = (await supabase
           .from("profiles")
-          .select("name, rank")
+          .select("name")
           .eq("id", user.id)
-          .single()) as PostgrestSingleResponse<Data>;
-        if ((dbError && status !== 406) || !dbData) {
+          .single()) as PostgrestSingleResponse<{ name: string }>;
+        if ((dbError && status !== 406) || !data) {
           router.replace("/404");
         } else if (status !== 200) {
           setDataFetchErrors((errors) => [
@@ -67,44 +78,21 @@ const Dashboard: NextPage = () => {
             `Unexpected status code: ${status}`,
           ]);
         } else {
-          setData(dbData);
-          await Promise.all([
-            (async () => {
-              const {
-                data: dbEvents,
-                error: dbEventError,
-                status: dbEventStatus,
-              } = await supabase
-                .from("events")
-                .select(EVENT_COLUMNS)
-                .order("date", { ascending: true });
-              if ((dbEventError && dbEventStatus !== 406) || !dbEvents) {
-                setDataFetchErrors((errors) => [
-                  ...errors,
-                  dbEventError.message,
-                ]);
-              } else {
-                setEvents(dbEvents);
-              }
-            })(),
-            (async () => {
-              const { data: onboardingData, error: onboardingError } =
-                (await supabase
-                  .from("onboarding")
-                  .select("status")
-                  .eq("user_id", user.id)
-                  .maybeSingle()) as PostgrestMaybeSingleResponse<{
-                  status: number;
-                }>;
-              if (onboardingError) {
-                setDataFetchErrors((errors) => [
-                  ...errors,
-                  onboardingError.message,
-                ]);
-              }
-              setOnboardingStatus(onboardingData?.status ?? null);
-            })(),
-          ]);
+          setName(data?.name);
+          // Wait until user's name is fetched in case there's e.g. a 404 error
+          const {
+            data: dbEvents,
+            error: dbEventError,
+            status: dbEventStatus,
+          } = await supabase
+            .from("events")
+            .select(EVENT_COLUMNS)
+            .order("date", { ascending: true });
+          if ((dbEventError && dbEventStatus !== 406) || !dbEvents) {
+            setDataFetchErrors((errors) => [...errors, dbEventError.message]);
+          } else {
+            setEvents(dbEvents);
+          }
         }
       }
     };
@@ -112,21 +100,9 @@ const Dashboard: NextPage = () => {
   }, [supabase, user, router]);
 
   // Type guard
-  if (!user) {
+  if (!user || rank === undefined) {
     return null;
   }
-
-  const handleCohortRegister = async () => {
-    const { error: upsertError } = await supabase.from("onboarding").upsert({
-      user_id: user.id,
-      status: 0,
-      created_at: new Date(),
-    });
-    if (upsertError) {
-      setDataFetchErrors((errors) => [...errors, upsertError.message]);
-    }
-    setOnboardingStatus(0);
-  };
 
   return (
     <>
@@ -139,18 +115,11 @@ const Dashboard: NextPage = () => {
           >
             <span className="flex rounded-full tracking-wide uppercase px-1 py-1 text-xs font-bold mr-2 ml-2">
               REGISTERED (R
-              {data?.rank})
+              {rankToNumber(rank).rank})
             </span>
           </div>
 
-          <h1 className="text-xl tracking-tight text-gray-900">
-            Welcome,{" "}
-            <span className="font-bold text-gray-900">
-              {" "}
-              {data?.name.split(" ")[0]}
-            </span>
-            .
-          </h1>
+          <Welcome name={name} />
           <div className="pb-2 pt-1">
             <div className="flex items-center justify-between">
               <div>
@@ -186,10 +155,10 @@ const Dashboard: NextPage = () => {
           </h1>
 
           <div className="flex flex-wrap justify-center gap-x-4 gap-y-2">
-            {onboardingStatus !== undefined && (
+            {rank && rankLessThan(rank, Rank.RANK_2_ONBOARDING_0) && (
               <OnboardingCohortRegister
-                submitted={onboardingStatus !== null}
-                handleSubmit={handleCohortRegister}
+                submitted={rankLessThan(Rank.RANK_0, rank)}
+                handleSubmit={() => setRank(Rank.RANK_1_ONBOARDING_0)}
               />
             )}
             <Step2Prompt />
