@@ -9,7 +9,7 @@ const OnboardingCohortRegister = () => {
   if (
     rank === undefined ||
     !(
-      rankLessThan(Rank.RANK_1_ONBOARDING_1, rank) &&
+      rankLessThan(Rank.RANK_1_ONBOARDING_3, rank) &&
       rankLessThan(rank, Rank.RANK_3)
     )
   ) {

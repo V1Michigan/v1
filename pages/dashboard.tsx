@@ -6,7 +6,7 @@ import Link from "next/link";
 import Head from "../components/Head";
 import ProtectedRoute from "../components/ProtectedRoute";
 import useSupabase from "../hooks/useSupabase";
-import { Rank, rankToNumber } from "../constants/rank";
+import { Rank } from "../constants/rank";
 import NavbarBuilder from "../components/NavBar";
 import CoffeeChatRegister from "../components/dashboard/CoffeeChatRegister";
 import Step2Prompt from "../components/dashboard/Step2Prompt";
@@ -37,11 +37,13 @@ const Welcome = ({ name }: { name: string | null }) => {
   );
 };
 
-const ONBOARDING_PROGRESS: { [key: string]: number } = {
+const ONBOARDING_PROGRESS = {
   [Rank.RANK_NULL]: 0,
   [Rank.RANK_0]: 10,
   [Rank.RANK_1_ONBOARDING_0]: 20,
-  [Rank.RANK_1_ONBOARDING_1]: 30,
+  [Rank.RANK_1_ONBOARDING_1]: 20,
+  [Rank.RANK_1_ONBOARDING_2]: 30,
+  [Rank.RANK_1_ONBOARDING_3]: 30,
   [Rank.RANK_2_ONBOARDING_0]: 50,
   [Rank.RANK_2_ONBOARDING_1]: 60,
   [Rank.RANK_3]: 80,
@@ -126,7 +128,7 @@ const Dashboard: NextPage = () => {
           >
             <span className="flex rounded-full tracking-wide uppercase px-1 py-1 text-xs font-bold mr-2 ml-2">
               REGISTERED (R
-              {rankToNumber(rank).rank})
+              {rankLessThan(rank).rank})
             </span>
           </div> */}
 

@@ -5,7 +5,9 @@ enum Rank {
   RANK_0 = "RANK_0", // completed Step 1, prompted to schedule 1:1 coffee chat
   // Rank 1: signed up for coffee chat, now has entry in `onboarding` table, prompted to complete Step 2
   RANK_1_ONBOARDING_0 = "RANK_1_ONBOARDING_0", // hasn't finished sign-up Step 2
-  RANK_1_ONBOARDING_1 = "RANK_1_ONBOARDING_1", // completed sign-up Step 2, can access /profile
+  RANK_1_ONBOARDING_1 = "RANK_1_ONBOARDING_1", // contacted for coffee chat, has not completed sign-up Step 2
+  RANK_1_ONBOARDING_2 = "RANK_1_ONBOARDING_2", // completed sign-up Step 2 (can access /profile), not contacted for coffee chat
+  RANK_1_ONBOARDING_3 = "RANK_1_ONBOARDING_3", // contacted for coffee chat and completed sign-up Step 2
   // Rank 2: completed coffee chat + finished sign-up Step 2
   RANK_2_ONBOARDING_0 = "RANK_2_ONBOARDING_0", // not registered for cohort
   RANK_2_ONBOARDING_1 = "RANK_2_ONBOARDING_1", // registered for, but not completed cohort
@@ -28,6 +30,10 @@ const numberToRank = (
       switch (onboardingStatus) {
         case 1:
           return Rank.RANK_1_ONBOARDING_1;
+        case 2:
+          return Rank.RANK_1_ONBOARDING_2;
+        case 3:
+          return Rank.RANK_1_ONBOARDING_3;
         case 0:
         default:
           return Rank.RANK_1_ONBOARDING_0;
@@ -65,6 +71,10 @@ const rankToNumber = (
       return { rank: 1, onboardingStatus: 0 };
     case Rank.RANK_1_ONBOARDING_1:
       return { rank: 1, onboardingStatus: 1 };
+    case Rank.RANK_1_ONBOARDING_2:
+      return { rank: 1, onboardingStatus: 2 };
+    case Rank.RANK_1_ONBOARDING_3:
+      return { rank: 1, onboardingStatus: 3 };
     case Rank.RANK_2_ONBOARDING_0:
       return { rank: 2, onboardingStatus: 0 };
     case Rank.RANK_2_ONBOARDING_1:
@@ -88,12 +98,14 @@ const RANK_COMPARISONS = {
   [Rank.RANK_0]: 2,
   [Rank.RANK_1_ONBOARDING_0]: 3,
   [Rank.RANK_1_ONBOARDING_1]: 4,
-  [Rank.RANK_2_ONBOARDING_0]: 5,
-  [Rank.RANK_2_ONBOARDING_1]: 6,
-  [Rank.RANK_3]: 7,
-  [Rank.MEMBER]: 8,
-  [Rank.BUILDER]: 9,
-  [Rank.LEADERSHIP]: 10,
+  [Rank.RANK_1_ONBOARDING_2]: 5,
+  [Rank.RANK_1_ONBOARDING_3]: 6,
+  [Rank.RANK_2_ONBOARDING_0]: 7,
+  [Rank.RANK_2_ONBOARDING_1]: 8,
+  [Rank.RANK_3]: 9,
+  [Rank.MEMBER]: 10,
+  [Rank.BUILDER]: 11,
+  [Rank.LEADERSHIP]: 12,
 };
 const rankLessThan = (rank1: Rank, rank2: Rank): boolean =>
   RANK_COMPARISONS[rank1] < RANK_COMPARISONS[rank2];

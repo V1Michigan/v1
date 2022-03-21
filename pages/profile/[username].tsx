@@ -361,7 +361,7 @@ const UserProfile: NextPage = () => {
 };
 
 const ProtectedProfile = () => (
-  <ProtectedRoute minRank={Rank.RANK_1_ONBOARDING_1}>
+  <ProtectedRoute minRank={Rank.RANK_1_ONBOARDING_2}>
     <UserProfile />
   </ProtectedRoute>
 );

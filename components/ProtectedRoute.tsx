@@ -18,6 +18,7 @@ export default function ProtectedRoute({
   if (user) {
     // undefined check is mostly a type guard; if `user`, then `rank` !== undefined
     if (rank === undefined || rank === Rank.RANK_NULL) {
+      // pathname check prevents infinite redirect loop
       if (router.pathname !== "/welcome") {
         return <Redirect route="/welcome" />;
       }

@@ -5,7 +5,10 @@ import { Rank } from "../../constants/rank";
 
 const Step2Prompt = () => {
   const { rank } = useSupabase();
-  if (rank !== Rank.RANK_1_ONBOARDING_0) {
+  if (
+    !rank ||
+    ![Rank.RANK_1_ONBOARDING_0, Rank.RANK_1_ONBOARDING_1].includes(rank)
+  ) {
     return null;
   }
   return (

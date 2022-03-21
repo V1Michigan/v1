@@ -12,7 +12,7 @@ const ProfileIndex: NextPage = () => {
 };
 
 const ProtectedProfileIndex = () => (
-  <ProtectedRoute minRank={Rank.RANK_1_ONBOARDING_1}>
+  <ProtectedRoute minRank={Rank.RANK_1_ONBOARDING_2}>
     <ProfileIndex />
   </ProtectedRoute>
 );

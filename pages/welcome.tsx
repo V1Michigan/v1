@@ -29,12 +29,23 @@ const WelcomePage: NextPage = () => {
       />
     );
   }
-  if (rank === Rank.RANK_1_ONBOARDING_0) {
+  if (rank === Rank.RANK_1_ONBOARDING_0 || rank === Rank.RANK_1_ONBOARDING_1) {
     // Not sure we should be using /welcome also for Step2
-    return <Step2 nextStep={() => setRank(Rank.RANK_1_ONBOARDING_1)} />;
+    return (
+      <Step2
+        nextStep={() =>
+          // 1.0 => 1.2, 1.1 => 1.3
+          setRank(
+            rank === Rank.RANK_1_ONBOARDING_0
+              ? Rank.RANK_1_ONBOARDING_2
+              : Rank.RANK_1_ONBOARDING_3
+          )
+        }
+      />
+    );
   }
   // Else, rank === RANK_0 (not prompted to fill Step2)
-  // or they've already filled it (rank >= Rank.RANK_1_ONBOARDING_1)
+  // or they've already filled it (rank >= Rank.RANK_1_ONBOARDING_2)
   return <Redirect route="/dashboard" />;
 };
 

@@ -35,7 +35,7 @@ const NAVIGATION = [
   {
     name: "Profile",
     href: "/profile",
-    rank: Rank.RANK_1_ONBOARDING_1,
+    minRank: Rank.RANK_1_ONBOARDING_2,
     right: false,
     login: true,
   },
@@ -126,7 +126,9 @@ export default function NavbarBuilder() {
                           } ${item?.noauth && user ? "hidden" : ""} ${
                           item?.signup ? "bg-gray-700" : ""
                         }  ${
-                          item?.rank && rank && rankLessThan(rank, item.rank)
+                          item?.minRank &&
+                          rank &&
+                          rankLessThan(rank, item.minRank)
                             ? "hidden"
                             : ""
                         }`}
@@ -163,7 +165,7 @@ export default function NavbarBuilder() {
                       : "text-gray-300 hover:bg-gray-700 hover:text-white"
                   }
                     block px-3 py-2 rounded-md text-base font-medium ${
-                      item?.rank && rank && rankLessThan(rank, item.rank)
+                      item?.minRank && rank && rankLessThan(rank, item.minRank)
                         ? "hidden"
                         : ""
                     }`}
