@@ -2,7 +2,6 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import type { PostgrestMaybeSingleResponse } from "@supabase/supabase-js";
-import Link from "next/link";
 import Head from "../components/Head";
 import ProtectedRoute from "../components/ProtectedRoute";
 import useSupabase from "../hooks/useSupabase";

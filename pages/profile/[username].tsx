@@ -7,7 +7,6 @@ import type {
   PostgrestError,
   PostgrestSingleResponse,
 } from "@supabase/supabase-js";
-import Link from "next/link";
 import Head from "../../components/Head";
 import ProtectedRoute from "../../components/ProtectedRoute";
 import ViewProfile from "../../components/profile/ViewProfile";

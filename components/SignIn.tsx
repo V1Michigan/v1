@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { useState } from "react";
 import ReactGA from "react-ga4";
 import useSupabase from "../hooks/useSupabase";

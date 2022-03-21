@@ -1,4 +1,3 @@
-import Link from "next/link";
 import PropTypes from "prop-types";
 import { ContentPage } from "./content";
 import InternalLink from "./Link";

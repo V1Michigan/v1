@@ -1,4 +1,3 @@
-import Link from "next/link";
 import Head from "next/head";
 import ReactGA from "react-ga4";
 import { What, Offer, Join } from "../components/about";
