@@ -198,14 +198,18 @@ const Dashboard: NextPage = () => {
                   </p>
                   <p className="italic mb-2">{event.place}</p>
                   <p className="mb-2">{event.description}</p>
-                  <Link href={event.link} passHref>
+                  <a
+                    href={event.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     <button
                       type="button"
                       className="text-center text-sm block text-gray-100 font-semibold bg-gradient-to-r from-blue-600 to-blue-700 hover:bg-blue-500 shadow py-2 px-3 rounded mx-auto hover:opacity-75"
                     >
                       RSVP &rsaquo;
                     </button>
-                  </Link>
+                  </a>
                 </div>
               ))}
             </div>
