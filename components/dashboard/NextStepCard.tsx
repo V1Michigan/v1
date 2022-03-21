@@ -1,4 +1,4 @@
-import Link from "next/link";
+import InternalLink from "../Link";
 
 const ConditionalLink = ({
   href,
@@ -6,14 +6,7 @@ const ConditionalLink = ({
 }: {
   href?: string;
   children: JSX.Element;
-}) =>
-  href ? (
-    <Link href={href} passHref>
-      {children}
-    </Link>
-  ) : (
-    children
-  );
+}) => (href ? <InternalLink href={href}>{children}</InternalLink> : children);
 
 interface NextStepCardProps {
   title: string;

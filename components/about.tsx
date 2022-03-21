@@ -1,6 +1,7 @@
 import Link from "next/link";
 import PropTypes from "prop-types";
 import { ContentPage } from "./content";
+import InternalLink from "./Link";
 
 const What = () => (
   <ContentPage
@@ -147,7 +148,12 @@ const Leaders = ({ team, title }: LeadersProps) => (
       <div className="mx-auto max-w-4xl">
         <div className="flex flex-wrap justify-center">
           {team.map((member) => (
-            <a className="m-2" href={member.link}>
+            <a
+              className="m-2"
+              href={member.link}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <div className="h-full flex items-center border-gray-200 border p-4 rounded-lg m-2">
                 <img
                   className="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4"
@@ -229,14 +235,14 @@ const Join = () => (
         </span>
 
         <div className="block">
-          <Link href="/community" passHref>
+          <InternalLink href="/community">
             <button
               type="button"
               className="bg-gradient-to-r from-yellow-600 to-yellow-700 hover:bg-blue-500 text-gray-100 font-semibold py-3 px-4 rounded shadow mt-5 hover:opacity-75"
             >
               Join the community &rsaquo;
             </button>
-          </Link>
+          </InternalLink>
         </div>
       </div>
     }

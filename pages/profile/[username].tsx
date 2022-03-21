@@ -22,6 +22,7 @@ import {
 } from "../../components/profile/fields/FileFields";
 import { PartnerSharingConsentField } from "../../components/profile/fields/ProfileFields";
 import { Rank } from "../../constants/rank";
+import InternalLink from "../../components/Link";
 
 // Username included separately
 export type Profile = {
@@ -324,7 +325,7 @@ const UserProfile: NextPage = () => {
                   </>
                 ) : (
                   <>
-                    <Link href="/dashboard" passHref>
+                    <InternalLink href="/dashboard">
                       <button
                         className="inline-flex justify-center py-2 px-4 border border-transparent shadow text-sm font-medium rounded-md
                           text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
@@ -333,7 +334,7 @@ const UserProfile: NextPage = () => {
                       >
                         Back
                       </button>
-                    </Link>
+                    </InternalLink>
                     <button
                       className="inline-flex justify-center py-2 px-4 border border-transparent shadow text-sm font-medium rounded-md
                           text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500

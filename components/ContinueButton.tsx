@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import { ClipLoader } from "react-spinners";
+import InternalLink from "./Link";
 
 interface ContinueButtonProps {
   loading: boolean;
@@ -22,7 +23,7 @@ const ContinueButton = ({
     {loading && (
       <ClipLoader css="position: absolute; right: 36px; margin-top: 16px;" />
     )}
-    <a href={continueButtonLink}>
+    <InternalLink href={continueButtonLink}>
       <button
         className={`rounded-full overflow-hidden bg-yellow-100 shadow-xl p-3 hover:bg-yellow-200 ${
           isHomepage ? "w-full" : ""
@@ -36,7 +37,7 @@ const ContinueButton = ({
       >
         <p className="text-black-900 font-bold text-2xl p-1">{text} </p>
       </button>
-    </a>
+    </InternalLink>
   </div>
 );
 

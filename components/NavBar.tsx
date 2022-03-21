@@ -7,6 +7,7 @@ import type { User } from "@supabase/supabase-js";
 import useSupabase from "../hooks/useSupabase";
 import useSupabaseDownload from "../hooks/useSupabaseDownload";
 import { Rank, rankLessThan } from "../constants/rank";
+import InternalLink from "./Link";
 
 const NAVIGATION = [
   // { name: 'V1 @ Michigan', href: '#', current: true },
@@ -70,7 +71,7 @@ const ProfilePic = ({ user, username }: { user: User; username: string }) => {
     return null;
   }
   return (
-    <Link href="/profile" passHref>
+    <InternalLink href="/profile">
       <div className="px-2 py-2 hover:bg-gray-700 rounded-full">
         <img
           className="flex-shrink-0 w-10 rounded-full cursor"
@@ -78,7 +79,7 @@ const ProfilePic = ({ user, username }: { user: User; username: string }) => {
           alt="User profile"
         />
       </div>
-    </Link>
+    </InternalLink>
   );
 };
 
@@ -103,17 +104,20 @@ export default function NavbarBuilder() {
                 </Disclosure.Button>
               </div>
               <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
-                <Link href="/" passHref>
+                <InternalLink
+                  href="/"
+                  className="flex-shrink-0 w-5 hover:cursor-pointer hover:opacity-75"
+                >
                   <img
-                    className="flex-shrink-0 w-5 hover:cursor-pointer hover:opacity-75"
                     src="/v1logowhite.svg"
-                    alt="v1 logo"
+                    alt="V1 logo"
+                    className="h-full"
                   />
-                </Link>
+                </InternalLink>
                 <div className="hidden sm:block sm:ml-6 w-full">
                   <div className="flex flex-row space-x-4 w-full items-center">
                     {NAVIGATION.map((item) => (
-                      <a
+                      <InternalLink
                         key={item.name}
                         href={item.href}
                         className={`${
@@ -142,7 +146,7 @@ export default function NavbarBuilder() {
                         }
                       >
                         {item.name} {item?.signup && <>&rsaquo;</>}
-                      </a>
+                      </InternalLink>
                     ))}
                     {user && username && (
                       <ProfilePic user={user} username={username} />
@@ -156,7 +160,7 @@ export default function NavbarBuilder() {
           <Disclosure.Panel className="sm:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1">
               {NAVIGATION.map((item) => (
-                <a
+                <InternalLink
                   key={item.name}
                   href={item.href}
                   className={`${
@@ -174,7 +178,7 @@ export default function NavbarBuilder() {
                   }
                 >
                   {item.name}
-                </a>
+                </InternalLink>
               ))}
             </div>
           </Disclosure.Panel>

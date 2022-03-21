@@ -5,6 +5,7 @@ import { What, Offer, Join } from "../components/about";
 import NavbarBuilder from "../components/NavBar";
 import Calendar from "../components/Calendar";
 import useSupabase from "../hooks/useSupabase";
+import InternalLink from "../components/Link";
 
 export default function IndexPage() {
   const { user } = useSupabase();
@@ -34,7 +35,7 @@ export default function IndexPage() {
       <NavbarBuilder />
       <div className="h-screen flex justify-center items-center bg-gradient-to-r from-gray-200 to-white">
         <div className="max-w-screen-xl">
-          {/* <Link href="https://studio.v1michigan.com" target="_blank">
+          {/* <a href="https://studio.v1michigan.com" target="_blank" rel="noopener noreferrer">
             <div className="block lg:text-center mb-8">
               <div
                 className="
@@ -61,7 +62,7 @@ export default function IndexPage() {
                 </svg>
               </div>
             </div>
-  </Link> */}
+  </a> */}
           <div className="md:flex">
             <div className="flex-1 p-8 flex items-center">
               <div>
@@ -77,7 +78,7 @@ export default function IndexPage() {
                 </p>
                 {!user && (
                   <div className="block">
-                    <Link href="/join" passHref>
+                    <InternalLink href="/join">
                       <button
                         className="bg-gradient-to-r from-yellow-600 to-yellow-700 hover:bg-blue-500 text-gray-100 font-semibold py-3 px-4 rounded shadow mt-5 hover:opacity-75"
                         onClick={() =>
@@ -90,7 +91,7 @@ export default function IndexPage() {
                       >
                         Sign up &rsaquo;
                       </button>
-                    </Link>
+                    </InternalLink>
                   </div>
                 )}
               </div>

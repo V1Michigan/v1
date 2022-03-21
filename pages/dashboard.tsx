@@ -11,6 +11,7 @@ import NavbarBuilder from "../components/NavBar";
 import CoffeeChatRegister from "../components/dashboard/CoffeeChatRegister";
 import Step2Prompt from "../components/dashboard/Step2Prompt";
 import OnboardingCohortRegister from "../components/dashboard/OnboardingCohortRegister";
+import InternalLink from "../components/Link";
 
 type Event = {
   name: string;
@@ -218,7 +219,7 @@ const Dashboard: NextPage = () => {
               <h1 className="text-2xl font-bold tracking-tight text-gray-800 mb-4 mt-8 text-center">
                 Resources &#8250;
               </h1>
-              <Link href="/community" passHref>
+              <InternalLink href="/community">
                 <p className="block bg-gray-100 max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center text-lg hover:bg-gray-200 hover:opacity-75 transition-all cursor-pointer">
                   <img
                     className="mb-1 inline-block w-8 mr-1 my-auto"
@@ -228,10 +229,12 @@ const Dashboard: NextPage = () => {
                   Join the{" "}
                   <span className="font-semibold">V1 Discord &rsaquo;</span>
                 </p>
-              </Link>
+              </InternalLink>
               <a
                 className="block bg-gray-100 max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center text-lg hover:bg-gray-200 hover:opacity-75 transition-all"
                 href="https://v1network.substack.com/"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 <img
                   className="mb-1 inline-block w-8 mr-1 my-auto"

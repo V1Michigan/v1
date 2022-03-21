@@ -4,6 +4,7 @@ import ReactGA from "react-ga4";
 import useSupabase from "../hooks/useSupabase";
 import { HOSTNAME } from "../pages/_app";
 import Head from "./Head";
+import InternalLink from "./Link";
 
 interface GoogleSignInProps {
   text: string;
@@ -109,19 +110,19 @@ export default function SignIn({ isLoginPage }: SignInProps) {
       </div>
       {/* The login/signup flow is exactly the same, but people may not understand that */}
       {isLoginPage ? (
-        <Link href="/join" passHref>
+        <InternalLink href="/join">
           <p className="mt-4 text-center text-white link">
             Don&apos;t have an account?{" "}
             <span className="font-bold">Sign up here</span>
           </p>
-        </Link>
+        </InternalLink>
       ) : (
-        <Link href="/login" passHref>
+        <InternalLink href="/login">
           <p className="mt-4 text-center text-white link">
             Already have an account?{" "}
             <span className="font-bold">Log in here</span>
           </p>
-        </Link>
+        </InternalLink>
       )}
     </div>
   );

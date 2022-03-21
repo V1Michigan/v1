@@ -1,4 +1,3 @@
-import Link from "next/link";
 import type { Profile } from "../../pages/profile/[username]";
 import {
   FieldOfStudy,
@@ -14,18 +13,24 @@ interface ViewProfileProps {
 const ViewProfile = ({ profile }: ViewProfileProps) => (
   <div>
     <div className="flex flex-row gap-x-8 p-2">
-      <Link href={`mailto:${profile.email}`} passHref>
+      <a
+        href={`mailto:${profile.email}`}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         <img src="/profile/email.svg" alt="Email" />
-      </Link>
-      <Link href={profile.linkedin} passHref>
+      </a>
+      <a href={profile.linkedin} target="_blank" rel="noopener noreferrer">
         <img src="/profile/linkedin.svg" alt="LinkedIn" />
-      </Link>
+      </a>
     </div>
     {/* If "additional links" is a single URL, link to that; else, just show the text */}
     {/^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)$/.test(
       profile.website
     ) ? (
-      <Link href={profile.website}>{profile.website}</Link>
+      <a href={profile.website} target="_blank" rel="noopener noreferrer">
+        {profile.website}
+      </a>
     ) : (
       <p>{profile.website}</p>
     )}

@@ -3,6 +3,7 @@ import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
+import InternalLink from "../components/Link";
 
 export default function YC() {
   const [event, setEvent] = useState({
@@ -69,13 +70,13 @@ export default function YC() {
       </Head>
       <div className="bg-gradient-to-r from-gray-900 to-black p-4">
         <div className="p-4 flex justify-center md:justify-start">
-          <Link href="/" passHref>
+          <InternalLink href="/">
             <img
               className="logo mr-3 rounded-sm"
               src="/v1_logo_gold.png"
               alt="V1 logo"
             />
-          </Link>
+          </InternalLink>
           <div className="text-white text-xl flex items-center font-bold">
             x
           </div>

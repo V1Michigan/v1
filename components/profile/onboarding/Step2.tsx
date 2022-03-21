@@ -15,6 +15,7 @@ import {
 import ViewResume from "../ViewResume";
 import Fade from "../../Fade";
 import { EditResume } from "../fields/FileFields";
+import InternalLink from "../../Link";
 
 interface FormValues {
   bio: string;
@@ -123,7 +124,7 @@ const Step2 = ({ nextStep }: Step2Props) => {
 
               <div>
                 <div className="flex justify-between items-center">
-                  <Link href="/dashboard" passHref>
+                  <InternalLink href="/dashboard">
                     <button
                       type="button"
                       disabled={isSubmitting}
@@ -133,7 +134,7 @@ const Step2 = ({ nextStep }: Step2Props) => {
                     >
                       Back
                     </button>
-                  </Link>
+                  </InternalLink>
                   <button
                     type="submit"
                     disabled={isSubmitting}
