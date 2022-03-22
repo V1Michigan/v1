@@ -73,7 +73,7 @@ const ProfilePic = ({ user, username }: { user: User; username: string }) => {
     <InternalLink href="/profile">
       <div className="px-2 py-2 hover:bg-gray-700 rounded-full">
         <img
-          className="flex-shrink-0 w-10 rounded-full cursor"
+          className="flex-shrink-0 w-10 h-10 object-cover rounded-full cursor"
           src={avatarUrl}
           alt="User profile"
         />
