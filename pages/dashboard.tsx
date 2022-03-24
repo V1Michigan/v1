@@ -37,16 +37,16 @@ const Welcome = ({ name }: { name: string | null }) => {
   );
 };
 
-const ONBOARDING_PROGRESS = {
+const ONBOARDING_PROGRESS: { [key: string]: number } = {
   [Rank.RANK_NULL]: 0,
   [Rank.RANK_0]: 10,
   [Rank.RANK_1_ONBOARDING_0]: 20,
   [Rank.RANK_1_ONBOARDING_1]: 20,
-  [Rank.RANK_1_ONBOARDING_2]: 30,
-  [Rank.RANK_1_ONBOARDING_3]: 30,
-  [Rank.RANK_2_ONBOARDING_0]: 50,
+  [Rank.RANK_1_ONBOARDING_2]: 25,
+  [Rank.RANK_1_ONBOARDING_3]: 25,
+  [Rank.RANK_2_ONBOARDING_0]: 45,
   [Rank.RANK_2_ONBOARDING_1]: 60,
-  [Rank.RANK_3]: 80,
+  [Rank.RANK_3]: 70,
   [Rank.MEMBER]: 100,
   [Rank.BUILDER]: 100,
   [Rank.LEADERSHIP]: 100,
@@ -131,7 +131,6 @@ const Dashboard: NextPage = () => {
               {rankLessThan(rank).rank})
             </span>
           </div> */}
-
           <Welcome name={name} />
           <div className="pb-2 pt-1">
             <div className="flex items-center justify-between">
@@ -146,15 +145,56 @@ const Dashboard: NextPage = () => {
                 </span>
               </div>
             </div>
-            <div className="overflow-hidden h-2 text-xs flex rounded bg-blue-100">
+            <div className="relative h-2 text-xs flex rounded bg-blue-100">
               <div
                 style={{
                   width: `${onboardingProgress}%`,
                   transitionProperty: "width",
                   transitionDuration: "1s",
                 }}
-                className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-600"
+                // Round edges, but not the right side
+                className={`shadow-none rounded-l ${
+                  onboardingProgress === 100 ? "rounded-r" : ""
+                } bg-blue-600`}
               />
+              {/* Hide labels on small screens */}
+              <div className="absolute w-full hidden md:block">
+                {[
+                  {
+                    label: "Welcome! 🙂",
+                    position: ONBOARDING_PROGRESS[Rank.RANK_NULL],
+                  },
+                  {
+                    label: "Complete profile 🖼️",
+                    position: ONBOARDING_PROGRESS[Rank.RANK_1_ONBOARDING_3],
+                  },
+                  {
+                    label: "Coffee chat ☕️",
+                    position: ONBOARDING_PROGRESS[Rank.RANK_2_ONBOARDING_0],
+                  },
+                  {
+                    label: "Cohort 🛠️",
+                    position: ONBOARDING_PROGRESS[Rank.RANK_3],
+                  },
+                  {
+                    label: "V1 Member 🎉",
+                    position: ONBOARDING_PROGRESS[Rank.MEMBER],
+                  },
+                ].map(({ label, position }) => (
+                  <div
+                    className="absolute whitespace-nowrap mt-3 z-2"
+                    style={{
+                      left: `${position}%`,
+                      transform: `translateX(-${
+                        [0, 100].includes(position) ? position : 50
+                      }%)`,
+                    }}
+                    key={position}
+                  >
+                    {label}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
