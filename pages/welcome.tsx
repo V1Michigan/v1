@@ -12,12 +12,14 @@ import Step1 from "../components/profile/onboarding/Step1";
 import Step2 from "../components/profile/onboarding/Step2";
 import { Rank } from "../constants/rank";
 
-// const WELCOME_EMAIL_URL =
-//   "https://v1api-production.up.railway.app/email/welcome";
 const WELCOME_EMAIL_URL =
-  "https://damp-depths-59602.herokuapp.com/https://v1api-dev.up.railway.app/email/welcome";
+  "https://damp-depths-59602.herokuapp.com/https://v1api-production.up.railway.app/email/welcome";
 const sendWelcomeEmail = async (supabase: SupabaseClient, user: User) => {
+  const session = supabase.auth.session();
+  if (!session) return;
+  const { access_token: accessToken } = session;
   const { email } = user;
+
   // Might as well keep all DB querying in the frontend for now
   const { data, error: _error } = (await supabase
     .from("profiles")
@@ -32,6 +34,7 @@ const sendWelcomeEmail = async (supabase: SupabaseClient, user: User) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
       },
       body: JSON.stringify({
         recipient: email,
