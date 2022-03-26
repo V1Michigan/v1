@@ -1,4 +1,9 @@
 import { NextPage } from "next";
+import {
+  SupabaseClient,
+  PostgrestSingleResponse,
+  User,
+} from "@supabase/supabase-js";
 import useSupabase from "../hooks/useSupabase";
 import { isGoogleUser } from "../contexts/SupabaseContext";
 import ProtectedRoute from "../components/ProtectedRoute";
@@ -7,8 +12,43 @@ import Step1 from "../components/profile/onboarding/Step1";
 import Step2 from "../components/profile/onboarding/Step2";
 import { Rank } from "../constants/rank";
 
+const WELCOME_EMAIL_URL =
+  "https://damp-depths-59602.herokuapp.com/https://v1api-production.up.railway.app/email/welcome";
+const sendWelcomeEmail = async (supabase: SupabaseClient, user: User) => {
+  const session = supabase.auth.session();
+  if (!session) return;
+  const { access_token: accessToken } = session;
+  const { email } = user;
+
+  // Might as well keep all DB querying in the frontend for now
+  const { data, error: _error } = (await supabase
+    .from("profiles")
+    .select("name")
+    .eq("id", user.id)
+    .single()) as PostgrestSingleResponse<{ name: string }>;
+  if (!data?.name) {
+    return;
+  }
+  try {
+    await fetch(WELCOME_EMAIL_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({
+        recipient: email,
+        name: data.name,
+      }),
+    });
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error(error);
+  }
+};
+
 const WelcomePage: NextPage = () => {
-  const { user, rank, setRank } = useSupabase();
+  const { supabase, user, rank, setRank } = useSupabase();
 
   // Type guard
   if (!user || rank === undefined) {
@@ -25,7 +65,10 @@ const WelcomePage: NextPage = () => {
         email={user.email}
         initialName={initialName}
         initialAvatarUrl={initialAvatarUrl}
-        nextStep={() => setRank(Rank.RANK_0)}
+        nextStep={() => {
+          setRank(Rank.RANK_0);
+          sendWelcomeEmail(supabase, user);
+        }}
       />
     );
   }
