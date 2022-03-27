@@ -5,7 +5,6 @@ import {
   User,
 } from "@supabase/supabase-js";
 import useSupabase from "../hooks/useSupabase";
-import { isGoogleUser } from "../contexts/SupabaseContext";
 import ProtectedRoute from "../components/ProtectedRoute";
 import Redirect from "../components/Redirect";
 import Step1 from "../components/profile/onboarding/Step1";
@@ -55,16 +54,12 @@ const WelcomePage: NextPage = () => {
     return null;
   }
 
-  const [initialName, initialAvatarUrl] = isGoogleUser(user)
-    ? [user.user_metadata.full_name, user.user_metadata.avatar_url]
-    : [undefined, undefined];
-
   if (rank === Rank.RANK_NULL) {
     return (
       <Step1
         email={user.email}
-        initialName={initialName}
-        initialAvatarUrl={initialAvatarUrl}
+        initialName={user.user_metadata.full_name}
+        initialAvatarUrl={user.user_metadata.avatar_url}
         nextStep={() => {
           setRank(Rank.RANK_0);
           sendWelcomeEmail(supabase, user);
