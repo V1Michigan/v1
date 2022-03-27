@@ -6,7 +6,7 @@ interface HeadProps {
 export default function Head({ title }: HeadProps) {
   return (
     <NextHead>
-      <title>V1 | {title}</title>
+      <title>V1{title && <> | {title}</>}</title>
       <link rel="icon" href="/favicon.ico?v=1" />
       <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       <meta
