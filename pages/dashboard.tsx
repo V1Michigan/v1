@@ -42,15 +42,38 @@ const ONBOARDING_PROGRESS = {
   [Rank.RANK_0]: 10,
   [Rank.RANK_1_ONBOARDING_0]: 20,
   [Rank.RANK_1_ONBOARDING_1]: 20,
-  [Rank.RANK_1_ONBOARDING_2]: 30,
-  [Rank.RANK_1_ONBOARDING_3]: 30,
+  [Rank.RANK_1_ONBOARDING_2]: 25,
+  [Rank.RANK_1_ONBOARDING_3]: 25,
   [Rank.RANK_2_ONBOARDING_0]: 50,
   [Rank.RANK_2_ONBOARDING_1]: 60,
-  [Rank.RANK_3]: 80,
+  [Rank.RANK_3]: 75,
   [Rank.MEMBER]: 100,
   [Rank.BUILDER]: 100,
   [Rank.LEADERSHIP]: 100,
 };
+
+const PROGRESS_SECTIONS = [
+  {
+    label: "Welcome! 🙂",
+    position: ONBOARDING_PROGRESS[Rank.RANK_NULL],
+  },
+  {
+    label: "Complete profile 🖼️",
+    position: ONBOARDING_PROGRESS[Rank.RANK_1_ONBOARDING_3],
+  },
+  {
+    label: "Coffee chat ☕️",
+    position: ONBOARDING_PROGRESS[Rank.RANK_2_ONBOARDING_0],
+  },
+  {
+    label: "Cohort 🛠️",
+    position: ONBOARDING_PROGRESS[Rank.RANK_3],
+  },
+  {
+    label: "V1 Member 🎉",
+    position: ONBOARDING_PROGRESS[Rank.MEMBER],
+  },
+];
 
 const Dashboard: NextPage = () => {
   const router = useRouter();
@@ -131,30 +154,46 @@ const Dashboard: NextPage = () => {
               {rankLessThan(rank).rank})
             </span>
           </div> */}
-
           <Welcome name={name} />
           <div className="pb-2 pt-1">
-            <div className="flex items-center justify-between">
-              <div>
-                <span className="text-xs font-semibold inline-block uppercase text-blue-800 mb-1">
-                  Onboarding Progress
-                </span>
-              </div>
-              <div className="text-right">
-                <span className="text-xs font-semibold inline-block text-blue-800 ml-4">
-                  {onboardingProgress}%
-                </span>
-              </div>
-            </div>
-            <div className="overflow-hidden h-2 text-xs flex rounded bg-blue-100">
+            <p className="text-xs font-semibold inline-block uppercase text-blue-800 mb-1">
+              Onboarding Progress ({onboardingProgress}%)
+            </p>
+            <div className="relative h-2 text-xs flex rounded bg-blue-100">
               <div
                 style={{
                   width: `${onboardingProgress}%`,
                   transitionProperty: "width",
                   transitionDuration: "1s",
                 }}
-                className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-600"
+                // Round edges, but not the right side
+                className={`bg-blue-600 rounded-l ${
+                  onboardingProgress === 100 ? "rounded-r" : ""
+                }`}
               />
+              {/* Hide labels on small screens */}
+              <div className="absolute w-full hidden md:block">
+                {PROGRESS_SECTIONS.map(({ label, position }) => (
+                  <div
+                    className="absolute whitespace-nowrap"
+                    style={{
+                      left: `${position}%`,
+                      transform: `translateX(-${
+                        [0, 100].includes(position) ? position : 50
+                      }%)`,
+                    }}
+                    key={position}
+                  >
+                    {/* Section divider (same color as background) */}
+                    <div
+                      className={`w-2 h-3 mx-auto bg-gray-100 ${
+                        [0, 100].includes(position) ? "invisible" : ""
+                      }`}
+                    />
+                    <p>{label}</p>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
