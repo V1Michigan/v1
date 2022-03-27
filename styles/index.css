@@ -11,17 +11,23 @@
   @apply bg-blue-500 text-white font-bold py-2 px-4 rounded;
 }
 
-.fade-in-section {
+.fade-in {
   opacity: 0;
-  transform: translateY(20vh);
   visibility: hidden;
   transition: opacity 0.8s ease-out, transform 1.6s ease-out;
   will-change: opacity, visibility;
 }
-.fade-in-section.is-visible {
+.fade-in.is-visible {
   opacity: 1;
-  transform: none;
   visibility: visible;
+}
+
+.fade-in-motion {
+  transform: translateY(20vh);
+}
+
+.fade-in-motion.is-visible {
+  transform: none;
 }
 
 .h-screen-3\/4 {

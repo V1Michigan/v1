@@ -27,25 +27,25 @@ interface ProjectProps {
 }
 
 const Project = ({ name, description, stats, image }: ProjectProps) => (
-  // <Fade>
-  <div
-    className="text-white h-screen-3/4 w-5/6 mx-auto my-8 bg-cover bg-fixed bg-no-repeat shadow-2xl"
-    style={{ backgroundImage: `url(${image})` }}
-  >
-    <div className="h-full bg-gradient-to-t from-black/75 to-white/50 flex flex-col justify-end gap-y-1 p-4">
-      <h3 className="text-5xl font-semibold">{name}</h3>
-      <p className="text-2xl">{description}</p>
-      <div className="flex flex-row justify-start items-center gap-x-2">
-        {stats.map((stat, i) => (
-          <Fragment key={stat}>
-            <p className="text-md font-bold tracking-tighter">{stat}</p>
-            {i < stats.length - 1 && <span>&bull;</span>}
-          </Fragment>
-        ))}
+  <Fade motion={false}>
+    <div
+      className="text-white h-screen-3/4 w-5/6 mx-auto my-8 bg-cover bg-fixed bg-no-repeat shadow-2xl"
+      style={{ backgroundImage: `url(${image})` }}
+    >
+      <div className="h-full bg-gradient-to-t from-black/75 to-white/50 flex flex-col justify-end gap-y-1 p-4">
+        <h3 className="text-5xl font-semibold">{name}</h3>
+        <p className="text-2xl">{description}</p>
+        <div className="flex flex-row justify-start items-center gap-x-2">
+          {stats.map((stat, i) => (
+            <Fragment key={stat}>
+              <p className="text-md font-bold tracking-tighter">{stat}</p>
+              {i < stats.length - 1 && <span>&bull;</span>}
+            </Fragment>
+          ))}
+        </div>
       </div>
     </div>
-  </div>
-  // </Fade>
+  </Fade>
 );
 
 const Projects = () => (
