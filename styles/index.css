@@ -24,6 +24,10 @@
   visibility: visible;
 }
 
+.h-screen-3\/4 {
+  height: 75vh;
+}
+
 /* Start purging... */
 @tailwind utilities;
 /* Stop purging. */

@@ -48,8 +48,8 @@ export default function IndexPage() {
         </div>
       </div>
 
-      <What />
       <Projects />
+      <What />
       <Offer />
       <Calendar />
       <Join />
