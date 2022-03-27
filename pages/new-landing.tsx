@@ -1,14 +1,10 @@
 import Head from "next/head";
-import ReactGA from "react-ga4";
 import { What, Offer, Join } from "../components/about";
 import Projects from "../components/Projects";
 import NavbarBuilder from "../components/NavBar";
 import Calendar from "../components/Calendar";
-import useSupabase from "../hooks/useSupabase";
-import InternalLink from "../components/Link";
 
 export default function IndexPage() {
-  const { user } = useSupabase();
   return (
     <main>
       <Head>
@@ -33,7 +29,7 @@ export default function IndexPage() {
         <div className="bg-gradient-to-r from-gray-900 to-black opacity-80">
           <div className="flex justify-center items-center text-center h-full py-48 max-w-4xl mx-auto">
             <h1 className="tracking-tightest text-white text-8xl font-extrabold p-4">
-              It's time to build.
+              It&apos;s time to build.
               {/* We invest in smart people who believe they can do big things. */}
             </h1>
           </div>
@@ -43,7 +39,7 @@ export default function IndexPage() {
       <div className="h-screen">
         <div className="p-6 max-w-screen-xl mx-auto">
           <h1 className="tracking-tightest text-center text-gray-900 text-4xl font-bold p-4">
-            If you're in V1, you're building something incredible.
+            If you&apos;re in V1, you&apos;re building something incredible.
           </h1>
         </div>
       </div>

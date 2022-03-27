@@ -8,13 +8,14 @@ const PROJECTS = [
       "The largest student-run startup career fair at the University of Michigan",
     // If we ever get # of hire metrics...that'd be awesome here
     stats: ["400+ students", "239 1:1 matches", "17 high-growth startups"],
+    // Would be cool to have some company logos here
     image: "/projects/startup-fair.jpg",
   },
   {
     name: "V1 Connect",
     description:
       "Bringing together top Michigan builders to connect and collaborate",
-    stats: ["80+ students", "Dozens of projects", "&infin; connections"],
+    stats: ["80+ students", "Dozens of projects", "∞ connections"],
     image: "/projects/connect.jpg",
   },
 ];
