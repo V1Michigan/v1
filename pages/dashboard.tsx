@@ -23,9 +23,14 @@ const EVENT_COLUMNS = "name, date, place, description, link";
 
 const Welcome = ({ name }: { name: string | null }) => {
   const firstName = name?.split(" ")[0] || name;
+  const hrs = new Date().getHours();
+  let greeting;
+  if (hrs < 12) greeting = "Good morning";
+  else if (hrs >= 12 && hrs <= 17) greeting = "Good afternoon";
+  else if (hrs >= 17 && hrs <= 24) greeting = "Good evening";
   return (
     <h1 className="text-xl tracking-tight text-gray-900">
-      Welcome
+      {greeting}
       {firstName ? (
         <>
           , <span className="font-bold"> {firstName}</span>.
