@@ -43,14 +43,14 @@ interface ProjectProps {
 
 const Project = ({ name, link, description, stats, image }: ProjectProps) => (
   <Fade motion={false}>
-    <a href={link} target="_blank">
-      <div
-        // Consider applying scale transform via parallax instead of hover
-        className="text-white h-screen-3/4 w-5/6 mx-auto my-8 bg-cover bg-fixed bg-no-repeat shadow-lg transition hover:scale-105 hover:shadow-2xl"
-        style={{ backgroundImage: `url(${image})` }}
-      >
+    <div
+      // Consider applying scale transform via parallax instead of hover
+      className="text-white h-screen-3/4 w-5/6 mx-auto my-8 bg-cover bg-fixed bg-no-repeat shadow-lg transition hover:scale-105 hover:shadow-2xl"
+      style={{ backgroundImage: `url(${image})` }}
+    >
+      <a href={link} target="_blank">
         <div className="h-full bg-gradient-to-t from-black/75 to-white/50 flex flex-col justify-end gap-y-1 p-4">
-          <h3 className="text-5xl font-bold">{name}</h3>
+          <h3 className="text-4xl font-bold">{name}</h3>
           <p className="text-2xl">{description}</p>
           <div className="flex flex-row justify-start items-center gap-x-2">
             {stats.map((stat, i) => (
@@ -61,8 +61,8 @@ const Project = ({ name, link, description, stats, image }: ProjectProps) => (
             ))}
           </div>
         </div>
-      </div>
-    </a>
+      </a>
+    </div>
   </Fade>
 );
 

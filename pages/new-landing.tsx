@@ -2,7 +2,8 @@ import Head from "next/head";
 import { What, Offer, Join } from "../components/about";
 import Projects from "../components/Projects";
 import NavbarBuilder from "../components/NavBar";
-import Calendar from "../components/Calendar";
+// import Calendar from "../components/Calendar";
+import People from "../components/People";
 
 export default function IndexPage() {
   return (
@@ -65,10 +66,7 @@ export default function IndexPage() {
         </div>
       </div>
 
-      {/* <What /> */}
-      {/* <Offer /> */}
-      {/* <Calendar /> */}
-      {/* <Join /> */}
+      <People />
 
       <div className="bg-gradient-to-r from-gray-900 to-black">
         <p className="footer text-gray-200 text-center py-8">
