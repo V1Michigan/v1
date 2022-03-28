@@ -27,6 +27,7 @@
     "react-html-parser": "^2.0.2",
     "react-pdf": "^5.7.1",
     "react-reveal": "^1.2.2",
+    "react-scroll-parallax": "^3.0.5",
     "react-select": "^5.2.2",
     "react-spinners": "^0.11.0",
     "react-tsparticles": "^1.37.5",
