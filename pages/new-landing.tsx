@@ -3,6 +3,7 @@ import { What, Offer, Join } from "../components/about";
 import Projects from "../components/Projects";
 import NavbarBuilder from "../components/NavBar";
 import Calendar from "../components/Calendar";
+import People from "../components/People";
 
 export default function IndexPage() {
   return (
@@ -45,6 +46,7 @@ export default function IndexPage() {
       </div>
 
       <Projects />
+      <People />
       <What />
       <Offer />
       <Calendar />
