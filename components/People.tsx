@@ -37,19 +37,31 @@ const Person = ({ name }: { name: string }) => (
 );
 
 const People = () => (
-  <Marquee speed={40} gradient={false}>
+  <div className="relative">
+    <Marquee speed={40} gradient={false} style={{ zIndex: 0 }}>
+      <div
+        className="
+          grid grid-flow-col
+          md:grid-rows-[repeat(2,_8rem)] md:auto-cols-[8rem]
+          grid-rows-[repeat(2,_4rem)] auto-cols-[4rem]
+          overflow-x-hidden
+        "
+      >
+        {TEAM.map((name) => (
+          <Person key={name} name={name} />
+        ))}
+      </div>
+    </Marquee>
     <div
       className="
-        grid grid-flow-col md:grid-rows-[repeat(2,_8rem)] md:auto-cols-[8rem]
-        grid-rows-[repeat(2,_4rem)] auto-cols-[4rem]
-        overflow-x-hidden
+        absolute top-0 left-0 right-0 bottom-0
+        flex justify-center items-center z-1
+        bg-gradient-to-r to-white/30 via-black/70 from-white/30
       "
     >
-      {TEAM.map((name) => (
-        <Person key={name} name={name} />
-      ))}
+      <h2 className="text-6xl text-white font-bold">Our team</h2>
     </div>
-  </Marquee>
+  </div>
 );
 
 export default People;

@@ -50,7 +50,7 @@ const Project = ({ name, link, description, stats, image }: ProjectProps) => (
     >
       <a href={link}>
         <div className="h-full bg-gradient-to-t from-black/75 to-white/50 flex flex-col justify-end gap-y-1 p-4">
-          <h3 className="text-5xl font-bold">{name}</h3>
+          <h3 className="text-4xl font-bold">{name}</h3>
           <p className="text-2xl">{description}</p>
           <div className="flex flex-row justify-start items-center gap-x-2">
             {stats.map((stat, i) => (
