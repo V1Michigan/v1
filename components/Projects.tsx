@@ -16,7 +16,7 @@ const PROJECTS = [
     // Maybe remove "V1" from "V1 Platform"
     name: "V1 Platform",
     link: "/join",
-    description: "Making V1 the most tech-enabled group at Michigan",
+    description: "The operating system for our community.",
     // We could just call this "V1 Community" and use newsletter/Discord stats
     stats: [], // TODO: ???
     image: "/projects/platform.png",
@@ -26,7 +26,7 @@ const PROJECTS = [
     // TODO: More recent newsletter link or RSVP
     link: "https://v1network.substack.com/p/whats-next-v1-connect-meet-michigans",
     description:
-      "Bringing together top Michigan builders to connect and collaborate",
+      "Bringing together the top student builders to connect and collaborate.",
     stats: ["80+ students", "Dozens of projects", "∞ connections"],
     // TODO: Downsample images
     image: "/projects/connect.jpg",
@@ -43,7 +43,7 @@ interface ProjectProps {
 
 const Project = ({ name, link, description, stats, image }: ProjectProps) => (
   <Fade motion={false}>
-    <a href={link}>
+    <a href={link} target="_blank">
       <div
         // Consider applying scale transform via parallax instead of hover
         className="text-white h-screen-3/4 w-5/6 mx-auto my-8 bg-cover bg-fixed bg-no-repeat shadow-lg transition hover:scale-105 hover:shadow-2xl"
