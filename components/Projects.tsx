@@ -48,7 +48,7 @@ const Project = ({ name, link, description, stats, image }: ProjectProps) => (
       className="text-white h-screen-3/4 w-5/6 mx-auto my-8 bg-cover bg-fixed bg-no-repeat shadow-lg transition hover:scale-105 hover:shadow-2xl"
       style={{ backgroundImage: `url(${image})` }}
     >
-      <a href={link} target="_blank">
+      <a href={link} target="_blank" rel="noreferrer">
         <div className="h-full bg-gradient-to-t from-black/75 to-white/50 flex flex-col justify-end gap-y-1 p-4">
           <h3 className="text-4xl font-bold">{name}</h3>
           <p className="text-2xl">{description}</p>

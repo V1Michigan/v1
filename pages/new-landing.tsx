@@ -1,5 +1,4 @@
 import Head from "next/head";
-import { What, Offer, Join } from "../components/about";
 import Projects from "../components/Projects";
 import NavbarBuilder from "../components/NavBar";
 // import Calendar from "../components/Calendar";
@@ -35,14 +34,14 @@ export default function IndexPage() {
             </h1>
           </div>
           <h2 className="flex justify-center p-4 text-white text-xl italic">
-            (or fails trying, but we're still shooting for the stars...)
+            (or fails trying, but we&apos;re still shooting for the stars...)
           </h2>
         </div>
       </div>
 
       <div className="bg-gray-100 p-4">
         <h1 className="max-w-screen-xl mx-auto py-24 tracking-tightest text-center text-gray-800 text-5xl font-bold p-4">
-          What's epic? See for yourself. ⚡
+          What&apos;s epic? See for yourself. ⚡
         </h1>
 
         <Projects />
@@ -67,7 +66,6 @@ export default function IndexPage() {
       </div>
 
       <People />
-
       <div className="bg-gradient-to-r from-gray-900 to-black">
         <p className="footer text-gray-200 text-center py-8">
           &copy; 2022 V1 | team@v1michigan.com
