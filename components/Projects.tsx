@@ -8,6 +8,7 @@ const PROJECTS = [
     description:
       "The largest student-run startup career fair at the University of Michigan",
     // If we ever get # of hire metrics...that'd be awesome here
+    // TODO: Hopin metrics
     stats: ["400+ students", "239 1:1 matches", "17 high-growth startups"],
     // Would be cool to have some company logos here
     image: "/projects/startup-fair.jpg",
@@ -45,7 +46,7 @@ const Project = ({ name, link, description, stats, image }: ProjectProps) => (
   <Fade motion={false}>
     <div
       // Consider applying scale transform via parallax instead of hover
-      className="text-white h-screen-3/4 w-5/6 mx-auto my-8 bg-cover bg-fixed bg-no-repeat shadow-lg transition hover:scale-105 hover:shadow-2xl"
+      className="text-white h-screen-3/4 w-5/6 mx-auto my-8 bg-cover bg-fixed bg-no-repeat shadow-lg transition hover:scale-105 hover:shadow-2xl rounded-2xl overflow-hidden"
       style={{ backgroundImage: `url(${image})` }}
     >
       <a href={link} target="_blank" rel="noreferrer">

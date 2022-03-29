@@ -29,22 +29,15 @@ export default function IndexPage() {
         <div className="bg-gradient-to-r from-gray-900 to-black opacity-80">
           <div className="flex justify-center items-center text-center h-full py-48 max-w-4xl mx-auto">
             <h1 className="tracking-tightest text-white text-6xl font-extrabold p-4">
-              V1 builds epic (10x) things.
+              V1 builds 10
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-yellow-600 to-yellow-700">
+                X
+              </span>{" "}
+              things.
               {/* We invest in smart people who believe they can do big things. */}
             </h1>
           </div>
-          <h2 className="flex justify-center p-4 text-white text-xl italic">
-            (or fails trying, but we&apos;re still shooting for the stars...)
-          </h2>
         </div>
-      </div>
-
-      <div className="bg-gray-100 p-4">
-        <h1 className="max-w-screen-xl mx-auto py-24 tracking-tightest text-center text-gray-800 text-5xl font-bold p-4">
-          What&apos;s epic? See for yourself. ⚡
-        </h1>
-
-        <Projects />
       </div>
 
       <div className="bg-gray-200">
@@ -65,10 +58,18 @@ export default function IndexPage() {
         </div>
       </div>
 
+      <div className="bg-gray-100 p-4">
+        <h1 className="max-w-screen-xl mx-auto py-24 tracking-tightest text-center text-gray-800 text-5xl font-bold p-4">
+          What&apos;s epic? See for yourself. ⚡
+        </h1>
+        <Projects />
+      </div>
+
       <People />
       <div className="bg-gradient-to-r from-gray-900 to-black">
         <p className="footer text-gray-200 text-center py-8">
-          &copy; 2022 V1 | team@v1michigan.com
+          &copy; 2022 V1 |{" "}
+          <a href="mailto:team@v1michigan.com">team@v1michigan.com</a>
         </p>
       </div>
     </main>

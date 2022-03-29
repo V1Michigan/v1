@@ -59,7 +59,8 @@ const People = () => (
         bg-gradient-to-r to-white/30 via-black/70 from-white/30
       "
     >
-      <h2 className="text-6xl text-white font-bold">Our people.</h2>
+      <h2 className="text-6xl text-white font-bold">Our people</h2>
+      {/* TODO: Explain why people are epic */}
     </div>
   </div>
 );
