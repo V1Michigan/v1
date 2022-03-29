@@ -59,7 +59,7 @@ const People = () => (
       </div>
     </Fade>
 
-    <div className="bg-gray-200">
+    <div className="bg-gray-300">
       <div className="max-w-4xl mx-auto py-12 px-4 leading-snug">
         <p className="tracking-tightest text-gray-900 text-3xl">
           With V1, you&apos;ll not only build incredible projects, you&apos;ll
@@ -68,12 +68,37 @@ const People = () => (
         </p>
         <p className="tracking-tightest text-gray-900 text-2xl mt-4">
           V1 invests in people with high growth potential — people that will
-          grow faster than we can ever imagine. We look for energy, drive, and
-          initiative.
+          grow faster than we can ever imagine.
+        </p>
+        <p className="tracking-tightest text-gray-900 text-2xl mt-4">
+          We don&apos;t require applications. We don&apos;t have an interview
+          process. We won&apos;t judge you based on your prior experiences. We
+          look for energy, drive, and initiative.
+        </p>
+        <p className="font-semibold text-gray-900 text-3xl mt-8 text-center">
+          Sound like you?
         </p>
       </div>
     </div>
   </>
 );
 
-export default People;
+const PeopleChips = () => (
+  // Would be fun to animate these, e.g. shuffle/carousel them
+  <Fade motion={false} className="-space-x-4 mb-4 ">
+    {TEAM.map((value) => ({ value, sort: Math.random() }))
+      .sort((a, b) => a.sort - b.sort)
+      .slice(0, 15)
+      .map(({ value }) => value)
+      .map((member) => (
+        <img
+          className="relative z-10 inline object-cover w-12 h-12 border-2 border-white rounded-full"
+          src={`/people/${member}.png`}
+          alt={`Profile for ${member}`}
+          key={member}
+        />
+      ))}
+  </Fade>
+);
+
+export { People as default, PeopleChips };
