@@ -71,7 +71,7 @@ const ProfilePic = ({ user, username }: { user: User; username: string }) => {
   }
   return (
     <InternalLink href="/profile">
-      <div className="px-2 py-2 hover:bg-gray-700 rounded-full">
+      <div className="px-2 py-2 transition duration-300 hover:bg-gray-700 rounded-full">
         <img
           className="flex-shrink-0 w-10 h-10 object-cover rounded-full cursor"
           src={avatarUrl}
@@ -122,7 +122,7 @@ export default function NavbarBuilder() {
                         className={`${
                           router.pathname === item.href
                             ? "bg-gray-900 text-white"
-                            : "text-gray-300 hover:bg-gray-700 hover:text-white"
+                            : "text-gray-300 hover:bg-gray-700 hover:text-white transition duration-300"
                         }
                           px-3 py-2 rounded-md text-sm font-medium ${
                             item?.login && !user ? "hidden" : ""
@@ -130,7 +130,7 @@ export default function NavbarBuilder() {
                           item?.noauth ? "whitespace-nowrap" : ""
                         } ${
                           item?.signup
-                            ? "bg-gradient-to-r from-yellow-600 to-yellow-700 hover:bg-blue-500 hover:opacity-75 !text-gray-100 transition duration-300"
+                            ? "bg-gradient-to-r from-yellow-600 to-yellow-700 hover:bg-blue-500 hover:opacity-75 !text-gray-100"
                             : ""
                         }  ${
                           item?.minRank &&
