@@ -49,7 +49,7 @@ export default function IndexPage() {
       </Head>
       <NavbarBuilder />
 
-      <div className="overflow-hidden h-screen bg-[url('/landing.jpg')] bg-cover bg-center bg-no-repeat bg-fixed">
+      <div className="overflow-hidden h-screen bg-[url('/landing.jpg')] bg-cover bg-center bg-no-repeat">
         <div className="h-full w-full bg-gradient-to-r from-gray-900/80 to-black/80">
           <div className="h-full max-w-4xl mx-auto flex flex-col gap-y-8 justify-center items-center text-center">
             <h1 className="tracking-tightest text-white text-5xl md:text-7xl lg:text-8xl font-extrabold p-4">
