@@ -128,7 +128,7 @@ export default function NavbarBuilder() {
                             item?.login && !user ? "hidden" : ""
                           } ${item?.noauth && user ? "hidden" : ""} ${
                           item?.signup
-                            ? "bg-gradient-to-r from-yellow-600 to-yellow-700 hover:bg-blue-500 hover:opacity-75 !text-gray-100"
+                            ? "bg-gradient-to-r from-yellow-600 to-yellow-700 hover:bg-blue-500 hover:opacity-75 !text-gray-100 transition duration-300"
                             : ""
                         }  ${
                           item?.minRank &&

@@ -45,8 +45,7 @@ interface ProjectProps {
 const Project = ({ name, link, description, stats, image }: ProjectProps) => (
   <Fade motion={false}>
     <div
-      // Consider applying scale transform via parallax instead of hover
-      className="text-white h-screen-3/4 w-5/6 mx-auto my-8 bg-cover bg-fixed bg-no-repeat shadow-lg transition hover:scale-105 hover:shadow-2xl rounded-2xl overflow-hidden"
+      className="text-white h-screen-3/4 w-5/6 mx-auto my-8 bg-center bg-cover bg-no-repeat shadow-lg transition hover:shadow-2xl rounded-2xl overflow-hidden"
       style={{ backgroundImage: `url(${image})` }}
     >
       <a href={link} target="_blank" rel="noreferrer">

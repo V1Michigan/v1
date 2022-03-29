@@ -25,15 +25,17 @@ export default function IndexPage() {
       </Head>
       <NavbarBuilder />
 
-      <div className="bg-[url('/landing.jpg')] bg-cover">
-        <div className="bg-gradient-to-r from-gray-900 to-black opacity-80">
-          <div className="flex justify-center items-center text-center h-full py-48 max-w-4xl mx-auto">
-            <h1 className="tracking-tightest text-white text-6xl font-extrabold p-4">
+      <div className="h-screen bg-[url('/landing.jpg')] bg-cover bg-center bg-no-repeat bg-fixed">
+        <div className="h-full w-full bg-gradient-to-r from-gray-900/80 to-black/80">
+          <div className="h-full max-w-4xl mx-auto flex justify-center items-center text-center">
+            <h1 className="tracking-tightest text-white text-8xl font-extrabold p-4">
               V1 builds 10
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-yellow-600 to-yellow-700">
                 X
               </span>{" "}
-              things.
+              {/* "things" instead of "projects"? */}
+              projects.
+              {/* It's time to build. */}
               {/* We invest in smart people who believe they can do big things. */}
             </h1>
           </div>
@@ -67,7 +69,7 @@ export default function IndexPage() {
 
       <People />
       <div className="bg-gradient-to-r from-gray-900 to-black">
-        <p className="footer text-gray-200 text-center py-8">
+        <p className="footer text-gray-200 text-center font-semibold py-8">
           &copy; 2022 V1 |{" "}
           <a href="mailto:team@v1michigan.com">team@v1michigan.com</a>
         </p>
