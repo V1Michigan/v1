@@ -32,7 +32,6 @@ const Person = ({ name }: { name: string }) => (
   <img
     // TODO: Should we link to people's LinkedIn? Then this transition would be cool
     // className="transition hover:scale-95 hover:shadow-inner"
-    className="h-full w-full"
     src={`/people/${name}.png`}
     alt={name}
   />
@@ -42,7 +41,14 @@ const People = () => (
   <>
     <Fade className="relative" motion={false}>
       <Marquee speed={40} gradient={false} style={{ zIndex: 0 }}>
-        <div className="grid grid-flow-col md:grid-rows-[25vh_25vh] grid-rows-[12vh_12vh] overflow-x-hidden">
+        <div
+          className="
+            grid grid-flow-col
+            grid-rows-[12vh_12vh] md:grid-rows-[25vh_25vh]
+            auto-cols-[12vh] md:auto-cols-[25vh]
+            overflow-x-hidden
+          "
+        >
           {TEAM.map((name) => (
             <Person key={name} name={name} />
           ))}
