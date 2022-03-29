@@ -1,7 +1,7 @@
 @tailwind base;
 
 /* Write your own custom base styles here */
-@import url('https://fonts.googleapis.com/css2?family=Oswald&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Oswald&display=swap");
 /* Start purging... */
 @tailwind components;
 /* Stop purging. */
@@ -11,17 +11,27 @@
   @apply bg-blue-500 text-white font-bold py-2 px-4 rounded;
 }
 
-.fade-in-section {
+.fade-in {
   opacity: 0;
-  transform: translateY(20vh);
   visibility: hidden;
   transition: opacity 0.8s ease-out, transform 1.6s ease-out;
   will-change: opacity, visibility;
 }
-.fade-in-section.is-visible {
+.fade-in.is-visible {
   opacity: 1;
-  transform: none;
   visibility: visible;
+}
+
+.fade-in-motion {
+  transform: translateY(20vh);
+}
+
+.fade-in-motion.is-visible {
+  transform: none;
+}
+
+.h-screen-3\/4 {
+  height: 75vh;
 }
 
 /* Start purging... */
@@ -63,7 +73,7 @@
   -webkit-animation: Gradient 15s ease infinite;
   -moz-animation: Gradient 15s ease infinite;
   animation: Gradient 15s ease infinite;
-  }
+}
 
 .paused {
   -webkit-animation-play-state: paused; /* Safari 4.0 - 8.0 */
@@ -72,38 +82,38 @@
 
 @-webkit-keyframes Gradient {
   0% {
-  background-position: 0% 50%
+    background-position: 0% 50%;
   }
-50% {
-background-position: 100% 50%
-}
-100% {
-background-position: 0% 50%
-}
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 @-moz-keyframes Gradient {
   0% {
-  background-position: 0% 50%
+    background-position: 0% 50%;
   }
-50% {
-background-position: 100% 50%
-}
-100% {
-background-position: 0% 50%
-}
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 @keyframes Gradient {
   0% {
-  background-position: 0% 50%
+    background-position: 0% 50%;
   }
-50% {
-background-position: 100% 50%
-}
-100% {
-background-position: 0% 50%
-}
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 @layer components {
@@ -112,7 +122,7 @@ background-position: 0% 50%
   }
   /* bro what u doin cool works - just trying to make styling the buttons easier so we don't have to make 50 changes every time i change one thing */
   .unlocked {
-    @apply bg-white cursor-pointer hover:underline decoration-solid; 
+    @apply bg-white cursor-pointer hover:underline decoration-solid;
   }
   .locked {
     @apply bg-gray-200;

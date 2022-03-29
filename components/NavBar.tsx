@@ -127,7 +127,9 @@ export default function NavbarBuilder() {
                           px-3 py-2 rounded-md text-sm font-medium ${
                             item?.login && !user ? "hidden" : ""
                           } ${item?.noauth && user ? "hidden" : ""} ${
-                          item?.signup ? "bg-gray-700" : ""
+                          item?.signup
+                            ? "bg-gradient-to-r from-yellow-600 to-yellow-700 hover:bg-blue-500 hover:opacity-75 !text-gray-100 transition duration-300"
+                            : ""
                         }  ${
                           item?.minRank &&
                           rank &&

@@ -3,9 +3,15 @@ import PropTypes from "prop-types";
 
 interface FadeProps {
   children: JSX.Element | JSX.Element[];
+  motion?: boolean;
+  className?: string;
 }
 
-export default function Fade({ children }: FadeProps) {
+export default function Fade({
+  children,
+  motion = true,
+  className = "",
+}: FadeProps) {
   const [isVisible, setVisible] = useState(false);
   const domRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -21,7 +27,9 @@ export default function Fade({ children }: FadeProps) {
   }, []);
   return (
     <div
-      className={`fade-in-section ${isVisible ? "is-visible" : ""}`}
+      className={`${className} fade-in ${motion ? "fade-in-motion" : ""} ${
+        isVisible ? "is-visible" : ""
+      }`}
       ref={domRef}
     >
       {children}
