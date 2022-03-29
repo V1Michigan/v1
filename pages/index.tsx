@@ -68,15 +68,9 @@ export default function IndexPage() {
           <p className="tracking-tightest text-gray-900 text-3xl">
             <span className="font-extrabold">V1</span> is the community for
             ambitious student builders — engineers, artists, designers,
-            founders, scientists, and more. Within V1, students build
-            friendships, co-found ventures, and enable each other to reach their
-            potential.
-          </p>
-
-          <p className="tracking-tightest text-gray-800 text-2xl mt-4">
-            We provide the most driven students with an extraordinary network,
-            exclusive opportunities within startups, and mentorship to grow and
-            achieve great things.
+            founders, scientists, and more. We provide the most driven students
+            with an extraordinary network, exclusive opportunities within
+            startups, and mentorship to grow and achieve great things.
           </p>
         </div>
       </div>
