@@ -49,10 +49,10 @@ export default function IndexPage() {
       </Head>
       <NavbarBuilder />
 
-      <div className="h-screen bg-[url('/landing.jpg')] bg-cover bg-center bg-no-repeat bg-fixed">
+      <div className="overflow-hidden h-screen bg-[url('/landing.jpg')] bg-cover bg-center bg-no-repeat bg-fixed">
         <div className="h-full w-full bg-gradient-to-r from-gray-900/80 to-black/80">
           <div className="h-full max-w-4xl mx-auto flex flex-col gap-y-8 justify-center items-center text-center">
-            <h1 className="tracking-tightest text-white text-8xl font-extrabold p-4">
+            <h1 className="tracking-tightest text-white text-5xl md:text-7xl lg:text-8xl font-extrabold p-4">
               V1 builds <TenX /> {/* "things" instead of "projects"? */}
               projects.
               {/* It's time to build. */}
@@ -82,7 +82,7 @@ export default function IndexPage() {
       </div>
 
       <div className="bg-gray-100 p-4">
-        <h1 className="max-w-screen-xl mx-auto py-24 tracking-tightest text-center text-gray-800 text-5xl font-bold p-4">
+        <h1 className="max-w-screen-xl mx-auto py-12 tracking-tightest text-center text-gray-800 text-4xl md:text-5xl font-bold p-4">
           What&apos;s <TenX />? See for yourself. ⚡
         </h1>
         <Projects />
@@ -90,7 +90,7 @@ export default function IndexPage() {
 
       <People />
 
-      <div className="bg-gray-100 py-10 flex flex-col justify-center items-center gap-y-12">
+      <div className="bg-gray-100 py-10 flex flex-col justify-center items-center text-center gap-y-12">
         <h1 className="font-bold text-gray-900 text-4xl">
           You&apos;re in the right place.
         </h1>
