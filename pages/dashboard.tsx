@@ -14,12 +14,12 @@ import InternalLink from "../components/Link";
 
 type Event = {
   name: string;
-  date: string;
+  start_date: string;
   place: string;
   description: string;
   link: string;
 };
-const EVENT_COLUMNS = "name, date, place, description, link";
+const EVENT_COLUMNS = "name, start_date, place, description, link";
 
 const Welcome = ({ name }: { name: string | null }) => {
   const firstName = name?.split(" ")[0] || name;
@@ -119,7 +119,7 @@ const Dashboard: NextPage = () => {
           } = await supabase
             .from("events")
             .select(EVENT_COLUMNS)
-            .order("date", { ascending: true });
+            .order("start_date", { ascending: true });
           if (dbEventError && dbEventStatus !== 406) {
             setDataFetchErrors((errors) => [...errors, dbEventError.message]);
           } else if (!dbEvents) {
@@ -128,7 +128,7 @@ const Dashboard: NextPage = () => {
             // TODO: Filter dates in query
             setEvents(
               (dbEvents as Event[]).filter(
-                (event) => new Date(event.date) > new Date()
+                (event) => new Date(event.start_date) > new Date()
               )
             );
           }
@@ -228,11 +228,11 @@ const Dashboard: NextPage = () => {
               {events.map((event) => (
                 <div
                   className="bg-gray-100 max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center"
-                  key={event.name + event.date}
+                  key={event.name + event.start_date}
                 >
                   <h6 className="font-bold text-lg">{event.name}</h6>
                   <p className="">
-                    {new Date(event.date).toLocaleDateString("en-US", {
+                    {new Date(event.start_date).toLocaleDateString("en-US", {
                       month: "long",
                       day: "numeric",
                       year: "numeric",
