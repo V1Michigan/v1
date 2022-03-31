@@ -1,11 +1,11 @@
 import Fade from "./Fade";
 
 const PARTNERS = [
-  {
-    name: "Ramp",
-    link: "https://ramp.com/",
-    image: "/partners/ramp.svg",
-  },
+  // {
+  //   name: "Ramp",
+  //   link: "https://ramp.com/",
+  //   image: "/partners/ramp.svg",
+  // },
   {
     name: "Neo",
     link: "https://neo.com/",
@@ -21,11 +21,11 @@ const PARTNERS = [
     link: "https://ycombinator.com",
     image: "/partners/yc.png",
   },
-  {
-    name: "Cahoots",
-    link: "https://cahoots.com/",
-    image: "/partners/cahoots.png",
-  },
+  // {
+  //   name: "Cahoots",
+  //   link: "https://cahoots.com/",
+  //   image: "/partners/cahoots.png",
+  // },
 ];
 
 const Partners = () => (
@@ -40,8 +40,8 @@ const Partners = () => (
     <Fade motion={false}>
       <div className="max-w-5xl mx-auto p-8 pb-12 flex flex-wrap items-center justify-around gap-x-12 gap-y-8">
         {PARTNERS.map(({ name, link, image }) => (
-          <a className="shrink-0" href={link}>
-            <img className="h-8" alt={name} src={image} />
+          <a key={name} className="shrink-0" href={link}>
+            <img className="h-10 hover:opacity-75" alt={name} src={image} />
           </a>
         ))}
       </div>
