@@ -2,6 +2,7 @@ import Head from "next/head";
 import InternalLink from "../components/Link";
 import Projects from "../components/Projects";
 import NavbarBuilder from "../components/NavBar";
+import Partners from "../components/Partners";
 import People, { PeopleChips } from "../components/People";
 import Fade from "../components/Fade";
 
@@ -81,6 +82,8 @@ export default function IndexPage() {
         </h1>
         <Projects />
       </div>
+
+      <Partners />
 
       <People />
 

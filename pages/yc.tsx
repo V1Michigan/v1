@@ -92,7 +92,7 @@ export default function YC() {
                     x{" "}
                     <img
                       className="logo ml-3 p-1 bg-gray-100 rounded-sm"
-                      src={`/partners/${referrer.toLowerCase()}.png`}
+                      src={`/yc-partners/${referrer.toLowerCase()}.png`}
                       alt={`${referrer} logo`}
                     />
                   </>
@@ -291,7 +291,7 @@ export default function YC() {
             {partners.map((partner) => (
               <img
                 className="logo m-1 rounded-sm"
-                src={`/partners/${partner}.png`}
+                src={`/yc-partners/${partner}.png`}
                 alt={`${partner} logo`}
                 key={partner}
               />
