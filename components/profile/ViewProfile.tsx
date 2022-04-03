@@ -20,9 +20,11 @@ const ViewProfile = ({ profile }: ViewProfileProps) => (
       >
         <img src="/profile/email.svg" alt="Email" />
       </a>
-      <a href={profile.linkedin} target="_blank" rel="noopener noreferrer">
-        <img src="/profile/linkedin.svg" alt="LinkedIn" />
-      </a>
+      {profile.linkedin && (
+        <a href={profile.linkedin} target="_blank" rel="noopener noreferrer">
+          <img src="/profile/linkedin.svg" alt="LinkedIn" />
+        </a>
+      )}
     </div>
     {/* If "additional links" is a single URL, link to that; else, just show the text */}
     {/^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)$/.test(

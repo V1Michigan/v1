@@ -28,14 +28,14 @@ const Member = ({ member }: { member: MemberData }) => {
   );
   return (
     <InternalLink href={`/profile/${member.username}`}>
-      <div className="flex items-center gap-x-2">
+      <div className="flex items-center gap-x-2 p-1 shadow hover:shadow-lg transition duration-500">
         {avatar && (
           <div className="h-12 w-12">
             <ViewAvatar avatar={avatar} />
           </div>
         )}
-        {member.username}
-        <span>{member.name}</span>
+        <p className="font-semibold whitespace-nowrap">{member.name}</p>
+        <p className="italic text-sm">{member.bio}</p>
       </div>
     </InternalLink>
   );
@@ -56,6 +56,7 @@ const Members: NextPage = () => {
       } = (await supabase
         .from("profiles")
         .select(PROFILE_COLUMNS)
+        .gte("rank", 1)
         .neq("username", username)) as PostgrestResponse<
         Omit<MemberData, "avatar">
       >;
@@ -78,8 +79,8 @@ const Members: NextPage = () => {
   }
   return (
     <div>
-      <h1>Members</h1>
-      <div className="flex flex-col gap-y-2">
+      <h1 className="text-2xl">Members</h1>
+      <div className="flex flex-col gap-y-2 p-4">
         {members.map((member) => (
           <Member key={member.id} member={member} />
         ))}
