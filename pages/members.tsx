@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { NextPage } from "next";
 import { PostgrestResponse } from "@supabase/supabase-js";
 import ProtectedRoute from "../components/ProtectedRoute";
@@ -29,11 +29,7 @@ const Member = ({ member }: { member: MemberData }) => {
   return (
     <InternalLink href={`/profile/${member.username}`}>
       <div className="flex items-center gap-x-2 p-1 shadow hover:shadow-lg transition duration-500">
-        {avatar && (
-          <div className="h-12 w-12">
-            <ViewAvatar avatar={avatar} />
-          </div>
-        )}
+        {avatar && <ViewAvatar avatar={avatar} size={12} />}
         <p className="font-semibold whitespace-nowrap">{member.name}</p>
         <p className="italic text-sm">{member.bio}</p>
       </div>
@@ -41,25 +37,37 @@ const Member = ({ member }: { member: MemberData }) => {
   );
 };
 
+const PAGE_SIZE = 50;
+
 const Members: NextPage = () => {
   const { supabase, username } = useSupabase();
   const [members, setMembers] = useState<MemberData[]>([]);
   const [dataFetchErrors, setDataFetchErrors] = useState<string[]>([]);
 
+  const [page, setPage] = useState(0);
+  const [count, setCount] = useState<number | null>(null); // Total number of members available
+  const numPages = useMemo(
+    () => count && Math.ceil(count / PAGE_SIZE),
+    [count]
+  );
+
   useEffect(() => {
     const fetchProfileData = async () => {
       setDataFetchErrors([]);
+      const from = page * PAGE_SIZE;
+      const to = from + PAGE_SIZE;
       const {
         data,
+        count: dbCount,
         error: dbError,
         status,
       } = (await supabase
         .from("profiles")
-        .select(PROFILE_COLUMNS)
-        .gte("rank", 1)
-        .neq("username", username)) as PostgrestResponse<
-        Omit<MemberData, "avatar">
-      >;
+        .select(PROFILE_COLUMNS, { count: "exact" })
+        .gte("rank", 1) // TODO: Some people still haven't filled this out...
+        .neq("username", username)
+        .order("id", { ascending: true }) // Arbitrary, just to have consistent order
+        .range(from, to)) as PostgrestResponse<Omit<MemberData, "avatar">>;
 
       if ((dbError && status !== 406) || !data) {
         setDataFetchErrors((errors) => [
@@ -68,23 +76,47 @@ const Members: NextPage = () => {
         ]);
       } else {
         setMembers(data);
+        setCount(dbCount);
         // Could we start fetching avatars here?
       }
     };
     fetchProfileData();
-  }, [supabase, username]);
+  }, [supabase, username, page]);
 
   if (members.length === 0) {
     return <p>Loading...</p>;
   }
   return (
-    <div>
+    <div className="flex flex-col justify-center items-center">
       <h1 className="text-2xl">Members</h1>
       <div className="flex flex-col gap-y-2 p-4">
         {members.map((member) => (
           <Member key={member.id} member={member} />
         ))}
       </div>
+      {count && numPages && (
+        <>
+          <p>
+            Page {page + 1} of {numPages} ({count} members)
+          </p>
+          <div className="flex items-center justify-center">
+            <button
+              type="button"
+              onClick={() => setPage((p) => Math.max(0, p - 1))}
+              disabled={page === 0}
+            >
+              &lsaquo; Previous
+            </button>
+            <button
+              type="button"
+              onClick={() => setPage((p) => Math.min(p + 1, numPages - 1))}
+              disabled={page === numPages - 1}
+            >
+              Next &rsaquo;
+            </button>
+          </div>
+        </>
+      )}
       {dataFetchErrors.map((error) => (
         <p key={error} className="text-red-500">
           {error}

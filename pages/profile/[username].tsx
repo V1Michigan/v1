@@ -235,8 +235,8 @@ const UserProfile: NextPage = () => {
           <Form>
             {values.avatar && (
               <div className="flex flex-col md:flex-row justify-around items-center">
-                <div className="h-32 w-full m-4">
-                  <ViewAvatar avatar={values.avatar} />
+                <div className="m-4 w-full flex justify-center items-center">
+                  <ViewAvatar avatar={values.avatar} size={32} />
                 </div>
                 <div className="flex-1">{editMode && <EditAvatar />}</div>
               </div>

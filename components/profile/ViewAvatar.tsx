@@ -2,9 +2,10 @@ import { useMemo } from "react";
 
 interface ViewAvatarProps {
   avatar: string | File;
+  size?: number;
 }
 
-const ViewAvatar = ({ avatar: avatar_ }: ViewAvatarProps) => {
+const ViewAvatar = ({ avatar: avatar_, size = 32 }: ViewAvatarProps) => {
   const avatarUrl = useMemo(
     () =>
       typeof avatar_ === "string" ? avatar_ : URL.createObjectURL(avatar_),
@@ -13,7 +14,7 @@ const ViewAvatar = ({ avatar: avatar_ }: ViewAvatarProps) => {
   return (
     <img
       src={avatarUrl}
-      className="h-full w-auto mx-auto object-cover rounded-full border-black border-2"
+      className={`h-${size} w-${size} object-cover rounded-full border-black border-2`}
       alt="Profile"
     />
   );
