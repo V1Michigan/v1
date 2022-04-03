@@ -32,7 +32,6 @@ export type Profile = {
   phone?: string; // Not fetched if not current user
   // cohort: string;  For the future...
   year: string;
-  // These two are stored together in the DB as a single JSON field
   fields_of_study: {
     minors: string[];
     majors: string[];
@@ -42,7 +41,7 @@ export type Profile = {
   website: string; // a.k.a "additional links"
   roles: string[];
   interests: string[];
-  // These two need to be fetched separately, after the DB query
+  // These files need to be fetched separately, after the DB query
   avatar?: File;
   resume?: File; // Not fetched if not current user
 };
@@ -236,7 +235,7 @@ const UserProfile: NextPage = () => {
           <Form>
             {values.avatar && (
               <div className="flex flex-col md:flex-row justify-around items-center">
-                <div className="flex-1">
+                <div className="h-32 w-full m-4">
                   <ViewAvatar avatar={values.avatar} />
                 </div>
                 <div className="flex-1">{editMode && <EditAvatar />}</div>

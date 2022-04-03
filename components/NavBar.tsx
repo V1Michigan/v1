@@ -61,9 +61,7 @@ const ProfilePic = ({ user, username }: { user: User; username: string }) => {
     error,
   } = useSupabaseDownload("avatars", user.id, `${username} avatar`);
   const avatarUrl = useMemo(
-    () =>
-      avatar &&
-      (typeof avatar === "string" ? avatar : URL.createObjectURL(avatar)),
+    () => avatar && URL.createObjectURL(avatar),
     [avatar]
   );
   if (loading || error || !avatarUrl) {

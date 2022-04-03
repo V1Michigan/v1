@@ -13,7 +13,7 @@ const ViewAvatar = ({ avatar: avatar_ }: ViewAvatarProps) => {
   return (
     <img
       src={avatarUrl}
-      className="w-32 h-32 mx-auto object-cover rounded-full m-4 border-black border-2"
+      className="h-full w-auto mx-auto object-cover rounded-full border-black border-2"
       alt="Profile"
     />
   );

@@ -146,7 +146,11 @@ const Step1 = ({
               <PhoneField label="Phone" />
 
               <div>
-                {values.avatar && <ViewAvatar avatar={values.avatar} />}
+                {values.avatar && (
+                  <div className="w-32 h-32 m-4 mx-auto">
+                    <ViewAvatar avatar={values.avatar} />
+                  </div>
+                )}
                 <div className="mx-auto">
                   <EditAvatar />
                 </div>
