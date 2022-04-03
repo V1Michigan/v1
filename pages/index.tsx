@@ -5,6 +5,7 @@ import NavbarBuilder from "../components/NavBar";
 import Partners from "../components/Partners";
 import People, { PeopleChips } from "../components/People";
 import Fade from "../components/Fade";
+import Banner from "../components/banner";
 
 const TenX = () => (
   <>
@@ -51,6 +52,12 @@ export default function IndexPage() {
       <NavbarBuilder />
 
       <div className="overflow-hidden h-screen bg-[url('/landing.jpg')] bg-cover bg-center bg-no-repeat">
+        <Banner
+          largeLine="V1 Connect: Studio Showcase is this Friday!"
+          smallLine="V1 Connect: Studio Showcase is this Friday!"
+          link="https://forms.gle/fhQqkJH6aenzjM4GA"
+          buttonText="RSVP &rsaquo;"
+        />
         <div className="h-full w-full bg-gradient-to-r from-gray-900/80 to-black/80">
           <div className="h-full max-w-4xl mx-auto flex flex-col gap-y-8 justify-center items-center text-center">
             <h1 className="tracking-tightest text-white text-5xl md:text-7xl lg:text-8xl font-extrabold p-4">
