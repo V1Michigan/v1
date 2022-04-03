@@ -33,13 +33,15 @@ export type Profile = {
   // cohort: string;  For the future...
   year: string;
   // These two are stored together in the DB as a single JSON field
-  majors: string[];
-  minors: string[];
+  fields_of_study: {
+    minors: string[];
+    majors: string[];
+  };
+  partner_sharing_consent: boolean;
   linkedin: string;
   website: string; // a.k.a "additional links"
   roles: string[];
   interests: string[];
-  partnerSharingConsent: boolean;
   // These two need to be fetched separately, after the DB query
   avatar?: File;
   resume?: File; // Not fetched if not current user
@@ -48,16 +50,6 @@ const PROFILE_COLUMNS = (isCurrentUser: boolean) =>
   `id, email, name, bio, ${
     isCurrentUser ? "phone, " : ""
   }year, fields_of_study, linkedin, website, roles, interests, partner_sharing_consent`;
-type DBProfile = Omit<
-  Profile,
-  "minors" | "majors" | "partnerSharingConsent"
-> & {
-  fields_of_study: {
-    minors: string[];
-    majors: string[];
-  };
-  partner_sharing_consent: boolean;
-};
 
 const UserProfile: NextPage = () => {
   const router = useRouter();
@@ -110,23 +102,20 @@ const UserProfile: NextPage = () => {
     const fetchProfileData = async () => {
       setDataFetchErrors([]);
       const {
-        data: dbData,
+        data: profile,
         error: dbError,
         status,
       } = (await supabase
         .from("profiles")
         .select(PROFILE_COLUMNS(isCurrentUser))
         .eq("username", profileUsername)
-        .single()) as PostgrestSingleResponse<DBProfile>;
+        .single()) as PostgrestSingleResponse<
+        Omit<Profile, "avatar" | "resume">
+      >;
 
-      if ((dbError && status !== 406) || !dbData) {
+      if ((dbError && status !== 406) || !profile) {
         router.replace("/404");
       } else {
-        const profile = {
-          ...dbData,
-          ...dbData.fields_of_study,
-          partnerSharingConsent: dbData.partner_sharing_consent,
-        } as Omit<Profile, "avatar" | "resume">;
         // Show the profile data from the DB, then start fetching the avatar and resume
         setInitialProfile(profile);
 
@@ -173,12 +162,12 @@ const UserProfile: NextPage = () => {
             website: profile.website,
             year: profile.year,
             fields_of_study: {
-              majors: profile.majors,
-              minors: profile.minors,
+              majors: profile.fields_of_study.majors,
+              minors: profile.fields_of_study.minors,
             },
             roles: profile.roles,
             interests: profile.interests,
-            partner_sharing_consent: profile.partnerSharingConsent,
+            partner_sharing_consent: profile.partner_sharing_consent,
             updated_at: new Date(),
           },
           {

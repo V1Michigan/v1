@@ -5,8 +5,7 @@ import {
   EmailField,
   InterestsField,
   LinkedInField,
-  MajorsField,
-  MinorsField,
+  FieldsOfStudyFields,
   PhoneField,
   RolesField,
   YearField,
@@ -24,8 +23,7 @@ const EditProfile = ({ profile }: EditProfileProps) => (
     <YearField label="School year" />
     <LinkedInField label="LinkedIn" />
     <AdditionalLinksField label="Additional links" />
-    <MajorsField label="Major(s)" />
-    <MinorsField label="Minor(s)" />
+    <FieldsOfStudyFields majorsLabel="Major(s)" minorsLabel="Minor(s)" />
     <RolesField label="Roles" />
     <InterestsField label="Interests" />
   </div>

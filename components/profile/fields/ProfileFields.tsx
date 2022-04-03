@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Field, ErrorMessage } from "formik";
+import { Field, ErrorMessage, useField } from "formik";
+import { MultiValue } from "react-select";
 import useSupabase from "../../../hooks/useSupabase";
-import MultiSelect from "../../MultiSelect";
+import MultiSelect, { ControlledMultiSelect } from "../../MultiSelect";
 import {
   Year,
   FieldOfStudy,
@@ -182,43 +183,83 @@ const YearField = ({ label }: LabelProps) => {
   );
 };
 
-const MajorsField = ({ label }: LabelProps) => {
-  const validateMajors = (value: string[]) => {
-    if (value.length === 0) {
+interface Option {
+  label: string;
+  value: string;
+}
+
+interface FieldsOfStudy {
+  majors: string[];
+  minors: string[];
+}
+
+const FieldsOfStudyFields = ({
+  majorsLabel,
+  minorsLabel,
+}: {
+  majorsLabel: string;
+  minorsLabel: string;
+}) => {
+  const validate = (value: FieldsOfStudy) => {
+    // No minors validation required
+    if (value.majors.length === 0) {
       return "Please select at least one major, or 'Undecided'";
     }
     return undefined;
   };
+  const [field, _, { setValue, setTouched }] = useField<FieldsOfStudy>({
+    name: "fields_of_study",
+    validate,
+  });
   return (
-    <div>
-      <label htmlFor="majors" className="block pb-1">
-        {label}
-      </label>
-      <MultiSelect
-        name="majors"
-        options={FIELDS_OF_STUDY}
-        validate={validateMajors}
-      />
-      <ErrorMessage name="majors" component="p" className="text-red-500" />
-    </div>
+    <>
+      <div>
+        <label htmlFor="fields_of_study.majors" className="block pb-1">
+          {majorsLabel}
+        </label>
+        <ControlledMultiSelect
+          name="fields_of_study.majors"
+          value={FIELDS_OF_STUDY.filter(
+            (option) => field.value.majors.indexOf(option.value) !== -1
+          )}
+          options={FIELDS_OF_STUDY}
+          onChange={(option: MultiValue<Option>) => {
+            setValue({
+              ...field.value,
+              majors: (option as Option[]).map((item) => item.value),
+            });
+          }}
+          onBlur={() => setTouched(true)}
+        />
+        <ErrorMessage
+          name="fields_of_study"
+          component="p"
+          className="text-red-500"
+        />
+      </div>
+      <div>
+        <label htmlFor="fields_of_study.minors" className="block pb-1">
+          {minorsLabel}
+        </label>
+        <ControlledMultiSelect
+          name="fields_of_study.minors"
+          value={FIELDS_OF_STUDY.filter(
+            (option) => field.value.minors.indexOf(option.value) !== -1
+          )}
+          // List of minors might be slightly different...fine for now
+          options={FIELDS_OF_STUDY}
+          onChange={(option: MultiValue<Option>) => {
+            setValue({
+              ...field.value,
+              minors: (option as Option[]).map((item) => item.value),
+            });
+          }}
+          onBlur={() => setTouched(true)}
+        />
+      </div>
+    </>
   );
 };
-
-// No validation required
-const MinorsField = ({ label }: LabelProps) => (
-  <div>
-    <label htmlFor="minors" className="block pb-1">
-      {label}
-    </label>
-    <MultiSelect
-      name="minors"
-      // List of minors might be slightly different...fine for now
-      options={FIELDS_OF_STUDY}
-    />
-    {/* In case we ever do validation */}
-    {/* <ErrorMessage name="minors" component="p" className="text-red-500" /> */}
-  </div>
-);
 
 const RolesField = ({ label }: LabelProps) => {
   const validateRoles = (value: string[]) => {
@@ -344,15 +385,16 @@ const AdditionalLinksField = ({ label }: LabelProps) => {
 
 const PartnerSharingConsentField = () => (
   <div className="flex items-center justify-center gap-x-2">
-    <label htmlFor="partnerSharingConsent">
+    {/* Note the snake case here, consistent with the DB column name */}
+    <label htmlFor="partner_sharing_consent">
       To help you find your next best role, can we share your profile with
       select startups or other partner organizations?
     </label>
     <Field
       className="block shadow border-gray-300 rounded-md"
       type="checkbox"
-      name="partnerSharingConsent"
-      id="partnerSharingConsent"
+      name="partner_sharing_consent"
+      id="partner_sharing_consent"
     />
   </div>
 );
@@ -363,8 +405,7 @@ export {
   UsernameField,
   PhoneField,
   YearField,
-  MajorsField,
-  MinorsField,
+  FieldsOfStudyFields,
   RolesField,
   InterestsField,
   BioField,

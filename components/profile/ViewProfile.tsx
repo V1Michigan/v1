@@ -38,14 +38,18 @@ const ViewProfile = ({ profile }: ViewProfileProps) => (
     <p>Year: {Year[profile.year]}</p>
     <p>
       Major
-      {profile.majors.length > 1 && "s"}:{" "}
-      {profile.majors.map((majorKey) => FieldOfStudy[majorKey]).join(", ")}
+      {profile.fields_of_study.majors.length > 1 && "s"}:{" "}
+      {profile.fields_of_study.majors
+        .map((majorKey) => FieldOfStudy[majorKey])
+        .join(", ")}
     </p>
-    {profile.minors.length > 0 && (
+    {profile.fields_of_study.minors.length > 0 && (
       <p>
         Minor
-        {profile.minors.length > 1 && "s"}:{" "}
-        {profile.minors.map((minorKey) => FieldOfStudy[minorKey]).join(", ")}
+        {profile.fields_of_study.minors.length > 1 && "s"}:{" "}
+        {profile.fields_of_study.minors
+          .map((minorKey) => FieldOfStudy[minorKey])
+          .join(", ")}
       </p>
     )}
     <p>Roles: {profile.roles.map((roleKey) => RoleType[roleKey]).join(", ")}</p>
