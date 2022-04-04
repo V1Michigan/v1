@@ -46,10 +46,11 @@ const SIGNUP_REDIRECT_URL = `${HOSTNAME}/welcome`;
 
 interface SignInProps {
   isLoginPage: boolean;
+  redirect?: string;
 }
 
 // Used for both /login and /join, since the OAuth code is the same
-export default function SignIn({ isLoginPage }: SignInProps) {
+export default function SignIn({ isLoginPage, redirect }: SignInProps) {
   const { signIn } = useSupabase();
 
   const [loading, setLoading] = useState(false);
@@ -67,7 +68,10 @@ export default function SignIn({ isLoginPage }: SignInProps) {
       // Redirect URLs must have the same hostname as the "Site URL" in the
       // Supabase Auth settings or be present in the "Additional Redirect URLs"
       // (additional redirects must match exactly)
-      { redirectTo: isLoginPage ? LOGIN_REDIRECT_URL : SIGNUP_REDIRECT_URL }
+      {
+        redirectTo:
+          redirect || (isLoginPage ? LOGIN_REDIRECT_URL : SIGNUP_REDIRECT_URL),
+      }
     );
     if (error) {
       setSubmitError(error.message);

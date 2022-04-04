@@ -1,52 +1,67 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import ProtectedRoute from "../../components/ProtectedRoute";
+import { useCallback, useEffect, useState } from "react";
+import { PostgrestSingleResponse } from "@supabase/supabase-js";
+import SignIn from "../../components/SignIn";
 import useSupabase from "../../hooks/useSupabase";
-import { Rank } from "../../constants/rank";
 
-// type Event = {
-//   events: {
-//     name: string;
-//     id: string;
-//     start_date: string;
-//     end_date: string;
-//     place: string;
-//     description: string;
-//     link: string;
-//   };
-//   user_id: string;
-// };
+type Event = {
+  events: {
+    name: string;
+    id: string;
+    start_date: string;
+    end_date: string;
+    place: string;
+    description: string;
+    link: string;
+  };
+  user_id: string;
+};
 
 const ATTENDANCE_COLUMNS = "user_id, events(*)";
 
 const EventPage: NextPage = () => {
   const router = useRouter();
-  const eventID = router.query.event;
+  const eventID = router.query.event as string | undefined;
   const { supabase, user } = useSupabase();
   const [dataFetchErrors, setDataFetchErrors] = useState<string[]>([]);
+  const [attendanceData, setAttendanceData] = useState<Event | null>();
+
+  const [countdown, setCountdown] = useState(10);
+
+  const startTimer = useCallback(() => {
+    const interval = setInterval(() => {
+      setCountdown((currentCountdown) => {
+        if (currentCountdown <= 0) {
+          clearInterval(interval);
+          router.push("/dashboard");
+          return 0;
+        }
+        return currentCountdown - 1;
+      });
+    }, 1000);
+  }, [router]);
+
   useEffect(() => {
     const recordAttendance = async () => {
       // Extract whether eventID exists within the database
-      // Wait until user's name is fetched in case there's e.g. a 404 error
-      // TODO figure out how to get dbEvents as one event (the event that we are looking for)
       if (user) {
         const {
           data: dbAttendance,
           error: dbAttendanceError,
           status: dbAttendanceStatus,
-        } = await supabase
+        } = (await supabase
           .from("attendance")
           .select(ATTENDANCE_COLUMNS)
-          .eq("user_id", user.id);
+          .eq("user_id", user.id)
+          .single()) as PostgrestSingleResponse<Event>;
         if (dbAttendanceError && dbAttendanceStatus !== 406) {
           setDataFetchErrors((errors) => [
             ...errors,
             dbAttendanceError.message,
           ]);
         } else if (!dbAttendance) {
-          setDataFetchErrors((errors) => [...errors, "No events found"]);
-        } else if (dbAttendance.length !== 1) {
+          setAttendanceData(null);
           const {
             data: dbCreateAttendance,
             error: dbCreateAttendanceError,
@@ -68,41 +83,57 @@ const EventPage: NextPage = () => {
           } else if (!dbCreateAttendance) {
             setDataFetchErrors((errors) => [...errors, "No events found"]);
           } else {
-            console.log("just marked attendance!");
+            startTimer();
           }
         } else {
-          console.log("already marked attendance");
+          setAttendanceData(dbAttendance);
+          startTimer();
         }
       }
     };
+
     recordAttendance();
-  }, [user, eventID, supabase]);
+  }, [user, eventID, supabase, startTimer]);
+
+  if (!user) {
+    return (
+      <SignIn
+        isLoginPage
+        redirect={eventID ? `/events/${eventID}` : undefined}
+      />
+    );
+  }
 
   return (
-    <></>
-    // <div className="md:flex justify-center">
-    //   <div className="flex-1">
-    //     <h1 className="text-2xl font-bold tracking-tight text-gray-800 mb-4 mt-8 text-center">
-    //       Thanks for Attending
-    //     </h1>
-    //     {attendance.map((event) => (
-    //       <div
-    //         className="max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center"
-    //         key={event.name + event.start_date}
-    //       >
-    //         <h6 className="font-bold text-lg"> {event.name} </h6>
-    //         <p>Your attendance has been marked!</p>
-    //       </div>
-    //     ))}
-    //   </div>
-    // </div>
+    <div className="bg-gradient h-screen flex flex-col items-center justify-center p-4">
+      <div className="flex-1 text-white">
+        {attendanceData && (
+          <>
+            <h1 className="text-2xl font-bold tracking-tight text-gray-800 mb-4 mt-8 text-center text-white">
+              Thanks for attending {attendanceData.events.name}
+            </h1>
+            <p>You&apos;re all checked in! Redirecting to your Dashboard...</p>
+            <div
+              style={{
+                width: `${countdown * 10}%`,
+                transitionProperty: "width",
+                transitionDuration: "1s",
+              }}
+              // Round edges, but not the right side
+              className={`m-4 h-2 bg-blue-600 rounded-l ${
+                countdown * 10 === 100 ? "rounded-r" : ""
+              }`}
+            />
+            {dataFetchErrors.map((error) => (
+              <p key={error} className="text-red-500">
+                {error}
+              </p>
+            ))}
+          </>
+        )}
+      </div>
+    </div>
   );
 };
 
-const ProtectedProfile = () => (
-  <ProtectedRoute minRank={Rank.RANK_0}>
-    <EventPage />
-  </ProtectedRoute>
-);
-
-export default ProtectedProfile;
+export default EventPage;
