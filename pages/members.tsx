@@ -26,6 +26,9 @@ const Member = ({ member }: { member: MemberData }) => {
     member.id,
     `${member.username} avatar`
   );
+  if (!avatar) {
+    return null;
+  }
   return (
     <InternalLink href={`/profile/${member.username}`}>
       <div className="flex items-center gap-x-2 p-1 shadow hover:shadow-lg transition duration-500">
@@ -87,6 +90,7 @@ const Members: NextPage = () => {
     return <p>Loading...</p>;
   }
   return (
+    // TODO: Nav bar?
     <div className="flex flex-col justify-center items-center">
       <h1 className="text-2xl">Members</h1>
       <div className="flex flex-col gap-y-2 p-4">
