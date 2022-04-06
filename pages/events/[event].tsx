@@ -27,7 +27,6 @@ const EventPage: NextPage = () => {
   const { supabase, user } = useSupabase();
   const [dataFetchErrors, setDataFetchErrors] = useState<string[]>([]);
   const [eventData, setEventData] = useState<Event | null>();
-  // const [attendanceData, setAttendanceData] = useState<string | null>();
 
   const [countdown, setCountdown] = useState(10);
 
@@ -57,10 +56,11 @@ const EventPage: NextPage = () => {
           .select(EVENT_COLUMNS)
           .eq("id", eventID)
           .single()) as PostgrestSingleResponse<Event>;
-        if (dbEventError && dbEventStatus !== 406) {
-          setDataFetchErrors((errors) => [...errors, dbEventError.message]);
-        } else if (!dbEvent) {
-          // ERROR event DOES NOT EXIST
+        if ((dbEventError && dbEventStatus !== 406) || !dbEvent) {
+          setDataFetchErrors((errors) => [
+            ...errors,
+            "Error: invalid event ID",
+          ]);
         } else {
           setEventData(dbEvent);
         }
@@ -99,10 +99,16 @@ const EventPage: NextPage = () => {
               dbCreateAttendanceError.message,
             ]);
           } else if (!dbCreateAttendance) {
-            setDataFetchErrors((errors) => [...errors, "No events found"]);
+            setDataFetchErrors((errors) => [
+              ...errors,
+              "Error recording attendance",
+            ]);
+          } else {
+            startTimer();
           }
+        } else {
+          startTimer();
         }
-        startTimer();
       }
     };
     recordAttendance();
@@ -112,6 +118,8 @@ const EventPage: NextPage = () => {
     return (
       <SignIn
         isLoginPage
+        // This redirect won't work on localhost (can't add dynamic URLs to
+        // Supabase's allow-list), but does work in prod
         redirect={eventID ? `/events/${eventID}` : undefined}
       />
     );
@@ -119,13 +127,15 @@ const EventPage: NextPage = () => {
 
   return (
     <div className="bg-gradient h-screen flex flex-col items-center justify-center p-4">
-      <div className="flex-1 text-white">
+      <div className="md:flex-1 text-white text-center">
         {eventData && (
           <>
-            <h1 className="text-2xl font-bold tracking-tight text-gray-800 mb-4 mt-8 text-center text-white">
+            <h1 className="text-2xl font-bold tracking-tight text-gray-800 mb-4 mt-8 text-white">
               Thanks for attending {eventData.name}
             </h1>
-            <p>You&apos;re all checked in! Redirecting to your Dashboard...</p>
+            <p>
+              You&apos;re all checked in! ✅ Redirecting to your dashboard...
+            </p>
             <div
               style={{
                 width: `${countdown * 10}%`,
@@ -133,17 +143,17 @@ const EventPage: NextPage = () => {
                 transitionDuration: "1s",
               }}
               // Round edges, but not the right side
-              className={`m-4 h-2 bg-blue-600 rounded-l ${
+              className={`my-4 h-2 bg-blue-600 rounded-l ${
                 countdown * 10 === 100 ? "rounded-r" : ""
               }`}
             />
-            {dataFetchErrors.map((error) => (
-              <p key={error} className="text-red-500">
-                {error}
-              </p>
-            ))}
           </>
         )}
+        {dataFetchErrors.map((error) => (
+          <p key={error} className="text-red-500">
+            {error}
+          </p>
+        ))}
       </div>
     </div>
   );
