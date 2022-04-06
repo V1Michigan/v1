@@ -31,12 +31,12 @@ const GoogleSignIn = ({
     <p className="mr-2">{text}</p>
     <div className="flex items-center gap-x-2">
       <img
-        src="block_m.svg"
+        src="/block_m.svg"
         className="h-5 w-auto"
         alt="University of Michigan logo"
       />
       <p className="text-lg">+</p>
-      <img src="google.svg" className="h-6 w-auto" alt="Google logo" />
+      <img src="/google.svg" className="h-6 w-auto" alt="Google logo" />
     </div>
   </button>
 );
@@ -83,7 +83,7 @@ export default function SignIn({ isLoginPage, redirect }: SignInProps) {
     <div className="bg-gradient h-screen flex flex-col items-center justify-center gap-y-6 px-8 text-center text-white">
       <Head title={isLoginPage ? "Log in" : "Sign up"} />
       <img
-        src="V1_logo_round.png"
+        src="/V1_logo_round.png"
         className="h-20 w-auto rounded-full shadow-md"
         alt="V1 logo"
       />
