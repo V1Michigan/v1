@@ -1,31 +1,32 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
-import { PostgrestSingleResponse } from "@supabase/supabase-js";
+import {
+  PostgrestSingleResponse,
+  PostgrestMaybeSingleResponse,
+} from "@supabase/supabase-js";
 import SignIn from "../../components/SignIn";
 import useSupabase from "../../hooks/useSupabase";
 
 type Event = {
-  events: {
-    name: string;
-    id: string;
-    start_date: string;
-    end_date: string;
-    place: string;
-    description: string;
-    link: string;
-  };
-  user_id: string;
+  name: string;
+  id: string;
+  start_date: string;
+  end_date: string;
+  place: string;
+  description: string;
+  link: string;
 };
 
-const ATTENDANCE_COLUMNS = "user_id, events(*)";
+const ATTENDANCE_COLUMNS = "user_id";
+const EVENT_COLUMNS = "*";
 
 const EventPage: NextPage = () => {
   const router = useRouter();
   const eventID = router.query.event as string | undefined;
   const { supabase, user } = useSupabase();
   const [dataFetchErrors, setDataFetchErrors] = useState<string[]>([]);
-  const [attendanceData, setAttendanceData] = useState<Event | null>();
+  const [eventData, setEventData] = useState<Event | null>();
 
   const [countdown, setCountdown] = useState(10);
 
@@ -47,21 +48,38 @@ const EventPage: NextPage = () => {
       // Extract whether eventID exists within the database
       if (user) {
         const {
+          data: dbEvent,
+          error: dbEventError,
+          status: dbEventStatus,
+        } = (await supabase
+          .from("events")
+          .select(EVENT_COLUMNS)
+          .eq("id", eventID)
+          .single()) as PostgrestSingleResponse<Event>;
+        if ((dbEventError && dbEventStatus !== 406) || !dbEvent) {
+          setDataFetchErrors((errors) => [
+            ...errors,
+            "Error: invalid event ID",
+          ]);
+        } else {
+          setEventData(dbEvent);
+        }
+        const {
           data: dbAttendance,
           error: dbAttendanceError,
           status: dbAttendanceStatus,
         } = (await supabase
           .from("attendance")
           .select(ATTENDANCE_COLUMNS)
+          .eq("event_id", eventID)
           .eq("user_id", user.id)
-          .single()) as PostgrestSingleResponse<Event>;
+          .maybeSingle()) as PostgrestMaybeSingleResponse<{ user_id: string }>;
         if (dbAttendanceError && dbAttendanceStatus !== 406) {
           setDataFetchErrors((errors) => [
             ...errors,
             dbAttendanceError.message,
           ]);
         } else if (!dbAttendance) {
-          setAttendanceData(null);
           const {
             data: dbCreateAttendance,
             error: dbCreateAttendanceError,
@@ -81,17 +99,18 @@ const EventPage: NextPage = () => {
               dbCreateAttendanceError.message,
             ]);
           } else if (!dbCreateAttendance) {
-            setDataFetchErrors((errors) => [...errors, "No events found"]);
+            setDataFetchErrors((errors) => [
+              ...errors,
+              "Error recording attendance",
+            ]);
           } else {
             startTimer();
           }
         } else {
-          setAttendanceData(dbAttendance);
           startTimer();
         }
       }
     };
-
     recordAttendance();
   }, [user, eventID, supabase, startTimer]);
 
@@ -99,6 +118,8 @@ const EventPage: NextPage = () => {
     return (
       <SignIn
         isLoginPage
+        // This redirect won't work on localhost (can't add dynamic URLs to
+        // Supabase's allow-list), but does work in prod
         redirect={eventID ? `/events/${eventID}` : undefined}
       />
     );
@@ -106,13 +127,15 @@ const EventPage: NextPage = () => {
 
   return (
     <div className="bg-gradient h-screen flex flex-col items-center justify-center p-4">
-      <div className="flex-1 text-white">
-        {attendanceData && (
+      <div className="md:flex-1 text-white text-center">
+        {eventData && (
           <>
-            <h1 className="text-2xl font-bold tracking-tight text-gray-800 mb-4 mt-8 text-center text-white">
-              Thanks for attending {attendanceData.events.name}
+            <h1 className="text-2xl font-bold tracking-tight text-gray-800 mb-4 mt-8 text-white">
+              Thanks for attending {eventData.name}
             </h1>
-            <p>You&apos;re all checked in! Redirecting to your Dashboard...</p>
+            <p>
+              You&apos;re all checked in! ✅ Redirecting to your dashboard...
+            </p>
             <div
               style={{
                 width: `${countdown * 10}%`,
@@ -120,17 +143,17 @@ const EventPage: NextPage = () => {
                 transitionDuration: "1s",
               }}
               // Round edges, but not the right side
-              className={`m-4 h-2 bg-blue-600 rounded-l ${
+              className={`my-4 h-2 bg-blue-600 rounded-l ${
                 countdown * 10 === 100 ? "rounded-r" : ""
               }`}
             />
-            {dataFetchErrors.map((error) => (
-              <p key={error} className="text-red-500">
-                {error}
-              </p>
-            ))}
           </>
         )}
+        {dataFetchErrors.map((error) => (
+          <p key={error} className="text-red-500">
+            {error}
+          </p>
+        ))}
       </div>
     </div>
   );
