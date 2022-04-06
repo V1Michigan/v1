@@ -1,4 +1,5 @@
 import Head from "next/head";
+import ReactGA from "react-ga4";
 import InternalLink from "../components/Link";
 import Projects from "../components/Projects";
 import NavbarBuilder from "../components/NavBar";
@@ -16,12 +17,19 @@ const TenX = () => (
   </>
 );
 
-const JoinButton = ({ text }: { text: string }) => (
+const JoinButton = ({
+  text,
+  onClick,
+}: {
+  text: string;
+  onClick: () => void;
+}) => (
   <Fade motion={false}>
     <InternalLink href="/join">
       <button
         type="button"
         className="bg-gradient-to-r from-yellow-600 to-yellow-700 hover:bg-blue-500 hover:opacity-75 hover:shadow-lg text-gray-100 text-lg font-semibold py-3 px-4 transition duration-300 rounded shadow"
+        onClick={onClick}
       >
         {text}
       </button>
@@ -66,7 +74,15 @@ export default function IndexPage() {
               {/* It's time to build. */}
               {/* We invest in smart people who believe they can do big things. */}
             </h1>
-            <JoinButton text="Join us &rsaquo;" />
+            <JoinButton
+              text="Join us &rsaquo;"
+              onClick={() =>
+                ReactGA.event({
+                  category: "Join us",
+                  action: "Clicked top landing page 'Join us' button",
+                })
+              }
+            />
           </div>
         </div>
       </div>
@@ -99,7 +115,15 @@ export default function IndexPage() {
           You&apos;re in the right place.
         </h1>
         <PeopleChips />
-        <JoinButton text="Join V1 &rsaquo;" />
+        <JoinButton
+          text="Join V1 &rsaquo;"
+          onClick={() =>
+            ReactGA.event({
+              category: "Join us",
+              action: "Clicked bottom landing page 'Join us' button",
+            })
+          }
+        />
       </div>
 
       <div className="bg-gradient-to-r from-gray-900 to-black">
