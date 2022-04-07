@@ -218,7 +218,6 @@ const FieldsOfStudyFields = ({
           {majorsLabel}
         </label>
         <ControlledMultiSelect
-          name="fields_of_study.majors"
           value={FIELDS_OF_STUDY.filter(
             (option) => field.value.majors.indexOf(option.value) !== -1
           )}
@@ -242,7 +241,6 @@ const FieldsOfStudyFields = ({
           {minorsLabel}
         </label>
         <ControlledMultiSelect
-          name="fields_of_study.minors"
           value={FIELDS_OF_STUDY.filter(
             (option) => field.value.minors.indexOf(option.value) !== -1
           )}

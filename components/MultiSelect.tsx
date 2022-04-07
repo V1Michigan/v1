@@ -7,24 +7,24 @@ interface Option {
 }
 
 interface ControlledMultiSelectProps {
-  name: string;
   value: Option[];
   options: Option[];
+  placeholder?: string;
   onChange: (value: MultiValue<Option>) => void;
-  onBlur: () => void;
+  onBlur?: () => void;
 }
 
 const ControlledMultiSelect = ({
-  name,
   value,
   options,
+  placeholder,
   onChange,
   onBlur,
 }: ControlledMultiSelectProps) => (
   <Select
-    name={name}
     value={value}
     options={options}
+    placeholder={placeholder}
     onChange={onChange}
     onBlur={onBlur}
     isMulti
@@ -50,7 +50,6 @@ const FormikMultiSelect = ({
   });
   return (
     <ControlledMultiSelect
-      name={field.name}
       value={options.filter(
         (option) => field.value.indexOf(option.value) !== -1
       )}
