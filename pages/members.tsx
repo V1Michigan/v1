@@ -44,7 +44,7 @@ const Subheader = ({
   ...props
 }: { children: string } & React.HTMLProps<HTMLHeadingElement>) => (
   <h4
-    className={`text-xs text-slate-500 font-semibold ${className}`}
+    className={`text-xs text-slate-500 font-semibold uppercase ${className}`}
     // eslint-disable-next-line react/jsx-props-no-spreading
     {...props}
   >
@@ -62,7 +62,39 @@ type MemberData = Omit<
   username: string;
 };
 
-// TODO: Separate component files
+const MemberBadges = ({
+  roles,
+  interests,
+}: {
+  roles: string[];
+  interests: string[];
+}) => {
+  let badges = [
+    ...roles.map((role) => ({ value: RoleType[role], color: RoleColor[role] })),
+    ...interests.map((interest) => ({
+      value: Interest[interest],
+      color: undefined, // Use default Badge color
+    })),
+  ];
+  let numHidden = 0;
+  if (badges.length > 8) {
+    numHidden = badges.length - 8;
+    badges = badges.slice(0, 8);
+  }
+  return (
+    <div className="flex gap-x-2 gap-y-1 flex-wrap items-center">
+      {badges.map(({ value, color }) => (
+        <Badge key={value} text={value} color={color} />
+      ))}
+      {numHidden > 0 && (
+        <p className="inline-block text-xs text-slate-500 h-full align-middle">
+          +{numHidden} more
+        </p>
+      )}
+    </div>
+  );
+};
+
 const Member = ({ member }: { member: MemberData }) => {
   // TODO: Cache avatars, even when Members aren't rendered
   const { file: avatar } = useSupabaseDownload(
@@ -84,21 +116,13 @@ const Member = ({ member }: { member: MemberData }) => {
         <div className="h-20 w-20" />
       )}
       <div className="flex-1">
-        <p className="font-semibold whitespace-nowrap">{member.name}</p>
-        <div className="flex gap-x-2 gap-y-1 flex-wrap">
-          {/* TODO: Consider ellipsizing these if e.g. roles + interests >= 8 */}
-          {member.roles.map((role) => (
-            <Badge key={role} text={RoleType[role]} color={RoleColor[role]} />
-          ))}
-          {member.interests.map((interest) => (
-            <Badge key={interest} text={Interest[interest]} />
-          ))}
-        </div>
+        <p className="font-semibold whitespace-nowrap my-2">{member.name}</p>
+        <MemberBadges roles={member.roles} interests={member.interests} />
       </div>
       <div className="flex-1 flex flex-col gap-y-2 w-full">
         {member.bio && (
           <>
-            <Subheader>ABOUT</Subheader>
+            <Subheader>About</Subheader>
             <p className="italic text-sm">{member.bio}</p>
           </>
         )}
@@ -262,7 +286,7 @@ const Members: NextPage = () => {
       </div>
       <div className="flex gap-x-4 my-4 w-full">
         <div>
-          <Subheader className="my-2">SEARCH</Subheader>
+          <Subheader className="my-2">Search</Subheader>
           <input
             className="w-full p-2 border border-gray-400 rounded placeholder-gray-400"
             type="text"
@@ -272,7 +296,7 @@ const Members: NextPage = () => {
           />
         </div>
         <div>
-          <Subheader className="my-2">ROLE</Subheader>
+          <Subheader className="my-2">Roles</Subheader>
           <ControlledMultiSelect
             value={filteredRoles}
             options={ROLE_OPTIONS}
@@ -282,7 +306,7 @@ const Members: NextPage = () => {
           />
         </div>
         <div>
-          <Subheader className="my-2">INTEREST</Subheader>
+          <Subheader className="my-2">Interests</Subheader>
           <ControlledMultiSelect
             value={filteredInterests}
             options={INTEREST_OPTIONS}
