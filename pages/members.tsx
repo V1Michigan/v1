@@ -12,6 +12,7 @@ import ViewAvatar from "../components/profile/ViewAvatar";
 import LinkedInIcon from "../public/profile/linkedin.svg";
 import EmailIcon from "../public/profile/email.svg";
 import WebsiteIcon from "../public/profile/website.svg";
+import Fade from "../components/Fade";
 
 // Need these available at compile time for Tailwind
 const BadgeColors: { [key: string]: string } = {
@@ -53,15 +54,19 @@ const Member = ({ member }: { member: MemberData }) => {
     member.id,
     `${member.username} avatar`
   );
-  if (!avatar) {
-    return null;
-  }
   return (
     <InternalLink
       href={`/profile/${member.username}`}
       className="flex justify-center items-center gap-x-4 p-4 shadow-lg hover:shadow-xl rounded-lg transition duration-500"
     >
-      {avatar && <ViewAvatar avatar={avatar} size={20} />}
+      {avatar ? (
+        <Fade motion={false}>
+          <ViewAvatar avatar={avatar} size={20} />
+        </Fade>
+      ) : (
+        // Same-size placeholder :D
+        <div className="h-20 w-20" />
+      )}
       <div className="flex-1">
         <p className="font-semibold whitespace-nowrap">{member.name}</p>
         <div className="flex gap-x-2 gap-y-1 flex-wrap">
