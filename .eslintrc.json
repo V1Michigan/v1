@@ -20,6 +20,7 @@
         "prettier",
         "@typescript-eslint"
     ],
+    "root": true,
     "rules": {
         "prettier/prettier": "error",
         "import/no-anonymous-default-export": "error",
