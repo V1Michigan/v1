@@ -62,6 +62,7 @@ type MemberData = Omit<
   username: string;
 };
 
+// TODO: Separate component files
 const Member = ({ member }: { member: MemberData }) => {
   // TODO: Cache avatars, even when Members aren't rendered
   const { file: avatar } = useSupabaseDownload(
@@ -163,11 +164,6 @@ const Members: NextPage = () => {
   const [dataFetchErrors, setDataFetchErrors] = useState<string[]>([]);
 
   const [page, setPage] = useState(0);
-  const [count, setCount] = useState<number | null>(null); // Total number of members available
-  const numPages = useMemo(
-    () => count && Math.ceil(count / PAGE_SIZE),
-    [count]
-  );
 
   const [query, setQuery] = useState("");
   const [filteredRoles, setFilteredRoles] = useState<Option[]>([]);
@@ -176,20 +172,19 @@ const Members: NextPage = () => {
   useEffect(() => {
     const fetchProfileData = async () => {
       setDataFetchErrors([]);
-      const from = page * PAGE_SIZE;
-      const to = from + PAGE_SIZE - 1;
       const {
         data,
-        count: dbCount,
         error: dbError,
         status,
       } = (await supabase
         .from("profiles")
-        .select(PROFILE_COLUMNS, { count: "exact" })
+        .select(PROFILE_COLUMNS)
         .gte("rank", 1) // TODO: Some people still haven't filled this out...
         .neq("username", username)
-        .order("id", { ascending: true }) // Arbitrary, just to have consistent order
-        .range(from, to)) as PostgrestResponse<Omit<MemberData, "avatar">>;
+        // Arbitrary, just to have consistent order
+        .order("id", { ascending: true })) as PostgrestResponse<
+        Omit<MemberData, "avatar">
+      >;
 
       if ((dbError && status !== 406) || !data) {
         setDataFetchErrors((errors) => [
@@ -202,7 +197,7 @@ const Members: NextPage = () => {
       }
     };
     fetchProfileData();
-  }, [supabase, username, page]);
+  }, [supabase, username]);
 
   useEffect(() => setPage(0), [query, filteredRoles, filteredInterests]);
 
@@ -241,6 +236,11 @@ const Members: NextPage = () => {
     return filtered;
   }, [members, query, filteredRoles, filteredInterests]);
 
+  const numPages = useMemo(
+    () => Math.ceil(filteredMembers.length / PAGE_SIZE),
+    [filteredMembers]
+  );
+
   if (members.length === 0) {
     return <p>Loading...</p>;
   }
@@ -260,7 +260,7 @@ const Members: NextPage = () => {
         </InternalLink>
         <h1 className="text-2xl mx-auto">Members</h1>
       </div>
-      <div className="flex gap-x-4 my-4">
+      <div className="flex gap-x-4 my-4 w-full">
         <div>
           <Subheader className="my-2">SEARCH</Subheader>
           <input
@@ -287,25 +287,30 @@ const Members: NextPage = () => {
             value={filteredInterests}
             options={INTEREST_OPTIONS}
             placeholder="Select interests"
-            // map() is a workaround, since `value` is read-only
             onChange={(value) => setFilteredInterests(value.map((x) => x))}
           />
         </div>
       </div>
       <div className="flex flex-col gap-y-2 my-4">
-        {filteredMembers.map((member) => (
-          <Member key={member.id} member={member} />
-        ))}
+        {filteredMembers
+          .slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE) // Pagination! :D
+          .map((member) => (
+            <Member key={member.id} member={member} />
+          ))}
+        {filteredMembers.length === 0 && (
+          <p className="text-center">No members found</p>
+        )}
       </div>
-      {count && numPages && (
+      {members.length && (
         <>
           <p>
-            Page {page + 1} of {numPages} ({count} members)
+            Page {page + 1} of {numPages} ({filteredMembers.length} member
+            {filteredMembers.length > 1 && "s"})
           </p>
           <div className="flex items-center justify-center gap-4 my-2">
             <button
               type="button"
-              className="p-1 rounded-lg border border-black"
+              className="p-1 rounded-lg border border-black disabled:opacity-50 disabled:cursor-not-allowed"
               onClick={() => setPage((p) => Math.max(0, p - 1))}
               disabled={page === 0}
             >
@@ -313,7 +318,7 @@ const Members: NextPage = () => {
             </button>
             <button
               type="button"
-              className="p-1 rounded-lg border border-black"
+              className="p-1 rounded-lg border border-black disabled:opacity-50 disabled:cursor-not-allowed"
               onClick={() => setPage((p) => Math.min(p + 1, numPages - 1))}
               disabled={page === numPages - 1}
             >
