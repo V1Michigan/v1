@@ -57,7 +57,7 @@ const Member = ({ member }: { member: MemberData }) => {
   return (
     <InternalLink
       href={`/profile/${member.username}`}
-      className="flex justify-center items-center gap-x-4 p-4 shadow-lg hover:shadow-xl rounded-lg transition duration-500"
+      className="flex flex-col md:flex-row justify-center items-center gap-4 p-4 shadow-lg hover:shadow-xl rounded-lg transition duration-500"
     >
       {avatar ? (
         <Fade motion={false}>
@@ -79,7 +79,7 @@ const Member = ({ member }: { member: MemberData }) => {
           ))}
         </div>
       </div>
-      <div className="flex-1 flex flex-col gap-y-2">
+      <div className="flex-1 flex flex-col gap-y-2 w-full">
         {member.bio && (
           <>
             <h4 className="text-xs text-slate-500 font-semibold">ABOUT</h4>
