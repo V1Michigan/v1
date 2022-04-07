@@ -68,14 +68,15 @@ const ProfilePic = ({ user, username }: { user: User; username: string }) => {
     return null;
   }
   return (
-    <InternalLink href="/profile">
-      <div className="px-2 py-2 transition duration-300 hover:bg-gray-700 rounded-full">
-        <img
-          className="flex-shrink-0 w-10 h-10 object-cover rounded-full cursor"
-          src={avatarUrl}
-          alt="User profile"
-        />
-      </div>
+    <InternalLink
+      href="/profile"
+      className="flex-shrink-0 p-2 transition duration-300 hover:bg-gray-600 rounded-full"
+    >
+      <img
+        className="w-10 h-auto object-cover rounded-full cursor"
+        src={avatarUrl}
+        alt="User profile"
+      />
     </InternalLink>
   );
 };
@@ -112,7 +113,7 @@ export default function NavbarBuilder() {
                   />
                 </InternalLink>
                 <div className="hidden sm:block sm:ml-6 w-full">
-                  <div className="flex flex-row space-x-4 w-full items-center">
+                  <div className="flex flex-row gap-x-4 w-full items-center">
                     {NAVIGATION.map((item) => (
                       <InternalLink
                         key={item.name}

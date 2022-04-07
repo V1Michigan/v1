@@ -1,10 +1,12 @@
 import Head from "next/head";
+import ReactGA from "react-ga4";
 import InternalLink from "../components/Link";
 import Projects from "../components/Projects";
 import NavbarBuilder from "../components/NavBar";
 import Partners from "../components/Partners";
 import People, { PeopleChips } from "../components/People";
 import Fade from "../components/Fade";
+import Banner from "../components/banner";
 
 const TenX = () => (
   <>
@@ -15,12 +17,19 @@ const TenX = () => (
   </>
 );
 
-const JoinButton = ({ text }: { text: string }) => (
+const JoinButton = ({
+  text,
+  onClick,
+}: {
+  text: string;
+  onClick: () => void;
+}) => (
   <Fade motion={false}>
     <InternalLink href="/join">
       <button
         type="button"
         className="bg-gradient-to-r from-yellow-600 to-yellow-700 hover:bg-blue-500 hover:opacity-75 hover:shadow-lg text-gray-100 text-lg font-semibold py-3 px-4 transition duration-300 rounded shadow"
+        onClick={onClick}
       >
         {text}
       </button>
@@ -51,6 +60,12 @@ export default function IndexPage() {
       <NavbarBuilder />
 
       <div className="overflow-hidden h-screen bg-[url('/landing.jpg')] bg-cover bg-center bg-no-repeat">
+        <Banner
+          largeLine="V1 Connect: Studio Showcase is this Friday!"
+          smallLine="V1 Connect: Studio Showcase is this Friday!"
+          link="https://forms.gle/fhQqkJH6aenzjM4GA"
+          buttonText="RSVP &rsaquo;"
+        />
         <div className="h-full w-full bg-gradient-to-r from-gray-900/80 to-black/80">
           <div className="h-full max-w-4xl mx-auto flex flex-col gap-y-8 justify-center items-center text-center">
             <h1 className="tracking-tightest text-white text-5xl md:text-7xl lg:text-8xl font-extrabold p-4">
@@ -59,7 +74,15 @@ export default function IndexPage() {
               {/* It's time to build. */}
               {/* We invest in smart people who believe they can do big things. */}
             </h1>
-            <JoinButton text="Join us &rsaquo;" />
+            <JoinButton
+              text="Join us &rsaquo;"
+              onClick={() =>
+                ReactGA.event({
+                  category: "Join us",
+                  action: "Clicked top landing page 'Join us' button",
+                })
+              }
+            />
           </div>
         </div>
       </div>
@@ -92,7 +115,15 @@ export default function IndexPage() {
           You&apos;re in the right place.
         </h1>
         <PeopleChips />
-        <JoinButton text="Join V1 &rsaquo;" />
+        <JoinButton
+          text="Join V1 &rsaquo;"
+          onClick={() =>
+            ReactGA.event({
+              category: "Join us",
+              action: "Clicked bottom landing page 'Join us' button",
+            })
+          }
+        />
       </div>
 
       <div className="bg-gradient-to-r from-gray-900 to-black">

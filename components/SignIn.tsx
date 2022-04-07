@@ -31,12 +31,12 @@ const GoogleSignIn = ({
     <p className="mr-2">{text}</p>
     <div className="flex items-center gap-x-2">
       <img
-        src="block_m.svg"
+        src="/block_m.svg"
         className="h-5 w-auto"
         alt="University of Michigan logo"
       />
       <p className="text-lg">+</p>
-      <img src="google.svg" className="h-6 w-auto" alt="Google logo" />
+      <img src="/google.svg" className="h-6 w-auto" alt="Google logo" />
     </div>
   </button>
 );
@@ -46,10 +46,11 @@ const SIGNUP_REDIRECT_URL = `${HOSTNAME}/welcome`;
 
 interface SignInProps {
   isLoginPage: boolean;
+  redirect?: string;
 }
 
 // Used for both /login and /join, since the OAuth code is the same
-export default function SignIn({ isLoginPage }: SignInProps) {
+export default function SignIn({ isLoginPage, redirect }: SignInProps) {
   const { signIn } = useSupabase();
 
   const [loading, setLoading] = useState(false);
@@ -66,8 +67,12 @@ export default function SignIn({ isLoginPage }: SignInProps) {
       { provider: "google" },
       // Redirect URLs must have the same hostname as the "Site URL" in the
       // Supabase Auth settings or be present in the "Additional Redirect URLs"
-      // (additional redirects must match exactly)
-      { redirectTo: isLoginPage ? LOGIN_REDIRECT_URL : SIGNUP_REDIRECT_URL }
+      // (additional redirects must match *exactly*, including the protocol,
+      // e.g. http://v1michigan.com/events, not just /events)
+      {
+        redirectTo:
+          redirect || (isLoginPage ? LOGIN_REDIRECT_URL : SIGNUP_REDIRECT_URL),
+      }
     );
     if (error) {
       setSubmitError(error.message);
@@ -79,7 +84,7 @@ export default function SignIn({ isLoginPage }: SignInProps) {
     <div className="bg-gradient h-screen flex flex-col items-center justify-center gap-y-6 px-8 text-center text-white">
       <Head title={isLoginPage ? "Log in" : "Sign up"} />
       <img
-        src="V1_logo_round.png"
+        src="/V1_logo_round.png"
         className="h-20 w-auto rounded-full shadow-md"
         alt="V1 logo"
       />
