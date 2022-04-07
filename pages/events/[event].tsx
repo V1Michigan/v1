@@ -120,7 +120,11 @@ const EventPage: NextPage = () => {
         isLoginPage
         // This redirect won't work on localhost (can't add dynamic URLs to
         // Supabase's allow-list), but does work in prod
-        redirect={eventID ? `/events/${eventID}` : undefined}
+        redirect={
+          eventID
+            ? `${process.env.NEXT_PUBLIC_HOSTNAME || ""}/events/${eventID}`
+            : undefined
+        }
       />
     );
   }

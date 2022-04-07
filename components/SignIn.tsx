@@ -67,7 +67,8 @@ export default function SignIn({ isLoginPage, redirect }: SignInProps) {
       { provider: "google" },
       // Redirect URLs must have the same hostname as the "Site URL" in the
       // Supabase Auth settings or be present in the "Additional Redirect URLs"
-      // (additional redirects must match exactly)
+      // (additional redirects must match *exactly*, including the protocol,
+      // e.g. http://v1michigan.com/events, not just /events)
       {
         redirectTo:
           redirect || (isLoginPage ? LOGIN_REDIRECT_URL : SIGNUP_REDIRECT_URL),
