@@ -24,6 +24,19 @@ const RoleType: { [key: string]: string } = {
   pm: "Product Management",
 };
 
+const RoleColor: { [key: string]: string } = {
+  eng: "red",
+  ai: "green",
+  hw: "blue",
+  ds: "fuchsia",
+  des: "purple",
+  bus: "orange",
+  mk: "pink",
+  sa: "teal",
+  gro: "indigo",
+  pm: "cyan",
+};
+
 const Interest: { [key: string]: string } = {
   sus: "Sustainability",
   fin: "Fintech",
@@ -175,4 +188,4 @@ const FieldOfStudy: { [key: string]: string } = Object.fromEntries(
   ].map((x) => [x, x])
 );
 
-export { Year, RoleType, Interest, FieldOfStudy };
+export { Year, RoleType, RoleColor, Interest, FieldOfStudy };
