@@ -198,12 +198,48 @@ const Members: NextPage = () => {
         ]);
       } else {
         setMembers(data);
-        setCount(dbCount);
         // Could we start fetching avatars here?
       }
     };
     fetchProfileData();
   }, [supabase, username, page]);
+
+  useEffect(() => setPage(0), [query, filteredRoles, filteredInterests]);
+
+  const filteredMembers = useMemo(() => {
+    let filtered = members;
+    if (query) {
+      filtered = filtered.filter((member) =>
+        [
+          member.username,
+          member.email,
+          member.name,
+          member.bio,
+          member.website,
+          ...member.roles,
+          ...member.interests,
+        ]
+          .join(" ")
+          .toLowerCase()
+          .includes(query.toLowerCase())
+      );
+    }
+    if (filteredRoles.length) {
+      filtered = filtered.filter((member) =>
+        member.roles.some((role) =>
+          filteredRoles.some((option) => option.value === role)
+        )
+      );
+    }
+    if (filteredInterests.length) {
+      filtered = filtered.filter((member) =>
+        member.interests.some((interest) =>
+          filteredInterests.some((option) => option.value === interest)
+        )
+      );
+    }
+    return filtered;
+  }, [members, query, filteredRoles, filteredInterests]);
 
   if (members.length === 0) {
     return <p>Loading...</p>;
@@ -257,7 +293,7 @@ const Members: NextPage = () => {
         </div>
       </div>
       <div className="flex flex-col gap-y-2 my-4">
-        {members.map((member) => (
+        {filteredMembers.map((member) => (
           <Member key={member.id} member={member} />
         ))}
       </div>
