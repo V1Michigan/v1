@@ -13,6 +13,7 @@ import LinkedInIcon from "../public/profile/linkedin.svg";
 import EmailIcon from "../public/profile/email.svg";
 import WebsiteIcon from "../public/profile/website.svg";
 import Fade from "../components/Fade";
+import { ControlledMultiSelect } from "../components/MultiSelect";
 
 // Need these available at compile time for Tailwind
 const BadgeColors: { [key: string]: string } = {
@@ -35,6 +36,20 @@ const Badge = ({ text, color = "slate" }: { text: string; color?: string }) => (
   >
     {text}
   </span>
+);
+
+const Subheader = ({
+  children,
+  className = "",
+  ...props
+}: { children: string } & React.HTMLProps<HTMLHeadingElement>) => (
+  <h4
+    className={`text-xs text-slate-500 font-semibold ${className}`}
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    {...props}
+  >
+    {children}
+  </h4>
 );
 
 const PROFILE_COLUMNS =
@@ -70,7 +85,7 @@ const Member = ({ member }: { member: MemberData }) => {
       <div className="flex-1">
         <p className="font-semibold whitespace-nowrap">{member.name}</p>
         <div className="flex gap-x-2 gap-y-1 flex-wrap">
-          {/* TODO: Consider ellipsizng these if e.g. roles + interests >= 8 */}
+          {/* TODO: Consider ellipsizing these if e.g. roles + interests >= 8 */}
           {member.roles.map((role) => (
             <Badge key={role} text={RoleType[role]} color={RoleColor[role]} />
           ))}
@@ -82,7 +97,7 @@ const Member = ({ member }: { member: MemberData }) => {
       <div className="flex-1 flex flex-col gap-y-2 w-full">
         {member.bio && (
           <>
-            <h4 className="text-xs text-slate-500 font-semibold">ABOUT</h4>
+            <Subheader>ABOUT</Subheader>
             <p className="italic text-sm">{member.bio}</p>
           </>
         )}
@@ -125,7 +140,22 @@ const Member = ({ member }: { member: MemberData }) => {
   );
 };
 
-const PAGE_SIZE = 50;
+const PAGE_SIZE = 10;
+
+interface Option {
+  label: string;
+  value: string;
+}
+
+const ROLE_OPTIONS = Object.entries(RoleType).map(([key, label]) => ({
+  value: key,
+  label,
+}));
+
+const INTEREST_OPTIONS = Object.entries(Interest).map(([key, label]) => ({
+  value: key,
+  label,
+}));
 
 const Members: NextPage = () => {
   const { supabase, username } = useSupabase();
@@ -139,11 +169,15 @@ const Members: NextPage = () => {
     [count]
   );
 
+  const [query, setQuery] = useState("");
+  const [filteredRoles, setFilteredRoles] = useState<Option[]>([]);
+  const [filteredInterests, setFilteredInterests] = useState<Option[]>([]);
+
   useEffect(() => {
     const fetchProfileData = async () => {
       setDataFetchErrors([]);
       const from = page * PAGE_SIZE;
-      const to = from + PAGE_SIZE;
+      const to = from + PAGE_SIZE - 1;
       const {
         data,
         count: dbCount,
@@ -175,9 +209,9 @@ const Members: NextPage = () => {
     return <p>Loading...</p>;
   }
   return (
-    <div className="flex flex-col justify-center items-center">
+    <div className="flex flex-col justify-center items-center p-4">
       {/* TODO: Nav bar */}
-      <div className="flex w-full justify-center items-center p-2">
+      <div className="flex w-full justify-center items-center">
         <InternalLink href="/dashboard" className="justify-self-start">
           <button
             className="inline-flex justify-center py-2 px-4 border border-transparent shadow text-sm font-medium rounded-md
@@ -190,7 +224,39 @@ const Members: NextPage = () => {
         </InternalLink>
         <h1 className="text-2xl mx-auto">Members</h1>
       </div>
-      <div className="flex flex-col gap-y-2 p-4">
+      <div className="flex gap-x-4 my-4">
+        <div>
+          <Subheader className="my-2">SEARCH</Subheader>
+          <input
+            className="w-full p-2 border border-gray-400 rounded placeholder-gray-400"
+            type="text"
+            placeholder="Type a name, role, or interest"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+        </div>
+        <div>
+          <Subheader className="my-2">ROLE</Subheader>
+          <ControlledMultiSelect
+            value={filteredRoles}
+            options={ROLE_OPTIONS}
+            placeholder="Select roles"
+            // map() is a workaround, since `value` is read-only
+            onChange={(value) => setFilteredRoles(value.map((x) => x))}
+          />
+        </div>
+        <div>
+          <Subheader className="my-2">INTEREST</Subheader>
+          <ControlledMultiSelect
+            value={filteredInterests}
+            options={INTEREST_OPTIONS}
+            placeholder="Select interests"
+            // map() is a workaround, since `value` is read-only
+            onChange={(value) => setFilteredInterests(value.map((x) => x))}
+          />
+        </div>
+      </div>
+      <div className="flex flex-col gap-y-2 my-4">
         {members.map((member) => (
           <Member key={member.id} member={member} />
         ))}
@@ -200,9 +266,10 @@ const Members: NextPage = () => {
           <p>
             Page {page + 1} of {numPages} ({count} members)
           </p>
-          <div className="flex items-center justify-center">
+          <div className="flex items-center justify-center gap-4 my-2">
             <button
               type="button"
+              className="p-1 rounded-lg border border-black"
               onClick={() => setPage((p) => Math.max(0, p - 1))}
               disabled={page === 0}
             >
@@ -210,6 +277,7 @@ const Members: NextPage = () => {
             </button>
             <button
               type="button"
+              className="p-1 rounded-lg border border-black"
               onClick={() => setPage((p) => Math.min(p + 1, numPages - 1))}
               disabled={page === numPages - 1}
             >
