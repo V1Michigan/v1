@@ -12,6 +12,7 @@ import Step2Prompt from "../components/dashboard/Step2Prompt";
 import OnboardingCohortRegister from "../components/dashboard/OnboardingCohortRegister";
 import InternalLink from "../components/Link";
 import ConditionalLink from "../components/ConditionalLink";
+import MemberDirectoryIcon from "../public/member_directory.svg";
 
 type Event = {
   name: string;
@@ -298,8 +299,10 @@ const Dashboard: NextPage = () => {
                       : "bg-gray-100 hover:bg-gray-200 hover:opacity-75 transition-all"
                   }`}
                 >
-                  {rankLessThan(rank, Rank.RANK_3) && (
+                  {rankLessThan(rank, Rank.RANK_3) ? (
                     <span className="text-2xl">🔒 </span>
+                  ) : (
+                    <MemberDirectoryIcon className="mb-1 inline-block w-8 mr-1 my-auto" />
                   )}
                   Member Directory
                 </p>

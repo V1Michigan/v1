@@ -228,6 +228,7 @@ const Members: NextPage = () => {
 };
 
 const ProtectedMembers = () => (
+  // TODO: restrict to people who have filled out bio + things
   <ProtectedRoute minRank={Rank.RANK_3}>
     <Members />
   </ProtectedRoute>
