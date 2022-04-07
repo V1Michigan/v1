@@ -59,7 +59,7 @@ const Member = ({ member }: { member: MemberData }) => {
   return (
     <InternalLink
       href={`/profile/${member.username}`}
-      className="flex items-center gap-x-4 p-4 shadow-lg hover:shadow-xl rounded-lg transition duration-500"
+      className="flex justify-center items-center gap-x-4 p-4 shadow-lg hover:shadow-xl rounded-lg transition duration-500"
     >
       {avatar && <ViewAvatar avatar={avatar} size={20} />}
       <div className="flex-1">
@@ -170,9 +170,21 @@ const Members: NextPage = () => {
     return <p>Loading...</p>;
   }
   return (
-    // TODO: Nav bar?
     <div className="flex flex-col justify-center items-center">
-      <h1 className="text-2xl">Members</h1>
+      {/* TODO: Nav bar */}
+      <div className="flex w-full justify-center items-center p-2">
+        <InternalLink href="/dashboard" className="justify-self-start">
+          <button
+            className="inline-flex justify-center py-2 px-4 border border-transparent shadow text-sm font-medium rounded-md
+              text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
+              disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-indigo-600"
+            type="button"
+          >
+            Back
+          </button>
+        </InternalLink>
+        <h1 className="text-2xl mx-auto">Members</h1>
+      </div>
       <div className="flex flex-col gap-y-2 p-4">
         {members.map((member) => (
           <Member key={member.id} member={member} />
