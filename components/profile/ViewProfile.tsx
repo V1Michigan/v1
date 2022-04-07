@@ -5,6 +5,8 @@ import {
   Interest,
   RoleType,
 } from "../../constants/profile";
+import EmailIcon from "../../public/profile/email.svg";
+import LinkedInIcon from "../../public/profile/linkedin.svg";
 
 interface ViewProfileProps {
   profile: Profile;
@@ -18,13 +20,9 @@ const ViewProfile = ({ profile }: ViewProfileProps) => (
         target="_blank"
         rel="noopener noreferrer"
       >
-        <img src="/profile/email.svg" alt="Email" />
+        <EmailIcon className="h-6 w-6 fill-white" />
       </a>
-      {profile.linkedin && (
-        <a href={profile.linkedin} target="_blank" rel="noopener noreferrer">
-          <img src="/profile/linkedin.svg" alt="LinkedIn" />
-        </a>
-      )}
+      {profile.linkedin && <LinkedInIcon className="h-6 w-6 fill-white" />}
     </div>
     {profile.website && (
       <>
