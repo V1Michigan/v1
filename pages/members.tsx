@@ -203,7 +203,7 @@ const Members: NextPage = () => {
       } = (await supabase
         .from("profiles")
         .select(PROFILE_COLUMNS)
-        .gte("rank", 1) // TODO: Some people still haven't filled this out...
+        .neq("fields_of_study", null) // Indirect check for if they've completed their profile
         .neq("username", username)
         // Arbitrary, just to have consistent order
         .order("id", { ascending: true })) as PostgrestResponse<
@@ -377,7 +377,6 @@ const Members: NextPage = () => {
 };
 
 const ProtectedMembers = () => (
-  // TODO: restrict to people who have filled out bio + things
   <ProtectedRoute minRank={Rank.RANK_3}>
     <Members />
   </ProtectedRoute>
