@@ -84,15 +84,13 @@ const EventPage: NextPage = () => {
             data: dbCreateAttendance,
             error: dbCreateAttendanceError,
             status: dbCreateAttendanceStatus,
-          } = await supabase
-            .from("attendance")
-            .insert([
-              {
-                event_id: eventID,
-                user_id: user.id,
-              },
-            ])
-            .eq("user_id", user.id);
+          } = await supabase.from("attendance").insert(
+            {
+              event_id: eventID,
+              user_id: user.id,
+            },
+            { returning: "minimal" }
+          );
           if (dbCreateAttendanceError && dbCreateAttendanceStatus !== 406) {
             setDataFetchErrors((errors) => [
               ...errors,
