@@ -145,6 +145,7 @@ const EventPage: NextPage = () => {
                 width: `${countdown * 10}%`,
                 transitionProperty: "width",
                 transitionDuration: "1s",
+                transitionTimingFunction: "linear",
               }}
               // Round edges, but not the right side
               className={`my-4 h-2 bg-blue-600 rounded-l ${
