@@ -90,7 +90,15 @@ const EventPage: NextPage = () => {
             },
             { returning: "minimal" }
           );
-          if (dbCreateAttendanceError && dbCreateAttendanceStatus !== 406) {
+          if (
+            dbCreateAttendanceError &&
+            dbCreateAttendanceStatus !== 406 &&
+            // Can't reliably reproduce this, but consensus is that it's a weird
+            // Supabase bug. Row still gets inserted correctly, so probably fine
+            !dbCreateAttendanceError.message.includes(
+              "duplicate key value violates unique constraint"
+            )
+          ) {
             setDataFetchErrors((errors) => [
               ...errors,
               dbCreateAttendanceError.message,
