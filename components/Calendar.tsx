@@ -4,7 +4,7 @@ import { ContentPage } from "./content";
 
 async function getData() {
   const response = await fetch(
-    "https://damp-depths-59602.herokuapp.com/https://v1api-production.up.railway.app/events/"
+    "https://damp-depths-59602.herokuapp.com/https://v1-api-production.up.railway.app/events/"
   );
   return response.json();
 }
