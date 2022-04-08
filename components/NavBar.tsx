@@ -75,7 +75,7 @@ const ProfilePic = ({ user, username }: { user: User; username: string }) => {
       className="flex-shrink-0 p-2 transition duration-300 hover:bg-gray-600 rounded-full"
     >
       <img
-        className="w-10 h-auto object-cover rounded-full cursor"
+        className="w-10 h-10 object-cover rounded-full cursor"
         src={avatarUrl}
         alt="User profile"
       />
