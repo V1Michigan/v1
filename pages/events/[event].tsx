@@ -81,7 +81,6 @@ const EventPage: NextPage = () => {
           ]);
         } else if (!dbAttendance) {
           const {
-            data: dbCreateAttendance,
             error: dbCreateAttendanceError,
             status: dbCreateAttendanceStatus,
           } = await supabase.from("attendance").insert(
@@ -95,11 +94,6 @@ const EventPage: NextPage = () => {
             setDataFetchErrors((errors) => [
               ...errors,
               dbCreateAttendanceError.message,
-            ]);
-          } else if (!dbCreateAttendance) {
-            setDataFetchErrors((errors) => [
-              ...errors,
-              "Error recording attendance",
             ]);
           } else {
             startTimer();
