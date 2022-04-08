@@ -12,7 +12,7 @@ import Step2 from "../components/profile/onboarding/Step2";
 import { Rank } from "../constants/rank";
 
 const WELCOME_EMAIL_URL =
-  "https://damp-depths-59602.herokuapp.com/https://v1api-production.up.railway.app/email/welcome";
+  "https://v1api-production.up.railway.app/email/welcome";
 const sendWelcomeEmail = async (supabase: SupabaseClient, user: User) => {
   const session = supabase.auth.session();
   if (!session) return;
