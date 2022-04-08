@@ -5,12 +5,14 @@ import type { PostgrestMaybeSingleResponse } from "@supabase/supabase-js";
 import Head from "../components/Head";
 import ProtectedRoute from "../components/ProtectedRoute";
 import useSupabase from "../hooks/useSupabase";
-import { Rank } from "../constants/rank";
+import { Rank, rankLessThan } from "../constants/rank";
 import NavbarBuilder from "../components/NavBar";
 import CoffeeChatRegister from "../components/dashboard/CoffeeChatRegister";
 import Step2Prompt from "../components/dashboard/Step2Prompt";
 import OnboardingCohortRegister from "../components/dashboard/OnboardingCohortRegister";
 import InternalLink from "../components/Link";
+import ConditionalLink from "../components/ConditionalLink";
+import MemberDirectoryIcon from "../public/member_directory.svg";
 
 type Event = {
   name: string;
@@ -287,11 +289,25 @@ const Dashboard: NextPage = () => {
                 Read the{" "}
                 <span className="font-semibold">V1 Newsletter &rsaquo;</span>
               </a>
-              <div className="block bg-gray-300 max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center text-lg hover:cursor-not-allowed">
-                <span className="text-2xl">🔒 </span>
-                Member Directory
-              </div>
-              <div className="block bg-gray-300 max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center text-lg hover:cursor-not-allowed">
+              <ConditionalLink
+                href={rankLessThan(rank, Rank.RANK_3) ? undefined : "/members"}
+              >
+                <p
+                  className={`block max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center text-lg ${
+                    rankLessThan(rank, Rank.RANK_3)
+                      ? "bg-gray-300 hover:cursor-not-allowed"
+                      : "bg-gray-100 hover:bg-gray-200 hover:opacity-75 transition-all"
+                  }`}
+                >
+                  {rankLessThan(rank, Rank.RANK_3) ? (
+                    <span className="text-2xl">🔒 </span>
+                  ) : (
+                    <MemberDirectoryIcon className="mb-1 inline-block w-8 mr-1 my-auto" />
+                  )}
+                  Member Directory
+                </p>
+              </ConditionalLink>
+              <div className="block max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center text-lg bg-gray-300 hover:cursor-not-allowed">
                 <span className="text-2xl">🔒 </span>
                 Alumni Directory
               </div>

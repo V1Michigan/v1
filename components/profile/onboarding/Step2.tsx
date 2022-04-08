@@ -7,8 +7,7 @@ import {
   BioField,
   LinkedInField,
   YearField,
-  MajorsField,
-  MinorsField,
+  FieldsOfStudyFields,
   PartnerSharingConsentField,
 } from "../fields/ProfileFields";
 import ViewResume from "../ViewResume";
@@ -21,9 +20,11 @@ interface FormValues {
   resume: File | null; // Optional
   linkedin: string; // Optional
   year: string;
-  majors: string[];
-  minors: string[];
-  partnerSharingConsent: boolean;
+  fields_of_study: {
+    majors: string[];
+    minors: string[];
+  };
+  partner_sharing_consent: boolean;
 }
 
 interface Step2Props {
@@ -51,9 +52,11 @@ const Step2 = ({ nextStep }: Step2Props) => {
             year: "",
             linkedin: "",
             resume: null,
-            majors: [],
-            minors: [],
-            partnerSharingConsent: true,
+            fields_of_study: {
+              majors: [],
+              minors: [],
+            },
+            partner_sharing_consent: true,
           } as FormValues
         }
         validate={() => setSubmitError(null)}
@@ -80,12 +83,9 @@ const Step2 = ({ nextStep }: Step2Props) => {
               {
                 bio: values.bio,
                 year: values.year,
-                fields_of_study: {
-                  majors: values.majors,
-                  minors: values.minors,
-                },
+                fields_of_study: values.fields_of_study,
                 linkedin: values.linkedin,
-                partner_sharing_consent: values.partnerSharingConsent,
+                partner_sharing_consent: values.partner_sharing_consent,
                 updated_at: new Date(),
               },
               {
@@ -110,8 +110,10 @@ const Step2 = ({ nextStep }: Step2Props) => {
             <Form className="md:w-4/5 mx-2 md:mx-auto p-4 md:p-8 space-y-8 bg-white shadow-lg rounded-t-lg">
               <BioField label="Bio" />
               <YearField label="School year" />
-              <MajorsField label="Major(s)" />
-              <MinorsField label="Minor(s) (optional)" />
+              <FieldsOfStudyFields
+                majorsLabel="Major(s)"
+                minorsLabel="Minor(s) (optional)"
+              />
               <LinkedInField label="LinkedIn profile (optional)" />
 
               <div className="mx-auto">

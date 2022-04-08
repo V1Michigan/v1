@@ -146,7 +146,11 @@ const Step1 = ({
               <PhoneField label="Phone" />
 
               <div>
-                {values.avatar && <ViewAvatar avatar={values.avatar} />}
+                {values.avatar && (
+                  <div className="m-4 flex justify-center items-center">
+                    <ViewAvatar avatar={values.avatar} size={32} />
+                  </div>
+                )}
                 <div className="mx-auto">
                   <EditAvatar />
                 </div>

@@ -8,6 +8,10 @@ module.exports = {
     if (isServer) {
       config.resolve.alias.canvas = false;
     }
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ["@svgr/webpack"]
+    });
     return config;
   },
 };
