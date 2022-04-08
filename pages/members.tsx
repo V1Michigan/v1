@@ -335,6 +335,14 @@ const Members: NextPage = () => {
             <button
               type="button"
               className="p-1 rounded-lg border border-black disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={() => setPage(0)}
+              disabled={page === 0}
+            >
+              &laquo; First
+            </button>
+            <button
+              type="button"
+              className="p-1 rounded-lg border border-black disabled:opacity-50 disabled:cursor-not-allowed"
               onClick={() => setPage((p) => Math.max(0, p - 1))}
               disabled={page === 0}
             >
@@ -347,6 +355,14 @@ const Members: NextPage = () => {
               disabled={page === numPages - 1}
             >
               Next &rsaquo;
+            </button>
+            <button
+              type="button"
+              className="p-1 rounded-lg border border-black disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={() => setPage(numPages - 1)}
+              disabled={page === numPages - 1}
+            >
+              Last &raquo;
             </button>
           </div>
         </>
