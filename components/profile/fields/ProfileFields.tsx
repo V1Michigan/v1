@@ -158,6 +158,7 @@ const YearField = ({ label }: LabelProps) => {
     }
     return undefined;
   };
+  const [field] = useField<string>("year");
   return (
     <div>
       <label htmlFor="year" className="block">
@@ -169,7 +170,7 @@ const YearField = ({ label }: LabelProps) => {
         name="year"
         validate={validateYear}
       >
-        <option value="" disabled hidden>
+        <option value="" disabled={field.value !== null} hidden>
           Select your year
         </option>
         {Object.entries(Year).map(([key, value]) => (
@@ -202,7 +203,7 @@ const FieldsOfStudyFields = ({
 }) => {
   const validate = (value: FieldsOfStudy) => {
     // No minors validation required
-    if (value.majors.length === 0) {
+    if (!value || value.majors.length === 0) {
       return "Please select at least one major, or 'Undecided'";
     }
     return undefined;
@@ -219,7 +220,7 @@ const FieldsOfStudyFields = ({
         </label>
         <ControlledMultiSelect
           value={FIELDS_OF_STUDY.filter(
-            (option) => field.value.majors.indexOf(option.value) !== -1
+            (option) => (field.value?.majors || []).indexOf(option.value) !== -1
           )}
           options={FIELDS_OF_STUDY}
           onChange={(option: MultiValue<Option>) => {
@@ -242,7 +243,7 @@ const FieldsOfStudyFields = ({
         </label>
         <ControlledMultiSelect
           value={FIELDS_OF_STUDY.filter(
-            (option) => field.value.minors.indexOf(option.value) !== -1
+            (option) => (field.value?.minors || []).indexOf(option.value) !== -1
           )}
           // List of minors might be slightly different...fine for now
           options={FIELDS_OF_STUDY}

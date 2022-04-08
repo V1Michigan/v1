@@ -5,6 +5,9 @@ export default function isObjectEqual(
   a: MaybeEqualObject,
   b: MaybeEqualObject
 ) {
+  if (a === b) return true;
+  if (a == null || b == null) return false;
+
   const keys = Object.keys(a);
   if (keys.length !== Object.keys(b).length) return false;
 

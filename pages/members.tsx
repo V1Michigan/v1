@@ -315,7 +315,7 @@ const Members: NextPage = () => {
           />
         </div>
       </div>
-      <div className="flex flex-col gap-y-2 my-4">
+      <div className="flex flex-col gap-y-2 my-4 w-full">
         {filteredMembers
           .slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE) // Pagination! :D
           .map((member) => (
