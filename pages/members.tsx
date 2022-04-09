@@ -204,7 +204,6 @@ const Members: NextPage = () => {
         .from("profiles")
         .select(PROFILE_COLUMNS)
         .neq("fields_of_study", null) // Indirect check for if they've completed their profile
-        .neq("username", username)
         // Arbitrary, just to have consistent order
         .order("id", { ascending: true })) as PostgrestResponse<
         Omit<MemberData, "avatar">
@@ -235,8 +234,8 @@ const Members: NextPage = () => {
           member.name,
           member.bio,
           member.website,
-          ...member.roles,
-          ...member.interests,
+          ...member.roles.map((role) => RoleType[role]),
+          ...member.interests.map((interest) => Interest[interest]),
         ]
           .join(" ")
           .toLowerCase()
