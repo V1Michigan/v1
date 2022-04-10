@@ -273,55 +273,55 @@ const UserProfile: NextPage = () => {
                 {error}
               </p>
             ))}
-            {isCurrentUser && (
-              <div className="mt-8 flex justify-around items-center">
-                {editMode ? (
-                  <>
-                    <button
-                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow text-sm font-medium rounded-md
+            <div className="mt-8 flex justify-around items-center">
+              {editMode ? (
+                <>
+                  <button
+                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow text-sm font-medium rounded-md
                         text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
                         disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-indigo-600"
-                      onClick={() => {
-                        ReactGA.event({
-                          category: "Profile",
-                          action: "Exited edit mode",
-                        });
-                        setEditMode(false);
-                      }}
-                      disabled={isSubmitting}
-                      type="button"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow text-sm font-medium rounded-md
+                    onClick={() => {
+                      ReactGA.event({
+                        category: "Profile",
+                        action: "Exited edit mode",
+                      });
+                      setEditMode(false);
+                    }}
+                    disabled={isSubmitting}
+                    type="button"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow text-sm font-medium rounded-md
                         text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
                         disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-indigo-600"
-                      disabled={
-                        isSubmitting || isObjectEqual(values, initialProfile)
-                      }
-                      type="submit"
-                    >
-                      {isSubmitting ? "Saving..." : "Save Profile"}
-                    </button>
-                    {formSubmitErrors.map((error) => (
-                      <p key={error} className="text-red-500">
-                        {error}
-                      </p>
-                    ))}
-                  </>
-                ) : (
-                  <>
-                    <InternalLink href="/dashboard">
-                      <button
-                        className="inline-flex justify-center py-2 px-4 border border-transparent shadow text-sm font-medium rounded-md
+                    disabled={
+                      isSubmitting || isObjectEqual(values, initialProfile)
+                    }
+                    type="submit"
+                  >
+                    {isSubmitting ? "Saving..." : "Save Profile"}
+                  </button>
+                  {formSubmitErrors.map((error) => (
+                    <p key={error} className="text-red-500">
+                      {error}
+                    </p>
+                  ))}
+                </>
+              ) : (
+                <>
+                  <InternalLink href="/dashboard">
+                    <button
+                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow text-sm font-medium rounded-md
                           text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
                           disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-indigo-600"
-                        type="button"
-                      >
-                        Back
-                      </button>
-                    </InternalLink>
+                      type="button"
+                    >
+                      Back
+                    </button>
+                  </InternalLink>
+                  {isCurrentUser && (
                     <button
                       className="inline-flex justify-center py-2 px-4 border border-transparent shadow text-sm font-medium rounded-md
                           text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
@@ -337,10 +337,10 @@ const UserProfile: NextPage = () => {
                     >
                       Edit Profile
                     </button>
-                  </>
-                )}
-              </div>
-            )}
+                  )}
+                </>
+              )}
+            </div>
           </Form>
         </div>
       )}
