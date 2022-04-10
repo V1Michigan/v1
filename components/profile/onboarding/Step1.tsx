@@ -63,7 +63,7 @@ const Step1 = ({
   }
 
   return (
-    <div className="bg-gradient h-full">
+    <div className="min-h-screen bg-gradient flex flex-col">
       <Head title="Welcome" />
       <h3 className="py-2 md:py-6 text-lg font-large text-center text-white font-bold">
         Let us get to know you better!
@@ -138,8 +138,8 @@ const Step1 = ({
         }}
       >
         {({ values, isSubmitting }) => (
-          <Fade>
-            <Form className="md:w-4/5 mx-2 md:mx-auto p-4 md:p-8 space-y-8 bg-white shadow-lg rounded-t-lg">
+          <Fade className="flex-1 flex flex-col">
+            <Form className="md:w-4/5 mx-2 md:mx-auto p-4 md:p-8 bg-white shadow-lg rounded-t-lg flex-1 flex flex-col justify-between gap-y-4">
               <NameField label="Name" />
               <EmailField value={email} label="Email" />
               <UsernameField label="Username" />

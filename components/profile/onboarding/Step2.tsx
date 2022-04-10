@@ -40,7 +40,7 @@ const Step2 = ({ nextStep }: Step2Props) => {
   }
 
   return (
-    <div className="h-full bg-gradient">
+    <div className="min-h-screen bg-gradient flex flex-col">
       <Head title="Complete profile" />
       <h3 className="py-2 md:py-6 text-lg font-large text-center text-white font-bold">
         We can&apos;t wait to learn more about you!
@@ -106,8 +106,8 @@ const Step2 = ({ nextStep }: Step2Props) => {
         }}
       >
         {({ values, isSubmitting }) => (
-          <Fade>
-            <Form className="md:w-4/5 mx-2 md:mx-auto p-4 md:p-8 space-y-8 bg-white shadow-lg rounded-t-lg">
+          <Fade className="flex-1 flex flex-col">
+            <Form className="md:w-4/5 mx-2 md:mx-auto p-4 md:p-8 bg-white shadow-lg rounded-t-lg flex-1 flex flex-col justify-between gap-y-4">
               <BioField label="Bio" />
               <YearField label="School year" />
               <FieldsOfStudyFields
