@@ -52,8 +52,8 @@ const ONBOARDING_PROGRESS = {
   [Rank.RANK_1_ONBOARDING_2]: 25,
   [Rank.RANK_1_ONBOARDING_3]: 25,
   [Rank.RANK_2_ONBOARDING_0]: 50,
-  [Rank.RANK_2_ONBOARDING_1]: 60,
-  [Rank.RANK_3]: 75,
+  [Rank.RANK_2_ONBOARDING_1]: 75,
+  [Rank.RANK_3]: 100,
   [Rank.MEMBER]: 100,
   [Rank.BUILDER]: 100,
   [Rank.LEADERSHIP]: 100,
@@ -74,7 +74,7 @@ const PROGRESS_SECTIONS = [
   },
   {
     label: "Cohort 🛠️",
-    position: ONBOARDING_PROGRESS[Rank.RANK_3],
+    position: ONBOARDING_PROGRESS[Rank.RANK_2_ONBOARDING_1],
   },
   {
     label: "V1 Member 🎉",
@@ -82,14 +82,59 @@ const PROGRESS_SECTIONS = [
   },
 ];
 
+const OnboardingProgressBar = ({ rank }: { rank: Rank | undefined }) => {
+  const onboardingProgress = ONBOARDING_PROGRESS[rank || Rank.RANK_NULL];
+  return (
+    <div className="pb-2 pt-1">
+      <p className="text-xs font-semibold inline-block uppercase text-blue-800 mb-1">
+        Onboarding Progress ({onboardingProgress}%)
+      </p>
+      <div className="relative h-2 text-xs flex rounded bg-blue-100">
+        <div
+          style={{
+            width: `${onboardingProgress}%`,
+            transitionProperty: "width",
+            transitionDuration: "1s",
+          }}
+          // Round edges, but not the right side
+          className={`bg-blue-600 rounded-l ${
+            onboardingProgress === 100 ? "rounded-r" : ""
+          }`}
+        />
+        {/* Hide labels on small screens */}
+        <div className="absolute w-full hidden md:block">
+          {PROGRESS_SECTIONS.map(({ label, position }) => (
+            <div
+              className="absolute whitespace-nowrap"
+              style={{
+                left: `${position}%`,
+                transform: `translateX(-${
+                  [0, 100].includes(position) ? position : 50
+                }%)`,
+              }}
+              key={position}
+            >
+              {/* Section divider (same color as background) */}
+              <div
+                className={`w-2 h-3 mx-auto bg-gray-100 ${
+                  [0, 100].includes(position) ? "invisible" : ""
+                }`}
+              />
+              <p>{label}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const Dashboard: NextPage = () => {
   const router = useRouter();
   const { supabase, user, rank } = useSupabase();
   const [name, setName] = useState<string | null>(null);
   const [events, setEvents] = useState<Event[]>([]);
   const [dataFetchErrors, setDataFetchErrors] = useState<string[]>([]);
-
-  const onboardingProgress = ONBOARDING_PROGRESS[rank || Rank.RANK_NULL];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -162,47 +207,7 @@ const Dashboard: NextPage = () => {
             </span>
           </div> */}
           <Welcome name={name} />
-          <div className="pb-2 pt-1">
-            <p className="text-xs font-semibold inline-block uppercase text-blue-800 mb-1">
-              Onboarding Progress ({onboardingProgress}%)
-            </p>
-            <div className="relative h-2 text-xs flex rounded bg-blue-100">
-              <div
-                style={{
-                  width: `${onboardingProgress}%`,
-                  transitionProperty: "width",
-                  transitionDuration: "1s",
-                }}
-                // Round edges, but not the right side
-                className={`bg-blue-600 rounded-l ${
-                  onboardingProgress === 100 ? "rounded-r" : ""
-                }`}
-              />
-              {/* Hide labels on small screens */}
-              <div className="absolute w-full hidden md:block">
-                {PROGRESS_SECTIONS.map(({ label, position }) => (
-                  <div
-                    className="absolute whitespace-nowrap"
-                    style={{
-                      left: `${position}%`,
-                      transform: `translateX(-${
-                        [0, 100].includes(position) ? position : 50
-                      }%)`,
-                    }}
-                    key={position}
-                  >
-                    {/* Section divider (same color as background) */}
-                    <div
-                      className={`w-2 h-3 mx-auto bg-gray-100 ${
-                        [0, 100].includes(position) ? "invisible" : ""
-                      }`}
-                    />
-                    <p>{label}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+          <OnboardingProgressBar rank={rank} />
         </div>
       </div>
 
