@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { NextPage } from "next";
 import { PostgrestResponse } from "@supabase/supabase-js";
+import Head from "../components/Head";
 import ProtectedRoute from "../components/ProtectedRoute";
 import useSupabase from "../hooks/useSupabase";
 import useSupabaseDownload from "../hooks/useSupabaseDownload";
@@ -269,6 +270,7 @@ const Members: NextPage = () => {
   }
   return (
     <div className="flex flex-col justify-center items-center p-4">
+      <Head title="Members" />
       {/* TODO: Nav bar */}
       <div className="flex w-full justify-center items-center">
         <InternalLink href="/dashboard" className="justify-self-start">
