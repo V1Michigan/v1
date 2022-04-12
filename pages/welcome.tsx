@@ -62,6 +62,7 @@ const WelcomePage: NextPage = () => {
         initialAvatarUrl={user.user_metadata.avatar_url}
         nextStep={() => {
           setRank(Rank.RANK_0);
+          // TODO: Consider sending welcome email during rank update
           sendWelcomeEmail(supabase, user);
         }}
       />
