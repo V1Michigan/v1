@@ -1,9 +1,4 @@
 import { NextPage } from "next";
-import {
-  SupabaseClient,
-  PostgrestSingleResponse,
-  User,
-} from "@supabase/supabase-js";
 import useSupabase from "../hooks/useSupabase";
 import ProtectedRoute from "../components/ProtectedRoute";
 import Redirect from "../components/Redirect";
@@ -11,43 +6,8 @@ import Step1 from "../components/profile/onboarding/Step1";
 import Step2 from "../components/profile/onboarding/Step2";
 import { Rank } from "../constants/rank";
 
-const WELCOME_EMAIL_URL =
-  "https://v1-api-production.up.railway.app/email/welcome";
-const sendWelcomeEmail = async (supabase: SupabaseClient, user: User) => {
-  const session = supabase.auth.session();
-  if (!session) return;
-  const { access_token: accessToken } = session;
-  const { email } = user;
-
-  // Might as well keep all DB querying in the frontend for now
-  const { data, error: _error } = (await supabase
-    .from("profiles")
-    .select("name")
-    .eq("id", user.id)
-    .single()) as PostgrestSingleResponse<{ name: string }>;
-  if (!data?.name) {
-    return;
-  }
-  try {
-    await fetch(WELCOME_EMAIL_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-      body: JSON.stringify({
-        recipient: email,
-        name: data.name,
-      }),
-    });
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error(error);
-  }
-};
-
 const WelcomePage: NextPage = () => {
-  const { supabase, user, rank, setRank } = useSupabase();
+  const { user, rank, setRank } = useSupabase();
 
   // Type guard
   if (!user || rank === undefined) {
@@ -60,11 +20,7 @@ const WelcomePage: NextPage = () => {
         email={user.email}
         initialName={user.user_metadata.full_name}
         initialAvatarUrl={user.user_metadata.avatar_url}
-        nextStep={() => {
-          setRank(Rank.RANK_0);
-          // TODO: Consider sending welcome email during rank update
-          sendWelcomeEmail(supabase, user);
-        }}
+        nextStep={() => setRank(Rank.RANK_0)}
       />
     );
   }

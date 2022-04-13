@@ -90,7 +90,7 @@ function SupabaseProvider({
     if (user && rank !== newRank) {
       setRank_(newRank);
       const { rank: rankNumber, onboardingStatus } = rankToNumber(newRank);
-      const oldRankNumber = rank ? rankToNumber(rank) : undefined;
+      const oldRankNumber = rank ? rankToNumber(rank).rank : undefined;
 
       const updateRank = async () => {
         if (rankNumber === oldRankNumber) {
@@ -136,7 +136,7 @@ function SupabaseProvider({
           )
           .eq("user_id", user.id);
 
-      if (rankNumber === 1) {
+      if (oldRankNumber === 0 && rankNumber === 1) {
         // updateRank() requires onboarding status to exist already
         await createOnboardingStatus();
         await updateRank();
@@ -174,6 +174,7 @@ function SupabaseProvider({
           // `
           // )
           .eq("id", user.id)
+          // .eq("rank.user_id", user.id)
           .eq("onboarding.user_id", user.id)
           .single()) as PostgrestSingleResponse<{
           username: string;
