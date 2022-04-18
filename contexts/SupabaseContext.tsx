@@ -59,6 +59,8 @@ interface SupabaseContextInterface {
 
 const SupabaseContext = createContext<SupabaseContextInterface | null>(null);
 
+const RANK_UPDATE_URL = "https://v1-api-production.up.railway.app/rank";
+
 function SupabaseProvider({
   children,
 }: {
@@ -88,31 +90,60 @@ function SupabaseProvider({
     if (user && rank !== newRank) {
       setRank_(newRank);
       const { rank: rankNumber, onboardingStatus } = rankToNumber(newRank);
-      await Promise.all([
-        supabase
-          .from("profiles")
-          .update({ rank: rankNumber }, { returning: "minimal" })
-          .eq("id", user.id),
-        // First time user has an onboarding status
-        newRank === Rank.RANK_1_ONBOARDING_0 &&
-          supabase.from("onboarding").upsert(
-            {
-              user_id: user.id,
-              status: onboardingStatus,
-              created_at: new Date(),
+      const oldRankNumber = rank ? rankToNumber(rank).rank : undefined;
+
+      const updateRank = async () => {
+        if (rankNumber === oldRankNumber) {
+          return;
+        }
+        const session = supabase.auth.session();
+        if (!session) {
+          return;
+        }
+        const { access_token: accessToken } = session;
+        try {
+          await fetch(RANK_UPDATE_URL, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${accessToken}`,
             },
-            { returning: "minimal" }
-          ),
-        // Update an existing onboarding status
+            body: JSON.stringify({ rank: rankNumber }),
+          });
+        } catch (error) {
+          // eslint-disable-next-line no-console
+          console.error(error);
+        }
+      };
+      const createOnboardingStatus = async () =>
+        // RANK_1_ONBOARDING_0 = first time user has an onboarding status
+        newRank === Rank.RANK_1_ONBOARDING_0 &&
+        supabase.from("onboarding").upsert(
+          {
+            user_id: user.id,
+            status: onboardingStatus,
+            created_at: new Date(),
+          },
+          { returning: "minimal" }
+        );
+      const updateOnboardingStatus = async () =>
         rankLessThan(Rank.RANK_1_ONBOARDING_0, newRank) &&
-          supabase
-            .from("onboarding")
-            .update(
-              { status: onboardingStatus ?? null },
-              { returning: "minimal" }
-            )
-            .eq("user_id", user.id),
-      ]);
+        supabase
+          .from("onboarding")
+          .update(
+            { status: onboardingStatus ?? null },
+            { returning: "minimal" }
+          )
+          .eq("user_id", user.id);
+
+      if (oldRankNumber === 0 && rankNumber === 1) {
+        // updateRank() requires onboarding status to exist already
+        await createOnboardingStatus();
+        await updateRank();
+      } else {
+        // Can do both requests at the same time here
+        await Promise.all([updateRank(), updateOnboardingStatus()]);
+      }
     }
   };
 
@@ -131,7 +162,19 @@ function SupabaseProvider({
             )
           `
           )
+          // .select(
+          //   `
+          //   username,
+          //   ranks (
+          //     rank,
+          //   ),
+          //   onboarding (
+          //     status
+          //   )
+          // `
+          // )
           .eq("id", user.id)
+          // .eq("rank.user_id", user.id)
           .eq("onboarding.user_id", user.id)
           .single()) as PostgrestSingleResponse<{
           username: string;
