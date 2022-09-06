@@ -18,7 +18,7 @@ enum Rank {
 }
 
 const numberToRank = (
-  rank: number,
+  rank: number | null,
   onboardingStatus: number | null
 ): undefined | Rank => {
   switch (rank) {

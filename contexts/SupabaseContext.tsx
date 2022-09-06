@@ -156,29 +156,20 @@ function SupabaseProvider({
           .select(
             `
             username,
-            rank,
+            ranks (
+              rank
+            ),
             onboarding (
               status
             )
           `
           )
-          // .select(
-          //   `
-          //   username,
-          //   ranks (
-          //     rank,
-          //   ),
-          //   onboarding (
-          //     status
-          //   )
-          // `
-          // )
           .eq("id", user.id)
-          // .eq("rank.user_id", user.id)
+          .eq("ranks.user_id", user.id)
           .eq("onboarding.user_id", user.id)
           .single()) as PostgrestSingleResponse<{
           username: string;
-          rank: number;
+          ranks: { rank: number }[];
           onboarding: { status: number }[];
         }>;
 
@@ -188,12 +179,14 @@ function SupabaseProvider({
           throw new Error("No user data found");
         }
 
-        const { username: username_, rank: rank_, onboarding } = data;
+        const { username: username_, ranks, onboarding } = data;
+        const fetchedRank = ranks.length > 0 ? ranks[0].rank : null;
         const onboardStatus =
           onboarding.length > 0 ? onboarding[0].status : null;
 
         setUsername(username_ ?? null);
-        setRank_(numberToRank(rank_ ?? null, onboardStatus));
+        // setRank_, not setRank, don't need to update the DB
+        setRank_(numberToRank(fetchedRank, onboardStatus));
       }
       setLoading(false);
     }
