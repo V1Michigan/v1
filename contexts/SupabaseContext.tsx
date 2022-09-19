@@ -55,8 +55,8 @@ interface SupabaseContextInterface {
 
 const SupabaseContext = createContext<SupabaseContextInterface | null>(null);
 
-// const RANK_UPDATE_URL = "https://v1-api-production.up.railway.app/rank";
-const RANK_UPDATE_URL = "http://localhost:3001/rank";
+const RANK_UPDATE_URL = "https://v1-api-production.up.railway.app/rank";
+
 function SupabaseProvider({
   children,
 }: {
