@@ -4,12 +4,13 @@ import ProtectedRoute from "../components/ProtectedRoute";
 import Redirect from "../components/Redirect";
 import Step1 from "../components/profile/onboarding/Step1";
 import Rank from "../constants/rank";
+import Step2 from "../components/profile/onboarding/Step2";
 
 const WelcomePage: NextPage = () => {
-  const { user, rank, setRank } = useSupabase();
+  const { user, rank, setRank, profileComplete } = useSupabase();
 
   // Type guard
-  if (!user || rank === null) {
+  if (!user || rank === null || profileComplete === null) {
     return null;
   }
 
@@ -23,8 +24,11 @@ const WelcomePage: NextPage = () => {
       />
     );
   }
-  // Else, rank === RANK_0 (not prompted to fill Step2)
-  // or they've already filled it (rank >= Rank.RANK_1_ONBOARDING_2)
+
+  if (!profileComplete) {
+    return <Step2 />;
+  }
+
   return <Redirect route="/dashboard" />;
 };
 
