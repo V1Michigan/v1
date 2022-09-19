@@ -1,14 +1,11 @@
 import ReactGA from "react-ga4";
 import useSupabase from "../../hooks/useSupabase";
 import NextStepCard from "./NextStepCard";
-import { Rank } from "../../constants/rank";
+import Rank from "../../constants/rank";
 
 const Step2Prompt = () => {
-  const { rank } = useSupabase();
-  if (
-    !rank ||
-    ![Rank.RANK_1_ONBOARDING_0, Rank.RANK_1_ONBOARDING_1].includes(rank)
-  ) {
+  const { rank, profileComplete } = useSupabase();
+  if (rank === null || rank === Rank.NEW_USER || profileComplete) {
     return null;
   }
   return (

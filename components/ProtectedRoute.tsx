@@ -1,8 +1,7 @@
 import { useRouter } from "next/router";
-import PropTypes from "prop-types";
 import useSupabase from "../hooks/useSupabase";
 import Redirect from "./Redirect";
-import { Rank, rankLessThan } from "../constants/rank";
+import Rank from "../constants/rank";
 
 interface ProtectedRouteProps {
   children: JSX.Element;
@@ -16,13 +15,13 @@ export default function ProtectedRoute({
   const { user, rank } = useSupabase();
   const router = useRouter();
   if (user) {
-    // undefined check is mostly a type guard; if `user`, then `rank` !== undefined
-    if (rank === undefined || rank === Rank.RANK_NULL) {
+    // null check is just a type guard; if `user`, then `rank` !== null
+    if (rank === null || rank === Rank.NEW_USER) {
       // pathname check prevents infinite redirect loop
       if (router.pathname !== "/welcome") {
         return <Redirect route="/welcome" />;
       }
-    } else if (minRank && rankLessThan(rank, minRank)) {
+    } else if (minRank !== undefined && rank < minRank) {
       return <Redirect route="/dashboard" />;
     }
     return children;
@@ -30,7 +29,3 @@ export default function ProtectedRoute({
   // No user
   return <Redirect route="/login" />;
 }
-
-ProtectedRoute.propTypes = {
-  children: PropTypes.node.isRequired,
-};

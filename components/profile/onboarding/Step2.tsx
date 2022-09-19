@@ -27,11 +27,7 @@ interface FormValues {
   partner_sharing_consent: boolean;
 }
 
-interface Step2Props {
-  nextStep: () => void;
-}
-
-const Step2 = ({ nextStep }: Step2Props) => {
+const Step2 = () => {
   const { user, supabase } = useSupabase();
   const [submitError, setSubmitError] = useState<string | null>(null);
 
@@ -100,7 +96,9 @@ const Step2 = ({ nextStep }: Step2Props) => {
               category: "Onboarding",
               action: "Submitted Step 2 form",
             });
-            nextStep();
+            // Not using Next router here, because we want to reload the page
+            // in order to reset profileComplete from SupabaseContext
+            window.location.href = "dashboard";
           }
           setSubmitting(false);
         }}

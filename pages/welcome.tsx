@@ -3,44 +3,32 @@ import useSupabase from "../hooks/useSupabase";
 import ProtectedRoute from "../components/ProtectedRoute";
 import Redirect from "../components/Redirect";
 import Step1 from "../components/profile/onboarding/Step1";
+import Rank from "../constants/rank";
 import Step2 from "../components/profile/onboarding/Step2";
-import { Rank } from "../constants/rank";
 
 const WelcomePage: NextPage = () => {
-  const { user, rank, setRank } = useSupabase();
+  const { user, rank, setRank, profileComplete } = useSupabase();
 
   // Type guard
-  if (!user || rank === undefined) {
+  if (!user || rank === null || profileComplete === null) {
     return null;
   }
 
-  if (rank === Rank.RANK_NULL) {
+  if (rank === Rank.NEW_USER) {
     return (
       <Step1
         email={user.email}
         initialName={user.user_metadata.full_name}
         initialAvatarUrl={user.user_metadata.avatar_url}
-        nextStep={() => setRank(Rank.RANK_0)}
+        nextStep={() => setRank(Rank.INACTIVE_MEMBER)}
       />
     );
   }
-  if (rank === Rank.RANK_1_ONBOARDING_0 || rank === Rank.RANK_1_ONBOARDING_1) {
-    // Not sure we should be using /welcome also for Step2
-    return (
-      <Step2
-        nextStep={() =>
-          // 1.0 => 1.2, 1.1 => 1.3
-          setRank(
-            rank === Rank.RANK_1_ONBOARDING_0
-              ? Rank.RANK_1_ONBOARDING_2
-              : Rank.RANK_1_ONBOARDING_3
-          )
-        }
-      />
-    );
+
+  if (!profileComplete) {
+    return <Step2 />;
   }
-  // Else, rank === RANK_0 (not prompted to fill Step2)
-  // or they've already filled it (rank >= Rank.RANK_1_ONBOARDING_2)
+
   return <Redirect route="/dashboard" />;
 };
 
