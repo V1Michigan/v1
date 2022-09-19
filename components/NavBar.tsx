@@ -10,11 +10,6 @@ import InternalLink from "./Link";
 
 const NAVIGATION = [
   // { name: 'V1 @ Michigan', href: '#', current: true },
-  {
-    name: "Community",
-    href: "/community",
-    right: false,
-  },
   { name: "Studio", href: "https://studio.v1michigan.com" },
   {
     name: "Startup Fair",
