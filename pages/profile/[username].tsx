@@ -20,7 +20,7 @@ import {
   EditResume,
 } from "../../components/profile/fields/FileFields";
 import { PartnerSharingConsentField } from "../../components/profile/fields/ProfileFields";
-import { Rank } from "../../constants/rank";
+import Rank from "../../constants/rank";
 import InternalLink from "../../components/Link";
 
 // Username included separately
@@ -349,7 +349,7 @@ const UserProfile: NextPage = () => {
 };
 
 const ProtectedProfile = () => (
-  <ProtectedRoute minRank={Rank.RANK_1_ONBOARDING_2}>
+  <ProtectedRoute minRank={Rank.INACTIVE_MEMBER}>
     <UserProfile />
   </ProtectedRoute>
 );

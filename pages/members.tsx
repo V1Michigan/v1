@@ -5,7 +5,7 @@ import Head from "../components/Head";
 import ProtectedRoute from "../components/ProtectedRoute";
 import useSupabase from "../hooks/useSupabase";
 import useSupabaseDownload from "../hooks/useSupabaseDownload";
-import { Rank } from "../constants/rank";
+import Rank from "../constants/rank";
 import { RoleType, RoleColor, Interest } from "../constants/profile";
 import type { Profile as _Profile } from "./profile/[username]";
 import InternalLink from "../components/Link";
@@ -379,7 +379,7 @@ const Members: NextPage = () => {
 };
 
 const ProtectedMembers = () => (
-  <ProtectedRoute minRank={Rank.RANK_3}>
+  <ProtectedRoute minRank={Rank.ACTIVE_MEMBER}>
     <Members />
   </ProtectedRoute>
 );

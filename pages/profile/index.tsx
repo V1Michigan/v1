@@ -2,7 +2,7 @@ import { NextPage } from "next";
 import ProtectedRoute from "../../components/ProtectedRoute";
 import Redirect from "../../components/Redirect";
 import useSupabase from "../../hooks/useSupabase";
-import { Rank } from "../../constants/rank";
+import Rank from "../../constants/rank";
 
 // Redirects to the current user's profile
 const ProfileIndex: NextPage = () => {
@@ -12,7 +12,7 @@ const ProfileIndex: NextPage = () => {
 };
 
 const ProtectedProfileIndex = () => (
-  <ProtectedRoute minRank={Rank.RANK_1_ONBOARDING_2}>
+  <ProtectedRoute minRank={Rank.INACTIVE_MEMBER}>
     <ProfileIndex />
   </ProtectedRoute>
 );

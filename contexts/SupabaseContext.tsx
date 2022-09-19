@@ -16,12 +16,7 @@ import {
   PostgrestSingleResponse,
 } from "@supabase/supabase-js";
 import supabase from "../utils/supabaseClient";
-import {
-  Rank,
-  numberToRank,
-  rankToNumber,
-  rankLessThan,
-} from "../constants/rank";
+import Rank from "../constants/rank";
 
 // We only allow sign-in via Google OAuth, so
 // user.app_metadata.provider === "google" is always true
@@ -53,14 +48,15 @@ interface SupabaseContextInterface {
   user: User | null;
   username: string | null;
   setUsername: (username: string) => void;
-  rank: Rank | undefined;
+  rank: Rank | null;
   setRank: (rank: Rank) => void;
+  profileComplete: boolean | null;
 }
 
 const SupabaseContext = createContext<SupabaseContextInterface | null>(null);
 
-const RANK_UPDATE_URL = "https://v1-api-production.up.railway.app/rank";
-
+// const RANK_UPDATE_URL = "https://v1-api-production.up.railway.app/rank";
+const RANK_UPDATE_URL = "http://localhost:3001/rank";
 function SupabaseProvider({
   children,
 }: {
@@ -84,16 +80,14 @@ function SupabaseProvider({
 
   const [username, setUsername] = useState<string | null>(null);
 
-  const [rank, setRank_] = useState<Rank | undefined>(undefined);
+  const [rank, setRank_] = useState<Rank | null>(null);
   const setRank = async (newRank: Rank) => {
     // Update local state and Supabase DB
     if (user && rank !== newRank) {
       setRank_(newRank);
-      const { rank: rankNumber, onboardingStatus } = rankToNumber(newRank);
-      const oldRankNumber = rank ? rankToNumber(rank).rank : undefined;
 
       const updateRank = async () => {
-        if (rankNumber === oldRankNumber) {
+        if (newRank === rank) {
           return;
         }
         const session = supabase.auth.session();
@@ -108,44 +102,19 @@ function SupabaseProvider({
               "Content-Type": "application/json",
               Authorization: `Bearer ${accessToken}`,
             },
-            body: JSON.stringify({ rank: rankNumber }),
+            body: JSON.stringify({ rank: newRank }),
           });
         } catch (error) {
           // eslint-disable-next-line no-console
           console.error(error);
         }
       };
-      const createOnboardingStatus = async () =>
-        // RANK_1_ONBOARDING_0 = first time user has an onboarding status
-        newRank === Rank.RANK_1_ONBOARDING_0 &&
-        supabase.from("onboarding").upsert(
-          {
-            user_id: user.id,
-            status: onboardingStatus,
-            created_at: new Date(),
-          },
-          { returning: "minimal" }
-        );
-      const updateOnboardingStatus = async () =>
-        rankLessThan(Rank.RANK_1_ONBOARDING_0, newRank) &&
-        supabase
-          .from("onboarding")
-          .update(
-            { status: onboardingStatus ?? null },
-            { returning: "minimal" }
-          )
-          .eq("user_id", user.id);
 
-      if (oldRankNumber === 0 && rankNumber === 1) {
-        // updateRank() requires onboarding status to exist already
-        await createOnboardingStatus();
-        await updateRank();
-      } else {
-        // Can do both requests at the same time here
-        await Promise.all([updateRank(), updateOnboardingStatus()]);
-      }
+      await updateRank();
     }
   };
+
+  const [profileComplete, setProfileComplete] = useState<boolean | null>(null);
 
   useEffect(() => {
     async function getUserData() {
@@ -156,6 +125,7 @@ function SupabaseProvider({
           .select(
             `
             username,
+            bio,
             ranks (
               rank
             ),
@@ -166,11 +136,10 @@ function SupabaseProvider({
           )
           .eq("id", user.id)
           .eq("ranks.user_id", user.id)
-          .eq("onboarding.user_id", user.id)
           .single()) as PostgrestSingleResponse<{
           username: string;
           ranks: { rank: number }[];
-          onboarding: { status: number }[];
+          bio: string | null;
         }>;
 
         if (error && status !== 406) {
@@ -179,14 +148,14 @@ function SupabaseProvider({
           throw new Error("No user data found");
         }
 
-        const { username: username_, ranks, onboarding } = data;
+        const { username: username_, ranks, bio } = data;
         const fetchedRank = ranks.length > 0 ? ranks[0].rank : null;
-        const onboardStatus =
-          onboarding.length > 0 ? onboarding[0].status : null;
+
+        setProfileComplete(bio !== null);
 
         setUsername(username_ ?? null);
         // setRank_, not setRank, don't need to update the DB
-        setRank_(numberToRank(fetchedRank, onboardStatus));
+        setRank_(fetchedRank);
       }
       setLoading(false);
     }
@@ -210,6 +179,7 @@ function SupabaseProvider({
         setUsername,
         rank,
         setRank,
+        profileComplete,
       }}
     >
       {children}

@@ -5,11 +5,9 @@ import type { PostgrestMaybeSingleResponse } from "@supabase/supabase-js";
 import Head from "../components/Head";
 import ProtectedRoute from "../components/ProtectedRoute";
 import useSupabase from "../hooks/useSupabase";
-import { Rank, rankLessThan } from "../constants/rank";
+import Rank from "../constants/rank";
 import NavbarBuilder from "../components/NavBar";
-import CoffeeChatRegister from "../components/dashboard/CoffeeChatRegister";
 import Step2Prompt from "../components/dashboard/Step2Prompt";
-import OnboardingCohortRegister from "../components/dashboard/OnboardingCohortRegister";
 import InternalLink from "../components/Link";
 import ConditionalLink from "../components/ConditionalLink";
 import MemberDirectoryIcon from "../public/member_directory.svg";
@@ -41,91 +39,6 @@ const Welcome = ({ name }: { name: string | null }) => {
         "!"
       )}
     </h1>
-  );
-};
-
-const ONBOARDING_PROGRESS = {
-  [Rank.RANK_NULL]: 0,
-  [Rank.RANK_0]: 10,
-  [Rank.RANK_1_ONBOARDING_0]: 20,
-  [Rank.RANK_1_ONBOARDING_1]: 20,
-  [Rank.RANK_1_ONBOARDING_2]: 25,
-  [Rank.RANK_1_ONBOARDING_3]: 25,
-  [Rank.RANK_2_ONBOARDING_0]: 50,
-  [Rank.RANK_2_ONBOARDING_1]: 75,
-  [Rank.RANK_3]: 100,
-  [Rank.MEMBER]: 100,
-  [Rank.BUILDER]: 100,
-  [Rank.LEADERSHIP]: 100,
-};
-
-const PROGRESS_SECTIONS = [
-  {
-    label: "Welcome! 🙂",
-    position: ONBOARDING_PROGRESS[Rank.RANK_NULL],
-  },
-  {
-    label: "Complete profile 🖼️",
-    position: ONBOARDING_PROGRESS[Rank.RANK_1_ONBOARDING_3],
-  },
-  {
-    label: "Coffee chat ☕️",
-    position: ONBOARDING_PROGRESS[Rank.RANK_2_ONBOARDING_0],
-  },
-  {
-    label: "Cohort 🛠️",
-    position: ONBOARDING_PROGRESS[Rank.RANK_2_ONBOARDING_1],
-  },
-  {
-    label: "V1 Member 🎉",
-    position: ONBOARDING_PROGRESS[Rank.MEMBER],
-  },
-];
-
-const OnboardingProgressBar = ({ rank }: { rank: Rank | undefined }) => {
-  const onboardingProgress = ONBOARDING_PROGRESS[rank || Rank.RANK_NULL];
-  return (
-    <div className="pb-2 pt-1">
-      <p className="text-xs font-semibold inline-block uppercase text-blue-800 mb-1">
-        Onboarding Progress ({onboardingProgress}%)
-      </p>
-      <div className="relative h-2 text-xs flex rounded bg-blue-100">
-        <div
-          style={{
-            width: `${onboardingProgress}%`,
-            transitionProperty: "width",
-            transitionDuration: "1s",
-          }}
-          // Round edges, but not the right side
-          className={`bg-blue-600 rounded-l ${
-            onboardingProgress === 100 ? "rounded-r" : ""
-          }`}
-        />
-        {/* Hide labels on small screens */}
-        <div className="absolute w-full hidden md:block">
-          {PROGRESS_SECTIONS.map(({ label, position }) => (
-            <div
-              className="absolute whitespace-nowrap"
-              style={{
-                left: `${position}%`,
-                transform: `translateX(-${
-                  [0, 100].includes(position) ? position : 50
-                }%)`,
-              }}
-              key={position}
-            >
-              {/* Section divider (same color as background) */}
-              <div
-                className={`w-2 h-3 mx-auto bg-gray-100 ${
-                  [0, 100].includes(position) ? "invisible" : ""
-                }`}
-              />
-              <p>{label}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
   );
 };
 
@@ -186,7 +99,7 @@ const Dashboard: NextPage = () => {
   }, [supabase, user, router]);
 
   // Type guard
-  if (!user || rank === undefined) {
+  if (!user || rank === null) {
     return null;
   }
 
@@ -207,7 +120,6 @@ const Dashboard: NextPage = () => {
             </span>
           </div> */}
           <Welcome name={name} />
-          <OnboardingProgressBar rank={rank} />
         </div>
       </div>
 
@@ -218,18 +130,13 @@ const Dashboard: NextPage = () => {
               {error}
             </p>
           ))}
-          <h1 className="text-4xl font-bold tracking-tight text-gray-800 mb-4 text-center">
-            What&apos;s next &#8250;
-          </h1>
 
           <div className="flex flex-wrap justify-center gap-x-4 gap-y-2">
-            <CoffeeChatRegister />
             <Step2Prompt />
-            <OnboardingCohortRegister />
           </div>
           <div className="md:flex justify-center">
             <div className="flex-1">
-              <h1 className="text-2xl font-bold tracking-tight text-gray-800 mb-4 mt-8 text-center">
+              <h1 className="text-3xl font-bold tracking-tight text-gray-800 mb-4 mt-8 text-center">
                 Upcoming Events &#8250;
               </h1>
               {events.map((event) => (
@@ -266,7 +173,7 @@ const Dashboard: NextPage = () => {
             </div>
 
             <div className="flex-1">
-              <h1 className="text-2xl font-bold tracking-tight text-gray-800 mb-4 mt-8 text-center">
+              <h1 className="text-3xl font-bold tracking-tight text-gray-800 mb-4 mt-8 text-center">
                 Resources &#8250;
               </h1>
               <InternalLink href="/community">
@@ -295,16 +202,16 @@ const Dashboard: NextPage = () => {
                 <span className="font-semibold">V1 Newsletter &rsaquo;</span>
               </a>
               <ConditionalLink
-                href={rankLessThan(rank, Rank.RANK_3) ? undefined : "/members"}
+                href={rank < Rank.ACTIVE_MEMBER ? undefined : "/members"}
               >
                 <p
                   className={`block max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center text-lg ${
-                    rankLessThan(rank, Rank.RANK_3)
+                    rank < Rank.ACTIVE_MEMBER
                       ? "bg-gray-300 hover:cursor-not-allowed"
                       : "bg-gray-100 hover:bg-gray-200 hover:opacity-75 transition-all"
                   }`}
                 >
-                  {rankLessThan(rank, Rank.RANK_3) ? (
+                  {rank < Rank.ACTIVE_MEMBER ? (
                     <span className="text-2xl">🔒 </span>
                   ) : (
                     <MemberDirectoryIcon className="mb-1 inline-block w-8 mr-1 my-auto" />

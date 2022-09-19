@@ -5,7 +5,7 @@ import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import type { User } from "@supabase/supabase-js";
 import useSupabase from "../hooks/useSupabase";
 import useSupabaseDownload from "../hooks/useSupabaseDownload";
-import { Rank, rankLessThan } from "../constants/rank";
+import Rank from "../constants/rank";
 import InternalLink from "./Link";
 
 const NAVIGATION = [
@@ -35,7 +35,7 @@ const NAVIGATION = [
   {
     name: "Profile",
     href: "/profile",
-    minRank: Rank.RANK_1_ONBOARDING_2,
+    minRank: Rank.INACTIVE_MEMBER,
     right: false,
     login: true,
   },
@@ -132,9 +132,7 @@ export default function NavbarBuilder() {
                             ? "bg-gradient-to-r from-yellow-600 to-yellow-700 hover:bg-blue-500 hover:opacity-75 !text-gray-100"
                             : ""
                         }  ${
-                          item?.minRank &&
-                          rank &&
-                          rankLessThan(rank, item.minRank)
+                          item?.minRank && rank !== null && rank < item.minRank
                             ? "hidden"
                             : ""
                         }`}
@@ -171,7 +169,7 @@ export default function NavbarBuilder() {
                       : "text-gray-300 hover:bg-gray-700 hover:text-white"
                   }
                     block px-3 py-2 rounded-md text-base font-medium ${
-                      item?.minRank && rank && rankLessThan(rank, item.minRank)
+                      item?.minRank && rank !== null && rank < item.minRank
                         ? "hidden"
                         : ""
                     }`}
