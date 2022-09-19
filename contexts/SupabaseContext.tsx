@@ -128,9 +128,6 @@ function SupabaseProvider({
             bio,
             ranks (
               rank
-            ),
-            onboarding (
-              status
             )
           `
           )
