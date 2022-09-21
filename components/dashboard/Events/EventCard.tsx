@@ -19,9 +19,9 @@ const EventCard = ({ event }: { event : Event}) => {
   <div className="flex flex-col w-full bg-gray-100 rounded shadow-lg">
     <div className="flex flex-col w-full lg:flex-row">
         <InternalLink href={`/events/${event.id}`} className="flex flex-row justify-around p-4 font-bold leading-none text-gray-800 uppercase bg-gray-400 rounded lg:flex-col lg:items-center lg:justify-center lg:w-1/4">
-            <div className="sm:text-2xl">{dateAbbreviations[date.split(" ")[0].toLowerCase()]}</div>
-            <div className="sm:text-5xl">{date.split(" ")[1].split(",")[0]}</div>
-            <div className="sm:text-xl text-center">{`${date.split(" ")[4]} ${date.split(" ")[5]}`}</div>
+            <div className="md:text-xl lg:text-2xl">{dateAbbreviations[date.split(" ")[0].toLowerCase()]}</div>
+            <div className="md:text-xl lg:text-5xl">{date.split(" ")[1].split(",")[0]}</div>
+            <div className="md:text-xl lg:text-xl text-center">{`${date.split(" ")[4]} ${date.split(" ")[5]}`}</div>
         </InternalLink>
         <InternalLink href={`/events/${event.id}`} className="p-4 font-normal text-gray-800 lg:w-3/4">
             <h1 className="mb-4 text-2xl font-bold leading-none tracking-tight text-gray-800">{event.name}</h1>

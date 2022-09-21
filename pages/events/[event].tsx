@@ -7,6 +7,7 @@ import {
 } from "@supabase/supabase-js";
 import SignIn from "../../components/SignIn";
 import useSupabase from "../../hooks/useSupabase";
+import InternalLink from "../../components/Link";
 
 type Event = {
   name: string;
@@ -81,7 +82,7 @@ const EventPage: NextPage = () => {
           const startDate = new Date(dbEvent.start_date);
           const endDate = new Date(dbEvent.end_date);
           const now = new Date();
-          if(now < addMinutes(startDate, -30)){
+          if(now < addMinutes(startDate, 4000)){
             setDateStatus(DateStatus.future);
           }
           else if(now > addMinutes(endDate, 90)){
@@ -156,27 +157,36 @@ const {
       />
     );
   }
+  let startDate = "", endDate = "";
+  if(eventData){
+    startDate = new Date(eventData.start_date).toLocaleDateString("en-US", {
+                      month: "long",
+                      day: "numeric",
+                      year: "numeric",
+                      hour: "numeric",
+                      minute: "numeric",
+                    });
+    endDate = new Date(eventData.end_date).toLocaleString("en-US", {
+                      hour: "numeric",
+                      minute: "numeric",
+                    });
+}
   if(dateStatus === DateStatus.loading){
     return <div>Loading...</div>
-  }
-  else if(dateStatus === DateStatus.future){
-    return <div>Event has not started yet</div>
-  }
-  else if(dateStatus === DateStatus.past){
-    return <div>Event has ended</div>
   }
   return (
     <div className="bg-gradient h-screen flex flex-col items-center justify-center p-4">
       <div className="md:flex-1 text-white text-center">
         {eventData && (
           <>
-            <h1 className="text-2xl font-bold tracking-tight mb-4 mt-8 text-white">
-              Thanks for attending {eventData.name}
-            </h1>
-            <p>
-              You&apos;re all checked in! ✅ Redirecting to your dashboard...
+              <h1 className="text-2xl font-bold tracking-tight mb-4 mt-8 text-white">
+              {dateStatus === DateStatus.present ? `Thanks for attending ${eventData.name}` : dateStatus === DateStatus.future ? `Get hyped for ${eventData.name}` : `${eventData.name} has ended, come to the next events 🚀`}
+              </h1>
+              {dateStatus === DateStatus.present || dateStatus === DateStatus.future && <h2 className="text-xl font-bold mb-4 mt-8">{startDate} - {endDate}</h2>}
+            <p className="text-left mx-64">
+              {dateStatus === DateStatus.present ? `You're all checked in! ✅ Redirecting to your dashboard...` : eventData.description}
             </p>
-            <div
+            {dateStatus === DateStatus.present && <div
               style={{
                 width: `${countdown * 10}%`,
                 transitionProperty: "width",
@@ -188,6 +198,7 @@ const {
                 countdown * 10 === 100 ? "rounded-r" : ""
               }`}
             />
+            }
           </>
         )}
         {dataFetchErrors.map((error) => (
@@ -195,6 +206,14 @@ const {
             {error}
           </p>
         ))}
+        {/* link back to dashboard route */}
+        <InternalLink href="/dashboard">
+          <div>
+            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
+              {dateStatus === DateStatus.future ? "Go to Dashboard" : "Go Back"}
+            </button>
+          </div>
+        </InternalLink>
       </div>
     </div>
   );
