@@ -11,15 +11,10 @@ import Step2Prompt from "../components/dashboard/Step2Prompt";
 import InternalLink from "../components/Link";
 import ConditionalLink from "../components/ConditionalLink";
 import MemberDirectoryIcon from "../public/member_directory.svg";
+import EventCard from "../components/dashboard/Events/EventCard";
+import { Event } from "../components/dashboard/Events/Event.type";
 
-type Event = {
-  name: string;
-  start_date: string;
-  place: string;
-  description: string;
-  link: string;
-};
-const EVENT_COLUMNS = "name, start_date, place, description, link";
+const EVENT_COLUMNS = "name, start_date, place, description, link, id";
 
 const Welcome = ({ name }: { name: string | null }) => {
   const firstName = name?.split(" ")[0] || name;
@@ -88,7 +83,8 @@ const Dashboard: NextPage = () => {
             // TODO: Filter dates in query
             setEvents(
               (dbEvents as Event[]).filter(
-                (event) => new Date(event.start_date) > new Date()
+              (event) => true
+                // (event) => new Date(event.start_date) > new Date() 
               )
             );
           }
@@ -124,7 +120,7 @@ const Dashboard: NextPage = () => {
       </div>
 
       <div className="bg-white">
-        <div className="max-w-screen-xl mx-auto py-6 px-4">
+        <div className="max-w-screen-xl mx-auto py-6 px-4 ">
           {dataFetchErrors.map((error) => (
             <p key={error} className="text-red-500">
               {error}
@@ -135,47 +131,23 @@ const Dashboard: NextPage = () => {
             <Step2Prompt />
           </div>
           <div className="md:flex justify-center">
-            <div className="flex-1">
-              <h1 className="text-3xl font-bold tracking-tight text-gray-800 mb-4 mt-8 text-center">
-                Upcoming Events &#8250;
+            <div className="flex-1">          
+            <h1 className="text-3xl font-bold tracking-tight text-gray-800 my-4 text-center">
+                What's Next &#8250;
               </h1>
+              <hr className="mx-auto h-0.5 bg-gray-100 rounded border-0 my-6 dark:bg-gray-300"/>
+
               {events.map((event) => (
-                <div
-                  className="bg-gray-100 max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center"
-                  key={event.name + event.start_date}
-                >
-                  <h6 className="font-bold text-lg">{event.name}</h6>
-                  <p className="">
-                    {new Date(event.start_date).toLocaleDateString("en-US", {
-                      month: "long",
-                      day: "numeric",
-                      year: "numeric",
-                      hour: "numeric",
-                      minute: "numeric",
-                    })}
-                  </p>
-                  <p className="italic mb-2">{event.place}</p>
-                  <p className="mb-2">{event.description}</p>
-                  <a
-                    href={event.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <button
-                      type="button"
-                      className="text-center text-sm block text-gray-100 font-semibold bg-gradient-to-r from-blue-600 to-blue-700 hover:bg-blue-500 shadow py-2 px-3 rounded mx-auto hover:opacity-75"
-                    >
-                      RSVP &rsaquo;
-                    </button>
-                  </a>
-                </div>
+                <EventCard key={event.name} event={event} />
               ))}
             </div>
 
-            <div className="flex-1">
-              <h1 className="text-3xl font-bold tracking-tight text-gray-800 mb-4 mt-8 text-center">
+            <div className="flex-none m-x px-8">
+            <h1 className="text-3xl font-bold tracking-tight text-gray-800 my-4 text-center">
                 Resources &#8250;
               </h1>
+              <hr className="mx-auto h-0.5 bg-gray-100 rounded border-0 my-6 dark:bg-gray-300"/>
+
               <InternalLink href="/community">
                 <p className="block bg-gray-100 max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center text-lg hover:bg-gray-200 hover:opacity-75 transition-all cursor-pointer">
                   <img

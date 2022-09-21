@@ -18,6 +18,18 @@ type Event = {
   link: string;
 };
 
+enum DateStatus{
+  past = "past",
+  present= "present",
+  future= "future",
+  loading = "loading"
+}
+
+const addMinutes = (date: Date, minutes: number) => {
+  // add minutes to date
+  return new Date(date.getTime() + minutes * 60000);
+}
+
 const ATTENDANCE_COLUMNS = "user_id";
 const EVENT_COLUMNS = "*";
 
@@ -27,7 +39,7 @@ const EventPage: NextPage = () => {
   const { supabase, user } = useSupabase();
   const [dataFetchErrors, setDataFetchErrors] = useState<string[]>([]);
   const [eventData, setEventData] = useState<Event | null>();
-
+  const [dateStatus, setDateStatus] = useState<DateStatus>(DateStatus.loading);
   const [countdown, setCountdown] = useState(10);
 
   const startTimer = useCallback(() => {
@@ -63,8 +75,21 @@ const EventPage: NextPage = () => {
           ]);
         } else {
           setEventData(dbEvent);
-        }
-        const {
+          // if start_date minus 30 minutes is in the future, set dateStatus to future
+          // if end_date plus 90 minutes is in the past, set dateStatus to past
+          // else set dateStatus to present
+          const startDate = new Date(dbEvent.start_date);
+          const endDate = new Date(dbEvent.end_date);
+          const now = new Date();
+          if(now < addMinutes(startDate, -30)){
+            setDateStatus(DateStatus.future);
+          }
+          else if(now > addMinutes(endDate, 90)){
+            setDateStatus(DateStatus.past);
+          }
+          else{
+            setDateStatus(DateStatus.present);
+const {
           data: dbAttendance,
           error: dbAttendanceError,
           status: dbAttendanceStatus,
@@ -109,7 +134,10 @@ const EventPage: NextPage = () => {
         } else {
           startTimer();
         }
-      }
+          }
+        }
+        
+    }
     };
     recordAttendance();
   }, [user, eventID, supabase, startTimer]);
@@ -128,13 +156,21 @@ const EventPage: NextPage = () => {
       />
     );
   }
-
+  if(dateStatus === DateStatus.loading){
+    return <div>Loading...</div>
+  }
+  else if(dateStatus === DateStatus.future){
+    return <div>Event has not started yet</div>
+  }
+  else if(dateStatus === DateStatus.past){
+    return <div>Event has ended</div>
+  }
   return (
     <div className="bg-gradient h-screen flex flex-col items-center justify-center p-4">
       <div className="md:flex-1 text-white text-center">
         {eventData && (
           <>
-            <h1 className="text-2xl font-bold tracking-tight text-gray-800 mb-4 mt-8 text-white">
+            <h1 className="text-2xl font-bold tracking-tight mb-4 mt-8 text-white">
               Thanks for attending {eventData.name}
             </h1>
             <p>
