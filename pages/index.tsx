@@ -39,7 +39,7 @@ const JoinButton = ({
 export default function IndexPage() {
   return (
     <main>
-      <Head title={null} />
+      <Head title="University of Michigan" />
 
       <NavbarBuilder />
 
