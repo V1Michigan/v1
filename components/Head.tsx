@@ -1,12 +1,12 @@
 import NextHead from "next/head";
 
 interface HeadProps {
-  title: string | null;
+  title: string;
 }
 export default function Head({ title }: HeadProps) {
   return (
     <NextHead>
-      <title>V1{title ? ` | ${title}` : null}</title>
+      <title>V1 | {title}</title>
       <link rel="icon" href="/favicon.ico?v=1" />
       <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       <meta

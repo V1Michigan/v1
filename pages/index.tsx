@@ -1,4 +1,3 @@
-import Head from "next/head";
 import ReactGA from "react-ga4";
 import InternalLink from "../components/Link";
 import Projects from "../components/Projects";
@@ -6,6 +5,7 @@ import NavbarBuilder from "../components/NavBar";
 import Partners from "../components/Partners";
 import People, { PeopleChips } from "../components/People";
 import Fade from "../components/Fade";
+import Head from "../components/Head";
 
 const TenX = () => (
   <>
@@ -39,23 +39,8 @@ const JoinButton = ({
 export default function IndexPage() {
   return (
     <main>
-      {/* TODO: Use our own <Head> component */}
-      <Head>
-        <title>V1 | University of Michigan</title>
-        <link rel="icon" href="/favicon.ico?v=1" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-        <meta
-          name="description"
-          content="V1 is the community for ambitios student builders to connect and collaborate. "
-        />
-        <meta name="og:title" content="V1 | University of Michigan" />
-        <meta
-          name="og:description"
-          content="V1 is the community for ambitios student builders to connect and collaborate. "
-        />
-        <meta property="og:image" content="/share.png" />
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-      </Head>
+      <Head title="University of Michigan" />
+
       <NavbarBuilder />
 
       <div className="overflow-hidden h-screen bg-[url('/landing.jpg')] bg-cover bg-center bg-no-repeat">
