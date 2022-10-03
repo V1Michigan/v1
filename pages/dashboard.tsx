@@ -83,8 +83,8 @@ const Dashboard: NextPage = () => {
             // TODO: Filter dates in query
             setEvents(
               (dbEvents as Event[]).filter(
-              (event) => true
-                // (event) => new Date(event.start_date) > new Date() 
+              // (event) => // true Uncomment this out to see all  old events events
+                (event) => new Date(event.start_date) > new Date() // comment this out to see all old events
               )
             );
           }
