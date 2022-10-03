@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   PostgrestSingleResponse,
   PostgrestMaybeSingleResponse,
@@ -41,11 +41,11 @@ const EventPage: NextPage = () => {
   const [dataFetchErrors, setDataFetchErrors] = useState<string[]>([]);
   const [eventData, setEventData] = useState<Event | null>();
   const [dateStatus, setDateStatus] = useState<DateStatus>(DateStatus.loading);
-  const [countdown, setCountdown] = useState(10);
+  const [presentEventCountdown, presentEventsetCountdown] = useState(10);
 
   const startTimer = useCallback(() => {
     const interval = setInterval(() => {
-      setCountdown((currentCountdown) => {
+      presentEventsetCountdown((currentCountdown) => {
         if (currentCountdown <= 0) {
           clearInterval(interval);
           router.push("/dashboard");
@@ -55,6 +55,7 @@ const EventPage: NextPage = () => {
       });
     }, 1000);
   }, [router]);
+
 
   useEffect(() => {
     const recordAttendance = async () => {
@@ -157,16 +158,18 @@ const {
       />
     );
   }
-  let startDate = "", endDate = "";
+  let startDateStr = "", endDateStr = "";
+  let startDate = new Date();
   if(eventData){
-    startDate = new Date(eventData.start_date).toLocaleDateString("en-US", {
+    startDate = new Date(eventData.start_date);
+    startDateStr = startDate.toLocaleDateString("en-US", {
                       month: "long",
                       day: "numeric",
                       year: "numeric",
                       hour: "numeric",
                       minute: "numeric",
                     });
-    endDate = new Date(eventData.end_date).toLocaleString("en-US", {
+    endDateStr = new Date(eventData.end_date).toLocaleString("en-US", {
                       hour: "numeric",
                       minute: "numeric",
                     });
@@ -182,20 +185,20 @@ const {
               <h1 className="text-2xl font-bold tracking-tight mb-4 mt-8 text-white">
               {dateStatus === DateStatus.present ? `Thanks for attending ${eventData.name}` : dateStatus === DateStatus.future ? `Get hyped for ${eventData.name}` : `${eventData.name} has ended, come to the next events 🚀`}
               </h1>
-              {dateStatus === DateStatus.present || dateStatus === DateStatus.future && <h2 className="text-xl font-bold mb-4 mt-8">{startDate} - {endDate}</h2>}
+              {dateStatus === DateStatus.present || dateStatus === DateStatus.future && <h2 className="text-xl font-bold mb-4 mt-8">{startDateStr} - {endDateStr}</h2>}
             <p className="text-left mx-64">
               {dateStatus === DateStatus.present ? `You're all checked in! ✅ Redirecting to your dashboard...` : eventData.description}
             </p>
             {dateStatus === DateStatus.present && <div
               style={{
-                width: `${countdown * 10}%`,
+                width: `${presentEventCountdown * 10}%`,
                 transitionProperty: "width",
                 transitionDuration: "1s",
                 transitionTimingFunction: "linear",
               }}
               // Round edges, but not the right side
               className={`my-4 h-2 bg-blue-600 rounded-l ${
-                countdown * 10 === 100 ? "rounded-r" : ""
+                presentEventCountdown * 10 === 100 ? "rounded-r" : ""
               }`}
             />
             }
@@ -206,6 +209,9 @@ const {
             {error}
           </p>
         ))}
+        <div>
+          {dateStatus === DateStatus.future && <CountdownTimer {...startDate}/>}
+        </div>
         {/* link back to dashboard route */}
         <InternalLink href="/dashboard">
           <div>

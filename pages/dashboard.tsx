@@ -60,10 +60,7 @@ const Dashboard: NextPage = () => {
         if ((dbError && status !== 406) || !data) {
           router.replace("/404");
         } else if (status !== 200) {
-          setDataFetchErrors((errors) => [
-            ...errors,
-            `Unexpected status code: ${status}`,
-          ]);
+          setDataFetchErrors((errors) => [...errors, `Unexpected status code: ${status}`]);
         } else {
           setName(data?.name);
           // Wait until user's name is fetched in case there's e.g. a 404 error
@@ -82,10 +79,7 @@ const Dashboard: NextPage = () => {
           } else {
             // TODO: Filter dates in query
             setEvents(
-              (dbEvents as Event[]).filter(
-              // (event) => // true Uncomment this out to see all  old events events
-                (event) => new Date(event.start_date) > new Date() // comment this out to see all old events
-              )
+              (dbEvents as Event[]).filter((event) => new Date(event.start_date) > new Date())
             );
           }
         }
@@ -131,22 +125,23 @@ const Dashboard: NextPage = () => {
             <Step2Prompt />
           </div>
           <div className="md:flex justify-center">
-            <div className="flex-1">          
-            <h1 className="text-3xl font-bold tracking-tight text-gray-800 my-4 text-center">
-                What's Next &#8250;
-              </h1>
-              <hr className="mx-auto h-0.5 bg-gray-100 rounded border-0 my-6 dark:bg-gray-300"/>
-
-              {events.map((event) => (
-                <EventCard key={event.name} event={event} />
-              ))}
-            </div>
+            {events.length > 0 && (
+              <div className="flex-1">
+                <h1 className="text-3xl font-bold tracking-tight text-gray-800 my-4 text-center">
+                  What's Next &#8250;
+                </h1>
+                <hr className="mx-auto h-0.5 bg-gray-100 rounded border-0 my-6 dark:bg-gray-300" />
+                {events.map((event) => (
+                  <EventCard key={event.name} event={event} />
+                ))}
+              </div>
+            )}
 
             <div className="flex-none m-x px-8">
-            <h1 className="text-3xl font-bold tracking-tight text-gray-800 my-4 text-center">
+              <h1 className="text-3xl font-bold tracking-tight text-gray-800 my-4 text-center">
                 Resources &#8250;
               </h1>
-              <hr className="mx-auto h-0.5 bg-gray-100 rounded border-0 my-6 dark:bg-gray-300"/>
+              <hr className="mx-auto h-0.5 bg-gray-100 rounded border-0 my-6 dark:bg-gray-300" />
 
               <InternalLink href="/community">
                 <p className="block bg-gray-100 max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center text-lg hover:bg-gray-200 hover:opacity-75 transition-all cursor-pointer">
@@ -155,34 +150,28 @@ const Dashboard: NextPage = () => {
                     src="/discord-gray-icon.webp"
                     alt="Discord icon"
                   />
-                  Join the{" "}
-                  <span className="font-semibold">V1 Discord &rsaquo;</span>
+                  Join the <span className="font-semibold">V1 Discord &rsaquo;</span>
                 </p>
               </InternalLink>
               <a
                 className="block bg-gray-100 max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center text-lg hover:bg-gray-200 hover:opacity-75 transition-all"
                 href="https://v1network.substack.com/"
                 target="_blank"
-                rel="noopener noreferrer"
-              >
+                rel="noopener noreferrer">
                 <img
                   className="mb-1 inline-block w-8 mr-1 my-auto"
                   src="/substackicon.webp"
                   alt="Substack icon"
                 />
-                Read the{" "}
-                <span className="font-semibold">V1 Newsletter &rsaquo;</span>
+                Read the <span className="font-semibold">V1 Newsletter &rsaquo;</span>
               </a>
-              <ConditionalLink
-                href={rank < Rank.ACTIVE_MEMBER ? undefined : "/members"}
-              >
+              <ConditionalLink href={rank < Rank.ACTIVE_MEMBER ? undefined : "/members"}>
                 <p
                   className={`block max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center text-lg ${
                     rank < Rank.ACTIVE_MEMBER
                       ? "bg-gray-300 hover:cursor-not-allowed"
                       : "bg-gray-100 hover:bg-gray-200 hover:opacity-75 transition-all"
-                  }`}
-                >
+                  }`}>
                   {rank < Rank.ACTIVE_MEMBER ? (
                     <span className="text-2xl">🔒 </span>
                   ) : (
