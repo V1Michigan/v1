@@ -78,7 +78,9 @@ const Dashboard: NextPage = () => {
             setDataFetchErrors((errors) => [...errors, "No events found"]);
           } else {
             // TODO: Filter dates in query
-            setEvents((dbEvents as Event[]).filter((event) => true));
+            setEvents(
+              (dbEvents as Event[]).filter((event) => new Date(event.start_date) > new Date())
+            );
           }
         }
       }
