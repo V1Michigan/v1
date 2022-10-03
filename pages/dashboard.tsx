@@ -125,7 +125,7 @@ const Dashboard: NextPage = () => {
           <div className="md:flex justify-center">
             <div className="flex-1">
               <h1 className="text-3xl font-bold tracking-tight text-gray-800 my-4 text-center">
-                {events.length > 0 ? `What's Next &#8250;` : `More events coming soon!`}
+                {events.length > 0 ? `What's Next ›` : `More events coming soon!`}
               </h1>
               <hr className="mx-auto h-0.5 bg-gray-100 rounded border-0 my-6 dark:bg-gray-300" />
               {events.map((event) => (
