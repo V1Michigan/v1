@@ -6,6 +6,7 @@ import Partners from "../components/Partners";
 import People, { PeopleChips } from "../components/People";
 import Fade from "../components/Fade";
 import Head from "../components/Head";
+import { StartupFairBanner } from "../components/Banner";
 
 const TenX = () => (
   <>
@@ -40,7 +41,7 @@ export default function IndexPage() {
   return (
     <main>
       <Head title="University of Michigan" />
-
+      <StartupFairBanner />
       <NavbarBuilder />
 
       <div className="overflow-hidden h-screen bg-[url('/landing.jpg')] bg-cover bg-center bg-no-repeat">
