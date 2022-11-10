@@ -41,7 +41,7 @@ export default function IndexPage() {
   return (
     <main>
       <Head title="University of Michigan" />
-      <StartupFairBanner />
+      {/* <StartupFairBanner /> */}
       <NavbarBuilder />
 
       <div className="overflow-hidden h-screen bg-[url('/landing.jpg')] bg-cover bg-center bg-no-repeat">
