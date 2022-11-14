@@ -144,6 +144,10 @@ const Step1 = ({
               <EmailField value={email} label="Email" />
               <UsernameField label="Username" />
               <PhoneField label="Phone" />
+              <p className="text-xs text-gray-500 italic">
+                You may receive texts for events you attend, such as V1 Startup
+                Fair or V1 Connect
+              </p>
 
               <div>
                 {values.avatar && (
