@@ -43,3 +43,6 @@ tsconfig.tsbuildinfo
 
 #lock
 yarn.lock
+
+# fine-grain access token
+token.txt
