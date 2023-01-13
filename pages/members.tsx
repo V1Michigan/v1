@@ -379,7 +379,7 @@ const Members: NextPage = () => {
 };
 
 const ProtectedMembers = () => (
-  <ProtectedRoute minRank={Rank.ACTIVE_MEMBER}>
+  <ProtectedRoute>
     <Members />
   </ProtectedRoute>
 );
