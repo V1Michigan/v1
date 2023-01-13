@@ -10,7 +10,7 @@ import NavbarBuilder from "../components/NavBar";
 import Step2Prompt from "../components/dashboard/Step2Prompt";
 import InternalLink from "../components/Link";
 import ConditionalLink from "../components/ConditionalLink";
-import MemberDirectoryIcon from "../public/member_directory.svg";
+import CommunityDirectoryIcon from "../public/community_directory.svg";
 
 type Event = {
   name: string;
@@ -202,21 +202,21 @@ const Dashboard: NextPage = () => {
                 <span className="font-semibold">V1 Newsletter &rsaquo;</span>
               </a>
               <ConditionalLink
-                href={rank < Rank.ACTIVE_MEMBER ? undefined : "/members"}
+                href={rank < Rank.INACTIVE_MEMBER ? undefined : "/members"}
               >
                 <p
                   className={`block max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center text-lg ${
-                    rank < Rank.ACTIVE_MEMBER
+                    rank < Rank.INACTIVE_MEMBER
                       ? "bg-gray-300 hover:cursor-not-allowed"
                       : "bg-gray-100 hover:bg-gray-200 hover:opacity-75 transition-all"
                   }`}
                 >
-                  {rank < Rank.ACTIVE_MEMBER ? (
+                  {rank < Rank.INACTIVE_MEMBER ? (
                     <span className="text-2xl">🔒 </span>
                   ) : (
-                    <MemberDirectoryIcon className="mb-1 inline-block w-8 mr-1 my-auto" />
+                    <CommunityDirectoryIcon className="mb-1 inline-block w-8 mr-1 my-auto" />
                   )}
-                  Member Directory
+                  Community Directory
                 </p>
               </ConditionalLink>
               <div className="block max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center text-lg bg-gray-300 hover:cursor-not-allowed">
