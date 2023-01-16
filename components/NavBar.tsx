@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Disclosure } from "@headlessui/react";
 import { useRouter } from "next/router";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
@@ -92,10 +92,28 @@ export default function NavbarBuilder() {
       ? navigator.userAgent.includes("Safari") &&
         !navigator.userAgent.includes("Chrome")
       : false;
-  // if (typeof window !== "undefined") {
-  //   console.log("isSafari", isSafari, navigator.userAgent);
-  //   console.log("user", user);
-  // }
+
+  const [inSafari, setInSafari] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (
+      navigator.userAgent.includes("Safari") &&
+      !navigator.userAgent.includes("Chrome")
+    ) {
+      setInSafari(true);
+    }
+  }, []);
+  if (typeof window !== "undefined") {
+    // eslint-disable-next-line no-console
+    console.log("isSafari", isSafari, navigator.userAgent);
+    // eslint-disable-next-line no-console
+    console.log("!user", !user);
+  } else {
+    // eslint-disable-next-line no-console
+    console.log("isSafari", isSafari);
+    // eslint-disable-next-line no-console
+    console.log("!user", !user);
+  }
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open: disclosureOpen }) => (
@@ -136,12 +154,8 @@ export default function NavbarBuilder() {
                             : "text-gray-300 hover:bg-gray-700 hover:text-white transition duration-300"
                         }
                           px-3 py-2 rounded-md text-sm font-medium ${
-                            // eslint-disable-next-line no-nested-ternary
-                            isSafari
-                              ? !user
-                                ? "relative top-nav-nouser"
-                                : "relative top-nav-user"
-                              : ""
+                            // eslint-disable-next-line no-nested-ternary, prettier/prettier
+                            inSafari ? !user ? "relative top-nav-nouser" : "relative top-nav-user" : ""
                           }
                           ${item?.login && !user ? "hidden" : ""} 
                           ${item?.noauth && user ? "hidden" : ""}
