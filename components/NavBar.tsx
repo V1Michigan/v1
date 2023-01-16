@@ -87,11 +87,11 @@ const ProfilePic = ({ user, username }: { user: User; username: string }) => {
 export default function NavbarBuilder() {
   const router = useRouter();
   const { user, username, rank } = useSupabase();
-  const isSafari =
-    typeof window !== "undefined"
-      ? navigator.userAgent.includes("Safari") &&
-        !navigator.userAgent.includes("Chrome")
-      : false;
+  // const isSafari =
+  //   typeof window !== "undefined"
+  //     ? navigator.userAgent.includes("Safari") &&
+  //       !navigator.userAgent.includes("Chrome")
+  //     : false;
 
   const [inSafari, setInSafari] = useState<boolean>(false);
 
@@ -103,17 +103,14 @@ export default function NavbarBuilder() {
       setInSafari(true);
     }
   }, []);
-  if (typeof window !== "undefined") {
-    // eslint-disable-next-line no-console
-    console.log("isSafari", isSafari, navigator.userAgent);
-    // eslint-disable-next-line no-console
-    console.log("!user", !user);
-  } else {
-    // eslint-disable-next-line no-console
-    console.log("isSafari", isSafari);
-    // eslint-disable-next-line no-console
-    console.log("!user", !user);
-  }
+
+  // if (typeof window !== "undefined") {
+  //   console.log("isSafari", isSafari, navigator.userAgent);
+  //   console.log("!user", !user);
+  // } else {
+  //   console.log("isSafari", isSafari);
+  //   console.log("!user", !user);
+  // }
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open: disclosureOpen }) => (
