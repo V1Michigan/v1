@@ -48,7 +48,10 @@ const NAVIGATION = [
     signup: true,
   },
 ];
-
+// const isSafari = (): boolean => {
+//   if(navigator.userAgent.includes("Safari")) return true;
+//   return false;
+// }
 const ProfilePic = ({ user, username }: { user: User; username: string }) => {
   const {
     file: avatar,
@@ -79,6 +82,7 @@ const ProfilePic = ({ user, username }: { user: User; username: string }) => {
 export default function NavbarBuilder() {
   const router = useRouter();
   const { user, username, rank } = useSupabase();
+  const isSafari = typeof window !== 'undefined' ? navigator.userAgent.includes("Safari") : false;
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open: disclosureOpen }) => (
@@ -118,12 +122,12 @@ export default function NavbarBuilder() {
                             ? "bg-gray-900 text-white"
                             : "text-gray-300 hover:bg-gray-700 hover:text-white transition duration-300"
                         }
-                          px-3 py-2 rounded-md text-sm font-medium ${
-                            item?.login && !user ? "hidden" : ""
-                          } ${item?.noauth && user ? "hidden" : ""} ${
-                          item?.noauth ? "whitespace-nowrap" : ""
-                        } ${
-                          item?.signup
+                          px-3 py-2 rounded-md text-sm font-medium relative ${
+                            isSafari ? "top-nav" : ""
+                          } ${item?.login && !user ? "hidden" : ""
+                          } ${item?.noauth && user ? "hidden" : ""
+                          } ${item?.noauth ? "whitespace-nowrap" : ""
+                          } ${item?.signup
                             ? "bg-gradient-to-r from-yellow-600 to-yellow-700 hover:bg-blue-500 hover:opacity-75 !text-gray-100"
                             : ""
                         }  ${
