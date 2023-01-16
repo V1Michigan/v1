@@ -16,7 +16,8 @@ module.exports = {
         sans: ["Inter", "sans-serif", ...defaultTheme.fontFamily.sans],
       },
       inset : {
-        'nav': '16.0313rem'
+        'nav-nouser': '16.0313rem',
+        'nav-user': '15.4063rem'
       }
     },
   },

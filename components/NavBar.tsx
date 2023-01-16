@@ -52,6 +52,11 @@ const NAVIGATION = [
 //   if(navigator.userAgent.includes("Safari")) return true;
 //   return false;
 // }
+// function isUser(u: User | null): User | null {
+//   console.log(u);
+//   return u;
+// }
+
 const ProfilePic = ({ user, username }: { user: User; username: string }) => {
   const {
     file: avatar,
@@ -84,8 +89,13 @@ export default function NavbarBuilder() {
   const { user, username, rank } = useSupabase();
   const isSafari =
     typeof window !== "undefined"
-      ? navigator.userAgent.includes("Safari")
+      ? navigator.userAgent.includes("Safari") &&
+        !navigator.userAgent.includes("Chrome")
       : false;
+  // if (typeof window !== "undefined") {
+  //   console.log("isSafari", isSafari, navigator.userAgent);
+  //   console.log("user", user);
+  // }
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open: disclosureOpen }) => (
@@ -125,9 +135,15 @@ export default function NavbarBuilder() {
                             ? "bg-gray-900 text-white"
                             : "text-gray-300 hover:bg-gray-700 hover:text-white transition duration-300"
                         }
-                          px-3 py-2 rounded-md text-sm font-medium relative ${
-                            isSafari ? "top-nav" : ""
-                          } ${item?.login && !user ? "hidden" : ""} 
+                          px-3 py-2 rounded-md text-sm font-medium ${
+                            // eslint-disable-next-line no-nested-ternary
+                            isSafari
+                              ? !user
+                                ? "relative top-nav-nouser"
+                                : "relative top-nav-user"
+                              : ""
+                          }
+                          ${item?.login && !user ? "hidden" : ""} 
                           ${item?.noauth && user ? "hidden" : ""}
                           ${item?.noauth ? "whitespace-nowrap" : ""}
                           ${
