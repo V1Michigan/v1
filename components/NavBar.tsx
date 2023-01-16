@@ -82,7 +82,10 @@ const ProfilePic = ({ user, username }: { user: User; username: string }) => {
 export default function NavbarBuilder() {
   const router = useRouter();
   const { user, username, rank } = useSupabase();
-  const isSafari = typeof window !== 'undefined' ? navigator.userAgent.includes("Safari") : false;
+  const isSafari =
+    typeof window !== "undefined"
+      ? navigator.userAgent.includes("Safari")
+      : false;
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open: disclosureOpen }) => (
@@ -124,13 +127,14 @@ export default function NavbarBuilder() {
                         }
                           px-3 py-2 rounded-md text-sm font-medium relative ${
                             isSafari ? "top-nav" : ""
-                          } ${item?.login && !user ? "hidden" : ""
-                          } ${item?.noauth && user ? "hidden" : ""
-                          } ${item?.noauth ? "whitespace-nowrap" : ""
-                          } ${item?.signup
-                            ? "bg-gradient-to-r from-yellow-600 to-yellow-700 hover:bg-blue-500 hover:opacity-75 !text-gray-100"
-                            : ""
-                        }  ${
+                          } ${item?.login && !user ? "hidden" : ""} 
+                          ${item?.noauth && user ? "hidden" : ""}
+                          ${item?.noauth ? "whitespace-nowrap" : ""}
+                          ${
+                            item?.signup
+                              ? "bg-gradient-to-r from-yellow-600 to-yellow-700 hover:bg-blue-500 hover:opacity-75 !text-gray-100"
+                              : ""
+                          }  ${
                           item?.minRank && rank !== null && rank < item.minRank
                             ? "hidden"
                             : ""
