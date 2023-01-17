@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Disclosure } from "@headlessui/react";
 import { useRouter } from "next/router";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
@@ -48,6 +48,14 @@ const NAVIGATION = [
     signup: true,
   },
 ];
+// const isSafari = (): boolean => {
+//   if(navigator.userAgent.includes("Safari")) return true;
+//   return false;
+// }
+// function isUser(u: User | null): User | null {
+//   console.log(u);
+//   return u;
+// }
 
 const ProfilePic = ({ user, username }: { user: User; username: string }) => {
   const {
@@ -79,6 +87,30 @@ const ProfilePic = ({ user, username }: { user: User; username: string }) => {
 export default function NavbarBuilder() {
   const router = useRouter();
   const { user, username, rank } = useSupabase();
+  // const isSafari =
+  //   typeof window !== "undefined"
+  //     ? navigator.userAgent.includes("Safari") &&
+  //       !navigator.userAgent.includes("Chrome")
+  //     : false;
+
+  const [inSafari, setInSafari] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (
+      navigator.userAgent.includes("Safari") &&
+      !navigator.userAgent.includes("Chrome")
+    ) {
+      setInSafari(true);
+    }
+  }, []);
+
+  // if (typeof window !== "undefined") {
+  //   console.log("isSafari", isSafari, navigator.userAgent);
+  //   console.log("!user", !user);
+  // } else {
+  //   console.log("isSafari", isSafari);
+  //   console.log("!user", !user);
+  // }
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open: disclosureOpen }) => (
@@ -119,14 +151,17 @@ export default function NavbarBuilder() {
                             : "text-gray-300 hover:bg-gray-700 hover:text-white transition duration-300"
                         }
                           px-3 py-2 rounded-md text-sm font-medium ${
-                            item?.login && !user ? "hidden" : ""
-                          } ${item?.noauth && user ? "hidden" : ""} ${
-                          item?.noauth ? "whitespace-nowrap" : ""
-                        } ${
-                          item?.signup
-                            ? "bg-gradient-to-r from-yellow-600 to-yellow-700 hover:bg-blue-500 hover:opacity-75 !text-gray-100"
-                            : ""
-                        }  ${
+                            // eslint-disable-next-line no-nested-ternary, prettier/prettier
+                            inSafari ? !user ? "relative top-nav-nouser" : "relative top-nav-user" : ""
+                          }
+                          ${item?.login && !user ? "hidden" : ""} 
+                          ${item?.noauth && user ? "hidden" : ""}
+                          ${item?.noauth ? "whitespace-nowrap" : ""}
+                          ${
+                            item?.signup
+                              ? "bg-gradient-to-r from-yellow-600 to-yellow-700 hover:bg-blue-500 hover:opacity-75 !text-gray-100"
+                              : ""
+                          }  ${
                           item?.minRank && rank !== null && rank < item.minRank
                             ? "hidden"
                             : ""

@@ -15,6 +15,10 @@ module.exports = {
         logo: ["Source Sans Pro", "sans-serif"],
         sans: ["Inter", "sans-serif", ...defaultTheme.fontFamily.sans],
       },
+      inset : {
+        'nav-nouser': '16.0313rem',
+        'nav-user': '15.4063rem'
+      }
     },
   },
   variants: {},
