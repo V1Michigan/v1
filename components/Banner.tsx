@@ -65,7 +65,7 @@ const CohortsApplyBanner = () => (
         of our <span className="font-bold">W23 Cohort</span>
       </>
     }
-    link="https://v1michigan.com/apply"
+    link="/apply"
     buttonText="Apply now &rsaquo;"
   />
 );
