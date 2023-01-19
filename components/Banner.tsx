@@ -57,6 +57,19 @@ const ProductStudioBanner = () => (
   />
 );
 
+const CohortsApplyBanner = () => (
+  <Banner
+    text={
+      <>
+        Apply by <span className="font-bold">January 25th</span> to a be a part
+        of our <span className="font-bold">W23 Cohort</span>
+      </>
+    }
+    link="https://v1michigan.com/apply"
+    buttonText="Apply now &rsaquo;"
+  />
+);
+
 const StartupFairBanner = () => (
   <Banner
     text={
@@ -70,4 +83,9 @@ const StartupFairBanner = () => (
   />
 );
 
-export { Banner as default, ProductStudioBanner, StartupFairBanner };
+export {
+  Banner as default,
+  ProductStudioBanner,
+  CohortsApplyBanner,
+  StartupFairBanner,
+};
