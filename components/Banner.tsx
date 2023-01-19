@@ -24,7 +24,7 @@ const Banner = ({ text, link, buttonText }: BannerProps) => {
         <p className="p-3 flex-1 flex-grow font-medium font-sans text-white">
           {text}
         </p>
-        <div className="order-3 mt-2 flex-shrink-0 w-full sm:order-2 sm:mt-0 sm:w-auto">
+        <div className="order-3 mt-2 flex-shrink-0 w-full sm:order-2 sm:mt-0 sm:w-auto z-50">
           <a
             href={link}
             className="font-sans flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-yellow-600 bg-white hover:bg-yellow-200 transition duration-500"
@@ -57,6 +57,19 @@ const ProductStudioBanner = () => (
   />
 );
 
+const CohortsApplyBanner = () => (
+  <Banner
+    text={
+      <>
+        Apply by <span className="font-bold">January 26th</span> to a be a part
+        of our <span className="font-bold">W23 Cohort</span>
+      </>
+    }
+    link="/apply"
+    buttonText="Apply now &rsaquo;"
+  />
+);
+
 const StartupFairBanner = () => (
   <Banner
     text={
@@ -70,4 +83,9 @@ const StartupFairBanner = () => (
   />
 );
 
-export { Banner as default, ProductStudioBanner, StartupFairBanner };
+export {
+  Banner as default,
+  ProductStudioBanner,
+  CohortsApplyBanner,
+  StartupFairBanner,
+};
