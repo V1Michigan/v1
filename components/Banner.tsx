@@ -61,7 +61,7 @@ const CohortsApplyBanner = () => (
   <Banner
     text={
       <>
-        Apply by <span className="font-bold">January 25th</span> to a be a part
+        Apply by <span className="font-bold">January 26th</span> to a be a part
         of our <span className="font-bold">W23 Cohort</span>
       </>
     }
