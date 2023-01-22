@@ -181,7 +181,7 @@ const Dashboard: NextPage = () => {
                   <img
                     className="mb-1 inline-block w-7 mr-1.5 my-auto"
                     src="/slack-logo.webp"
-                    alt="Discord icon"
+                    alt="Slack icon"
                   />
                   Join the{" "}
                   <span className="font-semibold">V1 Slack &rsaquo;</span>
