@@ -10,6 +10,9 @@ const SendSlack: NextPage = () => {
     .from("slack")
     .insert({ user_id: user?.id })
     .then(({ error }) => {
+      // following error (in the if statement) is when supabase can't add someone
+      // to the table, which is okay!! This just means they've clicked on the link 
+      // before. Therefore, we ignore the error.
       // eslint-disable-next-line no-console
       if (error?.code !== "23505") console.log(error);
     });
