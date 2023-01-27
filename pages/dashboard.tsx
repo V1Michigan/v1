@@ -176,15 +176,15 @@ const Dashboard: NextPage = () => {
               <h1 className="text-3xl font-bold tracking-tight text-gray-800 mb-4 mt-8 text-center">
                 Resources &#8250;
               </h1>
-              <InternalLink href="/community">
+              <InternalLink href="/community" target="_blank">
                 <p className="block bg-gray-100 max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center text-lg hover:bg-gray-200 hover:opacity-75 transition-all cursor-pointer">
                   <img
-                    className="mb-1 inline-block w-8 mr-1 my-auto"
-                    src="/discord-gray-icon.webp"
-                    alt="Discord icon"
+                    className="mb-1 inline-block w-6 mr-1.5 my-auto"
+                    src="/slack-logo.webp"
+                    alt="Slack icon"
                   />
                   Join the{" "}
-                  <span className="font-semibold">V1 Discord &rsaquo;</span>
+                  <span className="font-semibold">V1 Slack &rsaquo;</span>
                 </p>
               </InternalLink>
               <a
