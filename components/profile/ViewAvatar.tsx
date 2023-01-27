@@ -2,10 +2,9 @@ import { useMemo } from "react";
 
 interface ViewAvatarProps {
   avatar: string | File;
-  size?: number;
 }
 
-const ViewAvatar = ({ avatar: avatar_, size = 32 }: ViewAvatarProps) => {
+const ViewAvatar = ({ avatar: avatar_ }: ViewAvatarProps) => {
   const avatarUrl = useMemo(
     () =>
       typeof avatar_ === "string" ? avatar_ : URL.createObjectURL(avatar_),
