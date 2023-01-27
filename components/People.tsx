@@ -2,13 +2,26 @@ import Marquee from "react-fast-marquee";
 import Fade from "./Fade";
 
 const TEAM = [
-  "alaa",
+  "shirvil",
   "aditya",
   "advait",
   "dheera",
   "divya",
-  "drew",
+  "hari",
   "elliot",
+  "pasha",
+  "raghav",
+  "reese",
+  "samay",
+  "tyrus",
+  "varun",
+  "vishnu",
+  "yash",
+  "deric",
+  "kelvin",
+  "daphne",
+  "shrey",
+  "spencer",
   "emir",
   "jon",
   "kalman",
@@ -18,14 +31,6 @@ const TEAM = [
   "madhav",
   "megan",
   "nathan",
-  "pasha",
-  "raghav",
-  "reese",
-  "samay",
-  "tyrus",
-  "varun",
-  "vishnu",
-  "yash",
 ];
 
 const Person = ({ name }: { name: string }) => (
@@ -69,20 +74,18 @@ const People = () => (
 
     <div className="bg-gray-300">
       <div className="max-w-4xl mx-auto py-12 px-4 leading-snug">
-        <p className="tracking-tightest text-gray-900 text-3xl">
+        <p className="tracking-tightest text-gray-900 text-3xl text-center">
           With V1, you&apos;ll not only build incredible projects, you&apos;ll
           build them with exceptional people who will push you to be the best
           version of ourself.
         </p>
-        <p className="tracking-tightest text-gray-900 text-2xl mt-4">
+        <p className="tracking-tightest text-gray-900 text-2xl mt-4 text-center">
           V1 invests in people with high growth potential — people that will
-          grow faster than we can ever imagine.
+          grow faster than we can ever imagine. We look for energy, drive, and
+          initiative. You&apos;re not paying you&apos;re network, you&apos;re
+          earning it.
         </p>
-        <p className="tracking-tightest text-gray-900 text-2xl mt-4">
-          We don&apos;t require applications. We don&apos;t have an interview
-          process. We won&apos;t judge you based on your prior experiences. We
-          look for energy, drive, and initiative.
-        </p>
+
         <p className="font-semibold text-gray-900 text-3xl mt-8 text-center">
           Sound like you?
         </p>

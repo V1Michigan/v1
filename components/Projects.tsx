@@ -9,7 +9,7 @@ const PROJECTS = [
       "The largest student-run startup career fair at the University of Michigan",
     // If we ever get # of hire metrics...that'd be awesome here
     // TODO: Hopin metrics
-    stats: ["400+ students", "239 1:1 matches", "17 high-growth startups"],
+    stats: ["500+ students", "30+ offers extended", "17 high-growth startups"],
     // Would be cool to have some company logos here
     image: "/projects/startup-fair.jpg",
   },
@@ -25,10 +25,10 @@ const PROJECTS = [
   {
     name: "V1 Connect",
     // TODO: More recent newsletter link or RSVP
-    link: "https://v1network.substack.com/p/whats-next-v1-connect-meet-michigans",
+    link: "https://v1network.substack.com/",
     description:
-      "Bringing together the top student builders to connect and collaborate",
-    stats: ["80+ students", "Dozens of projects", "∞ connections"],
+      "Bringing together top student builders to connect and collaborate",
+    stats: ["100+ students", "One of a kind speakers", "∞ connections"],
     // TODO: Downsample images
     image: "/projects/connect.jpg",
   },
