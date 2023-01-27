@@ -152,7 +152,7 @@ const Step1 = ({
               <div>
                 {values.avatar && (
                   <div className="m-4 flex justify-center items-center">
-                    <ViewAvatar avatar={values.avatar} size={32} />
+                    <ViewAvatar avatar={values.avatar} />
                   </div>
                 )}
                 <div className="mx-auto">

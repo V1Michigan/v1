@@ -6,7 +6,7 @@ import Partners from "../components/Partners";
 import People, { PeopleChips } from "../components/People";
 import Fade from "../components/Fade";
 import Head from "../components/Head";
-import { CohortsApplyBanner, StartupFairBanner } from "../components/Banner";
+// import { CohortsApplyBanner, StartupFairBanner } from "../components/Banner";
 
 const TenX = () => (
   <>

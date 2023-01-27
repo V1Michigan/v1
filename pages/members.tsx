@@ -110,7 +110,7 @@ const Member = ({ member }: { member: MemberData }) => {
     >
       {avatar ? (
         <Fade motion={false}>
-          <ViewAvatar avatar={avatar} size={20} />
+          <ViewAvatar avatar={avatar} />
         </Fade>
       ) : (
         // Same-size placeholder :D
