@@ -48,6 +48,16 @@ const Interest: { [key: string]: string } = {
   edu: "Education",
   con: "Consumer",
   b2b: "Business-to-business (B2B)",
+  cld: "Cloud",
+  gov: "Government",
+  entr: "Entertainment",
+  mob: "Mobile",
+  soc: "Social",
+  uti: "Utilities",
+  cre: "Creative",
+  gam: "Gaming",
+  ent: "Enterprise",
+  hw: "Hardware",
 };
 
 // Consider using slugs here...need a good way to make these
