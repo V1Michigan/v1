@@ -53,7 +53,7 @@ const Interest: { [key: string]: string } = {
   entr: "Entertainment",
   mob: "Mobile",
   soc: "Social",
-  uti: "Utilities",
+  prod: "Productivity",
   cre: "Creative",
   gam: "Gaming",
   ent: "Enterprise",
