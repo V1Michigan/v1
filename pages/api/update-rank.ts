@@ -22,7 +22,7 @@ const handler = withAuth(
       return;
     }
 
-    const { <number>data, error, status } = await supabase
+    const { data, error, status } = await supabase
       .from("ranks")
       .select("rank")
       .eq("user_id", user.id)
@@ -34,12 +34,12 @@ const handler = withAuth(
 
     const currentRank = data?.rank ?? null;
     if (currentRank === null) {
-      res.status(500).send('Server error: no rank found for user');
+      res.status(500).send("Server error: no rank found for user");
       return;
     }
 
     if (requestedRank !== currentRank + 1) {
-      res.status(400).send('Rank must be 1 higher than current rank');
+      res.status(400).send("Rank must be 1 higher than current rank");
       return;
     }
 
