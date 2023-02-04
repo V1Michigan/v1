@@ -33,7 +33,7 @@ const Partners = () => (
     <h2 className="text-center text-3xl md:text-5xl text-black font-bold py-6">
       Partners
     </h2>
-    <p className="tracking-tight text-gray-900 text-2xl max-w-4xl mx-auto py-2 px-4 leading-snug">
+    <p className="tracking-tight text-gray-900 text-2xl max-w-4xl mx-auto py-2 px-4 leading-snug text-center">
       We partner with outstanding organizations to build extraordinary projects
       and connect our members with exclusive opportunities.
     </p>
