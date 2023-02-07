@@ -71,10 +71,12 @@ export default function IndexPage() {
         <div className="max-w-4xl mx-auto py-24 px-4 leading-snug">
           <p className="tracking-tightest text-gray-900 text-3xl">
             <span className="font-extrabold">V1</span> is the community for
-            ambitious student builders — engineers, artists, designers,
-            founders, scientists, and more. We provide the most driven students
-            with an extraordinary network, exclusive opportunities within
-            startups, and mentorship to grow and achieve great things.
+            ambitious student <b>builders</b> — engineers, designers, artists, 
+            scientists, and more. We provide the most driven students
+            with:
+            <li>an extraordinary network</li>
+            <li>direct contact with startups</li>
+            <li>mentorship from seasoned founders</li>
           </p>
         </div>
       </div>
@@ -108,7 +110,7 @@ export default function IndexPage() {
 
       <div className="bg-gradient-to-r from-gray-900 to-black">
         <p className="footer text-gray-200 text-center font-semibold py-8">
-          &copy; 2022 V1 |{" "}
+          &copy; 2023 V1 |{" "}
           <a href="mailto:team@v1michigan.com">team@v1michigan.com</a>
         </p>
       </div>

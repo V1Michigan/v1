@@ -14,15 +14,6 @@ const PROJECTS = [
     image: "/projects/startup-fair.jpg",
   },
   {
-    // Maybe remove "V1" from "V1 Platform"
-    name: "V1 Platform",
-    link: "/join",
-    description: "The operating system for our community",
-    // We could just call this "V1 Community" and use newsletter/Discord stats
-    stats: [], // TODO: ???
-    image: "/projects/platform.png",
-  },
-  {
     name: "V1 Connect",
     // TODO: More recent newsletter link or RSVP
     link: "https://v1network.substack.com/",
@@ -31,6 +22,15 @@ const PROJECTS = [
     stats: ["100+ students", "One of a kind speakers", "∞ connections"],
     // TODO: Downsample images
     image: "/projects/connect.jpg",
+  },
+  {
+    // Maybe remove "V1" from "V1 Platform"
+    name: "V1 Platform",
+    link: "/join",
+    description: "The operating system for our community: View Events, Resources, Community Directory, and more.",
+    // We could just call this "V1 Community" and use newsletter/Discord stats
+    stats: [], // TODO: ???
+    image: "/projects/platform.png",
   },
 ];
 
