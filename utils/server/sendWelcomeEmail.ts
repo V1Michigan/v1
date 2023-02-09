@@ -1,9 +1,12 @@
-const AWS = require("aws-sdk");
+import AWS from "aws-sdk";
 
 AWS.config.update({ region: 'us-east-1' });
 const SES = new AWS.SES({ apiVersion: '2010-12-01' });
 
-if (process.env.NODE_ENV !== 'development' && (!process.env.AWS_ACCESS_KEY_ID || !process.env.AWS_SECRET_ACCESS_KEY)) {
+if (
+  process.env.NODE_ENV !== "development" &&
+  (!process.env.AWS_ACCESS_KEY_ID || !process.env.AWS_SECRET_ACCESS_KEY)
+) {
   throw new Error('Missing AWS_ACCESS_KEY_ID or AWS_SECRET_ACCESS_KEY');
 }
 
