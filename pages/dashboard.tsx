@@ -11,14 +11,16 @@ import Step2Prompt from "../components/dashboard/Step2Prompt";
 import InternalLink from "../components/Link";
 import ConditionalLink from "../components/ConditionalLink";
 import CommunityDirectoryIcon from "../public/community_directory.svg";
+import EventCard from "../components/dashboard/Events/EventCard";
+import { Event } from "../components/dashboard/Events/Event.type";
 
-type Event = {
-  name: string;
-  start_date: string;
-  place: string;
-  description: string;
-  link: string;
-};
+// type Event = {
+//   name: string;
+//   start_date: string;
+//   place: string;
+//   description: string;
+//   link: string;
+// };
 const EVENT_COLUMNS = "name, start_date, place, description, link";
 
 const Welcome = ({ name }: { name: string | null }) => {
