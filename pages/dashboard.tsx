@@ -141,43 +141,46 @@ const Dashboard: NextPage = () => {
               <h1 className="text-3xl font-bold tracking-tight text-gray-800 mb-4 mt-8 text-center">
                 Upcoming Events &#8250;
               </h1>
+              <hr className="mx-auto h-0.5 bg-gray-100 rounded border-0 my-6 dark:bg-gray-300" />
               {events.map((event) => (
-                <div
-                  className="bg-gray-100 max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center"
-                  key={event.name + event.start_date}
-                >
-                  <h6 className="font-bold text-lg">{event.name}</h6>
-                  <p className="">
-                    {new Date(event.start_date).toLocaleDateString("en-US", {
-                      month: "long",
-                      day: "numeric",
-                      year: "numeric",
-                      hour: "numeric",
-                      minute: "numeric",
-                    })}
-                  </p>
-                  <p className="italic mb-2">{event.place}</p>
-                  <p className="mb-2">{event.description}</p>
-                  <a
-                    href={event.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <button
-                      type="button"
-                      className="text-center text-sm block text-gray-100 font-semibold bg-gradient-to-r from-blue-600 to-blue-700 hover:bg-blue-500 shadow py-2 px-3 rounded mx-auto hover:opacity-75"
-                    >
-                      RSVP &rsaquo;
-                    </button>
-                  </a>
-                </div>
+                // <div
+                //   className="bg-gray-100 max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center"
+                //   key={event.name + event.start_date}
+                // >
+                //   <h6 className="font-bold text-lg">{event.name}</h6>
+                //   <p className="">
+                //     {new Date(event.start_date).toLocaleDateString("en-US", {
+                //       month: "long",
+                //       day: "numeric",
+                //       year: "numeric",
+                //       hour: "numeric",
+                //       minute: "numeric",
+                //     })}
+                //   </p>
+                //   <p className="italic mb-2">{event.place}</p>
+                //   <p className="mb-2">{event.description}</p>
+                //   <a
+                //     href={event.link}
+                //     target="_blank"
+                //     rel="noopener noreferrer"
+                //   >
+                //     <button
+                //       type="button"
+                //       className="text-center text-sm block text-gray-100 font-semibold bg-gradient-to-r from-blue-600 to-blue-700 hover:bg-blue-500 shadow py-2 px-3 rounded mx-auto hover:opacity-75"
+                //     >
+                //       RSVP &rsaquo;
+                //     </button>
+                //   </a>
+                // </div>
+                <EventCard key={event.name} event={event} />
               ))}
             </div>
 
-            <div className="flex-1">
-              <h1 className="text-3xl font-bold tracking-tight text-gray-800 mb-4 mt-8 text-center">
+            <div className="flex-none m-x px-8">
+              <h1 className="text-3xl font-bold tracking-tight text-gray-800 my-4 text-center">
                 Resources &#8250;
               </h1>
+              <hr className="mx-auto h-0.5 bg-gray-100 rounded border-0 my-6 dark:bg-gray-300" />
               <InternalLink href="/community" target="_blank">
                 <p className="block bg-gray-100 max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center text-lg hover:bg-gray-200 hover:opacity-75 transition-all cursor-pointer">
                   <img
@@ -207,11 +210,10 @@ const Dashboard: NextPage = () => {
                 href={rank < Rank.INACTIVE_MEMBER ? undefined : "/members"}
               >
                 <p
-                  className={`block max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center text-lg ${
-                    rank < Rank.INACTIVE_MEMBER
-                      ? "bg-gray-300 hover:cursor-not-allowed"
-                      : "bg-gray-100 hover:bg-gray-200 hover:opacity-75 transition-all"
-                  }`}
+                  className={`block max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center text-lg ${rank < Rank.INACTIVE_MEMBER
+                    ? "bg-gray-300 hover:cursor-not-allowed"
+                    : "bg-gray-100 hover:bg-gray-200 hover:opacity-75 transition-all"
+                    }`}
                 >
                   {rank < Rank.INACTIVE_MEMBER ? (
                     <span className="text-2xl">🔒 </span>
