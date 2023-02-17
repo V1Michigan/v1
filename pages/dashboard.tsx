@@ -138,7 +138,7 @@ const Dashboard: NextPage = () => {
           </div>
           <div className="md:flex justify-center">
             <div className="flex-1">
-              <h1 className="text-3xl font-bold tracking-tight text-gray-800 mb-4 mt-8 text-center">
+              <h1 className="text-3xl font-bold tracking-tight text-gray-800 mb-4 mt-4 text-center">
                 Upcoming Events &#8250;
               </h1>
               <hr className="mx-auto h-0.5 bg-gray-100 rounded border-0 my-6 dark:bg-gray-300" />
