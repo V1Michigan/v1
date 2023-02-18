@@ -210,10 +210,11 @@ const Dashboard: NextPage = () => {
                 href={rank < Rank.INACTIVE_MEMBER ? undefined : "/members"}
               >
                 <p
-                  className={`block max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center text-lg ${rank < Rank.INACTIVE_MEMBER
-                    ? "bg-gray-300 hover:cursor-not-allowed"
-                    : "bg-gray-100 hover:bg-gray-200 hover:opacity-75 transition-all"
-                    }`}
+                  className={`block max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center text-lg ${
+                    rank < Rank.INACTIVE_MEMBER
+                      ? "bg-gray-300 hover:cursor-not-allowed"
+                      : "bg-gray-100 hover:bg-gray-200 hover:opacity-75 transition-all"
+                  }`}
                 >
                   {rank < Rank.INACTIVE_MEMBER ? (
                     <span className="text-2xl">🔒 </span>
