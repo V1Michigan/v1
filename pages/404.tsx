@@ -3,6 +3,8 @@ import { useEffect } from "react";
 import InternalLink from "../components/Link";
 
 export default function Custom404() {
+  // adds bg-gray-800 to body on mount and removes it on unmount
+  // i wanted to make area outside viewport colored (when you scroll up or down past the page)
   useEffect(() => {
     document.body.classList.add("bg-gray-800");
     return () => {
