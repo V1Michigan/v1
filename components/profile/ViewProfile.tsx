@@ -1,29 +1,47 @@
 import type { Profile } from "../../pages/profile/[username]";
-import {
-  FieldOfStudy,
-  Year,
-  Interest,
-  RoleType,
-} from "../../constants/profile";
-import EmailIcon from "../../public/profile/email.svg";
-import LinkedInIcon from "../../public/profile/linkedin.svg";
+// import Badge from "../../pages/members";
+import { FieldOfStudy, Year } from "../../constants/profile";
+import MemberBadges from "../MemberBadges";
 
 interface ViewProfileProps {
   profile: Profile;
 }
 
+// const MemberBadges = ({
+//   roles,
+//   interests,
+// }: {
+//   roles: string[];
+//   interests: string[];
+// }) => {
+//   let badges = [
+//     ...roles.map((role) => ({ value: RoleType[role], color: RoleColor[role] })),
+//     ...interests.map((interest) => ({
+//       value: Interest[interest],
+//       color: undefined, // Use default Badge color
+//     })),
+//   ];
+//   let numHidden = 0;
+//   if (badges.length > 8) {
+//     numHidden = badges.length - 8;
+//     badges = badges.slice(0, 8);
+//   }
+//   return (
+//     <div className="flex gap-x-2 gap-y-1 flex-wrap items-center">
+//       {badges.map(({ value, color }) => (
+//         <Badge key={value} text={value} color={color} />
+//       ))}
+//       {numHidden > 0 && (
+//         <p className="inline-block text-xs text-slate-500 h-full align-middle">
+//           +{numHidden} more
+//         </p>
+//       )}
+//     </div>
+//   );
+// };
+
 const ViewProfile = ({ profile }: ViewProfileProps) => (
   <div>
-    <div className="flex flex-row gap-x-8 p-2">
-      <a
-        href={`mailto:${profile.email}`}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <EmailIcon className="h-6 w-6 fill-white" />
-      </a>
-      {profile.linkedin && <LinkedInIcon className="h-6 w-6 fill-white" />}
-    </div>
     {profile.website && (
       <>
         {/* If "additional links" is a single URL, link to that; else, just show the text */}
@@ -39,19 +57,23 @@ const ViewProfile = ({ profile }: ViewProfileProps) => (
       </>
     )}
     {profile.bio && <p className="my-4">{profile.bio}</p>}
-    {profile.year && <p>Year: {Year[profile.year]}</p>}
+    {profile.year && (
+      <p>
+        <strong>Year: </strong> {Year[profile.year]}
+      </p>
+    )}
     {profile.fields_of_study && (
       <>
         <p>
-          Major
-          {profile.fields_of_study.majors.length > 1 && "s"}:{" "}
+          <strong>Major: </strong>
+          {profile.fields_of_study.majors.length > 1 && "s"}{" "}
           {profile.fields_of_study.majors
             .map((majorKey) => FieldOfStudy[majorKey])
             .join(", ")}
         </p>
         {profile.fields_of_study.minors?.length > 0 && (
           <p>
-            Minor
+            <strong>Minor: </strong>
             {profile.fields_of_study.minors.length > 1 && "s"}:{" "}
             {profile.fields_of_study.minors
               .map((minorKey) => FieldOfStudy[minorKey])
@@ -60,18 +82,22 @@ const ViewProfile = ({ profile }: ViewProfileProps) => (
         )}
       </>
     )}
-    {profile.roles && (
+    {/* {profile.roles && (
       <p>
-        Roles: {profile.roles.map((roleKey) => RoleType[roleKey]).join(", ")}
+        <strong>Roles: </strong>
+        {profile.roles.map((roleKey) => RoleType[roleKey]).join(", ")}
       </p>
-    )}
+    )} */}
     {profile.interests && (
-      <p>
-        Interests:{" "}
-        {profile.interests
-          .map((interestKey) => Interest[interestKey])
-          .join(", ")}
-      </p>
+      // <p>
+      //   Interests:{" "}
+      //   {profile.interests
+      //     .map((interestKey) => Interest[interestKey])
+      //     .join(", ")}
+      // </p>
+      <div className="pt-2">
+        <MemberBadges roles={profile.roles} interests={profile.interests} />
+      </div>
     )}
   </div>
 );

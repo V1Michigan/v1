@@ -22,6 +22,8 @@ import {
 import { PartnerSharingConsentField } from "../../components/profile/fields/ProfileFields";
 import Rank from "../../constants/rank";
 import InternalLink from "../../components/Link";
+import EmailIcon from "../../public/profile/email.svg";
+import LinkedInIcon from "../../public/profile/linkedin.svg";
 
 // Username included separately
 export type Profile = {
@@ -96,6 +98,10 @@ const UserProfile: NextPage = () => {
     },
     [supabase]
   );
+
+  useEffect(() => {
+    document.body.classList.add("bg-gray-800");
+  }, []);
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -230,22 +236,39 @@ const UserProfile: NextPage = () => {
       onSubmit={saveProfile}
     >
       {({ values, isSubmitting }) => (
-        <div className="bg-gradient min-h-screen min-w-screen p-4 md:p-8 flex justify-center items-center text-white">
+        <div className="bg-gray-800 min-h-screen min-w-screen p-4 md:p-8 flex justify-center items-center text-white">
           <Head title={profileUsername} />
           <Form>
             {values.avatar && (
               <div className="flex flex-col md:flex-row justify-around items-center">
-                <div className="m-4 flex-1 flex justify-center items-center">
+                <div className="m-4 mx-0 flex flex-row justify-between items-center">
                   <ViewAvatar avatar={values.avatar} />
+                  <h2 className="text-2xl ml-4">
+                    <b>{values.name}</b> ({profileUsername})
+                    <div className="flex flex-row gap-x-5 p-0 py-2">
+                      <InternalLink
+                        href={`mailto:${values.email}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <EmailIcon className="h-6 w-6 fill-white" />
+                      </InternalLink>
+                      <InternalLink href={values.linkedin} target="_blank">
+                        {values.linkedin && (
+                          <LinkedInIcon className="h-6 w-6 fill-white" />
+                        )}
+                      </InternalLink>
+                    </div>
+                  </h2>
                 </div>
                 <div className="flex-1">{editMode && <EditAvatar />}</div>
               </div>
             )}
 
             {/* Not allowing name or username changes for now */}
-            <h2 className="text-2xl my-4">
+            {/* <h2 className="text-2xl my-4">
               <b>{values.name}</b> ({profileUsername})
-            </h2>
+            </h2> */}
             {editMode ? (
               <EditProfile profile={values} />
             ) : (
@@ -254,7 +277,7 @@ const UserProfile: NextPage = () => {
 
             {/* Don't want to show resume on public profile */}
             {editMode && (
-              <div className="grid grid-cols-6 gap-6 pb-4 items-center justify-center items-center pt-4">
+              <div className="grid grid-cols-6 gap-6 pb-4 justify-center items-center pt-4">
                 {values.resume && (
                   <div className="col-span-6 sm:col-span-3">
                     <ViewResume resume={values.resume} />
