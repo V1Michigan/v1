@@ -21,7 +21,7 @@ import { Event } from "../components/dashboard/Events/Event.type";
 //   description: string;
 //   link: string;
 // };
-const EVENT_COLUMNS = "name, start_date, place, description, link";
+const EVENT_COLUMNS = "name, start_date, place, description, link, id";
 
 const Welcome = ({ name }: { name: string | null }) => {
   const firstName = name?.split(" ")[0] || name;
