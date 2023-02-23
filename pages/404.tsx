@@ -7,9 +7,9 @@ export default function Custom404() {
   // i wanted to make area outside viewport colored (when you scroll up or down past the page)
   useEffect(() => {
     document.body.classList.add("bg-gray-800");
-    // return () => {
-    //   document.body.classList.remove("bg-gray-800");
-    // };
+    return () => {
+      document.body.classList.remove("bg-gray-800");
+    };
   }, []);
 
   return (
