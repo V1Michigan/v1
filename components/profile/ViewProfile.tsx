@@ -1,44 +1,10 @@
 import type { Profile } from "../../pages/profile/[username]";
-// import Badge from "../../pages/members";
 import { FieldOfStudy, Year } from "../../constants/profile";
 import MemberBadges from "../MemberBadges";
 
 interface ViewProfileProps {
   profile: Profile;
 }
-
-// const MemberBadges = ({
-//   roles,
-//   interests,
-// }: {
-//   roles: string[];
-//   interests: string[];
-// }) => {
-//   let badges = [
-//     ...roles.map((role) => ({ value: RoleType[role], color: RoleColor[role] })),
-//     ...interests.map((interest) => ({
-//       value: Interest[interest],
-//       color: undefined, // Use default Badge color
-//     })),
-//   ];
-//   let numHidden = 0;
-//   if (badges.length > 8) {
-//     numHidden = badges.length - 8;
-//     badges = badges.slice(0, 8);
-//   }
-//   return (
-//     <div className="flex gap-x-2 gap-y-1 flex-wrap items-center">
-//       {badges.map(({ value, color }) => (
-//         <Badge key={value} text={value} color={color} />
-//       ))}
-//       {numHidden > 0 && (
-//         <p className="inline-block text-xs text-slate-500 h-full align-middle">
-//           +{numHidden} more
-//         </p>
-//       )}
-//     </div>
-//   );
-// };
 
 const ViewProfile = ({ profile }: ViewProfileProps) => (
   <div>
@@ -82,19 +48,7 @@ const ViewProfile = ({ profile }: ViewProfileProps) => (
         )}
       </>
     )}
-    {/* {profile.roles && (
-      <p>
-        <strong>Roles: </strong>
-        {profile.roles.map((roleKey) => RoleType[roleKey]).join(", ")}
-      </p>
-    )} */}
     {profile.interests && (
-      // <p>
-      //   Interests:{" "}
-      //   {profile.interests
-      //     .map((interestKey) => Interest[interestKey])
-      //     .join(", ")}
-      // </p>
       <div className="pt-2">
         <MemberBadges roles={profile.roles} interests={profile.interests} />
       </div>
