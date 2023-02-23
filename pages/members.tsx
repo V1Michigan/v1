@@ -6,7 +6,7 @@ import ProtectedRoute from "../components/ProtectedRoute";
 import useSupabase from "../hooks/useSupabase";
 import useSupabaseDownload from "../hooks/useSupabaseDownload";
 import Rank from "../constants/rank";
-import { RoleType, RoleColor, Interest } from "../constants/profile";
+import { RoleType, Interest } from "../constants/profile";
 import type { Profile as _Profile } from "./profile/[username]";
 import InternalLink from "../components/Link";
 import ViewAvatar from "../components/profile/ViewAvatar";
@@ -15,29 +15,7 @@ import EmailIcon from "../public/profile/email.svg";
 import WebsiteIcon from "../public/profile/website.svg";
 import Fade from "../components/Fade";
 import { ControlledMultiSelect } from "../components/MultiSelect";
-
-// Need these available at compile time for Tailwind
-const BadgeColors: { [key: string]: string } = {
-  slate: "bg-slate-100/10 border-slate-300 text-slate-500",
-  red: "bg-red-100/10 border-red-300 text-red-700",
-  green: "bg-green-100/10 border-green-300 text-green-700",
-  blue: "bg-blue-100/10 border-blue-300 text-blue-700",
-  fuchsia: "bg-fuchsia-100/10 border-fuchsia-300 text-fuchsia-700",
-  purple: "bg-purple-100/10 border-purple-300 text-purple-700",
-  orange: "bg-orange-100/10 border-orange-300 text-orange-700",
-  pink: "bg-pink-100/10 border-pink-300 text-pink-700",
-  teal: "bg-teal-100/10 border-teal-300 text-teal-700",
-  indigo: "bg-indigo-100/10 border-indigo-300 text-indigo-700",
-  cyan: "bg-cyan-100/10 border-cyan-300 text-cyan-700",
-};
-
-const Badge = ({ text, color = "slate" }: { text: string; color?: string }) => (
-  <span
-    className={`text-xs inline-block rounded-full border-2 ${BadgeColors[color]} px-2 py-1`}
-  >
-    {text}
-  </span>
-);
+import MemberBadges from "../components/MemberBadges";
 
 const Subheader = ({
   children,
@@ -61,39 +39,6 @@ type MemberData = Omit<
   "phone" | "year" | "fields_of_study" | "partner_sharing_consent" | "resume"
 > & {
   username: string;
-};
-
-const MemberBadges = ({
-  roles,
-  interests,
-}: {
-  roles: string[];
-  interests: string[];
-}) => {
-  let badges = [
-    ...roles.map((role) => ({ value: RoleType[role], color: RoleColor[role] })),
-    ...interests.map((interest) => ({
-      value: Interest[interest],
-      color: undefined, // Use default Badge color
-    })),
-  ];
-  let numHidden = 0;
-  if (badges.length > 8) {
-    numHidden = badges.length - 8;
-    badges = badges.slice(0, 8);
-  }
-  return (
-    <div className="flex gap-x-2 gap-y-1 flex-wrap items-center">
-      {badges.map(({ value, color }) => (
-        <Badge key={value} text={value} color={color} />
-      ))}
-      {numHidden > 0 && (
-        <p className="inline-block text-xs text-slate-500 h-full align-middle">
-          +{numHidden} more
-        </p>
-      )}
-    </div>
-  );
 };
 
 const Member = ({ member }: { member: MemberData }) => {

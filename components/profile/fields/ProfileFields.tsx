@@ -324,7 +324,7 @@ const BioField = ({ label }: LabelProps) => {
     <div>
       <label htmlFor="bio">{label}</label>
       <Field
-        className="w-full mt-1 self-center focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md text-black"
+        className="mt-1 self-center focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md text-black"
         type="text"
         name="bio"
         placeholder="I invented the personal computer, co-founded Apple, and had fun doing it"
@@ -347,7 +347,7 @@ const LinkedInField = ({ label }: LabelProps) => {
     <div>
       <label htmlFor="linkedin">{label}</label>
       <Field
-        className="w-full mt-1 self-center focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md text-black"
+        className="mt-1 self-center focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md text-black"
         type="text"
         name="linkedin"
         placeholder="https://linkedin.com/in/billymagic"
@@ -371,7 +371,7 @@ const AdditionalLinksField = ({ label }: LabelProps) => {
     <div>
       <label htmlFor="website">{label}</label>
       <Field
-        className="w-full justify-self-center mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md text-black"
+        className="justify-self-center mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md text-black"
         type="text"
         name="website"
         placeholder="E.g. personal site, Twitter, past projects..."

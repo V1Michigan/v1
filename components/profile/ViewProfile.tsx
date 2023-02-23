@@ -1,12 +1,6 @@
 import type { Profile } from "../../pages/profile/[username]";
-import {
-  FieldOfStudy,
-  Year,
-  Interest,
-  RoleType,
-} from "../../constants/profile";
-import EmailIcon from "../../public/profile/email.svg";
-import LinkedInIcon from "../../public/profile/linkedin.svg";
+import { FieldOfStudy, Year } from "../../constants/profile";
+import MemberBadges from "../MemberBadges";
 
 interface ViewProfileProps {
   profile: Profile;
@@ -14,16 +8,6 @@ interface ViewProfileProps {
 
 const ViewProfile = ({ profile }: ViewProfileProps) => (
   <div>
-    <div className="flex flex-row gap-x-8 p-2">
-      <a
-        href={`mailto:${profile.email}`}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <EmailIcon className="h-6 w-6 fill-white" />
-      </a>
-      {profile.linkedin && <LinkedInIcon className="h-6 w-6 fill-white" />}
-    </div>
     {profile.website && (
       <>
         {/* If "additional links" is a single URL, link to that; else, just show the text */}
@@ -39,19 +23,23 @@ const ViewProfile = ({ profile }: ViewProfileProps) => (
       </>
     )}
     {profile.bio && <p className="my-4">{profile.bio}</p>}
-    {profile.year && <p>Year: {Year[profile.year]}</p>}
+    {profile.year && (
+      <p>
+        <strong>Year: </strong> {Year[profile.year]}
+      </p>
+    )}
     {profile.fields_of_study && (
       <>
         <p>
-          Major
-          {profile.fields_of_study.majors.length > 1 && "s"}:{" "}
+          <strong>Major: </strong>
+          {profile.fields_of_study.majors.length > 1 && "s"}{" "}
           {profile.fields_of_study.majors
             .map((majorKey) => FieldOfStudy[majorKey])
             .join(", ")}
         </p>
         {profile.fields_of_study.minors?.length > 0 && (
           <p>
-            Minor
+            <strong>Minor: </strong>
             {profile.fields_of_study.minors.length > 1 && "s"}:{" "}
             {profile.fields_of_study.minors
               .map((minorKey) => FieldOfStudy[minorKey])
@@ -60,18 +48,10 @@ const ViewProfile = ({ profile }: ViewProfileProps) => (
         )}
       </>
     )}
-    {profile.roles && (
-      <p>
-        Roles: {profile.roles.map((roleKey) => RoleType[roleKey]).join(", ")}
-      </p>
-    )}
     {profile.interests && (
-      <p>
-        Interests:{" "}
-        {profile.interests
-          .map((interestKey) => Interest[interestKey])
-          .join(", ")}
-      </p>
+      <div className="pt-2">
+        <MemberBadges roles={profile.roles} interests={profile.interests} />
+      </div>
     )}
   </div>
 );
