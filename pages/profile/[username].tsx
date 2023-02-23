@@ -300,9 +300,7 @@ const UserProfile: NextPage = () => {
               {editMode ? (
                 <>
                   <button
-                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow text-sm font-medium rounded-md
-                        text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
-                        disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-indigo-600"
+                    className="bg-gradient-to-r from-yellow-600 to-yellow-700 hover:bg-blue-500 hover:opacity-75 hover:shadow-lg text-gray-100 text-sm font-semibold py-2 px-4 transition duration-300 rounded shadow"
                     onClick={() => {
                       ReactGA.event({
                         category: "Profile",
@@ -316,9 +314,7 @@ const UserProfile: NextPage = () => {
                     Cancel
                   </button>
                   <button
-                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow text-sm font-medium rounded-md
-                        text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
-                        disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-indigo-600"
+                    className="bg-gradient-to-r from-yellow-600 to-yellow-700 hover:bg-blue-500 hover:opacity-75 hover:shadow-lg text-gray-100 text-sm font-semibold py-2 px-4 transition duration-300 rounded shadow"
                     disabled={
                       isSubmitting || isObjectEqual(values, initialProfile)
                     }
@@ -336,9 +332,7 @@ const UserProfile: NextPage = () => {
                 <>
                   <InternalLink href="/dashboard">
                     <button
-                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow text-sm font-medium rounded-md
-                          text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
-                          disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-indigo-600"
+                      className="bg-gradient-to-r from-yellow-600 to-yellow-700 hover:bg-blue-500 hover:opacity-75 hover:shadow-lg text-gray-100 text-sm font-semibold py-2 px-4 transition duration-300 rounded shadow"
                       type="button"
                     >
                       Back
@@ -346,9 +340,7 @@ const UserProfile: NextPage = () => {
                   </InternalLink>
                   {isCurrentUser && (
                     <button
-                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow text-sm font-medium rounded-md
-                          text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
-                          disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-indigo-600"
+                      className="bg-gradient-to-r from-yellow-600 to-yellow-700 hover:bg-blue-500 hover:opacity-75 hover:shadow-lg text-gray-100 text-sm font-semibold py-2 px-4 transition duration-300 rounded shadow"
                       onClick={() => {
                         ReactGA.event({
                           category: "Profile",
