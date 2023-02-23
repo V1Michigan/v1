@@ -333,7 +333,7 @@ const UserProfile: NextPage = () => {
                 </>
               ) : (
                 <>
-                  <InternalLink href="/dashboard">
+                  <InternalLink href="#" onClick={router.back}>
                     <button
                       className="bg-gradient-to-r from-yellow-600 to-yellow-700 hover:bg-blue-500 hover:opacity-75 hover:shadow-lg text-gray-100 text-sm font-semibold py-2 px-4 transition duration-300 rounded shadow"
                       type="button"
