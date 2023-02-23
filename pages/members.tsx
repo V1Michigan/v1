@@ -6,7 +6,7 @@ import ProtectedRoute from "../components/ProtectedRoute";
 import useSupabase from "../hooks/useSupabase";
 import useSupabaseDownload from "../hooks/useSupabaseDownload";
 import Rank from "../constants/rank";
-import { RoleType, RoleColor, Interest } from "../constants/profile";
+import { RoleType, Interest } from "../constants/profile";
 import type { Profile as _Profile } from "./profile/[username]";
 import InternalLink from "../components/Link";
 import ViewAvatar from "../components/profile/ViewAvatar";
