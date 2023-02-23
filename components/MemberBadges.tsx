@@ -23,7 +23,7 @@ export default function MemberBadges({
   return (
     <div className="flex gap-x-2 gap-y-1 flex-wrap items-center">
       {badges.map(({ value, color }) => (
-        <Badge key={value} text={value} color={color} fill />
+        <Badge key={value} text={value} color={color} />
       ))}
       {numHidden > 0 && (
         <p className="inline-block text-xs text-slate-500 h-full align-middle">

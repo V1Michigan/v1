@@ -1,7 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 // Need these available at compile time for Tailwind
 export const BADGE_COLORS: { [key: string]: string } = {
-  slate: "bg-slate-100/10 border-slate-300 text-slate-500",
   red: "bg-red-100/10 border-red-300 text-red-700",
   green: "bg-green-100/10 border-green-300 text-green-700",
   blue: "bg-blue-100/10 border-blue-300 text-blue-700",
@@ -12,20 +11,21 @@ export const BADGE_COLORS: { [key: string]: string } = {
   teal: "bg-teal-100/10 border-teal-300 text-teal-700",
   indigo: "bg-indigo-100/10 border-indigo-300 text-indigo-700",
   cyan: "bg-cyan-100/10 border-cyan-300 text-cyan-700",
+  slate: "bg-slate-100/10 border-slate-300 text-slate-500",
 };
 
 export const BADGE_STYLES: { [key: string]: string } = {
-  red: "bg-red-100 text-red-700 border-red-100",
-  green: "bg-green-100 text-green-700 border-green-100",
-  blue: "bg-blue-100 text-blue-700 border-blue-100",
-  fuchsia: "bg-fuchsia-100 text-fuchsia-700 border-fuchsia-100",
-  purple: "bg-purple-100 text-purple-700 border-purple-100",
-  orange: "bg-orange-100 text-orange-700 border-orange-100",
-  pink: "bg-pink-100 text-pink-700 border-pink-100",
-  teal: "bg-teal-100 text-teal-700 border-teal-100",
-  indigo: "bg-indigo-100 text-indigo-700 border-indigo-100",
-  cyan: "bg-cyan-100 text-cyan-700 border-cyan-100",
-  slate: "bg-slate-100 text-slate-500 border-slate-100",
+  red: "badge-red",
+  green: "badge-green",
+  blue: "badge-blue",
+  fuchsia: "badge-fuchsia",
+  purple: "badge-purple",
+  orange: "badge-orange",
+  pink: "badge-pink",
+  teal: "badge-teal",
+  indigo: "badge-indigo",
+  cyan: "badge-cyan",
+  slate: "badge-slate",
 };
 
 // export default BADGE_COLORS;

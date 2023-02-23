@@ -15,15 +15,7 @@ import EmailIcon from "../public/profile/email.svg";
 import WebsiteIcon from "../public/profile/website.svg";
 import Fade from "../components/Fade";
 import { ControlledMultiSelect } from "../components/MultiSelect";
-import { BADGE_COLORS, BADGE_STYLES } from "../constants/color_styles";
-
-const Badge = ({ text, color = "slate" }: { text: string; color?: string }) => (
-  <span
-    className={`text-xs inline-block rounded-full border-2 ${BADGE_STYLES[color]} px-2 py-1`}
-  >
-    <strong>{text}</strong>
-  </span>
-);
+import MemberBadges from "../components/MemberBadges";
 
 const Subheader = ({
   children,
@@ -47,39 +39,6 @@ type MemberData = Omit<
   "phone" | "year" | "fields_of_study" | "partner_sharing_consent" | "resume"
 > & {
   username: string;
-};
-
-const MemberBadges = ({
-  roles,
-  interests,
-}: {
-  roles: string[];
-  interests: string[];
-}) => {
-  let badges = [
-    ...roles.map((role) => ({ value: RoleType[role], color: RoleColor[role] })),
-    ...interests.map((interest) => ({
-      value: Interest[interest],
-      color: undefined, // Use default Badge color
-    })),
-  ];
-  let numHidden = 0;
-  if (badges.length > 8) {
-    numHidden = badges.length - 8;
-    badges = badges.slice(0, 8);
-  }
-  return (
-    <div className="flex gap-x-2 gap-y-1 flex-wrap items-center">
-      {badges.map(({ value, color }) => (
-        <Badge key={value} text={value} color={color} />
-      ))}
-      {numHidden > 0 && (
-        <p className="inline-block text-xs text-slate-500 h-full align-middle">
-          +{numHidden} more
-        </p>
-      )}
-    </div>
-  );
 };
 
 const Member = ({ member }: { member: MemberData }) => {

@@ -21,7 +21,7 @@ export default function Badge({
 }) {
   return (
     <span
-      className={`text-xs rounded-full px-2 py-1 border-2 ${BADGE_STYLES[color]} `}
+      className={`text-xs rounded-full px-2 py-1 border-2 ${BADGE_STYLES[color]}`}
     >
       <strong>{text}</strong>
     </span>
