@@ -132,10 +132,16 @@ const Dashboard: NextPage = () => {
   // Refetch search data every time a new query is triggered
   useEffect(() => {
     const fetchSearch = async () => {
+      let newQuery = query
+        .split(" ")
+        .map((str) => `'${str}'`)
+        .join(" | ");
+
       const { data, error } = await supabase
-      .from('events')
-      .select()
-      .textSearch('name', `'Connect' & 'V1'`)
+        .from("events")
+        .select()
+        .or(`name.fts.${newQuery},description.fts.${newQuery}`);
+        // .textSearch("name", newQuery);
       console.log(data);
     }
 
@@ -179,7 +185,7 @@ const Dashboard: NextPage = () => {
             <input
               className="w-full p-2 border border-gray-400 rounded placeholder-gray-400"
               type="text"
-              placeholder="Type a name, role, or interest"
+              placeholder="Type an event name or speaker name"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
             />
