@@ -126,6 +126,23 @@ const Dashboard: NextPage = () => {
     return null;
   }
 
+  // take in query, update state
+  let [query, setQuery] = useState("");
+
+  // Refetch search data every time a new query is triggered
+  useEffect(() => {
+    const fetchSearch = async () => {
+      const { data, error } = await supabase
+      .from('events')
+      .select()
+      .textSearch('name', `'Connect' & 'V1'`)
+      console.log(data);
+    }
+
+    fetchSearch();
+  
+  }, [query]);
+  
   return (
     <>
       <Head title="Dashboard" />
@@ -153,10 +170,21 @@ const Dashboard: NextPage = () => {
               {error}
             </p>
           ))}
-
+          
           <div className="flex flex-wrap justify-center gap-x-4 gap-y-2">
             <Step2Prompt />
           </div>
+
+          <div>
+            <input
+              className="w-full p-2 border border-gray-400 rounded placeholder-gray-400"
+              type="text"
+              placeholder="Type a name, role, or interest"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+          </div>
+          
           <div className="md:flex justify-center">
             <div className="flex-1">
               {upcomingEvents.length > 0 && (
