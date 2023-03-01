@@ -15,6 +15,7 @@ import ConditionalLink from "../components/ConditionalLink";
 import CommunityDirectoryIcon from "../public/community_directory.svg";
 import EventCard from "../components/dashboard/Events/EventCard";
 import { Event } from "../components/dashboard/Events/Event.type";
+import ArrowDownIcon from "../public/arrow_down.svg";
 
 // type Event = {
 //   name: string;
@@ -188,18 +189,7 @@ const Dashboard: NextPage = () => {
               />
               {showArrow && (
                 <div className="sticky bottom-5 flex justify-center">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20"
-                    fill="#1f2937"
-                    className="animate-bounce cursor-pointer h-8 w-8 mt-6"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v3.586L7.707 9.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 10.586V7z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
+                  <ArrowDownIcon className="animate-bounce h-8 w-8 mt-6" />
                 </div>
               )}
             </div>
