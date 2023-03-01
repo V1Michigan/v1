@@ -1,7 +1,9 @@
+/* eslint-disable react/jsx-no-bind */
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { PostgrestMaybeSingleResponse } from "@supabase/supabase-js";
+import { Waypoint } from "react-waypoint";
 import Head from "../components/Head";
 import ProtectedRoute from "../components/ProtectedRoute";
 import useSupabase from "../hooks/useSupabase";
@@ -13,6 +15,7 @@ import ConditionalLink from "../components/ConditionalLink";
 import CommunityDirectoryIcon from "../public/community_directory.svg";
 import EventCard from "../components/dashboard/Events/EventCard";
 import { Event } from "../components/dashboard/Events/Event.type";
+import ArrowDownIcon from "../public/arrow_down.svg";
 
 // type Event = {
 //   name: string;
@@ -48,57 +51,75 @@ const Dashboard: NextPage = () => {
   const router = useRouter();
   const { supabase, user, rank } = useSupabase();
   const [name, setName] = useState<string | null>(null);
-  const [events, setEvents] = useState<Event[]>([]);
+  const [pastEvents, setPastEvents] = useState<Event[]>([]);
+  const [upcomingEvents, setUpcomingEvents] = useState<Event[]>([]);
   const [dataFetchErrors, setDataFetchErrors] = useState<string[]>([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setDataFetchErrors([]);
-      if (user) {
+  const [eventCount, setEventCount] = useState(5);
+  const [showArrow, setShowArrow] = useState(true);
+  const fetchData = useCallback(async () => {
+    setDataFetchErrors([]);
+    if (user) {
+      const {
+        data,
+        error: dbError,
+        status,
+      } = (await supabase
+        .from("profiles")
+        .select("name")
+        .eq("id", user.id)
+        .maybeSingle()) as PostgrestMaybeSingleResponse<{ name: string }>;
+      if ((dbError && status !== 406) || !data) {
+        router.replace("/404");
+      } else if (status !== 200) {
+        setDataFetchErrors((errors) => [
+          ...errors,
+          `Unexpected status code: ${status}`,
+        ]);
+      } else {
+        setName(data?.name);
+        // Wait until user's name is fetched in case there's e.g. a 404 error
         const {
-          data,
-          error: dbError,
-          status,
-        } = (await supabase
-          .from("profiles")
-          .select("name")
-          .eq("id", user.id)
-          .maybeSingle()) as PostgrestMaybeSingleResponse<{ name: string }>;
-        if ((dbError && status !== 406) || !data) {
-          router.replace("/404");
-        } else if (status !== 200) {
-          setDataFetchErrors((errors) => [
-            ...errors,
-            `Unexpected status code: ${status}`,
-          ]);
+          data: dbEvents,
+          error: dbEventError,
+          status: dbEventStatus,
+        } = await supabase
+          .from("events")
+          .select(EVENT_COLUMNS)
+          .range(0, eventCount)
+          .order("start_date", { ascending: false });
+        if (dbEventError && dbEventStatus !== 406) {
+          setDataFetchErrors((errors) => [...errors, dbEventError.message]);
+        } else if (!dbEvents) {
+          setDataFetchErrors((errors) => [...errors, "No events found"]);
         } else {
-          setName(data?.name);
-          // Wait until user's name is fetched in case there's e.g. a 404 error
-          const {
-            data: dbEvents,
-            error: dbEventError,
-            status: dbEventStatus,
-          } = await supabase
-            .from("events")
-            .select(EVENT_COLUMNS)
-            .order("start_date", { ascending: true });
-          if (dbEventError && dbEventStatus !== 406) {
-            setDataFetchErrors((errors) => [...errors, dbEventError.message]);
-          } else if (!dbEvents) {
-            setDataFetchErrors((errors) => [...errors, "No events found"]);
-          } else {
-            // TODO: Filter dates in query
-            setEvents(
-              (dbEvents as Event[]).filter(
-                (event) => new Date(event.start_date) > new Date()
-              )
-            );
-          }
+          // TODO: Filter dates in query
+          setUpcomingEvents(
+            (dbEvents as Event[]).filter(
+              // eslint-disable-next-line @typescript-eslint/no-shadow
+              (upcomingEvents) =>
+                new Date(upcomingEvents.start_date) > new Date()
+            )
+          );
+          setPastEvents(
+            (dbEvents as Event[]).filter(
+              // eslint-disable-next-line @typescript-eslint/no-shadow
+              (pastEvents) => new Date(pastEvents.start_date) < new Date()
+            )
+          );
         }
       }
-    };
+    }
+  }, [supabase, user, router, eventCount]);
+
+  function updateEventCount() {
+    setEventCount(eventCount + 5);
     fetchData();
-  }, [supabase, user, router]);
+  }
+
+  useEffect(() => {
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Type guard
   if (!user || rank === null) {
@@ -138,42 +159,39 @@ const Dashboard: NextPage = () => {
           </div>
           <div className="md:flex justify-center">
             <div className="flex-1">
-              <h1 className="text-3xl font-bold tracking-tight text-gray-800 mb-4 mt-4 text-center">
-                Upcoming Events &#8250;
-              </h1>
-              <hr className="mx-auto h-0.5 bg-gray-100 rounded border-0 my-6 dark:bg-gray-300" />
-              {events.map((event) => (
-                // <div
-                //   className="bg-gray-100 max-w-xs rounded-md p-4 mx-auto text-gray-800 mb-2 tracking-tight text-center"
-                //   key={event.name + event.start_date}
-                // >
-                //   <h6 className="font-bold text-lg">{event.name}</h6>
-                //   <p className="">
-                //     {new Date(event.start_date).toLocaleDateString("en-US", {
-                //       month: "long",
-                //       day: "numeric",
-                //       year: "numeric",
-                //       hour: "numeric",
-                //       minute: "numeric",
-                //     })}
-                //   </p>
-                //   <p className="italic mb-2">{event.place}</p>
-                //   <p className="mb-2">{event.description}</p>
-                //   <a
-                //     href={event.link}
-                //     target="_blank"
-                //     rel="noopener noreferrer"
-                //   >
-                //     <button
-                //       type="button"
-                //       className="text-center text-sm block text-gray-100 font-semibold bg-gradient-to-r from-blue-600 to-blue-700 hover:bg-blue-500 shadow py-2 px-3 rounded mx-auto hover:opacity-75"
-                //     >
-                //       RSVP &rsaquo;
-                //     </button>
-                //   </a>
-                // </div>
+              {upcomingEvents.length > 0 && (
+                <>
+                  <h1 className="text-3xl font-bold tracking-tight text-gray-800 my-4 text-center">
+                    Upcoming Events &#8250;
+                  </h1>
+                  <hr className="mx-auto h-0.5 bg-gray-100 rounded border-0 my-6 dark:bg-gray-300" />
+                </>
+              )}
+              {upcomingEvents.map((event) => (
                 <EventCard key={event.name} event={event} />
               ))}
+              <hr className="mx-auto h-0.5 bg-gray-100 rounded border-0 my-6 dark:bg-gray-300" />
+              <br />
+              <h1 className="text-3xl font-bold tracking-tight text-gray-800 mb-4 mt-4 text-center">
+                Previous Events &#8250;
+              </h1>
+              {pastEvents.map((event) => (
+                <EventCard key={event.name} event={event} />
+              ))}
+              <Waypoint
+                onEnter={() => {
+                  setTimeout(() => setShowArrow(false), 100);
+                  updateEventCount();
+                }}
+                onLeave={() => {
+                  setTimeout(() => setShowArrow(true), 100);
+                }}
+              />
+              {showArrow && (
+                <div className="sticky bottom-5 flex justify-center">
+                  <ArrowDownIcon className="animate-bounce h-8 w-8 mt-6" />
+                </div>
+              )}
             </div>
 
             <div className="flex-none m-x px-8">
