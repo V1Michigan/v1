@@ -40,7 +40,7 @@ const ViewProfile = ({ profile }: ViewProfileProps) => (
         {profile.fields_of_study.minors?.length > 0 && (
           <p>
             <strong>Minor: </strong>
-            {profile.fields_of_study.minors.length > 1 && "s"}:{" "}
+            {profile.fields_of_study.minors.length > 1 && "s"}{" "}
             {profile.fields_of_study.minors
               .map((minorKey) => FieldOfStudy[minorKey])
               .join(", ")}
