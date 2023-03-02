@@ -178,64 +178,69 @@ const Dashboard: NextPage = () => {
           <div className="flex flex-wrap justify-center gap-x-4 gap-y-2">
             <Step2Prompt />
           </div>
-
-          <div>
+          <div className="w-full mx-auto mb-2">
             <input
               className="w-full p-2 border border-gray-400 rounded placeholder-gray-400"
               type="text"
-              placeholder="Type an event name or speaker name"
+              placeholder="Type in an event name, keywords, or a speaker name"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
             />
           </div>
+          <br />
 
           <div className="md:flex justify-center">
-            {query ? (
-              <div className="flex-1">
-                <h1 className="text-3xl font-bold tracking-tight text-gray-800 my-4 text-center">
-                  Search Results for [{query}] &#8250;
-                </h1>
-                {queryResults.map((event) => (
-                  <EventCard key={event.name} event={event} />
-                ))}
-              </div>
-            ) : (
-              <div className="flex-1">
-                {upcomingEvents.length > 0 && (
+            <div className="flex-1">
+              {query ? (
+                <>
                   <>
                     <h1 className="text-3xl font-bold tracking-tight text-gray-800 my-4 text-center">
-                      Upcoming Events &#8250;
+                      Results for &quot;{query}&quot; &#8250;
                     </h1>
                     <hr className="mx-auto h-0.5 bg-gray-100 rounded border-0 my-6 dark:bg-gray-300" />
                   </>
-                )}
-                {upcomingEvents.map((event) => (
-                  <EventCard key={event.name} event={event} />
-                ))}
-                <hr className="mx-auto h-0.5 bg-gray-100 rounded border-0 my-6 dark:bg-gray-300" />
-                <br />
-                <h1 className="text-3xl font-bold tracking-tight text-gray-800 mb-4 mt-4 text-center">
-                  Previous Events &#8250;
-                </h1>
-                {pastEvents.map((event) => (
-                  <EventCard key={event.name} event={event} />
-                ))}
-                <Waypoint
-                  onEnter={() => {
-                    setTimeout(() => setShowArrow(false), 100);
-                    updateEventCount();
-                  }}
-                  onLeave={() => {
-                    setTimeout(() => setShowArrow(true), 100);
-                  }}
-                />
-                {showArrow && (
-                  <div className="sticky bottom-5 flex justify-center">
-                    <ArrowDownIcon className="animate-bounce h-8 w-8 mt-6" />
-                  </div>
-                )}
-              </div>
-            )}
+                  {queryResults.map((event) => (
+                    <EventCard key={event.name} event={event} />
+                  ))}
+                </>
+              ) : (
+                <>
+                  {upcomingEvents.length > 0 && (
+                    <>
+                      <h1 className="text-3xl font-bold tracking-tight text-gray-800 my-4 text-center">
+                        Upcoming Events &#8250;
+                      </h1>
+                      <hr className="mx-auto h-0.5 bg-gray-100 rounded border-0 my-6 dark:bg-gray-300" />
+                    </>
+                  )}
+                  {upcomingEvents.map((event) => (
+                    <EventCard key={event.name} event={event} />
+                  ))}
+                  <hr className="mx-auto h-0.5 bg-gray-100 rounded border-0 my-6 dark:bg-gray-300" />
+                  <br />
+                  <h1 className="text-3xl font-bold tracking-tight text-gray-800 mb-4 mt-4 text-center">
+                    Previous Events &#8250;
+                  </h1>
+                  {pastEvents.map((event) => (
+                    <EventCard key={event.name} event={event} />
+                  ))}
+                  <Waypoint
+                    onEnter={() => {
+                      setTimeout(() => setShowArrow(false), 100);
+                      updateEventCount();
+                    }}
+                    onLeave={() => {
+                      setTimeout(() => setShowArrow(true), 100);
+                    }}
+                  />
+                  {showArrow && (
+                    <div className="sticky bottom-5 flex justify-center">
+                      <ArrowDownIcon className="animate-bounce h-8 w-8 mt-6" />
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
 
             <div className="flex-none m-x px-8">
               <h1 className="text-3xl font-bold tracking-tight text-gray-800 my-4 text-center">
