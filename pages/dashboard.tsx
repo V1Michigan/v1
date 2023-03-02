@@ -56,6 +56,7 @@ const Dashboard: NextPage = () => {
   const [eventCount, setEventCount] = useState(5);
   const [showArrow, setShowArrow] = useState(true);
   const [query, setQuery] = useState("");
+  const [queryResults, setQueryResults] = useState<Event[]>([]);
 
   const upcomingEvents = useMemo(
     () => events.filter((e) => new Date(e.start_date) > new Date()),
@@ -132,9 +133,10 @@ const Dashboard: NextPage = () => {
       const { data } = await supabase
         .from("events")
         .select()
-        .or(`name.fts.${newQuery},description.fts.${newQuery}`);
+        .or(`name.fts.${newQuery},description.fts.${newQuery}`)
+        .order("start_date", { ascending: false });
       // .textSearch("name", newQuery);
-      console.log(data);
+      setQueryResults(data ?? []);
     };
 
     fetchSearch();
@@ -188,41 +190,52 @@ const Dashboard: NextPage = () => {
           </div>
 
           <div className="md:flex justify-center">
-            <div className="flex-1">
-              {upcomingEvents.length > 0 && (
-                <>
-                  <h1 className="text-3xl font-bold tracking-tight text-gray-800 my-4 text-center">
-                    Upcoming Events &#8250;
-                  </h1>
-                  <hr className="mx-auto h-0.5 bg-gray-100 rounded border-0 my-6 dark:bg-gray-300" />
-                </>
-              )}
-              {upcomingEvents.map((event) => (
-                <EventCard key={event.name} event={event} />
-              ))}
-              <hr className="mx-auto h-0.5 bg-gray-100 rounded border-0 my-6 dark:bg-gray-300" />
-              <br />
-              <h1 className="text-3xl font-bold tracking-tight text-gray-800 mb-4 mt-4 text-center">
-                Previous Events &#8250;
-              </h1>
-              {pastEvents.map((event) => (
-                <EventCard key={event.name} event={event} />
-              ))}
-              <Waypoint
-                onEnter={() => {
-                  setTimeout(() => setShowArrow(false), 100);
-                  updateEventCount();
-                }}
-                onLeave={() => {
-                  setTimeout(() => setShowArrow(true), 100);
-                }}
-              />
-              {showArrow && (
-                <div className="sticky bottom-5 flex justify-center">
-                  <ArrowDownIcon className="animate-bounce h-8 w-8 mt-6" />
-                </div>
-              )}
-            </div>
+            {query ? (
+              <div className="flex-1">
+                <h1 className="text-3xl font-bold tracking-tight text-gray-800 my-4 text-center">
+                  Search Results for [{query}] &#8250;
+                </h1>
+                {queryResults.map((event) => (
+                  <EventCard key={event.name} event={event} />
+                ))}
+              </div>
+            ) : (
+              <div className="flex-1">
+                {upcomingEvents.length > 0 && (
+                  <>
+                    <h1 className="text-3xl font-bold tracking-tight text-gray-800 my-4 text-center">
+                      Upcoming Events &#8250;
+                    </h1>
+                    <hr className="mx-auto h-0.5 bg-gray-100 rounded border-0 my-6 dark:bg-gray-300" />
+                  </>
+                )}
+                {upcomingEvents.map((event) => (
+                  <EventCard key={event.name} event={event} />
+                ))}
+                <hr className="mx-auto h-0.5 bg-gray-100 rounded border-0 my-6 dark:bg-gray-300" />
+                <br />
+                <h1 className="text-3xl font-bold tracking-tight text-gray-800 mb-4 mt-4 text-center">
+                  Previous Events &#8250;
+                </h1>
+                {pastEvents.map((event) => (
+                  <EventCard key={event.name} event={event} />
+                ))}
+                <Waypoint
+                  onEnter={() => {
+                    setTimeout(() => setShowArrow(false), 100);
+                    updateEventCount();
+                  }}
+                  onLeave={() => {
+                    setTimeout(() => setShowArrow(true), 100);
+                  }}
+                />
+                {showArrow && (
+                  <div className="sticky bottom-5 flex justify-center">
+                    <ArrowDownIcon className="animate-bounce h-8 w-8 mt-6" />
+                  </div>
+                )}
+              </div>
+            )}
 
             <div className="flex-none m-x px-8">
               <h1 className="text-3xl font-bold tracking-tight text-gray-800 my-4 text-center">
