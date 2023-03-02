@@ -56,6 +56,8 @@ const Dashboard: NextPage = () => {
   const [dataFetchErrors, setDataFetchErrors] = useState<string[]>([]);
   const [eventCount, setEventCount] = useState(5);
   const [showArrow, setShowArrow] = useState(true);
+  const [query, setQuery] = useState("");
+
   const fetchData = useCallback(async () => {
     setDataFetchErrors([]);
     if (user) {
@@ -121,34 +123,30 @@ const Dashboard: NextPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Refetch search data every time a new query is triggered
+  useEffect(() => {
+    const fetchSearch = async () => {
+      const newQuery = query
+        .split(" ")
+        .map((str) => `'${str}'`)
+        .join(" | ");
+
+      const { data } = await supabase
+        .from("events")
+        .select()
+        .or(`name.fts.${newQuery},description.fts.${newQuery}`);
+      // .textSearch("name", newQuery);
+      console.log(data);
+    };
+
+    fetchSearch();
+  }, [supabase, query]);
+
   // Type guard
   if (!user || rank === null) {
     return null;
   }
 
-  // take in query, update state
-  let [query, setQuery] = useState("");
-
-  // Refetch search data every time a new query is triggered
-  useEffect(() => {
-    const fetchSearch = async () => {
-      let newQuery = query
-        .split(" ")
-        .map((str) => `'${str}'`)
-        .join(" | ");
-
-      const { data, error } = await supabase
-        .from("events")
-        .select()
-        .or(`name.fts.${newQuery},description.fts.${newQuery}`);
-        // .textSearch("name", newQuery);
-      console.log(data);
-    }
-
-    fetchSearch();
-  
-  }, [query]);
-  
   return (
     <>
       <Head title="Dashboard" />
@@ -176,7 +174,7 @@ const Dashboard: NextPage = () => {
               {error}
             </p>
           ))}
-          
+
           <div className="flex flex-wrap justify-center gap-x-4 gap-y-2">
             <Step2Prompt />
           </div>
@@ -190,7 +188,7 @@ const Dashboard: NextPage = () => {
               onChange={(e) => setQuery(e.target.value)}
             />
           </div>
-          
+
           <div className="md:flex justify-center">
             <div className="flex-1">
               {upcomingEvents.length > 0 && (
