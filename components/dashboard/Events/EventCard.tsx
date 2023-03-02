@@ -47,6 +47,15 @@ const EventCard = ({ event }: { event: Event }) => {
             <div className="md:text-xl lg:text-xl text-center ml-auto mr-0 lg:ml-auto lg:mr-auto">{`${
               date.split(" ")[4]
             } ${date.split(" ")[5]}`}</div>
+
+            {
+              // eslint-disable-next-line prettier/prettier
+              new Date(event.start_date).getFullYear() < new Date().getFullYear() && (
+                <div className="pt-1">
+                  {new Date(event.start_date).getFullYear()}
+                </div>
+              )
+            }
           </div>
           <div className="p-4 font-normal text-gray-800 lg:w-3/4 flex flex-col justify-start">
             <h1 className="mb-3 text-2xl font-bold leading-none tracking-tight text-gray-800">
