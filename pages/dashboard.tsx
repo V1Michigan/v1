@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-no-bind */
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type { PostgrestMaybeSingleResponse } from "@supabase/supabase-js";
 import { Waypoint } from "react-waypoint";
 import Head from "../components/Head";
@@ -51,15 +51,25 @@ const Dashboard: NextPage = () => {
   const router = useRouter();
   const { supabase, user, rank } = useSupabase();
   const [name, setName] = useState<string | null>(null);
-  const [pastEvents, setPastEvents] = useState<Event[]>([]);
-  const [upcomingEvents, setUpcomingEvents] = useState<Event[]>([]);
+  const [events, setEvents] = useState<Event[]>([]);
   const [dataFetchErrors, setDataFetchErrors] = useState<string[]>([]);
   const [eventCount, setEventCount] = useState(5);
   const [showArrow, setShowArrow] = useState(true);
   const [query, setQuery] = useState("");
 
+  const upcomingEvents = useMemo(
+    () => events.filter((e) => new Date(e.start_date) > new Date()),
+    [events]
+  );
+
+  const pastEvents = useMemo(
+    () => events.filter((e) => new Date(e.start_date) < new Date()),
+    [events]
+  );
+
   const fetchData = useCallback(async () => {
     setDataFetchErrors([]);
+
     if (user) {
       const {
         data,
@@ -70,6 +80,7 @@ const Dashboard: NextPage = () => {
         .select("name")
         .eq("id", user.id)
         .maybeSingle()) as PostgrestMaybeSingleResponse<{ name: string }>;
+
       if ((dbError && status !== 406) || !data) {
         router.replace("/404");
       } else if (status !== 200) {
@@ -94,20 +105,7 @@ const Dashboard: NextPage = () => {
         } else if (!dbEvents) {
           setDataFetchErrors((errors) => [...errors, "No events found"]);
         } else {
-          // TODO: Filter dates in query
-          setUpcomingEvents(
-            (dbEvents as Event[]).filter(
-              // eslint-disable-next-line @typescript-eslint/no-shadow
-              (upcomingEvents) =>
-                new Date(upcomingEvents.start_date) > new Date()
-            )
-          );
-          setPastEvents(
-            (dbEvents as Event[]).filter(
-              // eslint-disable-next-line @typescript-eslint/no-shadow
-              (pastEvents) => new Date(pastEvents.start_date) < new Date()
-            )
-          );
+          setEvents(dbEvents);
         }
       }
     }
