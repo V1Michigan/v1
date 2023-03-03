@@ -16,6 +16,7 @@ import CommunityDirectoryIcon from "../public/community_directory.svg";
 import EventCard from "../components/dashboard/Events/EventCard";
 import { Event } from "../components/dashboard/Events/Event.type";
 import ArrowDownIcon from "../public/arrow_down.svg";
+import SearchIcon from "../public/search.svg";
 
 // type Event = {
 //   name: string;
@@ -125,16 +126,21 @@ const Dashboard: NextPage = () => {
   // Refetch search data every time a new query is triggered
   useEffect(() => {
     const fetchSearch = async () => {
+      // don't query DB if search bar is empty
+      if (!query) return;
+
       const newQuery = query
+        .trim()
+        .replace(/[^a-zA-Z0-9 -]/g, "")
         .split(" ")
+        .filter((x) => x.length > 0)
         .map((str) => `'${str}'`)
         .join(" | ");
 
-      const { data } = await supabase
-        .from("events")
-        .select()
-        .or(`name.fts.${newQuery},description.fts.${newQuery}`)
-        .order("start_date", { ascending: false });
+      const { data } = await supabase.rpc("search_events", {
+        keyword: newQuery,
+      });
+
       // .textSearch("name", newQuery);
       setQueryResults(data ?? []);
     };
@@ -179,13 +185,16 @@ const Dashboard: NextPage = () => {
             <Step2Prompt />
           </div>
           <div className="w-full mx-auto mb-2">
-            <input
-              className="w-full p-2 border border-gray-400 rounded placeholder-gray-400"
-              type="text"
-              placeholder="Type in an event name, keywords, or a speaker name"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-            />
+            <div className="relative flex items-center">
+              <SearchIcon className="pointer-events-none absolute text-gray-400 h-6 w-6 ml-2" />
+              <input
+                className="w-full p-2 pl-9 rounded-md border border-gray-300 focus:outline-gray-700 focus:outline-offset-0 focus:border-gray-700 focus:outline-1 shadow-md"
+                type="text"
+                placeholder="Type in an event name, speaker, or any keywords"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+              />
+            </div>
           </div>
           <br />
 
@@ -248,7 +257,7 @@ const Dashboard: NextPage = () => {
               )}
             </div>
 
-            <div className="flex-none m-x px-8">
+            <div className="flex-none m-x pl-8">
               <h1 className="text-3xl font-bold tracking-tight text-gray-800 my-4 text-center">
                 Resources &#8250;
               </h1>
