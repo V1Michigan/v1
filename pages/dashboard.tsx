@@ -199,9 +199,15 @@ const Dashboard: NextPage = () => {
                     </h1>
                     <hr className="mx-auto h-0.5 bg-gray-100 rounded border-0 my-6 dark:bg-gray-300" />
                   </>
-                  {queryResults.map((event) => (
-                    <EventCard key={event.name} event={event} />
-                  ))}
+                  {queryResults.length > 0 ? (
+                    queryResults.map((event) => (
+                      <EventCard key={event.name} event={event} />
+                    ))
+                  ) : (
+                    <p className="text-center text-gray-500">
+                      No events found. Refine your search or keep typing!
+                    </p>
+                  )}
                 </>
               ) : (
                 <>
