@@ -1,4 +1,7 @@
+import { useMemo } from "react";
+import ProfileIcon from "../../ProfileIcon";
 import { Event } from "./Event.type";
+import LinkInfoButton from "./LinkInfoButton";
 
 const EventCard = ({ event }: { event: Event }) => {
   const date = new Date(event.start_date).toLocaleDateString("en-US", {
@@ -27,6 +30,12 @@ const EventCard = ({ event }: { event: Event }) => {
     event.description?.length > maxDescriptionLength
       ? `${event.description.substring(0, maxDescriptionLength)} ...`
       : event.description;
+
+  const isPastEvent = useMemo(
+    () => new Date(event.start_date) < new Date(),
+    [event.start_date]
+  );
+
   return (
     <div className="flex items-center justify-center sm:mx-4 md:mx-6 lg:mx-8 mb-8 hover:shadow-2xl hover:scale-105 hover:ease-in duration-100">
       <div className="flex flex-col w-full bg-gray-100 rounded shadow-lg">
@@ -50,7 +59,8 @@ const EventCard = ({ event }: { event: Event }) => {
 
             {
               // eslint-disable-next-line prettier/prettier
-              new Date(event.start_date).getFullYear() < new Date().getFullYear() && (
+              new Date(event.start_date).getFullYear() <
+                new Date().getFullYear() && (
                 <div className="pt-1">
                   {new Date(event.start_date).getFullYear()}
                 </div>
@@ -68,15 +78,48 @@ const EventCard = ({ event }: { event: Event }) => {
               </div>
             </div>
           </div>
-          <div className="flex flex-row lg:pb-0 pb-4 justify-around font-bold leading-none text-gray-800 uppercase rounded lg:flex-col lg:items-center lg:justify-center lg:w-1/4">
-            <a href={event.link}>
-              <button
-                type="button"
-                className="text-center text-sm block text-gray-100 font-semibold bg-gradient-to-r from-blue-600 to-blue-700 hover:bg-blue-500 shadow py-2 px-3 rounded mx-auto hover:opacity-75"
+          <div className="flex flex-row lg:pb-0 pb-4 justify-around font-bold leading-none text-gray-800 uppercase rounded lg:flex-col lg:justify-center lg:items-center lg:w-1/4">
+            <div className="flex flex-row justify-around lg:flex-col w-28 lg:justify-center lg:items-center gap-2">
+              {event.links?.speaker && (
+                <div className="w-full flex flex-row justify-end">
+                  <ProfileIcon
+                    pic={
+                      event.links.speaker.pic ??
+                      "https://v1michigan.com/people/shrey.png"
+                    }
+                    url={event.links.speaker.url ?? ""}
+                    disabled={!!event.links.speaker.url}
+                  />
+                </div>
+              )}
+              <a
+                className="w-full"
+                href={isPastEvent ? event.links?.writeup : event.links?.rsvp}
               >
-                RSVP &rsaquo;
-              </button>
-            </a>
+                <button
+                  type="button"
+                  className="w-full text-center text-sm block text-gray-100 font-semibold bg-gradient-to-r from-blue-600 to-blue-700 hover:bg-blue-500 shadow py-2 px-7 rounded mr-0 ml-auto hover:opacity-75"
+                >
+                  <>{isPastEvent ? "Recap" : "RSVP"} &rsaquo;</>
+                </button>
+              </a>
+              <div className="w-full flex lg:flex-row gap-2 justify-start">
+                <LinkInfoButton
+                  green
+                  isPastEvent={isPastEvent}
+                  pastLink={event.links?.video}
+                  pastText="🤑"
+                  disabled={!event.links?.video}
+                />
+                <LinkInfoButton
+                  green={false}
+                  isPastEvent={isPastEvent}
+                  pastLink={event.links?.slides}
+                  pastText="->"
+                  disabled={!event.links?.slides}
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
