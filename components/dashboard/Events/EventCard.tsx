@@ -25,7 +25,7 @@ const EventCard = ({ event }: { event: Event }) => {
     july: "July",
     august: "Aug",
   };
-  const maxDescriptionLength = 500;
+  const maxDescriptionLength = 250;
   const abbreviatedDesc =
     event.description?.length > maxDescriptionLength
       ? `${event.description.substring(0, maxDescriptionLength)} ...`
