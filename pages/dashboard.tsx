@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-no-bind */
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type { PostgrestMaybeSingleResponse } from "@supabase/supabase-js";
 import { Waypoint } from "react-waypoint";
 import Head from "../components/Head";
@@ -16,6 +16,7 @@ import CommunityDirectoryIcon from "../public/community_directory.svg";
 import EventCard from "../components/dashboard/Events/EventCard";
 import { Event } from "../components/dashboard/Events/Event.type";
 import ArrowDownIcon from "../public/arrow_down.svg";
+import SearchIcon from "../public/search.svg";
 
 // type Event = {
 //   name: string;
@@ -51,13 +52,26 @@ const Dashboard: NextPage = () => {
   const router = useRouter();
   const { supabase, user, rank } = useSupabase();
   const [name, setName] = useState<string | null>(null);
-  const [pastEvents, setPastEvents] = useState<Event[]>([]);
-  const [upcomingEvents, setUpcomingEvents] = useState<Event[]>([]);
+  const [events, setEvents] = useState<Event[]>([]);
   const [dataFetchErrors, setDataFetchErrors] = useState<string[]>([]);
   const [eventCount, setEventCount] = useState(5);
   const [showArrow, setShowArrow] = useState(true);
+  const [query, setQuery] = useState("");
+  const [queryResults, setQueryResults] = useState<Event[]>([]);
+
+  const upcomingEvents = useMemo(
+    () => events.filter((e) => new Date(e.start_date) > new Date()),
+    [events]
+  );
+
+  const pastEvents = useMemo(
+    () => events.filter((e) => new Date(e.start_date) < new Date()),
+    [events]
+  );
+
   const fetchData = useCallback(async () => {
     setDataFetchErrors([]);
+
     if (user) {
       const {
         data,
@@ -68,6 +82,7 @@ const Dashboard: NextPage = () => {
         .select("name")
         .eq("id", user.id)
         .maybeSingle()) as PostgrestMaybeSingleResponse<{ name: string }>;
+
       if ((dbError && status !== 406) || !data) {
         router.replace("/404");
       } else if (status !== 200) {
@@ -92,20 +107,7 @@ const Dashboard: NextPage = () => {
         } else if (!dbEvents) {
           setDataFetchErrors((errors) => [...errors, "No events found"]);
         } else {
-          // TODO: Filter dates in query
-          setUpcomingEvents(
-            (dbEvents as Event[]).filter(
-              // eslint-disable-next-line @typescript-eslint/no-shadow
-              (upcomingEvents) =>
-                new Date(upcomingEvents.start_date) > new Date()
-            )
-          );
-          setPastEvents(
-            (dbEvents as Event[]).filter(
-              // eslint-disable-next-line @typescript-eslint/no-shadow
-              (pastEvents) => new Date(pastEvents.start_date) < new Date()
-            )
-          );
+          setEvents(dbEvents);
         }
       }
     }
@@ -120,6 +122,31 @@ const Dashboard: NextPage = () => {
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Refetch search data every time a new query is triggered
+  useEffect(() => {
+    const fetchSearch = async () => {
+      // don't query DB if search bar is empty
+      if (!query) return;
+
+      const newQuery = query
+        .trim()
+        .replace(/[^a-zA-Z0-9 -]/g, "")
+        .split(" ")
+        .filter((x) => x.length > 0)
+        .map((str) => `'${str}'`)
+        .join(" | ");
+
+      const { data } = await supabase.rpc("search_events", {
+        keyword: newQuery,
+      });
+
+      // .textSearch("name", newQuery);
+      setQueryResults(data ?? []);
+    };
+
+    fetchSearch();
+  }, [supabase, query]);
 
   // Type guard
   if (!user || rank === null) {
@@ -157,44 +184,80 @@ const Dashboard: NextPage = () => {
           <div className="flex flex-wrap justify-center gap-x-4 gap-y-2">
             <Step2Prompt />
           </div>
+          <div className="w-full mx-auto mb-2">
+            <div className="relative flex items-center">
+              <SearchIcon className="pointer-events-none absolute text-gray-400 h-6 w-6 ml-2" />
+              <input
+                className="w-full p-2 pl-9 rounded-md border border-gray-300 focus:outline-gray-500 focus:outline-offset-0 focus:border-gray-500 focus:outline-1 shadow-md"
+                type="text"
+                placeholder="Type in an event name, speaker, or any keywords"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+              />
+            </div>
+          </div>
+          <br />
+
           <div className="md:flex justify-center">
             <div className="flex-1">
-              {upcomingEvents.length > 0 && (
+              {query ? (
                 <>
-                  <h1 className="text-3xl font-bold tracking-tight text-gray-800 my-4 text-center">
-                    Upcoming Events &#8250;
-                  </h1>
-                  <hr className="mx-auto h-0.5 bg-gray-100 rounded border-0 my-6 dark:bg-gray-300" />
+                  <>
+                    <h1 className="text-3xl font-bold tracking-tight text-gray-800 my-4 text-center">
+                      Results for &quot;{query}&quot; &#8250;
+                    </h1>
+                    <hr className="mx-auto h-0.5 bg-gray-100 rounded border-0 my-6 dark:bg-gray-300" />
+                  </>
+                  {queryResults.length > 0 ? (
+                    queryResults.map((event) => (
+                      <EventCard key={event.name} event={event} />
+                    ))
+                  ) : (
+                    <p className="text-center text-gray-500">
+                      No events found. Refine your search or keep typing!
+                    </p>
+                  )}
                 </>
-              )}
-              {upcomingEvents.map((event) => (
-                <EventCard key={event.name} event={event} />
-              ))}
-              <hr className="mx-auto h-0.5 bg-gray-100 rounded border-0 my-6 dark:bg-gray-300" />
-              <br />
-              <h1 className="text-3xl font-bold tracking-tight text-gray-800 mb-4 mt-4 text-center">
-                Previous Events &#8250;
-              </h1>
-              {pastEvents.map((event) => (
-                <EventCard key={event.name} event={event} />
-              ))}
-              <Waypoint
-                onEnter={() => {
-                  setTimeout(() => setShowArrow(false), 100);
-                  updateEventCount();
-                }}
-                onLeave={() => {
-                  setTimeout(() => setShowArrow(true), 100);
-                }}
-              />
-              {showArrow && (
-                <div className="sticky bottom-5 flex justify-center">
-                  <ArrowDownIcon className="animate-bounce h-8 w-8 mt-6" />
-                </div>
+              ) : (
+                <>
+                  {upcomingEvents.length > 0 && (
+                    <>
+                      <h1 className="text-3xl font-bold tracking-tight text-gray-800 my-4 text-center">
+                        Upcoming Events &#8250;
+                      </h1>
+                      <hr className="mx-auto h-0.5 bg-gray-100 rounded border-0 my-6 dark:bg-gray-300" />
+                    </>
+                  )}
+                  {upcomingEvents.map((event) => (
+                    <EventCard key={event.name} event={event} />
+                  ))}
+                  <hr className="mx-auto h-0.5 bg-gray-100 rounded border-0 my-6 dark:bg-gray-300" />
+                  <br />
+                  <h1 className="text-3xl font-bold tracking-tight text-gray-800 mb-4 mt-4 text-center">
+                    Previous Events &#8250;
+                  </h1>
+                  {pastEvents.map((event) => (
+                    <EventCard key={event.name} event={event} />
+                  ))}
+                  <Waypoint
+                    onEnter={() => {
+                      setTimeout(() => setShowArrow(false), 100);
+                      updateEventCount();
+                    }}
+                    onLeave={() => {
+                      setTimeout(() => setShowArrow(true), 100);
+                    }}
+                  />
+                  {showArrow && (
+                    <div className="sticky bottom-5 flex justify-center">
+                      <ArrowDownIcon className="animate-bounce h-8 w-8 mt-6" />
+                    </div>
+                  )}
+                </>
               )}
             </div>
 
-            <div className="flex-none m-x px-8">
+            <div className="flex-none m-x pl-8">
               <h1 className="text-3xl font-bold tracking-tight text-gray-800 my-4 text-center">
                 Resources &#8250;
               </h1>
