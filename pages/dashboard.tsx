@@ -188,7 +188,7 @@ const Dashboard: NextPage = () => {
             <div className="relative flex items-center">
               <SearchIcon className="pointer-events-none absolute text-gray-400 h-6 w-6 ml-2" />
               <input
-                className="w-full p-2 pl-9 rounded-md border border-gray-300 focus:outline-gray-700 focus:outline-offset-0 focus:border-gray-700 focus:outline-1 shadow-md"
+                className="w-full p-2 pl-9 rounded-md border border-gray-300 focus:outline-gray-500 focus:outline-offset-0 focus:border-gray-500 focus:outline-1 shadow-md"
                 type="text"
                 placeholder="Type in an event name, speaker, or any keywords"
                 value={query}
