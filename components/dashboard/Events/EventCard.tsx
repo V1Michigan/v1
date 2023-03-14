@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import ProfileIcon from "../../ProfileIcon";
 import { Event } from "./Event.type";
 import LinkInfoButton from "./LinkInfoButton";
+import drive from "../../../public/gdrive.svg";
 
 const EventCard = ({ event }: { event: Event }) => {
   const date = new Date(event.start_date).toLocaleDateString("en-US", {
@@ -83,6 +84,7 @@ const EventCard = ({ event }: { event: Event }) => {
               {event.links?.speaker && (
                 <div className="w-full flex flex-row justify-end">
                   <ProfileIcon
+                    // TODO: Change this to a default profile pic
                     pic={
                       event.links.speaker.pic ??
                       "https://v1michigan.com/people/shrey.png"
@@ -108,14 +110,16 @@ const EventCard = ({ event }: { event: Event }) => {
                   green
                   isPastEvent={isPastEvent}
                   pastLink={event.links?.video}
-                  pastText="🤑"
+                  //TODO Change this to a youtube icon
+                  pastIcon={drive}
                   disabled={!event.links?.video}
                 />
                 <LinkInfoButton
                   green={false}
                   isPastEvent={isPastEvent}
                   pastLink={event.links?.slides}
-                  pastText="->"
+                  //TODO Chance this to Google Drive Icon
+                  pastText={drive}
                   disabled={!event.links?.slides}
                 />
               </div>
