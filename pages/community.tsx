@@ -28,10 +28,11 @@ const SendSlack: NextPage = () => {
     </>
   );
 };
-const ProtectedSendSlack = () => (
-  <ProtectedRoute>
-    <SendSlack />
-  </ProtectedRoute>
-);
 
-export default ProtectedSendSlack;
+// const ProtectedSendSlack = () => (
+//   <ProtectedRoute>
+//     <SendSlack />
+//   </ProtectedRoute>
+// );
+
+export default SendSlack;
