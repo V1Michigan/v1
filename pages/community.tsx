@@ -1,8 +1,8 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 import useSupabase from "../hooks/useSupabase";
 import Head from "../components/Head";
-import ProtectedRoute from "../components/ProtectedRoute";
 
 const SendSlack: NextPage = () => {
   const { supabase, user } = useSupabase();
@@ -17,9 +17,12 @@ const SendSlack: NextPage = () => {
       if (error?.code !== "23505") console.log(error);
     });
   const router = useRouter();
-  router.push(
-    "https://join.slack.com/t/v1community/shared_invite/zt-1namcs482-XjoRlPYk_MQX71nCGFxjWA"
-  );
+
+  useEffect(() => {
+    router.push(
+      "https://join.slack.com/t/v1community/shared_invite/zt-1rux4efyc-STBoY07IAKYpCODM5ls5~g"
+    );
+  }, [router]);
 
   return (
     <>
@@ -28,11 +31,5 @@ const SendSlack: NextPage = () => {
     </>
   );
 };
-
-// const ProtectedSendSlack = () => (
-//   <ProtectedRoute>
-//     <SendSlack />
-//   </ProtectedRoute>
-// );
 
 export default SendSlack;
