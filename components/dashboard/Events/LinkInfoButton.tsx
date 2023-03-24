@@ -1,36 +1,47 @@
-import type { StaticImageData } from "next/image";
-
 const LinkInfoButton = ({
   green,
   isPastEvent,
   pastLink,
-  pastIcon,
+  isRecording = true,
   disabled,
 }: {
   green: boolean;
   isPastEvent: boolean;
   pastLink: string | undefined;
-  pastIcon: StaticImageData;
+  isRecording: boolean;
   disabled: boolean;
 }) =>
   isPastEvent ? (
     <a className="w-1/2" href={pastLink}>
       <button
         type="button"
-        className={`w-full text-center text-sm block text-gray-100 font-semibold bg-gradient-to-r ${
+        className={`w-full text-center text-sm block text-gray-100 font-semibold bg-gradient-to-r h-full ${
           // eslint-disable-next-line no-nested-ternary
           disabled
             ? "bg-gray-350 pointer-events-none"
             : `${
                 green
-                  ? "from-blue-500 to-blue-700"
-                  : "from-blue-500 to-blue-700"
+                  ? "from-blue-600 to-blue-700"
+                  : "from-blue-600 to-blue-700"
               } shadow  hover:opacity-75`
         } py-2 rounded`}
       >
-        {pastIcon && (
-          pastIcon
-          // <img className="w-10" src={pastIcon.src} alt="icon for recording" />
+        {isRecording ? (
+          <div className="w-3 mx-auto">
+            <img
+              src="/cardIcons/playButton.svg"
+              alt="video icon"
+              className="w-3"
+            />
+          </div>
+        ) : (
+          <div className="w-4 mx-auto">
+            <img
+              src="/cardIcons/slidesIcon.svg"
+              alt="slides icon"
+              className="w-4"
+            />
+          </div>
         )}
       </button>
     </a>
