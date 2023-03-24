@@ -7,6 +7,7 @@ import useSupabase from "../hooks/useSupabase";
 import useSupabaseDownload from "../hooks/useSupabaseDownload";
 import Rank from "../constants/rank";
 import InternalLink from "./Link";
+import ProfileIcon from "./ProfileIcon";
 
 const NAVIGATION = [
   // { name: 'V1 @ Michigan', href: '#', current: true },
@@ -70,18 +71,7 @@ const ProfilePic = ({ user, username }: { user: User; username: string }) => {
   if (loading || error || !avatarUrl) {
     return null;
   }
-  return (
-    <InternalLink
-      href="/profile"
-      className="flex-shrink-0 p-2 transition duration-300 hover:bg-gray-600 rounded-full"
-    >
-      <img
-        className="w-10 h-10 object-cover rounded-full cursor"
-        src={avatarUrl}
-        alt="User profile"
-      />
-    </InternalLink>
-  );
+  return <ProfileIcon pic={avatarUrl} url="/profile" />;
 };
 
 export default function NavbarBuilder() {

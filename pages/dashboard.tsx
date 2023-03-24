@@ -25,7 +25,7 @@ import SearchIcon from "../public/search.svg";
 //   description: string;
 //   link: string;
 // };
-const EVENT_COLUMNS = "name, start_date, place, description, link, id";
+const EVENT_COLUMNS = "name, start_date, place, description, link, id, links";
 
 const Welcome = ({ name }: { name: string | null }) => {
   const firstName = name?.split(" ")[0] || name;
