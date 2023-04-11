@@ -93,7 +93,7 @@ const EventCard = ({ event }: { event: Event }) => {
               )}
               <a
                 className="w-full"
-                href={isPastEvent ? event.links?.writeup : event.links?.rsvp}
+                href={isPastEvent ? event.links?.writeup : event.link}
               >
                 <button
                   type="button"
