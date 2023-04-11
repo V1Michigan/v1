@@ -4,7 +4,9 @@ import { Event } from "./Event.type";
 import LinkInfoButton from "./LinkInfoButton";
 
 const EventCard = ({ event }: { event: Event }) => {
-  const date = new Date(event.start_date).toLocaleDateString("en-US", {
+  const dateObj = new Date(event.start_date);
+  dateObj.setHours(dateObj.getHours() + 4);
+  const date = dateObj.toLocaleDateString("en-US", {
     month: "long",
     day: "numeric",
     year: "numeric",
