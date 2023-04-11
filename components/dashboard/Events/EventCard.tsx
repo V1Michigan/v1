@@ -86,7 +86,7 @@ const EventCard = ({ event }: { event: Event }) => {
                     // TODO: Change this to a default profile pic
                     pic={event.links.speaker.pic ?? ""}
                     url={event.links.speaker.url ?? ""}
-                    disabled={!!event.links.speaker.url}
+                    disabled={!event.links.speaker.url}
                     dash
                   />
                 </div>
