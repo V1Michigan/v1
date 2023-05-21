@@ -11,7 +11,7 @@ import ProfileIcon from "./ProfileIcon";
 
 const NAVIGATION = [
   // { name: 'V1 @ Michigan', href: '#', current: true },
-  { name: "Studio", href: "https://studio.v1michigan.com" },
+  // { name: "Studio", href: "https://studio.v1michigan.com" },
   {
     name: "Startup Fair",
     href: "https://startupfair.v1michigan.com",
