@@ -20,7 +20,7 @@ const PROJECTS = [
     description: "The operating system for our community",
     // We could just call this "V1 Community" and use newsletter/Discord stats
     stats: [], // TODO: ???
-    image: "/projects/platform.png",
+    image: "/projects/platform2023.png",
   },
   {
     name: "V1 Connect",
