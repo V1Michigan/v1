@@ -23,3 +23,5 @@ Use `npm run lint:check` to check for linting/style errors, and `npm run lint:fi
 
 We'd recommend using an [ESLint plugin for your editor](https://eslint.org/docs/user-guide/integrations) to lint and format your code as you write it.
 - VSCode: [extension](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint), [tutorial](https://www.digitalocean.com/community/tutorials/linting-and-formatting-with-eslint-in-vs-code)
+
+Adding New ```dev``` branch for platform-srm project!
