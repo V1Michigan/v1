@@ -17,6 +17,7 @@ import EventCard from "../components/dashboard/Events/EventCard";
 import { Event } from "../components/dashboard/Events/Event.type";
 import ArrowDownIcon from "../public/arrow_down.svg";
 import SearchIcon from "../public/search.svg";
+import StartupTile from "../components/startups/StartupTile";
 
 // type Event = {
 //   name: string;
@@ -157,6 +158,12 @@ const Dashboard: NextPage = () => {
     <>
       <Head title="Dashboard" />
       <NavbarBuilder />
+      <StartupTile
+        Logo="/startups/ramp.png"
+        Name="Ramp"
+        Description="Credit Card Company"
+        WebsiteLink="https://ramp.com/"
+      />
       <div className="bg-gray-100">
         <div className="max-w-screen-xl mx-auto py-6 px-4">
           {/* TODO: Turn this back on */}
