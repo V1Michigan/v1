@@ -23,6 +23,16 @@ const NAVIGATION = [
     right: false,
   },
   {
+    name: "Startups",
+    href: "/startups",
+    right: false,
+  },
+  {
+    name: "Our People",
+    href: "/people",
+    right: false,
+  },
+  {
     name: "Dashboard",
     href: "/dashboard",
     right: true,
@@ -105,9 +115,9 @@ export default function NavbarBuilder() {
     <Disclosure as="nav" className="bg-gray-800">
       {({ open: disclosureOpen }) => (
         <>
-          <div className="mx-auto px-2 sm:px-6 lg:px-8 justify-around">
+          <div className="mx-auto px-2 lg:px-6 lg:px-8 justify-around">
             <div className="relative flex items-center justify-between h-16">
-              <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
+              <div className="absolute inset-y-0 left-0 flex items-center lg:hidden">
                 {/* Mobile menu button */}
                 <Disclosure.Button className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                   <span className="sr-only">Open main menu</span>
@@ -118,7 +128,7 @@ export default function NavbarBuilder() {
                   )}
                 </Disclosure.Button>
               </div>
-              <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
+              <div className="flex-1 flex items-center justify-center lg:items-stretch lg:justify-start">
                 <InternalLink
                   href="/"
                   className="flex-shrink-0 w-5 hover:cursor-pointer hover:opacity-75"
@@ -129,33 +139,30 @@ export default function NavbarBuilder() {
                     className="h-full"
                   />
                 </InternalLink>
-                <div className="hidden sm:block sm:ml-6 w-full">
+                <div className="hidden lg:block lg:ml-6 w-full">
                   <div className="flex flex-row gap-x-4 w-full items-center">
                     {NAVIGATION.map((item) => (
                       <InternalLink
                         key={item.name}
                         href={item.href}
-                        className={`${
-                          router.pathname === item.href
-                            ? "bg-gray-900 text-white"
-                            : "text-gray-300 hover:bg-gray-700 hover:text-white transition duration-300"
-                        }
+                        className={`${router.pathname === item.href
+                          ? "bg-gray-900 text-white"
+                          : "text-gray-300 hover:bg-gray-700 hover:text-white transition duration-300"
+                          }
                           px-3 py-2 rounded-md text-sm font-medium ${
-                            // eslint-disable-next-line no-nested-ternary, prettier/prettier
-                            inSafari ? !user ? "relative top-nav-nouser" : "relative top-nav-user" : ""
+                          // eslint-disable-next-line no-nested-ternary, prettier/prettier
+                          inSafari ? !user ? "relative top-nav-nouser" : "relative top-nav-user" : ""
                           }
                           ${item?.login && !user ? "hidden" : ""} 
                           ${item?.noauth && user ? "hidden" : ""}
                           ${item?.noauth ? "whitespace-nowrap" : ""}
-                          ${
-                            item?.signup
-                              ? "bg-gradient-to-r from-yellow-600 to-yellow-700 hover:bg-blue-500 hover:opacity-75 !text-gray-100"
-                              : ""
-                          }  ${
-                          item?.minRank && rank !== null && rank < item.minRank
+                          ${item?.signup
+                            ? "bg-gradient-to-r from-yellow-600 to-yellow-700 hover:bg-blue-500 hover:opacity-75 !text-gray-100"
+                            : ""
+                          }  ${item?.minRank && rank !== null && rank < item.minRank
                             ? "hidden"
                             : ""
-                        }`}
+                          }`}
                         aria-current={
                           router.pathname === item.href ? "page" : undefined
                         }
@@ -177,21 +184,19 @@ export default function NavbarBuilder() {
             </div>
           </div>
 
-          <Disclosure.Panel className="sm:hidden">
+          <Disclosure.Panel className="lg:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1">
               {NAVIGATION.map((item) => (
                 <InternalLink
                   key={item.name}
                   href={item.href}
-                  className={`${
-                    router.pathname === item.href
-                      ? "bg-gray-900 text-white underline decoration-solid"
-                      : "text-gray-300 hover:bg-gray-700 hover:text-white"
-                  }
-                    block px-3 py-2 rounded-md text-base font-medium ${
-                      item?.minRank && rank !== null && rank < item.minRank
-                        ? "hidden"
-                        : ""
+                  className={`${router.pathname === item.href
+                    ? "bg-gray-900 text-white underline decoration-solid"
+                    : "text-gray-300 hover:bg-gray-700 hover:text-white"
+                    }
+                    block px-3 py-2 rounded-md text-base font-medium ${item?.minRank && rank !== null && rank < item.minRank
+                      ? "hidden"
+                      : ""
                     }`}
                   aria-current={
                     router.pathname === item.href ? "page" : undefined
