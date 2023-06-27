@@ -30,7 +30,7 @@ export default function ProfileIcon({
         } object-cover cursor`}
         src={pic ?? "/profile/user.png"}
         onError={({ currentTarget }) => {
-          currentTarget.src = "/profile/user.svg";
+          currentTarget.src = "/v1_logo_gold.png";
         }}
         alt="User profile"
       />
