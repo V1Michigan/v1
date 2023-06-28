@@ -28,7 +28,7 @@ export default function ProfileIcon({
         className={`${
           dash ? "w-16 h-16 rounded-lg" : "w-10 h-10 rounded-full"
         } object-cover cursor`}
-        src={pic ?? "/profile/user.png"}
+        src={pic}
         onError={({ currentTarget }) => {
           currentTarget.src = "/v1_logo_gold.png";
         }}
