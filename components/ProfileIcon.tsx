@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { Fragment } from "react";
 import InternalLink from "./Link";
 
@@ -21,13 +22,16 @@ export default function ProfileIcon({
       href={url}
       className={`flex-shrink-0 p-2 ${
         !disabled ? "transition duration-300 hover:bg-gray-600" : ""
-      } rounded-full`}
+      } ${dash ? "rounded-lg" : "rounded-full"}`}
     >
       <img
         className={`${
           dash ? "w-16 h-16 rounded-lg" : "w-10 h-10 rounded-full"
         } object-cover cursor`}
         src={pic}
+        onError={({ currentTarget }) => {
+          currentTarget.src = "/v1_logo_gold.png";
+        }}
         alt="User profile"
       />
     </ToggleLink>
