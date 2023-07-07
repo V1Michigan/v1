@@ -82,7 +82,7 @@ const People = () => (
         <p className="tracking-tightest text-gray-900 text-2xl mt-4 text-center">
           V1 invests in people with high growth potential — people that will
           grow faster than we can ever imagine. We look for energy, drive, and
-          initiative. You&apos;re not paying you&apos;re network, you&apos;re
+          initiative. You&apos;re not paying for your network, you&apos;re
           earning it.
         </p>
 
