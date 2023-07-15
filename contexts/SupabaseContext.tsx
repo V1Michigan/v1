@@ -135,7 +135,7 @@ function SupabaseProvider({
           .eq("ranks.user_id", user.id)
           .single()) as PostgrestSingleResponse<{
           username: string;
-          ranks: { rank: number }[];
+          ranks: { rank: number };
           bio: string | null;
         }>;
 
@@ -146,7 +146,7 @@ function SupabaseProvider({
         }
 
         const { username: username_, ranks, bio } = data;
-        const fetchedRank = ranks.length > 0 ? ranks[0].rank : null;
+        const fetchedRank = ranks?.rank ?? null;
 
         setProfileComplete(bio !== null);
 
