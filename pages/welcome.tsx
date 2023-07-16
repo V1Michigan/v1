@@ -1,4 +1,5 @@
 import { NextPage } from "next";
+import ReactGA from "react-ga4";
 import useSupabase from "../hooks/useSupabase";
 import ProtectedRoute from "../components/ProtectedRoute";
 import Redirect from "../components/Redirect";
@@ -9,9 +10,14 @@ import Step2 from "../components/profile/onboarding/Step2";
 const WelcomePage: NextPage = () => {
   const { user, rank, setRank, profileComplete } = useSupabase();
 
-  // Type guard
+  // Type guard: this case should never occur, so report error
   if (!user || rank === null || profileComplete === null) {
-    return null;
+    // TODO: need to double check `category` with GA provider
+    ReactGA.event({
+      category: "Profile",
+      action: "Error on welcome page: user, rank, or profileComplete is null",
+    });
+    return <Redirect route="/error" />;
   }
 
   if (rank === Rank.NEW_USER) {
