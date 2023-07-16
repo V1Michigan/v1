@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import Head from "../components/Head";
 import useSupabase from "../hooks/useSupabase";
 import NavbarBuilder from "../components/NavBar";
-import DirectoryLayout from "../components/DirectoryLayout"
+import DirectoryLayout from "../components/DirectoryLayout";
 
 const Startups: NextPage = () => {
   const router = useRouter();
@@ -15,7 +15,7 @@ const Startups: NextPage = () => {
       <NavbarBuilder />
       <DirectoryLayout
         title="Startup Directory"
-        description="Lorem ipsum."
+        description="This is the V1 Startup Directory"
         link="https://www.google.com"
       />
     </>
