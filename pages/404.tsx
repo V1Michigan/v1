@@ -1,6 +1,6 @@
-// 404.js
 import { useEffect } from "react";
 import InternalLink from "../components/Link";
+import ErrorButtons from "../components/ErrorButtons";
 
 export default function Custom404() {
   // adds bg-gray-800 to body on mount and removes it on unmount
@@ -26,6 +26,7 @@ export default function Custom404() {
             <span className="border-l mx-4 h-full" />
             <span className="text-gray-200 text-2xl">Page not found</span>
           </h1>
+          <ErrorButtons />
         </div>
       </div>
     </>
