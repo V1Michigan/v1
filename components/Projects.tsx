@@ -32,6 +32,14 @@ const PROJECTS = [
     // TODO: Downsample images
     image: "/projects/connect.jpg",
   },
+  {
+    name: "Product Studio",
+    link: "https://build-blue-showcase.super.site/",
+    description:
+      "Mentoring student founders to build and launch their first product",
+    stats: ["15+ Teams", "Take projects from 0 to 1", "Demod products to users"],
+    image: "/projects/studio.jpg",
+  },
 ];
 
 interface ProjectProps {
@@ -67,7 +75,7 @@ const Project = ({ name, link, description, stats, image }: ProjectProps) => (
 );
 
 const Projects = () => (
-  <>
+  <div className="xl:grid xl:grid-cols-2">
     {PROJECTS.map((project) => (
       <Project
         key={project.name}
@@ -78,7 +86,7 @@ const Projects = () => (
         image={project.image}
       />
     ))}
-  </>
+  </div>
 );
 
 export default Projects;
