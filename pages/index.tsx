@@ -1,11 +1,10 @@
 import ReactGA from "react-ga4";
-import InternalLink from "../components/Link";
 import Projects from "../components/Projects";
 import NavbarBuilder from "../components/NavBar";
 import Partners from "../components/Partners";
 import People, { PeopleChips } from "../components/People";
-import Fade from "../components/Fade";
 import Head from "../components/Head";
+import GoldButton from "../components/GoldButton";
 // import { CohortsApplyBanner, StartupFairBanner } from "../components/Banner";
 
 const TenX = () => (
@@ -15,26 +14,6 @@ const TenX = () => (
       X
     </span>
   </>
-);
-
-const JoinButton = ({
-  text,
-  onClick,
-}: {
-  text: string;
-  onClick: () => void;
-}) => (
-  <Fade motion={false}>
-    <InternalLink href="/join">
-      <button
-        type="button"
-        className="bg-gradient-to-r from-yellow-600 to-yellow-700 hover:bg-blue-500 hover:opacity-75 hover:shadow-lg text-gray-100 text-lg font-semibold py-3 px-4 transition duration-300 rounded shadow"
-        onClick={onClick}
-      >
-        {text}
-      </button>
-    </InternalLink>
-  </Fade>
 );
 
 export default function IndexPage() {
@@ -54,8 +33,9 @@ export default function IndexPage() {
               {/* It's time to build. */}
               {/* We invest in smart people who believe they can do big things. */}
             </h1>
-            <JoinButton
+            <GoldButton
               text="Join us &rsaquo;"
+              link="/join"
               onClick={() =>
                 ReactGA.event({
                   category: "Join us",
@@ -95,8 +75,9 @@ export default function IndexPage() {
           You&apos;re in the right place.
         </h1>
         <PeopleChips />
-        <JoinButton
+        <GoldButton
           text="Join V1 &rsaquo;"
+          link="/join"
           onClick={() =>
             ReactGA.event({
               category: "Join us",
