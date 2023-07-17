@@ -17,7 +17,9 @@ const WelcomePage: NextPage = () => {
       category: "Profile",
       action: "Error on welcome page: user, rank, or profileComplete is null",
     });
-    return <Redirect route="/error" />;
+    return (
+      <Redirect route="/error?msg=user, rank or profileComplete is null" />
+    );
   }
 
   if (rank === Rank.NEW_USER) {
