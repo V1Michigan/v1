@@ -21,7 +21,7 @@ export default function Custom404() {
           </InternalLink>
         </div>
         <div className="h-screen flex flex-col items-center justify-center bg-gray-800">
-          <h1 className="text-8xl font-bold text-gray-200 flex items-center">
+          <h1 className="text-4xl lg:text-8xl font-bold text-gray-200 flex items-center">
             <span>404</span>
             <span className="border-l mx-4 h-full" />
             <span className="text-gray-200 text-2xl">Page not found</span>
