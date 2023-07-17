@@ -6,7 +6,7 @@ const PROJECTS = [
     name: "Startup Fair",
     link: "https://startupfair.v1michigan.com",
     description:
-      "The largest student-run startup career fair at the University of Michigan",
+      "The largest startup career fair at the University of Michigan",
     // If we ever get # of hire metrics...that'd be awesome here
     // TODO: Hopin metrics
     stats: ["500+ students", "30+ offers extended", "17 high-growth startups"],
@@ -20,7 +20,7 @@ const PROJECTS = [
     description: "The operating system for our community",
     // We could just call this "V1 Community" and use newsletter/Discord stats
     stats: [], // TODO: ???
-    image: "/projects/platform2023.png",
+    image: "/projects/platform.png",
   },
   {
     name: "V1 Connect",
@@ -35,9 +35,12 @@ const PROJECTS = [
   {
     name: "Product Studio",
     link: "https://build-blue-showcase.super.site/",
-    description:
-      "Mentoring student founders to build and launch their first product",
-    stats: ["15+ Teams", "Take projects from 0 to 1", "Demod products to users"],
+    description: "Helping founders build and launch their first product",
+    stats: [
+      "15+ teams",
+      "Scale projects from 0 to 1",
+      "Make real-world impact",
+    ],
     image: "/projects/studio.jpg",
   },
 ];
@@ -53,7 +56,7 @@ interface ProjectProps {
 const Project = ({ name, link, description, stats, image }: ProjectProps) => (
   <Fade motion={false}>
     <div
-      className="text-white h-screen-3/4 w-5/6 mx-auto my-8 bg-center bg-cover bg-no-repeat shadow-lg transition hover:shadow-2xl rounded-2xl overflow-hidden"
+      className="text-white h-screen-3/4 m-4 bg-center bg-cover bg-no-repeat shadow-lg transition hover:shadow-2xl rounded-2xl overflow-hidden"
       style={{ backgroundImage: `url(${image})` }}
     >
       <a href={link} target="_blank" rel="noreferrer">
@@ -75,7 +78,7 @@ const Project = ({ name, link, description, stats, image }: ProjectProps) => (
 );
 
 const Projects = () => (
-  <div className="xl:grid xl:grid-cols-2">
+  <div className="grid lg:grid-cols-2">
     {PROJECTS.map((project) => (
       <Project
         key={project.name}
