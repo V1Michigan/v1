@@ -15,6 +15,7 @@ import {
   ApiError,
   PostgrestSingleResponse,
 } from "@supabase/supabase-js";
+import { useRouter } from "next/router";
 import supabase from "../utils/supabaseClient";
 import Rank from "../constants/rank";
 
@@ -55,7 +56,10 @@ interface SupabaseContextInterface {
 
 const SupabaseContext = createContext<SupabaseContextInterface | null>(null);
 
-const RANK_UPDATE_URL = "https://v1-api-production.up.railway.app/rank";
+const RANK_UPDATE_URL =
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:8080/rank"
+    : "https://v1-api-production.up.railway.app/rank";
 
 function SupabaseProvider({
   children,
@@ -67,6 +71,7 @@ function SupabaseProvider({
     (supabase.auth.session()?.user as User) ?? null
   );
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     const { data: listener } = supabase.auth.onAuthStateChange(
@@ -135,18 +140,19 @@ function SupabaseProvider({
           .eq("ranks.user_id", user.id)
           .single()) as PostgrestSingleResponse<{
           username: string;
-          ranks: { rank: number }[];
+          ranks: { rank: number };
           bio: string | null;
         }>;
 
         if (error && status !== 406) {
-          throw error;
-        } else if (!data) {
-          throw new Error("No user data found");
+          return Promise.reject(error);
+        }
+        if (!data) {
+          return Promise.reject(new Error("No user data found"));
         }
 
         const { username: username_, ranks, bio } = data;
-        const fetchedRank = ranks.length > 0 ? ranks[0].rank : null;
+        const fetchedRank = ranks?.rank ?? null;
 
         setProfileComplete(bio !== null);
 
@@ -155,9 +161,17 @@ function SupabaseProvider({
         setRank_(fetchedRank);
       }
       setLoading(false);
+
+      // needed for consistent return type
+      return Promise.resolve("Successfully fetched user data");
     }
-    getUserData();
-  }, [user]);
+
+    getUserData().catch((_) => {
+      localStorage.removeItem("supabase.auth.token");
+      // explicitly redirect to error page to avoid infinite 406 error
+      window.location.href = "/error?msg=No user data found";
+    });
+  }, [router, user]);
 
   // Don't want to render children if still loading (rank may be undefined)
   if (user && loading) {

@@ -7,7 +7,7 @@ This is the code repository for the website. Serverless frontend built with Next
 1. First clone the repository: `git clone https://github.com/V1Michigan/v1.git`.
 2. Make sure you enter the repository through terminal `cd <FilePath>/v1`.
 3. Install dependencies: `yarn install`. **We DO NOT use npm for this.**
-4. Begin Devving: `npm run dev`. This will allow you to access a dev version of the site @ `localhost:3000` that will update automatically as you save files.
+4. Begin Devving: `yarn dev`. This will allow you to access a dev version of the site @ `localhost:3000` that will update automatically as you save files.
 5. Create a new branch for your NEW feature: `git checkout -b [FEATURE_NAME]`. If you want to go to an existing feature: `git checkout [FEATURE_NAME]`.
 6. Ask another team member for the latest `.env` file.
 7. When you finish a part of your feature and wish to push the changes to the remote repository:
