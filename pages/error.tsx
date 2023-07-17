@@ -26,7 +26,7 @@ export default function Custom500() {
           </InternalLink>
         </div>
         <div className="h-screen flex flex-col items-center justify-center bg-gray-800">
-          <h1 className="text-6xl font-bold text-gray-200 flex items-center">
+          <h1 className="text-2xl lg:text-6xl font-bold text-gray-200 flex items-center">
             Unexpected error occurred :(
           </h1>
           {msg && (
