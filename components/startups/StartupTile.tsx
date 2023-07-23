@@ -22,7 +22,7 @@ export default function StartupTile({
       <img src={logo} className="w-1/2 mx-auto rounded-lg" alt="logo" />
 
       <div className="mt-6 mx-auto text-center">
-        <h1 className="normal-case text-xl font-semibold leading-6 truncate">
+        <h1 className="normal-case text-xl font-semibold leading-6">
           {name}
         </h1>
       </div>
