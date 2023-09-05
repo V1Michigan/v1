@@ -10,7 +10,7 @@
     "lint:fix": "eslint --fix '**/*.{js,jsx,ts,tsx}' && npm run check-types"
   },
   "dependencies": {
-    "@headlessui/react": "^1.2.0",
+    "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^1.0.1",
     "@supabase/supabase-js": "^1.29.0",
     "@svgr/webpack": "^6.2.1",
