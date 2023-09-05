@@ -6,20 +6,10 @@ import {
   ExternalLinkIcon,
 } from "@heroicons/react/outline";
 import { Dialog, Transition } from "@headlessui/react";
+import { Startup } from "../../utils/types";
 
-interface StartupTileProps {
-  logo: string;
-  name: string;
-  description: string;
-  websiteLink: string;
-}
-
-export default function StartupTile({
-  logo,
-  name,
-  description,
-  websiteLink,
-}: StartupTileProps) {
+export default function StartupTile({ startup }: { startup: Startup }) {
+  const { name, description, logo, website } = startup;
   const [dialogOpen, setDialogOpen] = useState(false);
 
   return (
@@ -57,7 +47,9 @@ export default function StartupTile({
             className="rounded-lg p-2 font-inter text-sm leading-5 tracking-normal text-left text-gray-200 flex justify-center"
           >
             <a
-              href={websiteLink}
+              href={website}
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex flex-row m-auto items-center gap-1"
             >
               <InformationCircleIcon className=" inline-block h-5 w-5" />
@@ -71,7 +63,7 @@ export default function StartupTile({
             className="rounded-lg p-2 font-inter text-sm leading-5 tracking-normal text-left text-gray-600 bg-gray-300 flex justify-center"
           >
             <a
-              href={websiteLink}
+              href={website}
               className="flex flex-row m-auto items-center gap-1"
             >
               <ExternalLinkIcon className=" inline-block h-5 w-5" />
@@ -109,15 +101,28 @@ export default function StartupTile({
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                  <Dialog.Title
-                    as="h3"
-                    className="text-lg font-medium leading-6 text-gray-900"
-                  >
-                    {name}
-                  </Dialog.Title>
-                  <div className="mt-2">
-                    <p className="text-sm text-gray-500">{description}</p>
+                <Dialog.Panel className="w-full max-w-xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                  <div className="flex flex-col gap-y-4">
+                    <div className="flex gap-x-8">
+                      <img src={logo} className="w-48 rounded-lg" alt="logo" />
+                      <div className="flex flex-col gap-y-4">
+                        <h1 className="text-4xl font-bold text-gray-900">
+                          {name}
+                        </h1>
+                        <a
+                          href={website}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex flex-row items-center gap-1 text-gray-500"
+                        >
+                          <ExternalLinkIcon className=" inline-block h-5 w-5" />
+                          <p className="inline-block underline">Website</p>
+                        </a>
+                      </div>
+                    </div>
+                    <div className="mt-2">
+                      <p className="text-sm text-gray-500">{description}</p>
+                    </div>
                   </div>
                 </Dialog.Panel>
               </Transition.Child>
