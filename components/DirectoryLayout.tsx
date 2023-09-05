@@ -1,3 +1,5 @@
+import { useState, useEffect } from 'react';
+import supabase from "../utils/supabaseClient";
 import StartupTile from "./startups/StartupTile";
 import StartupFilter from "./startups/StartupFilter";
 
@@ -152,6 +154,17 @@ const STARTUPS = [
 
 const DirectoryLayout = (props: LayoutProps) => {
   const { title, description: directoryDescription, link } = props;
+  const [startups, setStartups] = useState(STARTUPS);
+  useEffect(() => {
+    const fetchStartups = async () => {
+      const { data, error } = await supabase
+        .from('startups')
+        .select();
+      console.log('data', data);
+    };
+    fetchStartups();
+  }, [startups]);
+
   return (
     <div className="w-full p-4 md:p-8 flex flex-col items-center bg-gray-50">
       <div className="max-w-screen-2xl relative w-full">
@@ -172,7 +185,7 @@ const DirectoryLayout = (props: LayoutProps) => {
         </div>
       </div>
       <div className="w-full max-w-screen-2xl mt-8 grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 pt-4">
-        {STARTUPS.map(({ name, logo, website, description }) => (
+        {startups.map(({ name, logo, website, description }) => (
           <StartupTile
             logo={logo}
             name={name}
