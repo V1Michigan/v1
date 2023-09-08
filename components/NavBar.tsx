@@ -23,6 +23,11 @@ const NAVIGATION = [
     right: false,
   },
   {
+    name: "Startups",
+    href: "/startups",
+    right: false,
+  },
+  {
     name: "Dashboard",
     href: "/dashboard",
     right: true,
@@ -142,7 +147,11 @@ export default function NavbarBuilder() {
                         }
                           px-3 py-2 rounded-md text-sm font-medium ${
                             // eslint-disable-next-line no-nested-ternary, prettier/prettier
-                            inSafari ? !user ? "relative top-nav-nouser" : "relative top-nav-user" : ""
+                            inSafari
+                              ? !user
+                                ? "relative top-nav-nouser"
+                                : "relative top-nav-user"
+                              : ""
                           }
                           ${item?.login && !user ? "hidden" : ""} 
                           ${item?.noauth && user ? "hidden" : ""}
