@@ -2,7 +2,7 @@ import { NextPage } from "next";
 import Redirect from "../components/Redirect";
 
 const ApplyPage: NextPage = () => (
-  <Redirect route="https://forms.gle/1rXY5j1RzAW8NXeu5" />
+  <Redirect route="https://tally.so/r/n99ygY" />
 );
 
 export default ApplyPage;
