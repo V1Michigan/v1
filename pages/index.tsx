@@ -22,7 +22,7 @@ export default function IndexPage() {
     <main>
       <Head title="University of Michigan" />
       {/* <StartupFairBanner /> */}
-      <CohortsApplyBanner />
+      {/* <CohortsApplyBanner /> */}
       <NavbarBuilder />
 
       <div className="overflow-hidden h-screen bg-[url('/landing.jpg')] bg-cover bg-center bg-no-repeat">
