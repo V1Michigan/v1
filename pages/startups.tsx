@@ -9,7 +9,7 @@ const Startups: NextPage = () => (
     <NavbarBuilder />
     <DirectoryLayout
       title="Startup Directory"
-      description="This is the V1 Startup Directory"
+      description="Under construction! Check back soon."
       link="https://www.google.com"
     />
   </>

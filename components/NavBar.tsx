@@ -22,11 +22,11 @@ const NAVIGATION = [
     href: "https://v1network.substack.com/",
     right: false,
   },
-  {
-    name: "Startups",
-    href: "/startups",
-    right: false,
-  },
+  // {
+  //   name: "Startups",
+  //   href: "/startups",
+  //   right: false,
+  // },
   {
     name: "Dashboard",
     href: "/dashboard",
