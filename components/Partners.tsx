@@ -21,6 +21,11 @@ const PARTNERS = [
     link: "https://ycombinator.com",
     image: "/partners/yc.png",
   },
+  {
+    name: "a16z",
+    link: "https://a16z.com/",
+    image: "/partners/a16z.png",
+  },
   // {
   //   name: "Cahoots",
   //   link: "https://cahoots.com/",
@@ -38,10 +43,10 @@ const Partners = () => (
       and connect our members with exclusive opportunities.
     </p>
     <Fade motion={false}>
-      <div className="max-w-5xl mx-auto p-8 pb-12 flex flex-wrap items-center justify-around gap-x-12 gap-y-8">
+      <div className="max-w-5xl mx-auto p-8 pb-12 flex flex-wrap items-center justify-around gap-x-8 gap-y-8">
         {PARTNERS.map(({ name, link, image }) => (
           <a key={name} className="shrink-0" href={link}>
-            <img className="h-10 hover:opacity-75" alt={name} src={image} />
+            <img className="h-12 hover:opacity-75" alt={name} src={image} />
           </a>
         ))}
       </div>
