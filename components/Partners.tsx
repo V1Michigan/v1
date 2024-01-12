@@ -26,6 +26,11 @@ const PARTNERS = [
     link: "https://a16z.com/",
     image: "/partners/a16z.png",
   },
+  {
+    name: "buildspace",
+    link: "https://buildspace.so",
+    image: "/partners/buildspace.png",
+  },
   // {
   //   name: "Cahoots",
   //   link: "https://cahoots.com/",
