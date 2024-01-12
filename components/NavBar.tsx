@@ -22,6 +22,11 @@ const NAVIGATION = [
     href: "https://v1network.substack.com/",
     right: false,
   },
+  {
+    name: "Ship-It",
+    href: "https://lu.ma/shipit-umich",
+    right: false,
+  },
   // {
   //   name: "Startups",
   //   href: "/startups",
