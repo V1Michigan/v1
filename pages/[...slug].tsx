@@ -12,7 +12,7 @@ interface DynamicLinkData {
 const DynamicLink: NextPage = () => {
   const router = useRouter();
 
-  const slug = router.query.slug as string;
+  const slug = router.query.slug as string[];
   const [route, setRoute] = useState<string>("");
 
   // * Todo: Need to consider if slug is an array of multiple directories
@@ -26,12 +26,12 @@ const DynamicLink: NextPage = () => {
         return;
       }
 
+      const slugRoute = slug.join("/");
+
       const { data } = await supabase
         .from<DynamicLinkData>("dynamic_links")
         .select()
-        .eq("name", slug);
-
-      console.log(data);
+        .eq("name", slugRoute);
 
       if (!data || data?.length === 0 || !data?.[0].link) {
         setRoute("404");
