@@ -1,13 +1,22 @@
 import { NextPage } from "next";
-import Redirect from "../components/Redirect";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import Redirect from "../components/Redirect";
 import supabase from "../utils/supabaseClient";
+
+interface DynamicLinkData {
+  name: string;
+  link: string;
+}
 
 const DynamicLink: NextPage = () => {
   const router = useRouter();
-  const { slug } = router.query;
+
+  const slug = router.query.slug as string;
   const [route, setRoute] = useState<string>("");
+
+  // * Todo: Need to consider if slug is an array of multiple directories
+  // * ie -> v1michigan.com/<name>/<name2>, currently we only support v1michigan.com/<name>
 
   useEffect(() => {
     const fetchData = async () => {
@@ -18,20 +27,21 @@ const DynamicLink: NextPage = () => {
       }
 
       const { data } = await supabase
-        .from("dynamic_links")
+        .from<DynamicLinkData>("dynamic_links")
         .select()
         .eq("name", slug);
+
+      console.log(data);
 
       if (!data || data?.length === 0 || !data?.[0].link) {
         setRoute("404");
         return;
       }
 
-      setRoute(data?.[0].link);
+      setRoute(String(data?.[0].link));
     };
 
     fetchData();
-    return () => {};
   }, [slug]);
 
   return route ? <Redirect route={route} /> : null;
