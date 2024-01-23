@@ -1,3 +1,9 @@
+export type StartupProfile = {
+  headshot: string;
+  name: string;
+  role: string;
+};
+
 export type Startup = {
   created_at: string;
   description: string;
@@ -10,4 +16,5 @@ export type Startup = {
   stage: string;
   tech: string[];
   website: string;
+  members: StartupProfile[];
 };

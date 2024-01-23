@@ -7,9 +7,10 @@ import {
 } from "@heroicons/react/outline";
 import { Dialog, Transition } from "@headlessui/react";
 import { Startup } from "../../utils/types";
+import StartupProfileTile from "./StartupProfileTile";
 
 export default function StartupTile({ startup }: { startup: Startup }) {
-  const { name, description, logo, website } = startup;
+  const { name, description, logo, website, industries, members } = startup;
   const [dialogOpen, setDialogOpen] = useState(false);
 
   return (
@@ -18,7 +19,11 @@ export default function StartupTile({ startup }: { startup: Startup }) {
         className="flex flex-col bg-white font-bold p-6 leading-none text-gray-800 uppercase rounded-lg shadow-lg duration-100 border border-stone-300 cursor-pointer"
         onClick={() => setDialogOpen(true)}
       >
-        <img src={logo} className="w-1/2 mx-auto rounded-lg" alt="logo" />
+        <img
+          src={logo}
+          className="w-1/2 mx-auto rounded-lg"
+          alt={`${name} logo`}
+        />
 
         <div className="mt-6 mx-auto text-center">
           <h1 className="normal-case text-xl font-semibold leading-6">
@@ -46,15 +51,8 @@ export default function StartupTile({ startup }: { startup: Startup }) {
             }}
             className="rounded-lg p-2 font-inter text-sm leading-5 tracking-normal text-left text-gray-200 flex justify-center"
           >
-            <a
-              href={website}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex flex-row m-auto items-center gap-1"
-            >
-              <InformationCircleIcon className=" inline-block h-5 w-5" />
-              <p className="inline-block">See More</p>
-            </a>
+            <InformationCircleIcon className=" inline-block h-5 w-5" />
+            <p className="inline-block">See More</p>
           </button>
 
           <button
@@ -64,6 +62,8 @@ export default function StartupTile({ startup }: { startup: Startup }) {
           >
             <a
               href={website}
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex flex-row m-auto items-center gap-1"
             >
               <ExternalLinkIcon className=" inline-block h-5 w-5" />
@@ -104,7 +104,11 @@ export default function StartupTile({ startup }: { startup: Startup }) {
                 <Dialog.Panel className="w-full max-w-xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                   <div className="flex flex-col gap-y-4">
                     <div className="flex gap-x-8">
-                      <img src={logo} className="w-48 rounded-lg" alt="logo" />
+                      <img
+                        src={logo}
+                        className="w-48 rounded-lg"
+                        alt={`${name} logo`}
+                      />
                       <div className="flex flex-col gap-y-4">
                         <h1 className="text-4xl font-bold text-gray-900">
                           {name}
@@ -122,6 +126,18 @@ export default function StartupTile({ startup }: { startup: Startup }) {
                     </div>
                     <div className="mt-2">
                       <p className="text-sm text-gray-500">{description}</p>
+                      <div className="flex">
+                        {industries?.map((industry) => (
+                          <p className="text-sm my-2 mr-1 px-2 bg-slate-300 rounded-xl">
+                            {industry}
+                          </p>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="flex">
+                      {members?.map((member) => (
+                        <StartupProfileTile startupProfile={member} />
+                      ))}
                     </div>
                   </div>
                 </Dialog.Panel>

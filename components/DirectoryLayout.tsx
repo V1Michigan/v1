@@ -10,7 +10,7 @@ type LayoutProps = {
 };
 
 const DirectoryLayout = (props: LayoutProps) => {
-  const { title, description: directoryDescription, link } = props;
+  const { title, description: directoryDescription, link: _ } = props;
 
   const [startups, setStartups] = useState<Startup[] | null>(null);
 
@@ -42,7 +42,7 @@ const DirectoryLayout = (props: LayoutProps) => {
       </div>
       <div className="w-full max-w-screen-2xl mt-8 grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 pt-4">
         {startups?.map((startup) => (
-          <StartupTile startup={startup} />
+          <StartupTile startup={startup} key={startup.id} />
         ))}
       </div>
     </div>
