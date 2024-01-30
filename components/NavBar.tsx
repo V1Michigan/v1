@@ -24,7 +24,7 @@ const NAVIGATION = [
   },
   {
     name: "Ship-It",
-    href: "https://lu.ma/shipit-umich",
+    href: "/ship-it",
     right: false,
   },
   // {
