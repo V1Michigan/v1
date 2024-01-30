@@ -16,7 +16,11 @@ const DirectoryLayout = (props: LayoutProps) => {
 
   useEffect(() => {
     const fetchStartups = async () => {
-      const { data } = await supabase.from("startups").select();
+      const { data } = await supabase
+        .from("startups")
+        // This is necessary due to Supabase's API formatting requirements.
+        // eslint-disable-next-line quotes
+        .select(`*, profiles!startups_members (username, name)`);
       setStartups(data);
     };
     fetchStartups();

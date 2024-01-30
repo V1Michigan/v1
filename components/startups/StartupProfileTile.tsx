@@ -5,19 +5,13 @@ export default function StartupProfileTile({
 }: {
   startupProfile: StartupProfile;
 }) {
-  const { headshot, name, role } = startupProfile;
+  const { username, name } = startupProfile;
 
   return (
     <div className="flex flex-col items-center mr-5">
-      <img
-        className="rounded-lg"
-        height={90}
-        width={90}
-        src={headshot}
-        alt={name}
-      />
-      <h1 className="mt-1">{name}</h1>
-      <p className="text-gray-400 text-xs">{role}</p>
+      <h1 className="mt-1">{name ?? username}</h1>
+      {/* TODO(jonas): roles+images */}
+      <p className="text-gray-400 text-xs">Software Engineer</p>
     </div>
   );
 }

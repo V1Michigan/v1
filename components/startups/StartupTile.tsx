@@ -10,7 +10,7 @@ import { Startup } from "../../utils/types";
 import StartupProfileTile from "./StartupProfileTile";
 
 export default function StartupTile({ startup }: { startup: Startup }) {
-  const { name, description, logo, website, industries, members } = startup;
+  const { name, description, logo, website, industries, profiles } = startup;
   const [dialogOpen, setDialogOpen] = useState(false);
 
   return (
@@ -135,8 +135,8 @@ export default function StartupTile({ startup }: { startup: Startup }) {
                       </div>
                     </div>
                     <div className="flex">
-                      {members?.map((member) => (
-                        <StartupProfileTile startupProfile={member} />
+                      {profiles?.map((profile) => (
+                        <StartupProfileTile startupProfile={profile} />
                       ))}
                     </div>
                   </div>

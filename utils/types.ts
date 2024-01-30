@@ -1,7 +1,6 @@
 export type StartupProfile = {
-  headshot: string;
-  name: string;
-  role: string;
+  name: string | null;
+  username: string;
 };
 
 export type Startup = {
@@ -16,5 +15,5 @@ export type Startup = {
   stage: string;
   tech: string[];
   website: string;
-  members: StartupProfile[];
+  profiles: StartupProfile[];
 };
