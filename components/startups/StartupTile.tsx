@@ -10,7 +10,15 @@ import { Startup } from "../../utils/types";
 import StartupProfileTile from "./StartupProfileTile";
 
 export default function StartupTile({ startup }: { startup: Startup }) {
-  const { name, description, logo, website, industries, profiles } = startup;
+  const {
+    name,
+    description,
+    logo,
+    website,
+    industries,
+    profiles,
+    startups_members: profileMetadata,
+  } = startup;
   const [dialogOpen, setDialogOpen] = useState(false);
 
   return (
@@ -134,9 +142,12 @@ export default function StartupTile({ startup }: { startup: Startup }) {
                         ))}
                       </div>
                     </div>
-                    <div className="flex">
-                      {profiles?.map((profile) => (
-                        <StartupProfileTile startupProfile={profile} />
+                    <div className="flex flex-wrap justify-center">
+                      {profiles?.map((profile, i) => (
+                        <StartupProfileTile
+                          startupProfile={profile}
+                          startupProfileMetadata={profileMetadata[i]}
+                        />
                       ))}
                     </div>
                   </div>
