@@ -10,13 +10,20 @@ type LayoutProps = {
 };
 
 const DirectoryLayout = (props: LayoutProps) => {
-  const { title, description: directoryDescription, link } = props;
+  const { title, description: directoryDescription, link: _ } = props;
 
   const [startups, setStartups] = useState<Startup[] | null>(null);
 
   useEffect(() => {
     const fetchStartups = async () => {
-      const { data } = await supabase.from("startups").select();
+      const { data } = await supabase
+        .from("startups")
+        .select(
+          // This is necessary due to Supabase's API formatting requirements.
+          // eslint-disable-next-line quotes
+          `*, profiles!startups_members (username, name), startups_members (role, headshot_src)`
+        )
+        .order("user_id", { foreignTable: "startups_members" }); // To make sure roles are applied in the right order
       setStartups(data);
     };
     fetchStartups();
@@ -42,7 +49,7 @@ const DirectoryLayout = (props: LayoutProps) => {
       </div>
       <div className="w-full max-w-screen-2xl mt-8 grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 pt-4">
         {startups?.map((startup) => (
-          <StartupTile startup={startup} />
+          <StartupTile startup={startup} key={startup.id} />
         ))}
       </div>
     </div>
