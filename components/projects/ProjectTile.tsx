@@ -1,42 +1,19 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { Fragment, useState } from "react";
-import { DesktopComputerIcon } from "@heroicons/react/outline";
+import { DesktopComputerIcon, CodeIcon } from "@heroicons/react/outline";
 import { Dialog, Transition } from "@headlessui/react";
 import ProjectProfileTile from "./ProjectProfileTile";
-
-type ProjectProfile = {
-  name: string | null;
-  username: string;
-};
-
-type ProjectProfileMetadata = {
-  role: string;
-  headshot_src: string;
-};
-
-type Project = {
-  created_at: string;
-  description: string;
-  id: number;
-  industries: string[];
-  logo: string;
-  name: string;
-  project_members: ProjectProfileMetadata[];
-  size: number;
-  stage: string;
-  tech: string[];
-  website: string;
-  profiles: ProjectProfile[];
-};
+import { Project } from "../../utils/types";
 
 export default function ProjectTile({ project }: { project: Project }) {
   const {
     name,
     description,
     logo,
+    tech,
     website,
-    industries,
+    github,
     profiles,
     project_members: profileMetadata,
   } = project;
@@ -50,7 +27,7 @@ export default function ProjectTile({ project }: { project: Project }) {
       >
         <img
           src={logo}
-          className="h-3/5 mx-auto border border-slate-300 rounded-lg"
+          className="h-48 mx-auto border border-slate-300 rounded-lg"
           alt={`${name} logo`}
         />
 
@@ -100,52 +77,74 @@ export default function ProjectTile({ project }: { project: Project }) {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                  <div className="flex flex-col gap-y-4">
+                <Dialog.Panel className="w-ful max-w-2xl max-h-[90vh] overflow-y-auto transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                  <div className="flex flex-col">
                     <img
                       src={logo}
-                      className="max-h-56 rounded-lg self-center"
+                      className="h-64 rounded-lg self-center"
                       alt={`${name} logo`}
                     />
 
-                    <div className="flex flex-row">
+                    <div className="flex flex-row mt-6">
                       <h1 className="text-4xl font-bold text-gray-900 mr-4">
                         {name}
                       </h1>
                       <div className="flex flex-row gap-x-3 items-center">
-                        <a
-                          href={website}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex flex-row text-gray-500 w-6 h-6"
-                        >
-                          <DesktopComputerIcon className="inline-block h-full" />
-                        </a>
-                        <a
-                          href={website}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex flex-row text-gray-500 w-6 h-6"
-                        >
-                          <DesktopComputerIcon className="inline-block h-full" />
-                        </a>
+                        {website && (
+                          <a
+                            href={website}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex flex-row text-gray-600 w-6 h-6"
+                          >
+                            <DesktopComputerIcon className="inline-block h-full" />
+                          </a>
+                        )}
+                        {github && (
+                          <a
+                            href={github}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex flex-row text-gray-600 w-6 h-6"
+                          >
+                            <CodeIcon className="inline-block h-full" />
+                          </a>
+                        )}
                       </div>
                     </div>
 
-                    <div className="flex flex-col gap-y-3">
+                    <div className="flex flex-col gap-y-4 mt-4">
                       <div>
-                        <p className="font-medium">Description</p>
-                        <p className="text-sm text-gray-500">{description}</p>
+                        <p className="text-lg font-medium">Description</p>
+                        <p className="text-base text-gray-600">{description}</p>
                       </div>
 
                       <div>
-                        <p className="font-medium">Technologies</p>
-                        <p className="text-sm text-gray-500">{description}</p>
+                        <p className="text-lg font-medium">Technologies</p>
+                        <div className="flex flex-wrap gap-x-2 gap-y-1">
+                          {tech?.map((item, index) => (
+                            <p
+                              className={`text-base text-gray-600 ${
+                                index !== tech.length - 1
+                                  ? "border-r-[1.5px] border-gray-300 pr-2"
+                                  : ""
+                              }`}
+                            >
+                              {item}
+                            </p>
+                          ))}
+                        </div>
                       </div>
 
                       <div>
-                        <p className="font-medium">Our Builders</p>
-                        <div className="flex flex-wrap mt-3">
+                        <p className="text-lg font-medium">Our Builders</p>
+                        <div className="mt-4 grid grid-cols-4 gap-x-4 gap-y-2">
+                          {profiles?.map((profile, i) => (
+                            <ProjectProfileTile
+                              projectProfile={profile}
+                              projectProfileMetadata={profileMetadata[i]}
+                            />
+                          ))}
                           {profiles?.map((profile, i) => (
                             <ProjectProfileTile
                               projectProfile={profile}

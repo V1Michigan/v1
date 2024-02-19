@@ -8,7 +8,7 @@ const Projects: NextPage = () => (
     <Head title="Projects" />
     <NavbarBuilder />
     <ProjectLayout
-      title="Projects"
+      title="V1 Community Projects"
       description="Under construction! Check back soon."
       link="https://www.google.com"
     />
