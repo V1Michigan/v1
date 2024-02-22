@@ -4,18 +4,18 @@ import React, { Fragment, useState } from "react";
 import { DesktopComputerIcon, CodeIcon } from "@heroicons/react/outline";
 import { Dialog, Transition } from "@headlessui/react";
 import ProjectProfileTile from "./ProjectProfileTile";
-import { Project } from "../../utils/types";
+import { Startup } from "../../utils/types";
 
-export default function ProjectTile({ project }: { project: Project }) {
+export default function ProjectTile({ project }: { project: Startup }) {
   const {
     name,
     description,
     logo,
     tech,
     website,
-    github,
     profiles,
-    project_members: profileMetadata,
+    github,
+    startups_members: profileMetadata,
   } = project;
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -77,7 +77,7 @@ export default function ProjectTile({ project }: { project: Project }) {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-ful max-w-2xl max-h-[90vh] overflow-y-auto transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="w-full max-w-4xl max-h-[90vh] overflow-y-auto transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                   <div className="flex flex-col">
                     <img
                       src={logo}
@@ -86,7 +86,7 @@ export default function ProjectTile({ project }: { project: Project }) {
                     />
 
                     <div className="flex flex-row mt-6">
-                      <h1 className="text-4xl font-bold text-gray-900 mr-4">
+                      <h1 className="text-5xl font-bold text-gray-900 mr-4">
                         {name}
                       </h1>
                       <div className="flex flex-row gap-x-3 items-center">
@@ -115,17 +115,35 @@ export default function ProjectTile({ project }: { project: Project }) {
 
                     <div className="flex flex-col gap-y-4 mt-4">
                       <div>
-                        <p className="text-lg font-medium">Description</p>
-                        <p className="text-base text-gray-600">{description}</p>
+                        <p className="text-xl font-medium">Problem Statement</p>
+                        <p className="text-base text-gray-600">
+                          Id consectetur purus ut faucibus. Et pharetra pharetra
+                          massa massa ultricies. Felis donec et odio
+                          pellentesque diam volutpat commodo sed.
+                        </p>
                       </div>
-
                       <div>
-                        <p className="text-lg font-medium">Technologies</p>
+                        <p className="text-xl font-medium">Description</p>
+                        <p className="text-base text-gray-600">
+                          Lorem ipsum dolor sit amet, consectetur adipiscing
+                          elit, sed do eiusmod tempor incididunt ut labore et
+                          dolore magna aliqua. Ut enim ad minim veniam, quis
+                          nostrud exercitation ullamco laboris nisi ut aliquip
+                          ex ea commodo consequat. Duis aute irure dolor in
+                          reprehenderit in voluptate velit esse cillum dolore eu
+                          fugiat nulla pariatur. Excepteur sint occaecat
+                          cupidatat non proident, sunt in culpa qui officia
+                          deserunt mollit anim id est laborum.
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-xl font-medium">Technologies</p>
                         <div className="flex flex-wrap gap-x-2 gap-y-1">
-                          {tech?.map((item, index) => (
+                          {tech?.map((item) => (
                             <p
+                              key={item}
                               className={`text-base text-gray-600 ${
-                                index !== tech.length - 1
+                                item !== tech[tech.length - 1]
                                   ? "border-r-[1.5px] border-gray-300 pr-2"
                                   : ""
                               }`}
@@ -137,20 +155,8 @@ export default function ProjectTile({ project }: { project: Project }) {
                       </div>
 
                       <div>
-                        <p className="text-lg font-medium">Our Builders</p>
-                        <div className="mt-4 grid grid-cols-4 gap-x-4 gap-y-2">
-                          {profiles?.map((profile, i) => (
-                            <ProjectProfileTile
-                              projectProfile={profile}
-                              projectProfileMetadata={profileMetadata[i]}
-                            />
-                          ))}
-                          {profiles?.map((profile, i) => (
-                            <ProjectProfileTile
-                              projectProfile={profile}
-                              projectProfileMetadata={profileMetadata[i]}
-                            />
-                          ))}
+                        <p className="text-xl font-medium">Our Builders</p>
+                        <div className="mt-4 grid grid-cols-4 gap-x-4 gap-y-3">
                           {profiles?.map((profile, i) => (
                             <ProjectProfileTile
                               projectProfile={profile}
