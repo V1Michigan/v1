@@ -65,11 +65,9 @@ export default function StartupProfileTile({
       <button
         type="button"
         style={{
-          backgroundColor: "#212936",
+          backgroundColor: connectDialogOpen ? "#6B7280" : "#212936",
         }}
-        className={`text-xs rounded px-2 py-1 mt-2 font-inter text-gray-200 ${
-          connectDialogOpen ? "hidden" : ""
-        }`}
+        className="text-xs rounded px-2 py-1 mt-2 font-inter text-gray-200"
         onClick={() => setConnectDialogOpen(true)}
       >
         Connect
@@ -92,41 +90,45 @@ export default function StartupProfileTile({
             <div className="fixed inset-0 bg-black bg-opacity-25" />
           </Transition.Child>
 
-          <div className="flex items-center justify-center text-center">
-            <Transition.Child
-              as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0"
-              enterTo="opacity-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100"
-              leaveTo="opacity-0"
-            >
-              <Dialog.Panel className="w-full max-w-xl transform overflow-hidden rounded-2xl bg-white px-6 py-2 text-left align-middle shadow-xl transition-all">
-                {session ? (
-                  <div className="flex justify-between items-center">
-                    <input
-                      value={connectionMessage}
-                      onChange={(evt) => setConnectionMessage(evt.target.value)}
-                      className="w-full text-sm border border-gray-400 border-1 rounded h-fit"
-                      type="text"
-                      placeholder="Write a message..."
-                    />
-                    <button
-                      className="text-sm text-gray-400 p-4"
-                      type="submit"
-                      onClick={sendConnectionMessage}
-                    >
-                      Send
-                    </button>
-                  </div>
-                ) : (
-                  <p className="text-sm text-gray-400">
-                    Sign in to connect with {recipient}!
-                  </p>
-                )}
-              </Dialog.Panel>
-            </Transition.Child>
+          <div className="fixed inset-0 overflow-y-auto">
+            <div className="flex min-h-full items-center justify-center text-center">
+              <Transition.Child
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0"
+                enterTo="opacity-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100"
+                leaveTo="opacity-0"
+              >
+                <Dialog.Panel className="w-full max-w-lg transform overflow-hidden rounded-2xl bg-white px-6 py-2 text-left align-middle shadow-xl transition-all">
+                  {session ? (
+                    <div className="flex justify-between items-center">
+                      <input
+                        value={connectionMessage}
+                        onChange={(evt) =>
+                          setConnectionMessage(evt.target.value)
+                        }
+                        className="w-full text-sm border border-gray-400 border-1 rounded h-fit"
+                        type="text"
+                        placeholder={`Write a message to ${recipient}...`}
+                      />
+                      <button
+                        className="text-sm text-gray-400 p-4"
+                        type="submit"
+                        onClick={sendConnectionMessage}
+                      >
+                        Send
+                      </button>
+                    </div>
+                  ) : (
+                    <p className="text-sm text-gray-400">
+                      Sign in to connect with {recipient}!
+                    </p>
+                  )}
+                </Dialog.Panel>
+              </Transition.Child>
+            </div>
           </div>
         </Dialog>
       </Transition>
