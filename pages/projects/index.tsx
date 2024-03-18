@@ -1,7 +1,7 @@
 import { NextPage } from "next";
-import Head from "../components/Head";
-import NavbarBuilder from "../components/NavBar";
-import ProjectLayout from "../components/ProjectLayout";
+import Head from "../../components/Head";
+import NavbarBuilder from "../../components/NavBar";
+import ProjectLayout from "../../components/ProjectLayout";
 
 const Projects: NextPage = () => (
   <>

@@ -1,40 +1,39 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { Fragment, useState } from "react";
-import { DesktopComputerIcon, CodeIcon } from "@heroicons/react/outline";
+import { DesktopComputerIcon, CodeIcon, InformationCircleIcon, ExternalLinkIcon } from "@heroicons/react/outline";
 import { Dialog, Transition } from "@headlessui/react";
 import ProjectProfileTile from "./ProjectProfileTile";
-import { Startup } from "../../utils/types";
+import { Project } from "../../utils/types";
 
-export default function ProjectTile({ project }: { project: Startup }) {
+export default function ProjectTile({ project }: { project: Project }) {
   const {
     name,
     description,
     logo,
-    tech,
-    website,
-    profiles,
-    github,
-    startups_members: profileMetadata,
+    link,
+    type,
   } = project;
   const [dialogOpen, setDialogOpen] = useState(false);
 
   return (
     <>
       <div
-        className="flex flex-col bg-white font-bold p-6 leading-none text-gray-800 uppercase rounded-lg shadow-lg duration-100 border border-stone-300 cursor-pointer"
+        className="max-w-[25rem] flex flex-col bg-white font-bold p-6 leading-none text-gray-800 uppercase rounded-lg shadow-lg duration-100 border border-stone-300 cursor-pointer"
         onClick={() => setDialogOpen(true)}
       >
-        <img
-          src={logo}
-          className="h-48 mx-auto border border-slate-300 rounded-lg"
-          alt={`${name} logo`}
-        />
+        <div className="flex items-center justify-center gap-2">
+          <img
+            src="/v1_logo_gold.png"
+            className="w-10 h-10 rounded-lg"
+            alt={`${name} logo`}
+          />
 
-        <div className="mt-6 mx-auto text-center">
-          <h1 className="normal-case text-2xl font-semibold leading-6">
-            {name}
-          </h1>
+          <div className="text-center">
+            <h1 className="normal-case text-xl font-semibold leading-6">
+              {name}
+            </h1>
+          </div>
         </div>
 
         <p
@@ -47,6 +46,36 @@ export default function ProjectTile({ project }: { project: Startup }) {
         >
           {description}
         </p>
+
+        <div className="flex mt-4 justify-between items-center">
+          <button
+            type="button"
+            style={{
+              backgroundColor: "#212936",
+              width: "calc(50% - 6px)",
+            }}
+            className="rounded-lg p-2 font-inter text-sm leading-5 tracking-normal text-left text-gray-200 flex justify-center"
+          >
+            <InformationCircleIcon className=" inline-block h-5 w-5" />
+            <p className="inline-block">See More</p>
+          </button>
+
+          <button
+            type="button"
+            style={{ width: "calc(50% - 6px)" }}
+            className="rounded-lg p-2 font-inter text-sm leading-5 tracking-normal text-left text-gray-600 bg-gray-300 flex justify-center"
+          >
+            <a
+              href={link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex flex-row m-auto items-center gap-1"
+            >
+              <ExternalLinkIcon className=" inline-block h-5 w-5" />
+              <p className="inline-block">Website</p>
+            </a>
+          </button>
+        </div>
       </div>
       <Transition appear show={dialogOpen} as={Fragment}>
         <Dialog
@@ -89,10 +118,10 @@ export default function ProjectTile({ project }: { project: Startup }) {
                       <h1 className="text-5xl font-bold text-gray-900 mr-4">
                         {name}
                       </h1>
-                      <div className="flex flex-row gap-x-3 items-center">
-                        {website && (
+                      {/* <div className="flex flex-row gap-x-3 items-center">
+                        {link && (
                           <a
-                            href={website}
+                            href={link}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="flex flex-row text-gray-600 w-6 h-6"
@@ -110,7 +139,7 @@ export default function ProjectTile({ project }: { project: Startup }) {
                             <CodeIcon className="inline-block h-full" />
                           </a>
                         )}
-                      </div>
+                      </div> */}
                     </div>
 
                     <div className="flex flex-col gap-y-4 mt-4">
@@ -136,41 +165,22 @@ export default function ProjectTile({ project }: { project: Startup }) {
                           deserunt mollit anim id est laborum.
                         </p>
                       </div>
-                      <div>
+                      {/* <div>
                         <p className="text-xl font-medium">Technologies</p>
                         <div className="flex flex-wrap gap-x-2 gap-y-1">
                           {tech?.map((item) => (
                             <p
                               key={item}
-                              className={`text-base text-gray-600 ${
-                                item !== tech[tech.length - 1]
-                                  ? "border-r-[1.5px] border-gray-300 pr-2"
-                                  : ""
-                              }`}
+                              className={`text-base text-gray-600 ${item !== tech[tech.length - 1]
+                                ? "border-r-[1.5px] border-gray-300 pr-2"
+                                : ""
+                                }`}
                             >
                               {item}
                             </p>
                           ))}
                         </div>
-                      </div>
-
-                      <div>
-                        <p className="text-xl font-medium">Our Builders</p>
-                        <div className="mt-4 grid grid-cols-4 gap-x-4 gap-y-3">
-                          {profiles?.map((profile, i) => (
-                            <ProjectProfileTile
-                              projectProfile={profile}
-                              projectProfileMetadata={profileMetadata[i]}
-                            />
-                          ))}
-                          {profiles?.map((profile, i) => (
-                            <ProjectProfileTile
-                              projectProfile={profile}
-                              projectProfileMetadata={profileMetadata[i]}
-                            />
-                          ))}
-                        </div>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </Dialog.Panel>

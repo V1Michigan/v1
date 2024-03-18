@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import supabase from "../utils/supabaseClient";
 import InternalLink from "./Link";
 import ProjectTile from "./projects/ProjectTile";
-import { Startup } from "../utils/types";
+import { Project, Startup } from "../utils/types";
 
 type LayoutProps = {
   title: string;
@@ -12,26 +12,26 @@ type LayoutProps = {
 
 const ProjectLayout = (props: LayoutProps) => {
   const { title, description: directoryDescription, link: _ } = props;
-  const [projects, setProjects] = useState<Startup[] | null>(null);
+  const [projects, setProjects] = useState<Project[] | null>(null);
   const [cohort, setCohort] = useState<string>("");
   const [studentStatus, setStudentStatus] = useState<string>("");
   const [projectType, setProjectType] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   useEffect(() => {
-    const fetchStartups = async () => {
+    const fetchProjects = async () => {
       const { data } = await supabase
-        .from("startups")
+        .from("projects")
         .select(
           // This is necessary due to Supabase's API formatting requirements.
           // eslint-disable-next-line quotes
-          `*, profiles!startups_members (username, name), startups_members (role, headshot_src)`
+          `*`
         )
-        .eq("is_project", true)
-        .order("user_id", { foreignTable: "startups_members" }); // To make sure roles are applied in the right order
+      // .eq("is_project", true)
+      // .order("user_id", { foreignTable: "startups_members" }); // To make sure roles are applied in the right order
       setProjects(data);
     };
-    fetchStartups();
+    fetchProjects();
   }, []);
 
   return (
@@ -43,7 +43,7 @@ const ProjectLayout = (props: LayoutProps) => {
             <h3 className="font-regular text-lg text-center">
               {directoryDescription}
             </h3>
-            <InternalLink href="http://www.google.com">
+            <InternalLink href="projects/upload">
               <button
                 type="button"
                 className="bg-gradient-to-r from-yellow-600 to-yellow-700 hover:opacity-75 hover:shadow-lg text-gray-100 text-lg font-semibold py-2.5 px-6 transition duration-300 rounded-lg shadow"
@@ -124,10 +124,11 @@ const ProjectLayout = (props: LayoutProps) => {
           </button>
         </form>
       </div>
-      <div className="w-full max-w-screen-2xl mt-4 grid gap-2 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 pt-2">
-        {projects?.map((project) => (
-          <ProjectTile project={project} key={project.id} />
-        ))}
+      <div className="w-full max-w-screen-2xl mt-8 grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 pt-4">
+        {projects?.map((project) => {
+          console.log(project)
+          return <ProjectTile project={project} key={project.id} />
+        })}
       </div>
     </div>
   );
