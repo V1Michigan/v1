@@ -15,8 +15,8 @@ export default function StartupProfileTile({
   startupProfile: StartupProfile;
   startupProfileMetadata: StartupProfileMetadata;
 }) {
-  const { username, name } = startupProfile;
-  const recipient = name ?? username;
+  const { email, username, name } = startupProfile;
+  const displayName = name ?? username;
   const { role, headshot_src: headshotSrc } = startupProfileMetadata;
   const [connectDialogOpen, setConnectDialogOpen] = useState<boolean>(false);
   const [connectionSent, setConnectionSent] = useState<boolean>(false);
@@ -33,7 +33,10 @@ export default function StartupProfileTile({
     }
     const { access_token: accessToken } = session;
 
-    const body = JSON.stringify({ message: connectionMessage, recipient });
+    const body = JSON.stringify({
+      recipient: email,
+      message: connectionMessage,
+    });
     fetch(CONNECTION_REQUEST_URL, {
       method: "POST",
       headers: {
@@ -56,9 +59,9 @@ export default function StartupProfileTile({
         src={headshotSrc ?? anonymousPersonImage}
         height={80}
         width={80}
-        alt={`${recipient} headshot`}
+        alt={`${displayName} headshot`}
       />
-      <h1 className="mt-1">{name ?? recipient}</h1>
+      <h1 className="mt-1">{displayName}</h1>
       <p className="text-gray-500 text-xs">{role}</p>
       {connectionSent ? (
         <p className="text-xs px-2 py-1 mt-2 font-inter text-center">
@@ -116,7 +119,7 @@ export default function StartupProfileTile({
                         }
                         className="w-full text-sm border border-gray-400 border-1 rounded h-fit"
                         type="text"
-                        placeholder={`Write a message to ${recipient}...`}
+                        placeholder={`Write a message to ${displayName}...`}
                       />
                       <button
                         className="text-sm text-gray-400 p-4"
@@ -128,7 +131,7 @@ export default function StartupProfileTile({
                     </div>
                   ) : (
                     <p className="text-sm text-gray-400">
-                      Sign in to connect with {recipient}!
+                      Sign in to connect with {displayName}!
                     </p>
                   )}
                 </Dialog.Panel>
