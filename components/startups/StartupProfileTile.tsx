@@ -19,6 +19,7 @@ export default function StartupProfileTile({
   const recipient = name ?? username;
   const { role, headshot_src: headshotSrc } = startupProfileMetadata;
   const [connectDialogOpen, setConnectDialogOpen] = useState<boolean>(false);
+  const [connectionSent, setConnectionSent] = useState<boolean>(false);
   const [connectionMessage, setConnectionMessage] = useState<string>("");
   const session = supabase.auth.session();
 
@@ -40,15 +41,12 @@ export default function StartupProfileTile({
         Authorization: `Bearer ${accessToken}`,
       },
       body,
+    }).then((response) => {
+      if (response.ok) {
+        setConnectDialogOpen(false);
+        setConnectionSent(true);
+      }
     });
-    /* TODO (jonas): response handling, CORS, testing, etc.
-      .then((response) => {
-        if (response.ok) {
-          setConnectDialogOpen(false);
-        }
-      })
-      .catch((error) => {});
-      */
   }
 
   return (
@@ -62,16 +60,23 @@ export default function StartupProfileTile({
       />
       <h1 className="mt-1">{name ?? recipient}</h1>
       <p className="text-gray-500 text-xs">{role}</p>
-      <button
-        type="button"
-        style={{
-          backgroundColor: connectDialogOpen ? "#6B7280" : "#212936",
-        }}
-        className="text-xs rounded px-2 py-1 mt-2 font-inter text-gray-200"
-        onClick={() => setConnectDialogOpen(true)}
-      >
-        Connect
-      </button>
+      {connectionSent ? (
+        <p className="text-xs px-2 py-1 mt-2 font-inter text-center">
+          connection sent successfully!
+        </p>
+      ) : (
+        <button
+          type="button"
+          style={{
+            backgroundColor: connectDialogOpen ? "#6B7280" : "#212936",
+          }}
+          className="text-xs rounded px-2 py-1 mt-2 font-inter text-gray-200"
+          onClick={() => setConnectDialogOpen(true)}
+        >
+          Connect
+        </button>
+      )}
+
       <Transition appear show={connectDialogOpen} as={Fragment}>
         <Dialog
           as="div"
@@ -115,7 +120,7 @@ export default function StartupProfileTile({
                       />
                       <button
                         className="text-sm text-gray-400 p-4"
-                        type="submit"
+                        type="button"
                         onClick={sendConnectionMessage}
                       >
                         Send
