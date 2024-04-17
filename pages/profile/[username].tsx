@@ -49,7 +49,8 @@ export type Profile = {
   resume?: File; // Not fetched if not current user
 };
 const PROFILE_COLUMNS = (isCurrentUser: boolean) =>
-  `id, email, name, bio, ${isCurrentUser ? "phone, " : ""
+  `id, email, name, bio, ${
+    isCurrentUser ? "phone, " : ""
   }year, fields_of_study, linkedin, website, roles, interests, partner_sharing_consent`;
 
 const UserProfile: NextPage = () => {
@@ -118,8 +119,8 @@ const UserProfile: NextPage = () => {
         .select(PROFILE_COLUMNS(isCurrentUser))
         .eq("username", profileUsername)
         .single()) as PostgrestSingleResponse<
-          Omit<Profile, "avatar" | "resume">
-        >;
+        Omit<Profile, "avatar" | "resume">
+      >;
 
       if ((dbError && status !== 406) || !profile) {
         router.replace("/404");
@@ -136,11 +137,11 @@ const UserProfile: NextPage = () => {
           // Don't fetch resume if not current user
           isCurrentUser
             ? await downloadFromSupabase(
-              "resumes",
-              profile.id,
-              `${profileUsername} Resume.pdf`,
-              "application/pdf"
-            )
+                "resumes",
+                profile.id,
+                `${profileUsername} Resume.pdf`,
+                "application/pdf"
+              )
             : undefined,
         ]);
         setInitialProfile({
@@ -184,19 +185,19 @@ const UserProfile: NextPage = () => {
         )
         .eq("id", id),
       avatar &&
-      avatar !== initialProfile.avatar &&
-      supabase.storage.from("avatars").upload(id, avatar, {
-        contentType: avatar.type,
-        cacheControl: "3600",
-        upsert: true,
-      }),
+        avatar !== initialProfile.avatar &&
+        supabase.storage.from("avatars").upload(id, avatar, {
+          contentType: avatar.type,
+          cacheControl: "3600",
+          upsert: true,
+        }),
       resume &&
-      resume !== initialProfile.resume &&
-      supabase.storage.from("resumes").upload(id, resume, {
-        contentType: resume.type,
-        cacheControl: "3600",
-        upsert: true,
-      }),
+        resume !== initialProfile.resume &&
+        supabase.storage.from("resumes").upload(id, resume, {
+          contentType: resume.type,
+          cacheControl: "3600",
+          upsert: true,
+        }),
     ]);
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
     const errors = results

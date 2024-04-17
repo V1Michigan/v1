@@ -20,13 +20,11 @@ const ProjectLayout = (props: LayoutProps) => {
 
   useEffect(() => {
     const fetchProjects = async () => {
-      const { data } = await supabase
-        .from("projects")
-        .select(
-          // This is necessary due to Supabase's API formatting requirements.
-          // eslint-disable-next-line quotes
-          `*`
-        )
+      const { data } = await supabase.from("projects").select(
+        // This is necessary due to Supabase's API formatting requirements.
+        // eslint-disable-next-line quotes
+        `*`
+      );
       // .eq("is_project", true)
       // .order("user_id", { foreignTable: "startups_members" }); // To make sure roles are applied in the right order
       setProjects(data);
@@ -126,8 +124,8 @@ const ProjectLayout = (props: LayoutProps) => {
       </div>
       <div className="w-full max-w-screen-2xl mt-8 grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 pt-4">
         {projects?.map((project) => {
-          console.log(project)
-          return <ProjectTile project={project} key={project.id} />
+          console.log(project);
+          return <ProjectTile project={project} key={project.id} />;
         })}
       </div>
     </div>

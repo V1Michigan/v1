@@ -1,19 +1,18 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { Fragment, useState } from "react";
-import { DesktopComputerIcon, CodeIcon, InformationCircleIcon, ExternalLinkIcon } from "@heroicons/react/outline";
+import {
+  DesktopComputerIcon,
+  CodeIcon,
+  InformationCircleIcon,
+  ExternalLinkIcon,
+} from "@heroicons/react/outline";
 import { Dialog, Transition } from "@headlessui/react";
 import ProjectProfileTile from "./ProjectProfileTile";
 import { Project } from "../../utils/types";
 
 export default function ProjectTile({ project }: { project: Project }) {
-  const {
-    name,
-    description,
-    logo,
-    link,
-    type,
-  } = project;
+  const { name, description, logo, link, type } = project;
   const [dialogOpen, setDialogOpen] = useState(false);
 
   return (
@@ -77,7 +76,7 @@ export default function ProjectTile({ project }: { project: Project }) {
           </button>
         </div>
       </div>
-      <Transition appear show={dialogOpen} as={Fragment}>
+      {/* <Transition appear show={dialogOpen} as={Fragment}>
         <Dialog
           as="div"
           className="relative z-10"
@@ -118,28 +117,6 @@ export default function ProjectTile({ project }: { project: Project }) {
                       <h1 className="text-5xl font-bold text-gray-900 mr-4">
                         {name}
                       </h1>
-                      {/* <div className="flex flex-row gap-x-3 items-center">
-                        {link && (
-                          <a
-                            href={link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex flex-row text-gray-600 w-6 h-6"
-                          >
-                            <DesktopComputerIcon className="inline-block h-full" />
-                          </a>
-                        )}
-                        {github && (
-                          <a
-                            href={github}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex flex-row text-gray-600 w-6 h-6"
-                          >
-                            <CodeIcon className="inline-block h-full" />
-                          </a>
-                        )}
-                      </div> */}
                     </div>
 
                     <div className="flex flex-col gap-y-4 mt-4">
@@ -165,22 +142,6 @@ export default function ProjectTile({ project }: { project: Project }) {
                           deserunt mollit anim id est laborum.
                         </p>
                       </div>
-                      {/* <div>
-                        <p className="text-xl font-medium">Technologies</p>
-                        <div className="flex flex-wrap gap-x-2 gap-y-1">
-                          {tech?.map((item) => (
-                            <p
-                              key={item}
-                              className={`text-base text-gray-600 ${item !== tech[tech.length - 1]
-                                ? "border-r-[1.5px] border-gray-300 pr-2"
-                                : ""
-                                }`}
-                            >
-                              {item}
-                            </p>
-                          ))}
-                        </div>
-                      </div> */}
                     </div>
                   </div>
                 </Dialog.Panel>
@@ -188,7 +149,7 @@ export default function ProjectTile({ project }: { project: Project }) {
             </div>
           </div>
         </Dialog>
-      </Transition>
+      </Transition> */}
     </>
   );
 }
