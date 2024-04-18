@@ -1,6 +1,7 @@
 export type StartupProfile = {
   name: string | null;
   username: string;
+  email: string;
 };
 
 export type StartupProfileMetadata = {

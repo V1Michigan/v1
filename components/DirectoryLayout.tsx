@@ -21,7 +21,7 @@ const DirectoryLayout = (props: LayoutProps) => {
         .select(
           // This is necessary due to Supabase's API formatting requirements.
           // eslint-disable-next-line quotes
-          `*, profiles!startups_members (username, name), startups_members (role, headshot_src)`
+          `*, profiles!startups_members (username, name, email), startups_members (role, headshot_src)`
         )
         .order("user_id", { foreignTable: "startups_members" }); // To make sure roles are applied in the right order
       setStartups(data);
