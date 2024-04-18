@@ -23,11 +23,11 @@ const ProjectLayout = (props: LayoutProps) => {
     const fetchProjectData = async () => {
       setDataFetchErrors([]);
       const {
-        data: projects,
+        data: projects2,
         error: dbError,
         status,
       } = await supabase.from("projects").select("*");
-      setProjects(projects);
+      setProjects(projects2);
     };
     fetchProjectData();
   }, []);
@@ -39,7 +39,7 @@ const ProjectLayout = (props: LayoutProps) => {
       </div>
       <div className="w-full p-4 md:p-8 md:px-52 flex flex-col items-center bg-[#F8F7FA] min-h-[92vh]">
         <div className="max-w-screen-2xl relative w-full">
-          <h1 className="text-2xl font-bold">What The Community's Built</h1>
+          <h1 className="text-2xl font-bold">What The Community&#39;s Built</h1>
           {/* <div className="flex flex-col items-center max-w-screen-2xl w-full static">
             <div className="w-full rounded-2xl text-black flex flex-col items-center gap-y-4">
               <InternalLink href="projects/upload">
@@ -58,7 +58,10 @@ const ProjectLayout = (props: LayoutProps) => {
                 placeholder="Search for projects"
                 className="px-2 rounded-md border-[1px] border-stone-300 h-10 w-full"
               />
-              <button className="bg-blue-500 text-white px-2 rounded-sm">
+              <button
+                type="button"
+                className="bg-blue-500 text-white px-2 rounded-sm"
+              >
                 Search
               </button>
             </div>

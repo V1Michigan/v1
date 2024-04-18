@@ -76,12 +76,12 @@ const ProjectUpload: NextPage = () => {
     const results = await Promise.all([
       // FIXME: update path to be an id
       logo &&
-      data &&
-      supabase.storage.from("projects").upload(data[0].id, logo, {
-        contentType: logo.type,
-        cacheControl: "3600",
-        upsert: true,
-      }),
+        data &&
+        supabase.storage.from("projects").upload(data[0].id, logo, {
+          contentType: logo.type,
+          cacheControl: "3600",
+          upsert: true,
+        }),
     ]);
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
     const errors = results

@@ -17,18 +17,18 @@ export default function ProjectTile({ project }: { project: Project }) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const { supabase } = useSupabase();
   const [logo, setLogo] = useState<File | undefined>();
-  const [avatars, setAvatars] = useState<any>();
+  const [avatars, setAvatars] = useState<string[]>();
 
   const downloadFromSupabase = useCallback(
     async (
       bucket: string,
-      name: string,
+      name2: string,
       filename: string,
       filetype: string | undefined = undefined
     ) => {
       const { data, error } = await supabase.storage
         .from(bucket)
-        .download(name);
+        .download(name2);
       if (error) {
         return undefined;
       }
@@ -44,7 +44,7 @@ export default function ProjectTile({ project }: { project: Project }) {
 
   useEffect(() => {
     const fetchImage = async () => {
-      const [logo, avatar3] = await Promise.all([
+      const [logo2, avatar3] = await Promise.all([
         downloadFromSupabase(
           "projects",
           `${project.id}`,
@@ -61,11 +61,10 @@ export default function ProjectTile({ project }: { project: Project }) {
         "people/jai.png",
         avatar3 ? URL.createObjectURL(avatar3) : "people/jai.png",
       ]);
-      console.log(logo);
-      setLogo(logo);
+      setLogo(logo2);
     };
     fetchImage();
-  }, []);
+  }, [downloadFromSupabase, project.id, project.name]);
 
   return (
     <>
@@ -84,14 +83,11 @@ export default function ProjectTile({ project }: { project: Project }) {
         </div>
         <div className="pb-3 px-3 flex flex-col gap-1">
           <div className="inline-flex">
-            {avatars?.map((avatar) => {
-              console.log(avatar);
-              return (
-                <span className="avatar rounded-full relative border-[2px] border-[#F8F8F8] w-[30px] overflow-hidden">
-                  <img className="w-full block" src={avatar} />
-                </span>
-              );
-            })}
+            {avatars?.map((avatar) => (
+              <span className="avatar rounded-full relative border-[2px] border-[#F8F8F8] w-[30px] overflow-hidden">
+                <img className="w-full block" src={avatar} alt="temp" />
+              </span>
+            ))}
           </div>
           <div className="flex items-center">
             <h2 className="text-left normal-case font-semibold font-inter text-xl leading-6">
