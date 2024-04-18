@@ -21,4 +21,16 @@ export type Startup = {
   tech: string[];
   website: string;
   profiles: StartupProfile[];
+  github: string;
+  isProject: boolean;
+};
+
+export type Project = {
+  created_at: string;
+  description: string;
+  id: number;
+  logo: string;
+  name: string;
+  type: string;
+  link: string;
 };
