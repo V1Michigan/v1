@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useCallback, useEffect, useState } from "react";
 import {
   DesktopComputerIcon,
   CodeIcon,
@@ -10,72 +10,104 @@ import {
 import { Dialog, Transition } from "@headlessui/react";
 import ProjectProfileTile from "./ProjectProfileTile";
 import { Project } from "../../utils/types";
+import useSupabase from "../../hooks/useSupabase";
 
 export default function ProjectTile({ project }: { project: Project }) {
-  const { name, description, logo, link, type } = project;
+  const { name, description, link, categories } = project;
   const [dialogOpen, setDialogOpen] = useState(false);
+  const { supabase } = useSupabase();
+  const [logo, setLogo] = useState<File | undefined>();
+  const [avatars, setAvatars] = useState<any>();
+
+  const downloadFromSupabase = useCallback(
+    async (
+      bucket: string,
+      name: string,
+      filename: string,
+      filetype: string | undefined = undefined
+    ) => {
+      const { data, error } = await supabase.storage
+        .from(bucket)
+        .download(name);
+      if (error) {
+        return undefined;
+      }
+      if (!data) {
+        return undefined;
+      }
+      return new File([data as BlobPart], filename, {
+        type: filetype || data.type,
+      });
+    },
+    [supabase]
+  );
+
+  useEffect(() => {
+    const fetchImage = async () => {
+      const [logo, avatar3] = await Promise.all([
+        downloadFromSupabase(
+          "projects",
+          `${project.id}`,
+          `${project.name} avatar`
+        ),
+        downloadFromSupabase(
+          "avatars",
+          `14fcb822-497a-41f6-b9ee-2fe9a5d5491f`,
+          `${project.name} avatar`
+        ),
+      ]);
+      setAvatars(['people/hchidam.jpg', 'people/jai.png', avatar3 ? URL.createObjectURL(avatar3) : 'people/jai.png'])
+      console.log(logo)
+      setLogo(logo);
+    }
+    fetchImage();
+  }, [])
 
   return (
     <>
-      <div
-        className="max-w-[25rem] flex flex-col bg-white font-bold p-6 leading-none text-gray-800 uppercase rounded-lg shadow-lg duration-100 border border-stone-300 cursor-pointer"
-        onClick={() => setDialogOpen(true)}
+      <a
+        className="w-full flex flex-col gap-4 bg-white font-bold leading-none text-gray-800 uppercase rounded-lg rounded-b-md hover:shadow-lg duration-100 border border-stone-300 cursor-pointer"
+        href={link}
+        target="_blank"
       >
-        <div className="flex items-center justify-center gap-2">
+        <div className="flex items-center justify-center">
           <img
-            src="/v1_logo_gold.png"
-            className="w-10 h-10 rounded-lg"
+            src={logo ? URL.createObjectURL(logo) : 'landing.jpg'}
+            className="w-[512px] h-[210px] rounded-lg rounded-b-sm object-cover object-center"
             alt={`${name} logo`}
           />
+        </div>
+        <div className="pb-3 px-3 flex flex-col gap-1">
+          <div className="inline-flex">
+            {
+              avatars?.map((avatar) => {
+                console.log(avatar)
+                return (
+                  <span className="avatar rounded-full relative border-[2px] border-[#F8F8F8] w-[30px] overflow-hidden">
+                    <img className="w-full block" src={avatar} />
+                  </span>
+                )
+              })
 
-          <div className="text-center">
-            <h1 className="normal-case text-xl font-semibold leading-6">
+            }
+          </div>
+          <div className="flex items-center">
+            <h2 className="text-left normal-case font-semibold font-inter text-xl leading-6">
               {name}
-            </h1>
+            </h2>
+          </div>
+          <div className="flex items-center">
+            <p className="text-left normal-case font-normal font-inter text-sm leading-6 line-clamp-3">
+              {description}
+            </p>
+          </div>
+          <div className="project-tags flex gap-1">
+            <div className="bg-[#EEEAFB] h-[24px] px-2 rounded-lg flex items-center">
+              <h1 className="text-xs normal-case font-medium">{categories}</h1>
+            </div>
           </div>
         </div>
-
-        <p
-          style={{
-            height: "60px",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-          }}
-          className="normal-case text-base font-normal leading-5 tracking-normal text-left mt-3 text-gray-500"
-        >
-          {description}
-        </p>
-
-        <div className="flex mt-4 justify-between items-center">
-          <button
-            type="button"
-            style={{
-              backgroundColor: "#212936",
-              width: "calc(50% - 6px)",
-            }}
-            className="rounded-lg p-2 font-inter text-sm leading-5 tracking-normal text-left text-gray-200 flex justify-center"
-          >
-            <InformationCircleIcon className=" inline-block h-5 w-5" />
-            <p className="inline-block">See More</p>
-          </button>
-
-          <button
-            type="button"
-            style={{ width: "calc(50% - 6px)" }}
-            className="rounded-lg p-2 font-inter text-sm leading-5 tracking-normal text-left text-gray-600 bg-gray-300 flex justify-center"
-          >
-            <a
-              href={link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex flex-row m-auto items-center gap-1"
-            >
-              <ExternalLinkIcon className=" inline-block h-5 w-5" />
-              <p className="inline-block">Website</p>
-            </a>
-          </button>
-        </div>
-      </div>
+      </a >
       {/* <Transition appear show={dialogOpen} as={Fragment}>
         <Dialog
           as="div"
