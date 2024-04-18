@@ -73,7 +73,6 @@ const ProjectUpload: NextPage = () => {
         link,
         created_at: new Date(),
       });
-    console.log(logo)
     const results = await Promise.all([
       // FIXME: update path to be an id
       logo &&

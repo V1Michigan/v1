@@ -52,16 +52,20 @@ export default function ProjectTile({ project }: { project: Project }) {
         ),
         downloadFromSupabase(
           "avatars",
-          `14fcb822-497a-41f6-b9ee-2fe9a5d5491f`,
+          "14fcb822-497a-41f6-b9ee-2fe9a5d5491f",
           `${project.name} avatar`
         ),
       ]);
-      setAvatars(['people/hchidam.jpg', 'people/jai.png', avatar3 ? URL.createObjectURL(avatar3) : 'people/jai.png'])
-      console.log(logo)
+      setAvatars([
+        "people/hchidam.jpg",
+        "people/jai.png",
+        avatar3 ? URL.createObjectURL(avatar3) : "people/jai.png",
+      ]);
+      console.log(logo);
       setLogo(logo);
-    }
+    };
     fetchImage();
-  }, [])
+  }, []);
 
   return (
     <>
@@ -69,27 +73,25 @@ export default function ProjectTile({ project }: { project: Project }) {
         className="w-full flex flex-col gap-4 bg-white font-bold leading-none text-gray-800 uppercase rounded-lg rounded-b-md hover:shadow-lg duration-100 border border-stone-300 cursor-pointer"
         href={link}
         target="_blank"
+        rel="noreferrer"
       >
         <div className="flex items-center justify-center">
           <img
-            src={logo ? URL.createObjectURL(logo) : 'landing.jpg'}
+            src={logo ? URL.createObjectURL(logo) : "landing.jpg"}
             className="w-[512px] h-[210px] rounded-lg rounded-b-sm object-cover object-center"
             alt={`${name} logo`}
           />
         </div>
         <div className="pb-3 px-3 flex flex-col gap-1">
           <div className="inline-flex">
-            {
-              avatars?.map((avatar) => {
-                console.log(avatar)
-                return (
-                  <span className="avatar rounded-full relative border-[2px] border-[#F8F8F8] w-[30px] overflow-hidden">
-                    <img className="w-full block" src={avatar} />
-                  </span>
-                )
-              })
-
-            }
+            {avatars?.map((avatar) => {
+              console.log(avatar);
+              return (
+                <span className="avatar rounded-full relative border-[2px] border-[#F8F8F8] w-[30px] overflow-hidden">
+                  <img className="w-full block" src={avatar} />
+                </span>
+              );
+            })}
           </div>
           <div className="flex items-center">
             <h2 className="text-left normal-case font-semibold font-inter text-xl leading-6">
@@ -107,7 +109,7 @@ export default function ProjectTile({ project }: { project: Project }) {
             </div>
           </div>
         </div>
-      </a >
+      </a>
       {/* <Transition appear show={dialogOpen} as={Fragment}>
         <Dialog
           as="div"

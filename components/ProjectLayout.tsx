@@ -26,13 +26,11 @@ const ProjectLayout = (props: LayoutProps) => {
         data: projects,
         error: dbError,
         status,
-      } = (await supabase
-        .from("projects")
-        .select("*"));
+      } = await supabase.from("projects").select("*");
       setProjects(projects);
-    }
+    };
     fetchProjectData();
-  }, [])
+  }, []);
 
   return (
     <>
@@ -56,8 +54,13 @@ const ProjectLayout = (props: LayoutProps) => {
           </div> */}
           <div className="flex items-center justify-between mt-4">
             <div className="gap-2 flex w-[40%]">
-              <input placeholder="Search for projects" className="px-2 rounded-md border-[1px] border-stone-300 h-10 w-full"></input>
-              <button className="bg-blue-500 text-white px-2 rounded-sm">Search</button>
+              <input
+                placeholder="Search for projects"
+                className="px-2 rounded-md border-[1px] border-stone-300 h-10 w-full"
+              />
+              <button className="bg-blue-500 text-white px-2 rounded-sm">
+                Search
+              </button>
             </div>
             <div className="">
               <InternalLink href="projects/upload">
@@ -72,9 +75,9 @@ const ProjectLayout = (props: LayoutProps) => {
           </div>
         </div>
         <div className="w-full max-w-screen-2xl grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 pt-4">
-          {projects?.map((project) => {
-            return <ProjectTile project={project} key={project.id} />;
-          })}
+          {projects?.map((project) => (
+            <ProjectTile project={project} key={project.id} />
+          ))}
         </div>
       </div>
     </>
