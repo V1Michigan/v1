@@ -32,6 +32,6 @@ export type Project = {
   id: number;
   logo: string;
   name: string;
-  type: string;
+  categories: string;
   link: string;
 };

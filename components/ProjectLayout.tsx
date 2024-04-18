@@ -17,118 +17,73 @@ const ProjectLayout = (props: LayoutProps) => {
   const [studentStatus, setStudentStatus] = useState<string>("");
   const [projectType, setProjectType] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [dataFetchErrors, setDataFetchErrors] = useState<string[]>([]);
 
   useEffect(() => {
-    const fetchProjects = async () => {
-      const { data } = await supabase.from("projects").select(
-        // This is necessary due to Supabase's API formatting requirements.
-        // eslint-disable-next-line quotes
-        `*`
-      );
-      // .eq("is_project", true)
-      // .order("user_id", { foreignTable: "startups_members" }); // To make sure roles are applied in the right order
-      setProjects(data);
+    const fetchProjectData = async () => {
+      setDataFetchErrors([]);
+      const {
+        data: projects2,
+        error: dbError,
+        status,
+      } = await supabase.from("projects").select("*");
+      setProjects(projects2);
     };
-    fetchProjects();
+    fetchProjectData();
   }, []);
 
   return (
-    <div className="w-full p-4 md:p-8 flex flex-col items-center bg-gray-50">
-      <div className="max-w-screen-2xl relative w-full">
-        <div className="flex flex-col items-center max-w-screen-2xl w-full static">
-          <div className="w-full rounded-2xl text-black flex flex-col items-center gap-y-4">
-            <h1 className="font-bold text-5xl mt-2 text-center">{title}</h1>
-            <h3 className="font-regular text-lg text-center">
-              {directoryDescription}
-            </h3>
-            <InternalLink href="projects/upload">
+    <>
+      <div className="w-full bg-white px-52 h-[15rem] flex justify-center  flex-col gap-3">
+        <div className="text-6xl font-black">V1 Community Projects</div>
+      </div>
+      <div className="w-full p-4 md:p-8 md:px-52 flex flex-col items-center bg-[#F8F7FA] min-h-[92vh]">
+        <div className="max-w-screen-2xl relative w-full">
+          <h1 className="text-2xl font-bold">What The Community&#39;s Built</h1>
+          {/* <div className="flex flex-col items-center max-w-screen-2xl w-full static">
+            <div className="w-full rounded-2xl text-black flex flex-col items-center gap-y-4">
+              <InternalLink href="projects/upload">
+                <button
+                  type="button"
+                  className="bg-gradient-to-r from-yellow-600 to-yellow-700 hover:opacity-75 hover:shadow-lg text-gray-100 text-lg font-semibold py-2.5 px-6 transition duration-300 rounded-lg shadow"
+                >
+                  Add your project!
+                </button>
+              </InternalLink>
+            </div>
+          </div> */}
+          <div className="flex items-center justify-between mt-4">
+            <div className="gap-2 flex w-[40%]">
+              <input
+                placeholder="Search for projects"
+                className="px-2 rounded-md border-[1px] border-stone-300 h-10 w-full"
+              />
               <button
                 type="button"
-                className="bg-gradient-to-r from-yellow-600 to-yellow-700 hover:opacity-75 hover:shadow-lg text-gray-100 text-lg font-semibold py-2.5 px-6 transition duration-300 rounded-lg shadow"
+                className="bg-blue-500 text-white px-2 rounded-sm"
               >
-                Add your project!
+                Search
               </button>
-            </InternalLink>
+            </div>
+            <div className="">
+              <InternalLink href="projects/upload">
+                <button
+                  type="button"
+                  className="bg-gradient-to-r from-yellow-600 to-yellow-700 hover:opacity-75 hover:shadow-lg text-gray-100 text-md font-semibold py-2.5 px-6 transition duration-300 rounded-lg shadow"
+                >
+                  Add your project!
+                </button>
+              </InternalLink>
+            </div>
           </div>
         </div>
+        <div className="w-full max-w-screen-2xl grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 pt-4">
+          {projects?.map((project) => (
+            <ProjectTile project={project} key={project.id} />
+          ))}
+        </div>
       </div>
-      <div className="flex gap-4 mt-8">
-        <select
-          className="bg-gray-200 border-none rounded-md w-48 text-sm "
-          value={cohort}
-          onChange={(e) => setCohort(e.target.value)}
-        >
-          <option value="">Cohort</option>
-          <option value="W23">W23</option>
-          <option value="F23">F23</option>
-          <option value="W24">W24</option>
-        </select>
-
-        <select
-          className=" bg-gray-200 border-none rounded-md w-32 text-sm "
-          value={studentStatus}
-          onChange={(e) => setStudentStatus(e.target.value)}
-        >
-          <option value="">Role</option>
-          <option value="currentStudent">Student</option>
-          <option value="alumni">Alumni</option>
-        </select>
-
-        <select
-          className="bg-gray-200 border-none rounded-md w-48 text-sm"
-          value={projectType}
-          onChange={(e) => setProjectType(e.target.value)}
-        >
-          <option value="">Type</option>
-          <option value="Mobile App">Mobile App</option>
-          <option value="Web">Web</option>
-          <option value="Machine Learning">Machine Learning</option>
-          <option value="Game Development">Game Development</option>
-        </select>
-
-        <form
-          className="flex items-center max-w-sm gap-x-2"
-          onSubmit={() => console.log("search")}
-        >
-          <div className="relative w-full">
-            <input
-              type="text"
-              className="bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5"
-              placeholder="Search"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
-          <button
-            type="submit"
-            className="p-2.5 ms-2 text-sm font-medium text-white bg-yellow-600 rounded-lg border border-gray-300"
-          >
-            <svg
-              className="w-4 h-4"
-              aria-hidden="true"
-              fill="none"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-              />
-            </svg>
-            <span className="sr-only">Search</span>
-          </button>
-        </form>
-      </div>
-      <div className="w-full max-w-screen-2xl mt-8 grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 pt-4">
-        {projects?.map((project) => {
-          console.log(project);
-          return <ProjectTile project={project} key={project.id} />;
-        })}
-      </div>
-    </div>
+    </>
   );
 };
 

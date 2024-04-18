@@ -8,12 +8,14 @@ import Head from "../../components/Head";
 import isObjectEqual from "../../utils/isObjectEqual";
 import useSupabase from "../../hooks/useSupabase";
 import NavbarBuilder from "../../components/NavBar";
+import FormikDropzone from "../../components/profile/fields/FormikDropzone";
+import FormikDropzone2 from "../../components/projects/FormikDropzone2";
 
 // Username included separately
 export type MemberProject = {
   name: string;
   description: string;
-  type: string;
+  categories: string;
   logo?: File;
   link?: string;
   created_at?: string;
@@ -24,7 +26,7 @@ type ProjectType = {
   id: string;
   name: string;
   description: string;
-  type: string;
+  categories: string;
   link: string;
   created_at: Date;
 };
@@ -32,7 +34,7 @@ type ProjectType = {
 const defaultProject = {
   name: "",
   description: "",
-  type: "mobile",
+  categories: "web",
   link: "",
 };
 
@@ -61,13 +63,13 @@ const ProjectUpload: NextPage = () => {
       return;
     }
     setFormSubmitErrors([]);
-    const { name, logo, description, type, link } = projectData;
+    const { name, logo, description, categories, link } = projectData;
     const { data, error } = await supabase
       .from<ProjectType>("projects")
       .insert({
         name,
         description,
-        type,
+        categories,
         link,
         created_at: new Date(),
       });
@@ -75,7 +77,7 @@ const ProjectUpload: NextPage = () => {
       // FIXME: update path to be an id
       logo &&
         data &&
-        supabase.storage.from("projects").upload(data[0].id || name, logo, {
+        supabase.storage.from("projects").upload(data[0].id, logo, {
           contentType: logo.type,
           cacheControl: "3600",
           upsert: true,
@@ -159,7 +161,7 @@ const ProjectUpload: NextPage = () => {
                         className="text-black font-sans text-sm font-semibold"
                         htmlFor="name"
                       >
-                        Type
+                        Categories
                       </label>
                       <Field
                         className="mt-1 self-center focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md text-black"
@@ -195,7 +197,18 @@ const ProjectUpload: NextPage = () => {
                       >
                         Logo
                       </label>
-                      <Field
+                      <FormikDropzone2
+                        name="logo"
+                        message="Upload a project logo"
+                        fileType={["image/jpeg", "image/png", "image/gif"]}
+                        validate={(logo: File) => {
+                          if (logo?.size > 1 * 1024 * 1024) {
+                            return "Please limit avatar size to 2 MB";
+                          }
+                          return "";
+                        }}
+                      />
+                      {/* <Field
                         className="border-[1px] !outline-none bg-white p-2 mt-1 self-center focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md text-black"
                         type="file"
                         name="logo"
@@ -204,12 +217,13 @@ const ProjectUpload: NextPage = () => {
                         )}
                         placeholder="Project logo..."
                         validate={(logo: File) => {
+                          console.log(logo)
                           if (logo?.size > 1 * 1024 * 1024) {
                             return "Please limit avatar size to 2 MB";
                           }
                           return "";
                         }}
-                      />
+                      /> */}
                     </div>
                     <button
                       type="submit"

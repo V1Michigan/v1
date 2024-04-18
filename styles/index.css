@@ -8,7 +8,7 @@
 
 /* Write your own custom component styles here */
 .btn-gold-gradient {
-  @apply bg-gradient-to-r from-yellow-600 to-yellow-700 hover:bg-blue-500 hover:opacity-75 hover:shadow-lg text-gray-100 text-sm font-semibold py-2 px-4 transition duration-300 rounded shadow
+  @apply bg-gradient-to-r from-yellow-600 to-yellow-700 hover:bg-blue-500 hover:opacity-75 hover:shadow-lg text-gray-100 text-sm font-semibold py-2 px-4 transition duration-300 rounded shadow;
 }
 
 .btn-blue {
@@ -175,4 +175,8 @@
   .locked {
     @apply bg-gray-200;
   }
+}
+
+.avatar:not(:last-child) {
+  margin-right: -15px;
 }

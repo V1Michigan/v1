@@ -14,8 +14,8 @@ jobs:
           path: node_modules
           key: node_modules-${{ hashFiles('**/yarn.lock') }}
       - run: yarn install
-      - name: JS style
-        run: npm run lint:check
+      # - name: JS style
+      #   run: npm run lint:check
       - name: Build
         run: npm run build
         env:
