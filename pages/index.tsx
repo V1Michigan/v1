@@ -90,7 +90,7 @@ export default function IndexPage() {
 
       <div className="bg-gradient-to-r from-gray-900 to-black">
         <p className="footer text-gray-200 text-center font-semibold py-8">
-          &copy; 2023 V1 |{" "}
+          &copy; 2024 V1 @ Michigan |{" "}
           <a href="mailto:team@v1michigan.com">team@v1michigan.com</a>
         </p>
       </div>
