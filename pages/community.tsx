@@ -24,7 +24,7 @@ const SendSlack: NextPage = () => {
 
   useEffect(() => {
     router.push(
-      "https://join.slack.com/t/v1community/shared_invite/zt-1rux4efyc-STBoY07IAKYpCODM5ls5~g"
+      "https://join.slack.com/t/v1community/shared_invite/zt-2m0uqdq9s-KxqvHvehTRpNGUe3J9Ocpg"
     );
   }, [router]);
 
