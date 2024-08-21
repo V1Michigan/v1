@@ -12,6 +12,11 @@ import useSupabase from "../../hooks/useSupabase";
 import { Startup } from "../../utils/types";
 import StartupProfileTile from "./StartupProfileTile";
 
+interface Favorite {
+  user_id: string;
+  startup_id: number;
+}
+
 export default function StartupTile({ startup }: { startup: Startup }) {
   const {
     name,
@@ -33,8 +38,8 @@ export default function StartupTile({ startup }: { startup: Startup }) {
         return;
       }
 
-      const { data, error } = await supabase
-        .from("favorites")
+      const { data } = await supabase
+        .from<Favorite>("favorites")
         .select("*")
         .eq("user_id", user.id)
         .eq("startup_id", startup.id)
