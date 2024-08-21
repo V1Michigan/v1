@@ -1,11 +1,14 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import {
   InformationCircleIcon,
   ExternalLinkIcon,
+  HeartIcon as HeartOutlineIcon,
 } from "@heroicons/react/outline";
+import { HeartIcon as HeartFilledIcon } from "@heroicons/react/solid";
 import { Dialog, Transition } from "@headlessui/react";
+import useSupabase from "../../hooks/useSupabase";
 import { Startup } from "../../utils/types";
 import StartupProfileTile from "./StartupProfileTile";
 
@@ -20,6 +23,56 @@ export default function StartupTile({ startup }: { startup: Startup }) {
     startups_members: profileMetadata,
   } = startup;
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  const { supabase, user } = useSupabase();
+
+  useEffect(() => {
+    const checkIfFavorite = async () => {
+      if (!user) {
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from("favorites")
+        .select("*")
+        .eq("user_id", user.id)
+        .eq("startup_id", startup.id)
+        .single();
+
+      if (data) {
+        setIsFavorite(true);
+      }
+    };
+
+    checkIfFavorite();
+  }, [user, supabase, startup.id]);
+
+  const toggleFavorite = async () => {
+    if (!user) {
+      return;
+    }
+
+    if (isFavorite) {
+      const { error } = await supabase
+        .from("favorites")
+        .delete()
+        .eq("user_id", user.id)
+        .eq("startup_id", startup.id);
+
+      if (!error) {
+        setIsFavorite(false);
+      }
+    } else {
+      const { error } = await supabase
+        .from("favorites")
+        .insert([{ user_id: user.id, startup_id: startup.id }]);
+
+      if (!error) {
+        setIsFavorite(true);
+      }
+    }
+  };
 
   return (
     <>
@@ -110,7 +163,7 @@ export default function StartupTile({ startup }: { startup: Startup }) {
                 leaveTo="opacity-0 scale-95"
               >
                 <Dialog.Panel className="w-full max-w-xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                  <div className="flex flex-col gap-y-4">
+                  <div className="relative flex flex-col gap-y-4">
                     <div className="flex gap-x-8">
                       <img
                         src={logo}
@@ -118,9 +171,23 @@ export default function StartupTile({ startup }: { startup: Startup }) {
                         alt={`${name} logo`}
                       />
                       <div className="flex flex-col gap-y-4">
-                        <h1 className="text-4xl font-bold text-gray-900">
-                          {name}
-                        </h1>
+                        <div className="flex gap-3">
+                          <h1 className="text-4xl font-bold text-gray-900">
+                            {name}
+                          </h1>
+                          <button
+                            type="button"
+                            onClick={toggleFavorite}
+                            className="hover:scale-110 transition-transform duration-200 focus:outline-none"
+                          >
+                            {isFavorite ? (
+                              <HeartFilledIcon className="w-7 h-7 text-red-500" />
+                            ) : (
+                              <HeartOutlineIcon className="w-7 h-7 text-gray-500 stroke-[1.5px]" />
+                            )}
+                          </button>
+                        </div>
+
                         <a
                           href={website}
                           target="_blank"
@@ -142,7 +209,10 @@ export default function StartupTile({ startup }: { startup: Startup }) {
                         ))}
                       </div>
                     </div>
-                    <div className="flex flex-wrap justify-center">
+                    <span className="text-primary font-medium text-lg">
+                      People
+                    </span>
+                    <div className="flex flex-wrap justify-between gap-4">
                       {profiles?.map((profile, i) => (
                         <StartupProfileTile
                           startupProfile={profile}
@@ -150,6 +220,9 @@ export default function StartupTile({ startup }: { startup: Startup }) {
                         />
                       ))}
                     </div>
+                    <span className="text-primary font-medium text-lg">
+                      Projects
+                    </span>
                   </div>
                 </Dialog.Panel>
               </Transition.Child>
