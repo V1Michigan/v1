@@ -9,7 +9,7 @@ import {
 import { HeartIcon as HeartFilledIcon } from "@heroicons/react/solid";
 import { Dialog, Transition } from "@headlessui/react";
 import useSupabase from "../../hooks/useSupabase";
-import { Startup } from "../../utils/types";
+import { Project, Startup } from "../../utils/types";
 import StartupProfileTile from "./StartupProfileTile";
 
 interface Favorite {
@@ -29,6 +29,7 @@ export default function StartupTile({ startup }: { startup: Startup }) {
   } = startup;
   const [dialogOpen, setDialogOpen] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
+  const [projects, setProjects] = useState<Project[]>([]);
 
   const { supabase, user } = useSupabase();
 
@@ -50,7 +51,19 @@ export default function StartupTile({ startup }: { startup: Startup }) {
       }
     };
 
+    const fetchProjects = async () => {
+      const { data } = await supabase
+        .from<Project>("projects")
+        .select("*")
+        .eq("startup_id", startup.id);
+
+      if (data) {
+        setProjects(data);
+      }
+    };
+
     checkIfFavorite();
+    fetchProjects();
   }, [user, supabase, startup.id]);
 
   const toggleFavorite = async () => {
@@ -214,20 +227,40 @@ export default function StartupTile({ startup }: { startup: Startup }) {
                         ))}
                       </div>
                     </div>
-                    <span className="text-primary font-medium text-lg">
-                      People
-                    </span>
-                    <div className="flex flex-wrap justify-between gap-4">
-                      {profiles?.map((profile, i) => (
-                        <StartupProfileTile
-                          startupProfile={profile}
-                          startupProfileMetadata={profileMetadata[i]}
-                        />
-                      ))}
+                    <div className="flex flex-col">
+                      <span className="text-primary font-medium text-lg mb-2">
+                        People
+                      </span>
+                      <div className="grid grid-cols-4 justify-between">
+                        {profiles?.map((profile, i) => (
+                          <StartupProfileTile
+                            startupProfile={profile}
+                            startupProfileMetadata={profileMetadata[i]}
+                          />
+                        ))}
+                      </div>
                     </div>
-                    <span className="text-primary font-medium text-lg">
-                      Projects
-                    </span>
+
+                    <div className="flex flex-col">
+                      <span className="text-primary font-medium text-lg mb-2">
+                        Projects
+                      </span>
+                      <div className="grid grid-cols-2 justify-between gap-4">
+                        {projects?.map((project) => (
+                          <div
+                            key={project.id}
+                            className=" bg-gray-100 rounded-lg flex flex-col gap-y-1 p-3"
+                          >
+                            <p className="text-sm text-gray-900">
+                              {project.name}
+                            </p>
+                            <p className="text-xs text-gray-600">
+                              {project.description}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
                   </div>
                 </Dialog.Panel>
               </Transition.Child>
