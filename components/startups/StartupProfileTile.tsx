@@ -27,10 +27,9 @@ export default function StartupProfileTile({
   const [connectionSent, setConnectionSent] = useState<boolean>(false);
   const [connectionMessage, setConnectionMessage] = useState<string>("");
 
-  const { username, rank } = useSupabase();
-  console.log(rank)
-  console.log(username)
-  const canConnect = rank && rank >= 2;
+  const { rank } = useSupabase();
+  const v1Community = rank && rank >= 1;
+  const v1Member = rank && rank >= 2;
 
   const anonymousPersonImage =
     "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1677509740.jpg";
@@ -120,28 +119,45 @@ export default function StartupProfileTile({
                 leaveTo="opacity-0"
               >
                 <Dialog.Panel className="w-full max-w-lg transform overflow-hidden rounded-2xl bg-white px-6 py-2 text-left align-middle shadow-xl transition-all">
-                  {canConnect ? (
-                    <div className="flex justify-between items-center">
-                      <input
-                        value={connectionMessage}
-                        onChange={(evt) =>
-                          setConnectionMessage(evt.target.value)
-                        }
-                        className="w-full text-sm border border-gray-400 border-1 rounded h-fit"
-                        type="text"
-                        placeholder={`Write a message to ${displayName}...`}
-                      />
-                      <button
-                        className="text-sm text-gray-400 p-4"
-                        type="button"
-                        onClick={sendConnectionMessage}
-                      >
-                        Send
-                      </button>
+                  {v1Community ? (
+                    <div className="flex flex-col justify-between items-center">
+                      <p className="text-sm text-gray-400 p-4">
+                        <a
+                          href="https://app.slack.com/client/T04JWPLEL5B/C04KPD6KS80"
+                          target="_blank"
+                          rel="noreferrer"
+                        >{`Message ${displayName} on Slack`}</a>
+                      </p>
+                      {v1Member ? (
+                        <>
+                          <input
+                            value={connectionMessage}
+                            onChange={(evt) =>
+                              setConnectionMessage(evt.target.value)
+                            }
+                            className="w-full text-sm border border-gray-400 border-1 rounded h-fit"
+                            type="text"
+                            placeholder={`Send a message by email to ${displayName}...`}
+                          />
+                          <button
+                            className="text-sm text-gray-400 p-4"
+                            type="button"
+                            onClick={sendConnectionMessage}
+                          >
+                            Send
+                          </button>
+                        </>
+                      ) : (
+                        <p className="text-sm text-gray-400">
+                          Become a V1 Member to connect with {displayName}{" "}
+                          through email!
+                        </p>
+                      )}
                     </div>
                   ) : (
                     <p className="text-sm text-gray-400">
-                      Become a V1 Member to connect with {displayName}!
+                      Finish signing in to connect with {displayName} through
+                      Slack!
                     </p>
                   )}
                 </Dialog.Panel>
