@@ -1,5 +1,6 @@
 import { useState, Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
+import useSupabase from "../../hooks/useSupabase";
 import supabase from "../../utils/supabaseClient";
 import { StartupProfile, StartupProfileMetadata } from "../../utils/types";
 
@@ -15,18 +16,27 @@ export default function StartupProfileTile({
   startupProfile: StartupProfile;
   startupProfileMetadata: StartupProfileMetadata;
 }) {
-  const { email, username, name } = startupProfile;
-  const displayName = name ?? username;
+  const {
+    email: profileEmail,
+    username: profileUsername,
+    name: profileName,
+  } = startupProfile;
+  const displayName = profileName ?? profileUsername;
   const { role, headshot_src: headshotSrc } = startupProfileMetadata;
   const [connectDialogOpen, setConnectDialogOpen] = useState<boolean>(false);
   const [connectionSent, setConnectionSent] = useState<boolean>(false);
   const [connectionMessage, setConnectionMessage] = useState<string>("");
-  const session = supabase.auth.session();
+
+  const { username, rank } = useSupabase();
+  console.log(rank)
+  console.log(username)
+  const canConnect = rank && rank >= 2;
 
   const anonymousPersonImage =
     "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1677509740.jpg";
 
   function sendConnectionMessage() {
+    const session = supabase.auth.session();
     // Null handling.
     if (!session) {
       return;
@@ -34,7 +44,7 @@ export default function StartupProfileTile({
     const { access_token: accessToken } = session;
 
     const body = JSON.stringify({
-      recipient: email,
+      recipient: profileEmail,
       message: connectionMessage,
     });
     fetch(CONNECTION_REQUEST_URL, {
@@ -110,7 +120,7 @@ export default function StartupProfileTile({
                 leaveTo="opacity-0"
               >
                 <Dialog.Panel className="w-full max-w-lg transform overflow-hidden rounded-2xl bg-white px-6 py-2 text-left align-middle shadow-xl transition-all">
-                  {session ? (
+                  {canConnect ? (
                     <div className="flex justify-between items-center">
                       <input
                         value={connectionMessage}
@@ -131,7 +141,7 @@ export default function StartupProfileTile({
                     </div>
                   ) : (
                     <p className="text-sm text-gray-400">
-                      Sign in to connect with {displayName}!
+                      Become a V1 Member to connect with {displayName}!
                     </p>
                   )}
                 </Dialog.Panel>
