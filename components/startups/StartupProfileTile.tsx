@@ -27,9 +27,11 @@ export default function StartupProfileTile({
   const [connectionSent, setConnectionSent] = useState<boolean>(false);
   const [connectionMessage, setConnectionMessage] = useState<string>("");
 
-  const { rank } = useSupabase();
+  const { rank, slackDeepLink } = useSupabase();
   const v1Community = rank && rank >= 1;
   const v1Member = rank && rank >= 2;
+  const profileSlackLink =
+    slackDeepLink ?? "https://app.slack.com/client/T04JWPLEL5B/C04KPD6KS80";
 
   const anonymousPersonImage =
     "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1677509740.jpg";
@@ -123,7 +125,7 @@ export default function StartupProfileTile({
                     <div className="flex flex-col justify-between items-center">
                       <p className="text-sm text-gray-400 p-4">
                         <a
-                          href="https://app.slack.com/client/T04JWPLEL5B/C04KPD6KS80"
+                          href={profileSlackLink}
                           target="_blank"
                           rel="noreferrer"
                         >{`Message ${displayName} on Slack`}</a>
