@@ -51,8 +51,6 @@ interface SupabaseContextInterface {
   setUsername: (username: string) => void;
   rank: Rank | null;
   setRank: (rank: Rank) => void;
-  slackDeepLink: string | null;
-  setSlackDeepLink: (slackDeepLink: string) => void;
   profileComplete: boolean | null;
 }
 
@@ -121,8 +119,6 @@ function SupabaseProvider({
     }
   };
 
-  const [slackDeepLink, setSlackDeepLink] = useState<string | null>(null);
-
   const [profileComplete, setProfileComplete] = useState<boolean | null>(null);
 
   useEffect(() => {
@@ -135,7 +131,6 @@ function SupabaseProvider({
             `
             username,
             bio,
-            slack_deeplink,
             ranks (
               rank
             )
@@ -146,7 +141,6 @@ function SupabaseProvider({
           .single()) as PostgrestSingleResponse<{
           username: string;
           ranks: { rank: number };
-          slack_deeplink: string | null;
           bio: string | null;
         }>;
 
@@ -165,7 +159,6 @@ function SupabaseProvider({
         setUsername(username_ ?? null);
         // setRank_, not setRank, don't need to update the DB
         setRank_(fetchedRank);
-        setSlackDeepLink(data.slack_deeplink ?? null);
       }
       setLoading(false);
 
@@ -197,8 +190,6 @@ function SupabaseProvider({
         setUsername,
         rank,
         setRank,
-        slackDeepLink,
-        setSlackDeepLink,
         profileComplete,
       }}
     >

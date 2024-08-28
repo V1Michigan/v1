@@ -20,18 +20,19 @@ export default function StartupProfileTile({
     email: profileEmail,
     username: profileUsername,
     name: profileName,
+    slack_deeplink: profileSlackLink,
   } = startupProfile;
   const displayName = profileName ?? profileUsername;
+  const slackLink =
+    profileSlackLink ?? "https://app.slack.com/client/T04JWPLEL5B/C04KPD6KS80";
   const { role, headshot_src: headshotSrc } = startupProfileMetadata;
   const [connectDialogOpen, setConnectDialogOpen] = useState<boolean>(false);
   const [connectionSent, setConnectionSent] = useState<boolean>(false);
   const [connectionMessage, setConnectionMessage] = useState<string>("");
 
-  const { rank, slackDeepLink } = useSupabase();
+  const { rank } = useSupabase();
   const v1Community = rank && rank >= 1;
   const v1Member = rank && rank >= 2;
-  const profileSlackLink =
-    slackDeepLink ?? "https://app.slack.com/client/T04JWPLEL5B/C04KPD6KS80";
 
   const anonymousPersonImage =
     "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1677509740.jpg";
@@ -125,7 +126,7 @@ export default function StartupProfileTile({
                     <div className="flex flex-col justify-between items-center">
                       <p className="text-sm text-gray-400 p-4">
                         <a
-                          href={profileSlackLink}
+                          href={slackLink}
                           target="_blank"
                           rel="noreferrer"
                         >{`Message ${displayName} on Slack`}</a>
