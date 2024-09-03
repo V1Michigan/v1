@@ -1,13 +1,21 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import {
   InformationCircleIcon,
   ExternalLinkIcon,
+  HeartIcon as HeartOutlineIcon,
 } from "@heroicons/react/outline";
+import { HeartIcon as HeartFilledIcon } from "@heroicons/react/solid";
 import { Dialog, Transition } from "@headlessui/react";
-import { Startup } from "../../utils/types";
+import useSupabase from "../../hooks/useSupabase";
+import { Project, Startup } from "../../utils/types";
 import StartupProfileTile from "./StartupProfileTile";
+
+interface Favorite {
+  user_id: string;
+  startup_id: number;
+}
 
 export default function StartupTile({ startup }: { startup: Startup }) {
   const {
@@ -20,6 +28,69 @@ export default function StartupTile({ startup }: { startup: Startup }) {
     startups_members: profileMetadata,
   } = startup;
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [projects, setProjects] = useState<Project[]>([]);
+
+  const { supabase, user } = useSupabase();
+
+  useEffect(() => {
+    const checkIfFavorite = async () => {
+      if (!user) {
+        return;
+      }
+
+      const { data } = await supabase
+        .from<Favorite>("favorites")
+        .select("*")
+        .eq("user_id", user.id)
+        .eq("startup_id", startup.id)
+        .single();
+
+      if (data) {
+        setIsFavorite(true);
+      }
+    };
+
+    const fetchProjects = async () => {
+      const { data } = await supabase
+        .from<Project>("projects")
+        .select("*")
+        .eq("startup_id", startup.id);
+
+      if (data) {
+        setProjects(data);
+      }
+    };
+
+    checkIfFavorite();
+    fetchProjects();
+  }, [user, supabase, startup.id]);
+
+  const toggleFavorite = async () => {
+    if (!user) {
+      return;
+    }
+
+    if (isFavorite) {
+      const { error } = await supabase
+        .from("favorites")
+        .delete()
+        .eq("user_id", user.id)
+        .eq("startup_id", startup.id);
+
+      if (!error) {
+        setIsFavorite(false);
+      }
+    } else {
+      const { error } = await supabase
+        .from("favorites")
+        .insert([{ user_id: user.id, startup_id: startup.id }]);
+
+      if (!error) {
+        setIsFavorite(true);
+      }
+    }
+  };
 
   return (
     <>
@@ -110,7 +181,7 @@ export default function StartupTile({ startup }: { startup: Startup }) {
                 leaveTo="opacity-0 scale-95"
               >
                 <Dialog.Panel className="w-full max-w-xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                  <div className="flex flex-col gap-y-4">
+                  <div className="relative flex flex-col gap-y-4">
                     <div className="flex gap-x-8">
                       <img
                         src={logo}
@@ -118,9 +189,23 @@ export default function StartupTile({ startup }: { startup: Startup }) {
                         alt={`${name} logo`}
                       />
                       <div className="flex flex-col gap-y-4">
-                        <h1 className="text-4xl font-bold text-gray-900">
-                          {name}
-                        </h1>
+                        <div className="flex gap-3">
+                          <h1 className="text-4xl font-bold text-gray-900">
+                            {name}
+                          </h1>
+                          <button
+                            type="button"
+                            onClick={toggleFavorite}
+                            className="hover:scale-110 transition-transform duration-200 focus:outline-none"
+                          >
+                            {isFavorite ? (
+                              <HeartFilledIcon className="w-7 h-7 text-red-500" />
+                            ) : (
+                              <HeartOutlineIcon className="w-7 h-7 text-gray-500 stroke-[1.5px]" />
+                            )}
+                          </button>
+                        </div>
+
                         <a
                           href={website}
                           target="_blank"
@@ -142,13 +227,39 @@ export default function StartupTile({ startup }: { startup: Startup }) {
                         ))}
                       </div>
                     </div>
-                    <div className="flex flex-wrap justify-center">
-                      {profiles?.map((profile, i) => (
-                        <StartupProfileTile
-                          startupProfile={profile}
-                          startupProfileMetadata={profileMetadata[i]}
-                        />
-                      ))}
+                    <div className="flex flex-col">
+                      <span className="text-primary font-medium text-lg mb-2">
+                        People
+                      </span>
+                      <div className="grid grid-cols-4 justify-between">
+                        {profiles?.map((profile, i) => (
+                          <StartupProfileTile
+                            startupProfile={profile}
+                            startupProfileMetadata={profileMetadata[i]}
+                          />
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col">
+                      <span className="text-primary font-medium text-lg mb-2">
+                        Projects
+                      </span>
+                      <div className="grid grid-cols-2 justify-between gap-4">
+                        {projects?.map((project) => (
+                          <div
+                            key={project.id}
+                            className=" bg-gray-100 rounded-lg flex flex-col gap-y-1 p-3"
+                          >
+                            <p className="text-sm text-gray-900">
+                              {project.name}
+                            </p>
+                            <p className="text-xs text-gray-600">
+                              {project.description}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </Dialog.Panel>
