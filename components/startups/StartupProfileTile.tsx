@@ -16,8 +16,8 @@ export default function StartupProfileTile({
   startupProfile: StartupProfile;
   startupProfileMetadata: StartupProfileMetadata;
 }) {
-  const { email, username, name } = startupProfile;
-  const displayName = name ?? username;
+  const { email = '', username = '', name = '' } = startupProfile;
+  const displayName = name || username || '';
   const { role, headshot_src: headshotSrc } = startupProfileMetadata;
   const [connectDialogOpen, setConnectDialogOpen] = useState<boolean>(false);
   const [connectionSent, setConnectionSent] = useState<boolean>(false);
