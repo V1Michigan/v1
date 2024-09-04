@@ -189,9 +189,6 @@ export default function ProjectTile({ project }: { project: Project }) {
                               <HeartOutlineIcon className="w-7 h-7 text-gray-500 stroke-[1.5px]" />
                             )}
                           </button>
-                          <button className="max-h-12 px-6 py-2 bg-black text-white hover:bg-black/80 rounded-md mt-1">
-                            Connect
-                          </button>
                         </div>
 
                         <a
@@ -223,6 +220,9 @@ export default function ProjectTile({ project }: { project: Project }) {
                               <h1 className="text-sm font-medium">{profile.name}</h1>
                             </div>
                           ))}
+                          <button className="px-6 py-2 bg-black text-white hover:bg-black/80 rounded-md mt-2">
+                            Connect
+                          </button>
                         </div>
                       </div>
                     </div>
