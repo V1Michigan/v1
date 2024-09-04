@@ -6,8 +6,8 @@ export type StartupProfile = {
 };
 
 export type StartupProfileMetadata = {
-  role: string;
-  headshot_src: string;
+  role?: string;
+  headshot_src?: string;
 };
 
 export type Startup = {
@@ -33,10 +33,14 @@ export type Project = {
   id: number;
   logo_url: string;
   name: string;
-  categories: string;
+  categories: string[];
   link: string;
   startup_id: number;
-  projects_members: {
-    member_id: string;
+  profiles: {
+    id: string;
+    username: string;
+    email: string;
+    name: string;
+    slack_deeplink: string;
   }[];
 };

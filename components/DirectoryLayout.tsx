@@ -1,4 +1,4 @@
-import { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import supabase from "../utils/supabaseClient";
 import StartupTile from "./startups/StartupTile";
 import { Startup } from "../utils/types";
@@ -40,7 +40,7 @@ const DirectoryLayout = (props: LayoutProps) => {
     const { data } = await supabase.from("projects").select(
       // This is necessary due to Supabase's API formatting requirements.
       // eslint-disable-next-line quotes
-      `*, profiles!projects_members (id, username, name, email)`
+      `*, profiles!projects_members (id, username, name, email, slack_deeplink), projects_members (member_id)`
     );
     // .order("user_id", { foreignTable: "projects_members" }); // To make sure roles are applied in the right order
     console.log("Project data:");
@@ -94,14 +94,18 @@ const DirectoryLayout = (props: LayoutProps) => {
           >
             <div className="w-full grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
               {startupsQuery.data?.map((startup) => (
-                <StartupTile startup={startup} key={startup.id} />
+                <React.Fragment key={startup.id}>
+                  <StartupTile startup={startup} key={startup.id} />
+                </React.Fragment>
               ))}
             </div>
           </Tab.Panel>
           <Tab.Panel className={twMerge("rounded-xl bg-white p-3", "focus:outline-none")}>
             <div className="w-full max-w-screen-2xl grid grid-cols-[repeat(auto-fill,minmax(270px,1fr))] gap-[36px]">
               {projectsQuery.data?.map((project) => (
-                <ProjectTile project={project} key={project.id} />
+                <React.Fragment key={project.id}>
+                  <ProjectTile project={project} key={project.id} />
+                </React.Fragment>
               ))}
             </div>
           </Tab.Panel>
