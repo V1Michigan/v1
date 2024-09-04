@@ -1,11 +1,11 @@
 import { useState, Fragment, useCallback } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/solid";
+import { FaSlack, FaEnvelope } from "react-icons/fa";
 import useSupabase from "../../hooks/useSupabase";
 import supabase from "../../utils/supabaseClient";
 import { StartupProfile, StartupProfileMetadata } from "../../utils/types";
 import InternalLink from "../Link";
-import { FaSlack, FaEnvelope } from "react-icons/fa";
 
 const CONNECTION_REQUEST_URL =
   process.env.NODE_ENV === "development"
