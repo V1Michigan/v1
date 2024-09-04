@@ -3,6 +3,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import useSupabase from "../../hooks/useSupabase";
 import supabase from "../../utils/supabaseClient";
 import { StartupProfile, StartupProfileMetadata } from "../../utils/types";
+import InternalLink from "../Link";
 
 const CONNECTION_REQUEST_URL =
   process.env.NODE_ENV === "development"
@@ -22,9 +23,11 @@ export default function StartupProfileTile({
     name: profileName,
     slack_deeplink: profileSlackLink,
   } = startupProfile;
+
   const displayName = profileName ?? profileUsername;
   const slackLink =
-    profileSlackLink ?? "https://app.slack.com/client/T04JWPLEL5B/C04KPD6KS80";
+    (profileSlackLink as string) ??
+    "https://app.slack.com/client/T04JWPLEL5B/C04KPD6KS80";
   const { role, headshot_src: headshotSrc } = startupProfileMetadata;
   const [connectDialogOpen, setConnectDialogOpen] = useState<boolean>(false);
   const [connectionSent, setConnectionSent] = useState<boolean>(false);
@@ -65,15 +68,18 @@ export default function StartupProfileTile({
   }
 
   return (
-    <div className="flex flex-col items-center mr-5 w-36 mb-5">
-      <img
-        className="rounded-xl"
-        src={headshotSrc ?? anonymousPersonImage}
-        height={80}
-        width={80}
-        alt={`${displayName} headshot`}
-      />
-      <h1 className="mt-1">{displayName}</h1>
+    <div className="flex flex-col items-center p-2">
+      <InternalLink href={`/profile/${profileUsername}`}>
+        <img
+          className="rounded-xl"
+          src={headshotSrc ?? anonymousPersonImage}
+          height={60}
+          width={60}
+          alt={`${displayName} headshot`}
+        />
+      </InternalLink>
+
+      <h1 className="mt-1 text-sm">{displayName}</h1>
       <p className="text-gray-500 text-xs">{role}</p>
       {connectionSent ? (
         <p className="text-xs px-2 py-1 mt-2 font-inter text-center">
