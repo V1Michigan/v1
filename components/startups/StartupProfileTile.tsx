@@ -1,4 +1,4 @@
-import { useState, Fragment } from "react";
+import { useState, Fragment, useCallback } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import useSupabase from "../../hooks/useSupabase";
 import supabase from "../../utils/supabaseClient";
@@ -25,6 +25,7 @@ export default function StartupProfileTile({
   } = startupProfile;
 
   const displayName = profileName ?? profileUsername;
+
   const slackLink =
     (profileSlackLink as string) ??
     "https://app.slack.com/client/T04JWPLEL5B/C04KPD6KS80";
@@ -40,14 +41,14 @@ export default function StartupProfileTile({
   const anonymousPersonImage =
     "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1677509740.jpg";
 
-  function sendConnectionMessage() {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const sendConnectionMessage = useCallback(() => {
     const session = supabase.auth.session();
-    // Null handling.
-    if (!session) {
-      return;
-    }
+    if (!session) return;
     const { access_token: accessToken } = session;
 
+    setIsLoading(true);
     const body = JSON.stringify({
       recipient: profileEmail,
       message: connectionMessage,
@@ -60,12 +61,17 @@ export default function StartupProfileTile({
       },
       body,
     }).then((response) => {
+      setIsLoading(false);
       if (response.ok) {
         setConnectDialogOpen(false);
         setConnectionSent(true);
+      } else {
+        console.error("Failed to send connection request");
       }
+      setIsLoading(false);
     });
-  }
+
+  }, [profileEmail, connectionMessage]);
 
   return (
     <div className="flex flex-col items-center p-2">
@@ -128,7 +134,7 @@ export default function StartupProfileTile({
                 leaveTo="opacity-0"
               >
                 <Dialog.Panel className="w-full max-w-lg transform overflow-hidden rounded-2xl bg-white px-6 py-2 text-left align-middle shadow-xl transition-all">
-                  {v1Community ? (
+                  {v1Community || v1Member ? (
                     <div className="flex flex-col justify-between items-center">
                       <p className="text-sm text-gray-400 p-4">
                         <a
@@ -152,8 +158,9 @@ export default function StartupProfileTile({
                             className="text-sm text-gray-400 p-4"
                             type="button"
                             onClick={sendConnectionMessage}
+                            disabled={isLoading}
                           >
-                            Send
+                            {isLoading ? 'Sending...' : 'Send'}
                           </button>
                         </>
                       ) : (
