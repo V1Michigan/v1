@@ -1,10 +1,11 @@
 import { useState, Fragment, useCallback } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/solid';
+import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/solid";
 import useSupabase from "../../hooks/useSupabase";
 import supabase from "../../utils/supabaseClient";
 import { StartupProfile, StartupProfileMetadata } from "../../utils/types";
 import InternalLink from "../Link";
+import { FaSlack, FaEnvelope } from "react-icons/fa";
 
 const CONNECTION_REQUEST_URL =
   process.env.NODE_ENV === "development"
@@ -32,7 +33,10 @@ export default function StartupProfileTile({
     "https://app.slack.com/client/T04JWPLEL5B/C04KPD6KS80";
   const { role, headshot_src: headshotSrc } = startupProfileMetadata;
   const [connectDialogOpen, setConnectDialogOpen] = useState<boolean>(false);
-  const [connectionStatus, setConnectionStatus] = useState<{ success: boolean; message: string } | null>(null);
+  const [connectionStatus, setConnectionStatus] = useState<{
+    success: boolean;
+    message: string;
+  } | null>(null);
   const [connectionMessage, setConnectionMessage] = useState<string>("");
 
   const { rank } = useSupabase();
@@ -61,22 +65,29 @@ export default function StartupProfileTile({
         Authorization: `Bearer ${accessToken}`,
       },
       body,
-    }).then(async (response) => {
-      setConnectDialogOpen(false);
-      setIsLoading(false);
+    })
+      .then(async (response) => {
+        setConnectDialogOpen(false);
+        setIsLoading(false);
 
-      if (response.ok) {
-        setConnectionStatus({ success: true, message: "Connection sent successfully!" });
-      } else {
-        const errorBody = await response.text();
-        setConnectionStatus({ success: false, message: errorBody });
-      }
-    }).catch((error) => {
-      console.log('Error sending connection request:', error);
-      setIsLoading(false);
-      setConnectionStatus({ success: false, message: "An error occurred while sending the connection request." });
-    });
-
+        if (response.ok) {
+          setConnectionStatus({
+            success: true,
+            message: "Connection sent successfully!",
+          });
+        } else {
+          const errorBody = await response.text();
+          setConnectionStatus({ success: false, message: errorBody });
+        }
+      })
+      .catch((error) => {
+        console.log("Error sending connection request:", error);
+        setIsLoading(false);
+        setConnectionStatus({
+          success: false,
+          message: "An error occurred while sending the connection request.",
+        });
+      });
   }, [profileEmail, connectionMessage]);
 
   return (
@@ -94,7 +105,13 @@ export default function StartupProfileTile({
       <h1 className="mt-1 text-sm">{displayName}</h1>
       <p className="text-gray-500 text-xs">{role}</p>
       {connectionStatus ? (
-        <div className={`flex items-start text-xs mt-2 p-1 font-inter w-32 ${connectionStatus.success ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100'} rounded-md`}>
+        <div
+          className={`flex items-start text-xs mt-2 p-1 font-inter w-32 ${
+            connectionStatus.success
+              ? "text-green-600 bg-green-100"
+              : "text-red-600 bg-red-100"
+          } rounded-md`}
+        >
           {connectionStatus.success ? (
             <CheckCircleIcon className="w-4 h-4 mr-1 flex-shrink-0" />
           ) : (
@@ -145,48 +162,75 @@ export default function StartupProfileTile({
                 leaveTo="opacity-0"
               >
                 <Dialog.Panel className="w-full max-w-lg transform overflow-hidden rounded-2xl bg-white px-6 py-2 text-left align-middle shadow-xl transition-all">
-                  {v1Community || v1Member ? (
-                    <div className="flex flex-col justify-between items-center">
-                      <p className="text-sm text-gray-400 p-4">
+                  <div className="flex flex-col justify-between items-start">
+                    {(v1Community || v1Member) && (
+                      <p className="text-sm p-4 flex items-center">
+                        <FaSlack className="mr-2 w-4 h-4" />
                         <a
                           href={slackLink}
                           target="_blank"
                           rel="noreferrer"
+                          className="hover:underline text-blue-600"
                         >{`Message ${displayName} on Slack`}</a>
                       </p>
-                      {v1Member ? (
-                        <>
-                          <input
-                            value={connectionMessage}
-                            onChange={(evt) =>
-                              setConnectionMessage(evt.target.value)
-                            }
-                            className="w-full text-sm border border-gray-400 border-1 rounded h-fit"
-                            type="text"
-                            placeholder={`Send a message by email to ${displayName}...`}
-                          />
-                          <button
-                            className="text-sm text-gray-400 p-4"
-                            type="button"
-                            onClick={sendConnectionMessage}
-                            disabled={isLoading}
-                          >
-                            {isLoading ? 'Sending...' : 'Send'}
-                          </button>
-                        </>
-                      ) : (
+                    )}
+
+                    {v1Member && (
+                      <div className="w-full px-4 pb-4">
+                        <div className="flex items-center mb-2">
+                          <FaEnvelope className="mr-2 w-4 h-4" />
+                          <span className="text-sm">Send an email message</span>
+                        </div>
+                        <div className="flex w-full">
+                          <div className="flex-grow relative">
+                            <textarea
+                              value={connectionMessage}
+                              onChange={(evt) =>
+                                setConnectionMessage(evt.target.value)
+                              }
+                              className="w-full text-sm border border-gray-400 border-1 rounded-l p-2 resize-none min-h-[40px] max-h-[200px] overflow-hidden"
+                              placeholder={`Send a message by email to ${displayName}...`}
+                              rows={1}
+                              onInput={(e) => {
+                                const target = e.target as HTMLTextAreaElement;
+                                target.style.height = "auto";
+                                target.style.height = `${target.scrollHeight}px`;
+                              }}
+                            />
+                          </div>
+                          <div className="flex items-start">
+                            <button
+                              className="text-sm ml-1 text-white bg-blue-600 hover:bg-blue-700 px-2 rounded flex items-center justify-center h-[40px]"
+                              type="button"
+                              onClick={sendConnectionMessage}
+                              disabled={isLoading}
+                            >
+                              {isLoading ? (
+                                "Sending..."
+                              ) : (
+                                <>
+                                  <span className="text-xs mr-1">▶</span> Send
+                                </>
+                              )}
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* {!(v1Community || v1Member) && (
                         <p className="text-sm text-gray-400">
                           Become a V1 Member to connect with {displayName}{" "}
                           through email!
                         </p>
-                      )}
-                    </div>
-                  ) : (
-                    <p className="text-sm text-gray-400">
-                      Finish signing in to connect with {displayName} through
-                      Slack!
-                    </p>
-                  )}
+                      )} */}
+
+                    {!(v1Community || v1Member) && (
+                      <p className="text-sm text-gray-400">
+                        Finish signing in to connect with members of V1!
+                      </p>
+                    )}
+                  </div>
                 </Dialog.Panel>
               </Transition.Child>
             </div>
