@@ -30,9 +30,12 @@ export type Project = {
   created_at: string;
   description: string;
   id: number;
-  logo: string;
+  logo_url: string;
   name: string;
   categories: string;
   link: string;
   startup_id: number;
+  projects_members: {
+    member_id: string;
+  }[];
 };

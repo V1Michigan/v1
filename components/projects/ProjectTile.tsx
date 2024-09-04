@@ -1,185 +1,147 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { Fragment, useCallback, useEffect, useState } from "react";
-import {
-  DesktopComputerIcon,
-  CodeIcon,
-  InformationCircleIcon,
-  ExternalLinkIcon,
-} from "@heroicons/react/outline";
+import { DesktopComputerIcon, CodeIcon, InformationCircleIcon, ExternalLinkIcon } from "@heroicons/react/outline";
 import { Dialog, Transition } from "@headlessui/react";
 import ProjectProfileTile from "./ProjectProfileTile";
 import { Project } from "../../utils/types";
 import useSupabase from "../../hooks/useSupabase";
+import { HeartIcon as HeartOutlineIcon } from "@heroicons/react/outline";
+import { HeartIcon as HeartFilledIcon } from "@heroicons/react/solid";
+
+interface Favorite {
+  user_id: string;
+  project_id: number;
+}
 
 export default function ProjectTile({ project }: { project: Project }) {
   const { name, description, link, categories } = project;
   const [dialogOpen, setDialogOpen] = useState(false);
-  const { supabase } = useSupabase();
-  const [logo, setLogo] = useState<File | undefined>();
+  const { supabase, user } = useSupabase();
+  // const [logo, setLogo] = useState<File | undefined>();
   const [avatars, setAvatars] = useState<string[]>();
-
-  const downloadFromSupabase = useCallback(
-    async (
-      bucket: string,
-      name2: string,
-      filename: string,
-      filetype: string | undefined = undefined
-    ) => {
-      const { data, error } = await supabase.storage
-        .from(bucket)
-        .download(name2);
-      if (error) {
-        return undefined;
-      }
-      if (!data) {
-        return undefined;
-      }
-      return new File([data as BlobPart], filename, {
-        type: filetype || data.type,
-      });
-    },
-    [supabase]
-  );
+  const [isFavorite, setIsFavorite] = useState(false);
 
   useEffect(() => {
-    const fetchImage = async () => {
-      const [logo2, avatar3] = await Promise.all([
-        downloadFromSupabase(
-          "projects",
-          `${project.id}`,
-          `${project.name} avatar`
-        ),
-        downloadFromSupabase(
-          "avatars",
-          "14fcb822-497a-41f6-b9ee-2fe9a5d5491f",
-          `${project.name} avatar`
-        ),
-      ]);
-      setAvatars([
-        "people/hchidam.jpg",
-        "people/jai.png",
-        avatar3 ? URL.createObjectURL(avatar3) : "people/jai.png",
-      ]);
-      setLogo(logo2);
-    };
-    fetchImage();
-  }, [downloadFromSupabase, project.id, project.name]);
+    const checkIfFavorite = async () => {
+      if (!user) {
+        return;
+      }
 
+      const { data } = await supabase
+        .from<Favorite>("project_favorites")
+        .select("*")
+        .eq("user_id", user.id)
+        .eq("project_id", project.id)
+        .single();
+
+      if (data) {
+        setIsFavorite(true);
+      }
+    };
+
+    checkIfFavorite();
+  }, [user, supabase, project.id]);
+
+  const toggleFavorite = async () => {
+    if (!user) {
+      return;
+    }
+
+    if (isFavorite) {
+      const { error } = await supabase
+        .from("project_favorites")
+        .delete()
+        .eq("user_id", user.id)
+        .eq("project_id", project.id);
+
+      if (!error) {
+        setIsFavorite(false);
+      }
+    } else {
+      const { error } = await supabase.from("project_favorites").insert([{ user_id: user.id, project_id: project.id }]);
+
+      if (!error) {
+        setIsFavorite(true);
+      }
+    }
+  };
+
+  useEffect(() => {
+    const downloadImages = async () => {
+      try {
+        const urls = [];
+        for (const project_member of project.projects_members) {
+          const { data, error } = await supabase.storage.from("avatars").download(project_member.member_id);
+
+          if (error) {
+            console.error(`Error downloading image`);
+            continue;
+          }
+
+          const url = URL.createObjectURL(data as Blob);
+          urls.push(url);
+        }
+        setAvatars(urls); // Set the downloaded URLs in state
+      } catch (err) {
+        console.error("Error in downloadImages:", err);
+      }
+    };
+    downloadImages();
+    console.log(avatars);
+  }, [project.projects_members]);
   return (
-    <>
-      <a
-        className="w-full flex flex-col gap-4 bg-white font-bold leading-none text-gray-800 uppercase rounded-lg rounded-b-md hover:shadow-lg duration-100 border border-stone-300 cursor-pointer"
-        href={link}
-        target="_blank"
-        rel="noreferrer"
-      >
+    <li className="m-0 p-0 list-none rounded-md" key={project.id}>
+      <div className="border border-0.5 relative h-0 pb-[75%] overflow-hidden rounded-md group">
         <div className="flex items-center justify-center">
           <img
-            src={logo ? URL.createObjectURL(logo) : "landing.jpg"}
-            className="w-[512px] h-[210px] rounded-lg rounded-b-sm object-cover object-center"
+            src={project.logo_url}
+            className="w-[400px] h-[250px] mt-auto rounded-lg rounded-b-sm object-fit object-center"
             alt={`${name} logo`}
           />
         </div>
-        <div className="pb-3 px-3 flex flex-col gap-1">
-          <div className="inline-flex">
-            {avatars?.map((avatar) => (
-              <span className="avatar rounded-full relative border-[2px] border-[#F8F8F8] w-[30px] overflow-hidden">
-                <img className="w-full block" src={avatar} alt="temp" />
-              </span>
-            ))}
-          </div>
-          <div className="flex items-center">
-            <h2 className="text-left normal-case font-semibold font-inter text-xl leading-6">
-              {name}
-            </h2>
-          </div>
-          <div className="flex items-center">
-            <p className="text-left normal-case font-normal font-inter text-sm leading-6 line-clamp-3">
-              {description}
-            </p>
-          </div>
-          <div className="project-tags flex gap-1">
-            <div className="bg-[#EEEAFB] h-[24px] px-2 rounded-lg flex items-center">
-              <h1 className="text-xs normal-case font-medium">{categories}</h1>
+        <div className="flex z-[2] items-end p-[20px] rounded-md absolute bg-gradient-to-b from-transparent to-gray-50/10 hover:to-black/80 hover:opacity-1 top-0 bottom-0 left-0 right-0">
+          <div className="opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-1 items-center justify-between min-w-0">
+            <div>
+              <h1 className="font-figtree text-white text-md font-semibold font-sans overflow-hidden">
+                {project.name}
+              </h1>
+              <h3
+                style={{
+                  overflow: "hidden",
+                  display: "-webkit-box",
+                  WebkitBoxOrient: "vertical",
+                  WebkitLineClamp: "3",
+                }}
+                className="font-figtree text-white text-sm"
+              >
+                {project.description}
+              </h3>
             </div>
           </div>
         </div>
-      </a>
-      {/* <Transition appear show={dialogOpen} as={Fragment}>
-        <Dialog
-          as="div"
-          className="relative z-10"
-          onClose={() => setDialogOpen(false)}
+      </div>
+      <div className="flex gap-2 items-center mt-2">
+        <div className="inline-flex">
+          {avatars?.map((avatar) => (
+            <span className="avatar rounded-full relative border-[2px] border-[#F8F8F8] w-[30px] overflow-hidden">
+              <img className="w-full block" src={avatar} alt="temp" />
+            </span>
+          ))}
+        </div>
+        <h1 className="text-black font-md font-figtree font-semibold">{project.name}</h1>
+        <button
+          type="button"
+          onClick={toggleFavorite}
+          className="hover:scale-110 transition-transform duration-200 focus:outline-none ml-auto"
         >
-          <Transition.Child
-            as={Fragment}
-            enter="ease-out duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="ease-in duration-200"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <div className="fixed inset-0 bg-black bg-opacity-25" />
-          </Transition.Child>
-
-          <div className="fixed inset-0 overflow-y-auto">
-            <div className="flex min-h-full items-center justify-center p-4 text-center">
-              <Transition.Child
-                as={Fragment}
-                enter="ease-out duration-300"
-                enterFrom="opacity-0 scale-95"
-                enterTo="opacity-100 scale-100"
-                leave="ease-in duration-200"
-                leaveFrom="opacity-100 scale-100"
-                leaveTo="opacity-0 scale-95"
-              >
-                <Dialog.Panel className="w-full max-w-4xl max-h-[90vh] overflow-y-auto transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                  <div className="flex flex-col">
-                    <img
-                      src={logo}
-                      className="h-64 rounded-lg self-center"
-                      alt={`${name} logo`}
-                    />
-
-                    <div className="flex flex-row mt-6">
-                      <h1 className="text-5xl font-bold text-gray-900 mr-4">
-                        {name}
-                      </h1>
-                    </div>
-
-                    <div className="flex flex-col gap-y-4 mt-4">
-                      <div>
-                        <p className="text-xl font-medium">Problem Statement</p>
-                        <p className="text-base text-gray-600">
-                          Id consectetur purus ut faucibus. Et pharetra pharetra
-                          massa massa ultricies. Felis donec et odio
-                          pellentesque diam volutpat commodo sed.
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-xl font-medium">Description</p>
-                        <p className="text-base text-gray-600">
-                          Lorem ipsum dolor sit amet, consectetur adipiscing
-                          elit, sed do eiusmod tempor incididunt ut labore et
-                          dolore magna aliqua. Ut enim ad minim veniam, quis
-                          nostrud exercitation ullamco laboris nisi ut aliquip
-                          ex ea commodo consequat. Duis aute irure dolor in
-                          reprehenderit in voluptate velit esse cillum dolore eu
-                          fugiat nulla pariatur. Excepteur sint occaecat
-                          cupidatat non proident, sunt in culpa qui officia
-                          deserunt mollit anim id est laborum.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </Dialog.Panel>
-              </Transition.Child>
-            </div>
-          </div>
-        </Dialog>
-      </Transition> */}
-    </>
+          {isFavorite ? (
+            <HeartFilledIcon className="w-5 h-5 text-red-500" />
+          ) : (
+            <HeartOutlineIcon className="w-5 h-5 text-gray-500 stroke-[1.5px]" />
+          )}
+        </button>
+      </div>
+    </li>
   );
 }

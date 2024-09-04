@@ -7,6 +7,7 @@ import PropTypes from "prop-types";
 import { SupabaseProvider } from "../contexts/SupabaseContext";
 
 import "../styles/index.css";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 export const HOSTNAME =
   process.env.NODE_ENV === "development"
@@ -14,6 +15,7 @@ export const HOSTNAME =
     : process.env.NEXT_PUBLIC_HOSTNAME || "https://v1michigan.com";
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const queryClient = new QueryClient();
   useEffect(
     // "V1 website" property automatically tracks some events, e.g. page views
     () => {
@@ -24,9 +26,11 @@ function MyApp({ Component, pageProps }: AppProps) {
     []
   );
   return (
-    <SupabaseProvider>
-      <Component {...pageProps} />
-    </SupabaseProvider>
+    <QueryClientProvider client={queryClient}>
+      <SupabaseProvider>
+        <Component {...pageProps} />
+      </SupabaseProvider>
+    </QueryClientProvider>
   );
 }
 
