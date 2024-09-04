@@ -2,6 +2,7 @@ export type StartupProfile = {
   name: string | null;
   username: string;
   email: string;
+  slack_deeplink: string | null;
 };
 
 export type StartupProfileMetadata = {

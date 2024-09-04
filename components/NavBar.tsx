@@ -27,6 +27,11 @@ const NAVIGATION = [
     href: "/ship-it",
     right: false,
   },
+  {
+    name: "Events",
+    href: "/events",
+    right: false,
+  },
   // {
   //   name: "Startups",
   //   href: "/startups",

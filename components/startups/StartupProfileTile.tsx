@@ -1,5 +1,6 @@
 import { useState, Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
+import useSupabase from "../../hooks/useSupabase";
 import supabase from "../../utils/supabaseClient";
 import { StartupProfile, StartupProfileMetadata } from "../../utils/types";
 import InternalLink from "../Link";
@@ -16,18 +17,31 @@ export default function StartupProfileTile({
   startupProfile: StartupProfile;
   startupProfileMetadata: StartupProfileMetadata;
 }) {
-  const { email, username, name } = startupProfile;
-  const displayName = name ?? username;
+  const {
+    email: profileEmail,
+    username: profileUsername,
+    name: profileName,
+    slack_deeplink: profileSlackLink,
+  } = startupProfile;
+
+  const displayName = profileName ?? profileUsername;
+  const slackLink =
+    (profileSlackLink as string) ??
+    "https://app.slack.com/client/T04JWPLEL5B/C04KPD6KS80";
   const { role, headshot_src: headshotSrc } = startupProfileMetadata;
   const [connectDialogOpen, setConnectDialogOpen] = useState<boolean>(false);
   const [connectionSent, setConnectionSent] = useState<boolean>(false);
   const [connectionMessage, setConnectionMessage] = useState<string>("");
-  const session = supabase.auth.session();
+
+  const { rank } = useSupabase();
+  const v1Community = rank && rank >= 1;
+  const v1Member = rank && rank >= 2;
 
   const anonymousPersonImage =
     "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1677509740.jpg";
 
   function sendConnectionMessage() {
+    const session = supabase.auth.session();
     // Null handling.
     if (!session) {
       return;
@@ -35,7 +49,7 @@ export default function StartupProfileTile({
     const { access_token: accessToken } = session;
 
     const body = JSON.stringify({
-      recipient: email,
+      recipient: profileEmail,
       message: connectionMessage,
     });
     fetch(CONNECTION_REQUEST_URL, {
@@ -55,7 +69,7 @@ export default function StartupProfileTile({
 
   return (
     <div className="flex flex-col items-center p-2">
-      <InternalLink href={`/profile/${username}`}>
+      <InternalLink href={`/profile/${profileUsername}`}>
         <img
           className="rounded-xl"
           src={headshotSrc ?? anonymousPersonImage}
@@ -114,28 +128,45 @@ export default function StartupProfileTile({
                 leaveTo="opacity-0"
               >
                 <Dialog.Panel className="w-full max-w-lg transform overflow-hidden rounded-2xl bg-white px-6 py-2 text-left align-middle shadow-xl transition-all">
-                  {session ? (
-                    <div className="flex justify-between items-center">
-                      <input
-                        value={connectionMessage}
-                        onChange={(evt) =>
-                          setConnectionMessage(evt.target.value)
-                        }
-                        className="w-full text-sm border border-gray-400 border-1 rounded h-fit"
-                        type="text"
-                        placeholder={`Write a message to ${displayName}...`}
-                      />
-                      <button
-                        className="text-sm text-gray-400 p-4"
-                        type="button"
-                        onClick={sendConnectionMessage}
-                      >
-                        Send
-                      </button>
+                  {v1Community ? (
+                    <div className="flex flex-col justify-between items-center">
+                      <p className="text-sm text-gray-400 p-4">
+                        <a
+                          href={slackLink}
+                          target="_blank"
+                          rel="noreferrer"
+                        >{`Message ${displayName} on Slack`}</a>
+                      </p>
+                      {v1Member ? (
+                        <>
+                          <input
+                            value={connectionMessage}
+                            onChange={(evt) =>
+                              setConnectionMessage(evt.target.value)
+                            }
+                            className="w-full text-sm border border-gray-400 border-1 rounded h-fit"
+                            type="text"
+                            placeholder={`Send a message by email to ${displayName}...`}
+                          />
+                          <button
+                            className="text-sm text-gray-400 p-4"
+                            type="button"
+                            onClick={sendConnectionMessage}
+                          >
+                            Send
+                          </button>
+                        </>
+                      ) : (
+                        <p className="text-sm text-gray-400">
+                          Become a V1 Member to connect with {displayName}{" "}
+                          through email!
+                        </p>
+                      )}
                     </div>
                   ) : (
                     <p className="text-sm text-gray-400">
-                      Sign in to connect with {displayName}!
+                      Finish signing in to connect with {displayName} through
+                      Slack!
                     </p>
                   )}
                 </Dialog.Panel>
