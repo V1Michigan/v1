@@ -1,5 +1,6 @@
 import { useState, Fragment, useCallback } from "react";
 import { Dialog, Transition } from "@headlessui/react";
+import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/solid';
 import useSupabase from "../../hooks/useSupabase";
 import supabase from "../../utils/supabaseClient";
 import { StartupProfile, StartupProfileMetadata } from "../../utils/types";
@@ -31,7 +32,7 @@ export default function StartupProfileTile({
     "https://app.slack.com/client/T04JWPLEL5B/C04KPD6KS80";
   const { role, headshot_src: headshotSrc } = startupProfileMetadata;
   const [connectDialogOpen, setConnectDialogOpen] = useState<boolean>(false);
-  const [connectionSent, setConnectionSent] = useState<boolean>(false);
+  const [connectionStatus, setConnectionStatus] = useState<{ success: boolean; message: string } | null>(null);
   const [connectionMessage, setConnectionMessage] = useState<string>("");
 
   const { rank } = useSupabase();
@@ -60,13 +61,20 @@ export default function StartupProfileTile({
         Authorization: `Bearer ${accessToken}`,
       },
       body,
-    }).then((response) => {
+    }).then(async (response) => {
+      setConnectDialogOpen(false);
       setIsLoading(false);
+
       if (response.ok) {
-        setConnectDialogOpen(false);
-        setConnectionSent(true);
-      } 
+        setConnectionStatus({ success: true, message: "Connection sent successfully!" });
+      } else {
+        const errorBody = await response.text();
+        setConnectionStatus({ success: false, message: errorBody });
+      }
+    }).catch((error) => {
+      console.log('Error sending connection request:', error);
       setIsLoading(false);
+      setConnectionStatus({ success: false, message: "An error occurred while sending the connection request." });
     });
 
   }, [profileEmail, connectionMessage]);
@@ -85,10 +93,15 @@ export default function StartupProfileTile({
 
       <h1 className="mt-1 text-sm">{displayName}</h1>
       <p className="text-gray-500 text-xs">{role}</p>
-      {connectionSent ? (
-        <p className="text-xs px-2 py-1 mt-2 font-inter text-center">
-          connection sent successfully!
-        </p>
+      {connectionStatus ? (
+        <div className={`flex items-start text-xs mt-2 p-1 font-inter w-32 ${connectionStatus.success ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100'} rounded-md`}>
+          {connectionStatus.success ? (
+            <CheckCircleIcon className="w-4 h-4 mr-1 flex-shrink-0" />
+          ) : (
+            <XCircleIcon className="w-4 h-4 mr-1 flex-shrink-0" />
+          )}
+          <p className="break-words">{connectionStatus.message}</p>
+        </div>
       ) : (
         <button
           type="button"
