@@ -65,9 +65,7 @@ export default function StartupProfileTile({
       if (response.ok) {
         setConnectDialogOpen(false);
         setConnectionSent(true);
-      } else {
-        console.error("Failed to send connection request");
-      }
+      } 
       setIsLoading(false);
     });
 
