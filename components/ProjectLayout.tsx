@@ -22,7 +22,11 @@ const ProjectLayout = (props: LayoutProps) => {
   useEffect(() => {
     const fetchProjectData = async () => {
       setDataFetchErrors([]);
-      const { data: projects2, error: dbError, status } = await supabase.from("projects").select("*");
+      const {
+        data: projects2,
+        error: dbError,
+        status,
+      } = await supabase.from("projects").select("*");
       setProjects(projects2);
     };
     fetchProjectData();
@@ -54,7 +58,10 @@ const ProjectLayout = (props: LayoutProps) => {
                 placeholder="Search for projects"
                 className="px-2 rounded-md border-[1px] border-stone-300 h-10 w-full"
               />
-              <button type="button" className="bg-blue-500 text-white px-2 rounded-sm">
+              <button
+                type="button"
+                className="bg-blue-500 text-white px-2 rounded-sm"
+              >
                 Search
               </button>
             </div>

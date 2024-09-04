@@ -4,10 +4,9 @@ import { useEffect } from "react";
 import ReactGA from "react-ga4";
 import type { AppProps } from "next/app";
 import PropTypes from "prop-types";
-import { SupabaseProvider } from "../contexts/SupabaseContext";
-
-import "../styles/index.css";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { SupabaseProvider } from "../contexts/SupabaseContext";
+import "../styles/index.css";
 
 export const HOSTNAME =
   process.env.NODE_ENV === "development"

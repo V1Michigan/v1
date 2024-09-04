@@ -1,13 +1,19 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { Fragment, useCallback, useEffect, useState } from "react";
-import { DesktopComputerIcon, CodeIcon, InformationCircleIcon, ExternalLinkIcon } from "@heroicons/react/outline";
+import {
+  DesktopComputerIcon,
+  CodeIcon,
+  InformationCircleIcon,
+  ExternalLinkIcon,
+  HeartIcon as HeartOutlineIcon,
+} from "@heroicons/react/outline";
 import { Dialog, Transition } from "@headlessui/react";
+import { HeartIcon as HeartFilledIcon } from "@heroicons/react/solid";
+import { useQuery } from "react-query";
 import ProjectProfileTile from "./ProjectProfileTile";
 import { Project } from "../../utils/types";
 import useSupabase from "../../hooks/useSupabase";
-import { HeartIcon as HeartOutlineIcon } from "@heroicons/react/outline";
-import { HeartIcon as HeartFilledIcon } from "@heroicons/react/solid";
 import StartupProfileTile from "../startups/StartupProfileTile";
 
 interface Favorite {
@@ -20,7 +26,9 @@ export default function ProjectTile({ project }: { project: Project }) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const { supabase, user } = useSupabase();
   // const [logo, setLogo] = useState<File | undefined>();
-  const [avatars, setAvatars] = useState<any>({});
+  type Avatars = Record<string, string>;
+
+  const [avatars, setAvatars] = useState<Avatars>({});
   const [isFavorite, setIsFavorite] = useState(false);
 
   useEffect(() => {
@@ -60,7 +68,9 @@ export default function ProjectTile({ project }: { project: Project }) {
         setIsFavorite(false);
       }
     } else {
-      const { error } = await supabase.from("project_favorites").insert([{ user_id: user.id, project_id: project.id }]);
+      const { error } = await supabase
+        .from("project_favorites")
+        .insert([{ user_id: user.id, project_id: project.id }]);
 
       if (!error) {
         setIsFavorite(true);
@@ -68,30 +78,45 @@ export default function ProjectTile({ project }: { project: Project }) {
     }
   };
 
-  useEffect(() => {
-    const downloadImages = async () => {
-      try {
-        const urls: any = {};
-        for (const project_member of project.profiles) {
-          const { data, error } = await supabase.storage.from("avatars").download(project_member.id);
+  const downloadImages = async () => {
+    try {
+      const urls: Record<string, string> = {};
+      for (const projectMember of project.profiles) {
+        // eslint-disable-next-line no-await-in-loop
+        const { data, error } = await supabase.storage
+          .from("avatars")
+          .download(projectMember.id);
 
-          if (error) {
-            console.error(`Error downloading image`);
-            continue;
-          }
-          const url = URL.createObjectURL(data as Blob);
-          urls[project_member.id] = url;
+        if (error) {
+          console.error("Error downloading image");
+          return;
         }
-        setAvatars(urls); // Set the downloaded URLs in state
-      } catch (err) {
-        console.error("Error in downloadImages:", err);
+        const url = URL.createObjectURL(data as Blob);
+        urls[projectMember.id] = url;
       }
-    };
-    downloadImages();
-  }, [project.profiles]);
+      setAvatars(urls); // Set the downloaded URLs in state
+    } catch (err) {
+      console.error("Error in downloadImages:", err);
+    }
+  };
+  // useEffect(() => {
+  //   downloadImages();
+  // }, [downloadImages]);
+  // const imagesQuery
+  const imagesQuery = useQuery({
+    queryKey: ["projects", `${project.id}`, "images"],
+    queryFn: downloadImages,
+    staleTime: Infinity,
+    cacheTime: Infinity,
+  });
+
   return (
     <>
-      <li className="m-0 p-0 list-none rounded-md" onClick={() => setDialogOpen(true)}>
+      {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
+      <li
+        onClick={() => setDialogOpen(true)}
+        className="m-0 p-0 list-none rounded-md"
+      >
         <div className="border border-0.5 relative h-0 pb-[75%] overflow-hidden rounded-md group">
           <div className="flex items-center justify-center">
             <img
@@ -123,7 +148,7 @@ export default function ProjectTile({ project }: { project: Project }) {
         </div>
         <div className="flex gap-2 items-center mt-2">
           <div className="inline-flex">
-            {Object.entries(avatars).map(([key, value]: [any, any]) => {
+            {Object.entries(avatars).map(([key, value]: [string, string]) => {
               console.log(key);
               return (
                 <span className="avatar rounded-full relative border-[2px] border-[#F8F8F8] w-[30px] overflow-hidden">
@@ -132,7 +157,9 @@ export default function ProjectTile({ project }: { project: Project }) {
               );
             })}
           </div>
-          <h1 className="text-black font-md font-figtree font-semibold">{project.name}</h1>
+          <h1 className="text-black font-md font-figtree font-semibold">
+            {project.name}
+          </h1>
           <button
             type="button"
             onClick={toggleFavorite}
@@ -147,7 +174,11 @@ export default function ProjectTile({ project }: { project: Project }) {
         </div>
       </li>
       <Transition appear show={dialogOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={() => setDialogOpen(false)}>
+        <Dialog
+          as="div"
+          className="relative z-10"
+          onClose={() => setDialogOpen(false)}
+        >
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -174,10 +205,16 @@ export default function ProjectTile({ project }: { project: Project }) {
                 <Dialog.Panel className="w-full max-w-xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                   <div className="relative flex flex-col gap-y-4">
                     <div className="flex gap-x-8">
-                      <img src={project.logo_url} className="w-48 rounded-lg" alt={`${name} logo`} />
+                      <img
+                        src={project.logo_url}
+                        className="w-48 rounded-lg"
+                        alt={`${name} logo`}
+                      />
                       <div className="flex flex-col gap-y-4">
                         <div className="flex gap-3">
-                          <h1 className="text-4xl font-bold text-gray-900">{name}</h1>
+                          <h1 className="text-4xl font-bold text-gray-900">
+                            {name}
+                          </h1>
                           <button
                             type="button"
                             onClick={toggleFavorite}
@@ -211,16 +248,27 @@ export default function ProjectTile({ project }: { project: Project }) {
                       </div> */}
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-primary font-medium text-lg mb-2">People</span>
+                      <span className="text-primary font-medium text-lg mb-2">
+                        People
+                      </span>
                       <div className="flex gap-2">
                         <div className="flex flex-col gap-2 justify-between">
                           {project.profiles?.map((profile, i) => (
                             <div className="flex gap-2 items-center">
-                              <img className="w-8 h-8 rounded-full" src={avatars[profile.id]} />
-                              <h1 className="text-sm font-medium">{profile.name}</h1>
+                              <img
+                                className="w-8 h-8 rounded-full"
+                                src={avatars[profile.id]}
+                                alt={`${profile.name} avatar`}
+                              />
+                              <h1 className="text-sm font-medium">
+                                {profile.name}
+                              </h1>
                             </div>
                           ))}
-                          <button className="px-6 py-2 bg-black text-white hover:bg-black/80 rounded-md mt-2">
+                          <button
+                            type="button"
+                            className="px-6 py-2 bg-black text-white hover:bg-black/80 rounded-md mt-2"
+                          >
                             Connect
                           </button>
                         </div>
