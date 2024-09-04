@@ -35,5 +35,4 @@ export type Project = {
   name: string;
   categories: string;
   link: string;
-  startup_id: number;
 };
