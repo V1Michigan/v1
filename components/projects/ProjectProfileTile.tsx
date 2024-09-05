@@ -12,7 +12,7 @@ const CONNECTION_REQUEST_URL =
     ? "http://localhost:8080/connection"
     : "https://v1-api-production.up.railway.app/connection";
 
-export default function projectProfileTile({
+export default function ProjectProfileTile({
   projectProfile,
   headshotSrc,
 }: {
@@ -28,7 +28,9 @@ export default function projectProfileTile({
 
   const displayName = profileName ?? profileUsername;
 
-  const slackLink = (profileSlackLink as string) ?? "https://app.slack.com/client/T04JWPLEL5B/C04KPD6KS80";
+  const slackLink =
+    (profileSlackLink as string) ??
+    "https://app.slack.com/client/T04JWPLEL5B/C04KPD6KS80";
   const [connectDialogOpen, setConnectDialogOpen] = useState<boolean>(false);
   const [connectionStatus, setConnectionStatus] = useState<{
     success: boolean;
@@ -113,7 +115,9 @@ export default function projectProfileTile({
       {connectionStatus ? (
         <div
           className={`flex items-start text-xs mt-2 p-1 font-inter w-32 ${
-            connectionStatus.success ? "text-green-600 bg-green-100" : "text-red-600 bg-red-100"
+            connectionStatus.success
+              ? "text-green-600 bg-green-100"
+              : "text-red-600 bg-red-100"
           } rounded-md`}
         >
           {connectionStatus.success ? (
@@ -137,7 +141,11 @@ export default function projectProfileTile({
       )}
 
       <Transition appear show={connectDialogOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={() => setConnectDialogOpen(false)}>
+        <Dialog
+          as="div"
+          className="relative z-10"
+          onClose={() => setConnectDialogOpen(false)}
+        >
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -185,7 +193,9 @@ export default function projectProfileTile({
                           <div className="flex-grow relative">
                             <textarea
                               value={connectionMessage}
-                              onChange={(evt) => setConnectionMessage(evt.target.value)}
+                              onChange={(evt) =>
+                                setConnectionMessage(evt.target.value)
+                              }
                               className="w-full text-sm border border-gray-400 border-1 rounded-l p-2 resize-none min-h-[40px] max-h-[200px] overflow-hidden"
                               placeholder={`Send a message by email to ${displayName}...`}
                               rows={1}
@@ -224,7 +234,9 @@ export default function projectProfileTile({
                       )} */}
 
                     {!(v1Community || v1Member) && (
-                      <p className="text-sm text-gray-400">Finish signing in to connect with members of V1!</p>
+                      <p className="text-sm text-gray-400">
+                        Finish signing in to connect with members of V1!
+                      </p>
                     )}
                   </div>
                 </Dialog.Panel>

@@ -68,7 +68,9 @@ export default function ProjectTile({ project }: { project: Project }) {
         setIsFavorite(false);
       }
     } else {
-      const { error } = await supabase.from("project_favorites").insert([{ user_id: user.id, project_id: project.id }]);
+      const { error } = await supabase
+        .from("project_favorites")
+        .insert([{ user_id: user.id, project_id: project.id }]);
 
       if (!error) {
         setIsFavorite(true);
@@ -83,7 +85,9 @@ export default function ProjectTile({ project }: { project: Project }) {
       const urls: Record<string, string> = {};
       for (const projectMember of project.profiles) {
         // eslint-disable-next-line no-await-in-loop
-        const { data, error } = await supabase.storage.from("avatars").download(projectMember.id);
+        const { data, error } = await supabase.storage
+          .from("avatars")
+          .download(projectMember.id);
 
         if (error) {
           console.error("Error downloading image");
@@ -112,7 +116,10 @@ export default function ProjectTile({ project }: { project: Project }) {
   return (
     <>
       {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
-      <li onClick={() => setDialogOpen(true)} className="m-0 p-0 list-none rounded-md">
+      <li
+        onClick={() => setDialogOpen(true)}
+        className="m-0 p-0 list-none rounded-md"
+      >
         <div className="border border-0.5 relative h-0 pb-[75%] overflow-hidden rounded-md group">
           <div className="flex items-center justify-center">
             <img
@@ -145,15 +152,17 @@ export default function ProjectTile({ project }: { project: Project }) {
         <div className="flex gap-2 items-center mt-2">
           <div className="inline-flex">
             {imagesQuery?.data &&
-              Object.entries(imagesQuery?.data).map(([key, value]: [string, string]) => {
-                return (
+              Object.entries(imagesQuery?.data).map(
+                ([key, value]: [string, string]) => (
                   <span className="avatar rounded-full relative border-[2px] border-[#F8F8F8] w-[30px] overflow-hidden">
                     <img className="w-full block" src={value} alt="temp" />
                   </span>
-                );
-              })}
+                )
+              )}
           </div>
-          <h1 className="text-black font-md font-figtree font-semibold">{project.name}</h1>
+          <h1 className="text-black font-md font-figtree font-semibold">
+            {project.name}
+          </h1>
           <button
             type="button"
             onClick={toggleFavorite}
@@ -174,7 +183,11 @@ export default function ProjectTile({ project }: { project: Project }) {
         </div>
       </li>
       <Transition appear show={dialogOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={() => setDialogOpen(false)}>
+        <Dialog
+          as="div"
+          className="relative z-10"
+          onClose={() => setDialogOpen(false)}
+        >
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -201,10 +214,16 @@ export default function ProjectTile({ project }: { project: Project }) {
                 <Dialog.Panel className="w-full max-w-xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                   <div className="relative flex flex-col gap-y-4">
                     <div className="flex gap-x-8">
-                      <img src={project.logo_url} className="w-48 rounded-lg" alt={`${name} logo`} />
+                      <img
+                        src={project.logo_url}
+                        className="w-48 rounded-lg"
+                        alt={`${name} logo`}
+                      />
                       <div className="flex flex-col gap-y-4">
                         <div className="flex gap-3">
-                          <h1 className="text-4xl font-bold text-gray-900">{name}</h1>
+                          <h1 className="text-4xl font-bold text-gray-900">
+                            {name}
+                          </h1>
                           <button
                             type="button"
                             onClick={toggleFavorite}
@@ -239,18 +258,24 @@ export default function ProjectTile({ project }: { project: Project }) {
                       <p className="text-sm text-gray-500">{description}</p>
                       <div className="flex">
                         {project?.categories?.map((category) => (
-                          <p className="text-sm my-2 mr-1 px-2 bg-slate-300 rounded-xl">{category}</p>
+                          <p className="text-sm my-2 mr-1 px-2 bg-slate-300 rounded-xl">
+                            {category}
+                          </p>
                         ))}
                       </div>
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-primary font-medium text-lg mb-2">People</span>
+                      <span className="text-primary font-medium text-lg mb-2">
+                        People
+                      </span>
                       <div className="grid grid-cols-4 justify-between">
                         {project.profiles?.map((profile, i) => (
                           <ProjectProfileTile
                             projectProfile={profile}
                             headshotSrc={
-                              imagesQuery?.data?.[profile.id] ? imagesQuery?.data?.[profile.id] : anonymousPersonImage
+                              imagesQuery?.data?.[profile.id]
+                                ? imagesQuery?.data?.[profile.id]
+                                : anonymousPersonImage
                             }
                           />
                         ))}
