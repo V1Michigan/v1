@@ -29,7 +29,6 @@ export default function StartupTile({ startup }: { startup: Startup }) {
   } = startup;
   const [dialogOpen, setDialogOpen] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
-  const [projects, setProjects] = useState<Project[]>([]);
 
   const { supabase, user } = useSupabase();
 
@@ -50,21 +49,7 @@ export default function StartupTile({ startup }: { startup: Startup }) {
         setIsFavorite(true);
       }
     };
-
-    const fetchProjects = async () => {
-      const { data } = await supabase
-        .from<Project>("projects")
-        .select("*")
-        .eq("startup_id", startup.id);
-
-      if (data) {
-        setProjects(data);
-      }
-    };
-
-    checkIfFavorite();
-    fetchProjects();
-  }, [user, supabase, startup.id]);
+  });
 
   const toggleFavorite = async () => {
     if (!user) {
@@ -94,63 +79,74 @@ export default function StartupTile({ startup }: { startup: Startup }) {
 
   return (
     <>
-      <div
-        className="flex flex-col bg-white font-bold p-6 leading-none text-gray-800 uppercase rounded-lg shadow-lg duration-100 border border-stone-300 cursor-pointer"
+      {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
+      <li
         onClick={() => setDialogOpen(true)}
+        className="m-0 p-0 list-none rounded-md"
       >
-        <img
-          src={logo}
-          className="w-1/2 mx-auto rounded-lg"
-          alt={`${name} logo`}
-        />
+        <div className="border border-0.5 relative h-0 pb-[75%] overflow-hidden rounded-md group">
+          <div className="flex items-center justify-center">
+            <img
+              src={logo}
+              className="w-[400px] h-[250px] mt-auto rounded-lg rounded-b-sm object-cover object-center"
+              alt={`${name} logo`}
+            />
+          </div>
+          <div className="flex z-[2] items-end p-[20px] rounded-md absolute bg-gradient-to-b from-transparent to-gray-50/10 hover:to-black/80 hover:opacity-1 top-0 bottom-0 left-0 right-0">
+            <div className="opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-1 items-center justify-between min-w-0">
+              <div>
+                <h1 className="font-figtree text-white text-md font-semibold font-sans overflow-hidden">
+                  {name}
+                </h1>
+                <h3
+                  style={{
+                    overflow: "hidden",
+                    display: "-webkit-box",
+                    WebkitBoxOrient: "vertical",
+                    WebkitLineClamp: "3",
+                  }}
+                  className="font-figtree text-white text-sm"
+                >
+                  {description}
+                </h3>
 
-        <div className="mt-6 mx-auto text-center">
-          <h1 className="normal-case text-xl font-semibold leading-6">
+                <div className="flex gap-1">
+                  {industries.map((industry) => (
+                    <span className="">
+                      <p className="text-sm my-1 w-fit px-2 bg-slate-300 rounded-xl">
+                        {industry}
+                      </p>
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col gap-2 mt-2">
+          <div className="inline-flex" />
+          <h1 className="text-black font-md font-figtree font-semibold">
             {name}
           </h1>
-        </div>
-
-        <p
-          style={{
-            height: "60px",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-          }}
-          className="normal-case text-base font-normal leading-5 tracking-normal text-left mt-3 text-gray-500"
-        >
-          {description}
-        </p>
-
-        <div className="flex mt-4 justify-between items-center">
           <button
             type="button"
-            style={{
-              backgroundColor: "#212936",
-              width: "calc(50% - 6px)",
-            }}
-            className="rounded-lg p-2 font-inter text-sm leading-5 tracking-normal text-left text-gray-200 flex justify-center"
+            onClick={toggleFavorite}
+            className="hover:scale-110 transition-transform duration-200 focus:outline-none ml-auto"
           >
-            <InformationCircleIcon className=" inline-block h-5 w-5" />
-            <p className="inline-block">See More</p>
-          </button>
-
-          <button
-            type="button"
-            style={{ width: "calc(50% - 6px)" }}
-            className="rounded-lg p-2 font-inter text-sm leading-5 tracking-normal text-left text-gray-600 bg-gray-300 flex justify-center"
-          >
-            <a
-              href={website}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex flex-row m-auto items-center gap-1"
-            >
-              <ExternalLinkIcon className=" inline-block h-5 w-5" />
-              <p className="inline-block">Website</p>
-            </a>
+            {user ? (
+              <>
+                {isFavorite ? (
+                  <HeartFilledIcon className="w-5 h-5 text-red-500" />
+                ) : (
+                  <HeartOutlineIcon className="w-5 h-5 text-gray-500 stroke-[1.5px]" />
+                )}
+              </>
+            ) : (
+              ""
+            )}
           </button>
         </div>
-      </div>
+      </li>
       <Transition appear show={dialogOpen} as={Fragment}>
         <Dialog
           as="div"
@@ -198,10 +194,16 @@ export default function StartupTile({ startup }: { startup: Startup }) {
                             onClick={toggleFavorite}
                             className="hover:scale-110 transition-transform duration-200 focus:outline-none"
                           >
-                            {isFavorite ? (
-                              <HeartFilledIcon className="w-7 h-7 text-red-500" />
+                            {user ? (
+                              <>
+                                {isFavorite ? (
+                                  <HeartFilledIcon className="w-5 h-5 text-red-500" />
+                                ) : (
+                                  <HeartOutlineIcon className="w-5 h-5 text-gray-500 stroke-[1.5px]" />
+                                )}
+                              </>
                             ) : (
-                              <HeartOutlineIcon className="w-7 h-7 text-gray-500 stroke-[1.5px]" />
+                              ""
                             )}
                           </button>
                         </div>
@@ -237,27 +239,6 @@ export default function StartupTile({ startup }: { startup: Startup }) {
                             startupProfile={profile}
                             startupProfileMetadata={profileMetadata[i]}
                           />
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="flex flex-col">
-                      <span className="text-primary font-medium text-lg mb-2">
-                        Projects
-                      </span>
-                      <div className="grid grid-cols-2 justify-between gap-4">
-                        {projects?.map((project) => (
-                          <div
-                            key={project.id}
-                            className=" bg-gray-100 rounded-lg flex flex-col gap-y-1 p-3"
-                          >
-                            <p className="text-sm text-gray-900">
-                              {project.name}
-                            </p>
-                            <p className="text-xs text-gray-600">
-                              {project.description}
-                            </p>
-                          </div>
                         ))}
                       </div>
                     </div>

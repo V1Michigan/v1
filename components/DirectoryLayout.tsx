@@ -1,5 +1,5 @@
-import React, { useState, useEffect, Fragment } from "react";
-import { Tab } from "@headlessui/react";
+import React, { useState, useEffect, Fragment, useMemo } from "react";
+import { Tab, Combobox } from "@headlessui/react";
 import { twMerge } from "tailwind-merge";
 import { useQuery } from "react-query";
 import supabase from "../utils/supabaseClient";
@@ -15,6 +15,8 @@ type LayoutProps = {
 
 const DirectoryLayout = (props: LayoutProps) => {
   const { title, description: directoryDescription, link: _ } = props;
+  const [projectSearchText, setProjectSearchText] = useState("");
+  const [selectedProjectCategory, setSelectedProjectCategory] = useState("");
 
   const fetchStartups = async () => {
     const { data } = await supabase
@@ -54,8 +56,23 @@ const DirectoryLayout = (props: LayoutProps) => {
     cacheTime: Infinity,
   });
 
+  const filteredProjects = useMemo(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    if (!projectsQuery.data) return [];
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return projectsQuery.data.filter((project: Project) => {
+      const matchesName = project.name
+        .toLowerCase()
+        .includes(projectSearchText.toLowerCase());
+
+      // const matchesCategory = selectedProjectCategory === "" || project.category === selectedProjectCategory;
+
+      return matchesName;
+    });
+  }, [projectsQuery.data, projectSearchText]);
+
   return (
-    <div className="w-full p-4 md:p-16 flex gap-8 flex-col">
+    <div className="w-full p-4 md:p-16 flex gap-8 flex-col bg-gray-50">
       <div className="max-w-screen-2xl relative w-full">
         <h1 className="text-5xl font-figtree font-sans font-semibold">
           The Directory
@@ -97,7 +114,7 @@ const DirectoryLayout = (props: LayoutProps) => {
               "ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none"
             )}
           >
-            <div className="w-full grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+            <div className="bg-gray-50 w-full grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
               {startupsQuery.data?.map((startup: Startup) => (
                 <React.Fragment key={startup.id}>
                   <StartupTile startup={startup} key={startup.id} />
@@ -106,10 +123,21 @@ const DirectoryLayout = (props: LayoutProps) => {
             </div>
           </Tab.Panel>
           <Tab.Panel
-            className={twMerge("rounded-xl bg-white p-3", "focus:outline-none")}
+            className={twMerge("rounded-xl p-3", "focus:outline-none")}
           >
-            <div className="w-full max-w-screen-2xl grid grid-cols-[repeat(auto-fill,minmax(270px,1fr))] gap-[36px]">
-              {projectsQuery.data?.map((project: Project) => (
+            <div className="flex flex-col mb-4">
+              <label htmlFor="name">Name</label>
+              <input
+                name="name"
+                type="text"
+                placeholder="Search by name"
+                value={projectSearchText}
+                onChange={(e) => setProjectSearchText(e.target.value)}
+                className="flex h-10 w-64 rounded-md border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground"
+              />
+            </div>
+            <div className="bg-gray-50 w-full max-w-screen-2xl grid grid-cols-[repeat(auto-fill,minmax(270px,1fr))] gap-[36px]">
+              {filteredProjects?.map((project: Project) => (
                 <React.Fragment key={project.id}>
                   <ProjectTile project={project} key={project.id} />
                 </React.Fragment>
