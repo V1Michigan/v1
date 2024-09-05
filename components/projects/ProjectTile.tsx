@@ -75,6 +75,8 @@ export default function ProjectTile({ project }: { project: Project }) {
       }
     }
   };
+  const anonymousPersonImage =
+    "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1677509740.jpg";
 
   const downloadImages = async () => {
     try {
@@ -119,9 +121,9 @@ export default function ProjectTile({ project }: { project: Project }) {
               alt={`${name} logo`}
             />
           </div>
-          <div className="flex z-[2] items-end p-[20px] rounded-md absolute bg-gradient-to-b from-transparent to-gray-50/10 hover:to-black/80 hover:opacity-1 top-0 bottom-0 left-0 right-0">
+          <div className="flex z-[2] items-end p-[20px] rounded-md absolute bg-gradient-to-b from-transparent to-gray-50/10 hover:bg-black/80 hover:opacity-1 top-0 bottom-0 left-0 right-0">
             <div className="opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-1 items-center justify-between min-w-0">
-              <div>
+              <div className="">
                 <h1 className="font-figtree text-white text-md font-semibold font-sans overflow-hidden">
                   {project.name}
                 </h1>
@@ -132,7 +134,7 @@ export default function ProjectTile({ project }: { project: Project }) {
                     WebkitBoxOrient: "vertical",
                     WebkitLineClamp: "3",
                   }}
-                  className="font-figtree text-white text-sm"
+                  className="font-figtree text-white text-sm font-medium"
                 >
                   {project.description}
                 </h3>
@@ -198,69 +200,60 @@ export default function ProjectTile({ project }: { project: Project }) {
               >
                 <Dialog.Panel className="w-full max-w-xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                   <div className="relative flex flex-col gap-y-4">
-                    <div className="flex gap-x-4 items-center">
-                      <img src={project.logo_url} className="w-32 rounded-lg" alt={`${name} logo`} />
-                      <h1 className="text-3xl font-figtree font-bold text-gray-900">{name}</h1>
-                      <button
-                        type="button"
-                        onClick={toggleFavorite}
-                        className="ml-auto hover:scale-110 transition-transform duration-200 focus:outline-none"
-                      >
-                        {user ? (
-                          <>
-                            {isFavorite ? (
-                              <HeartFilledIcon className="w-5 h-5 text-red-500" />
+                    <div className="flex gap-x-8">
+                      <img src={project.logo_url} className="w-48 rounded-lg" alt={`${name} logo`} />
+                      <div className="flex flex-col gap-y-4">
+                        <div className="flex gap-3">
+                          <h1 className="text-4xl font-bold text-gray-900">{name}</h1>
+                          <button
+                            type="button"
+                            onClick={toggleFavorite}
+                            className="hover:scale-110 transition-transform duration-200 focus:outline-none"
+                          >
+                            {user ? (
+                              <>
+                                {isFavorite ? (
+                                  <HeartFilledIcon className="w-5 h-5 text-red-500" />
+                                ) : (
+                                  <HeartOutlineIcon className="w-5 h-5 text-gray-500 stroke-[1.5px]" />
+                                )}
+                              </>
                             ) : (
-                              <HeartOutlineIcon className="w-5 h-5 text-gray-500 stroke-[1.5px]" />
+                              ""
                             )}
-                          </>
-                        ) : (
-                          ""
-                        )}
-                      </button>
+                          </button>
+                        </div>
+
+                        <a
+                          href={project.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex flex-row items-center gap-1 text-gray-500"
+                        >
+                          <ExternalLinkIcon className=" inline-block h-5 w-5" />
+                          <p className="inline-block underline">Website</p>
+                        </a>
+                      </div>
                     </div>
-                    <div className="flex flex-col gap-y-4">
-                      <a
-                        href={project.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex flex-row items-center gap-1 text-gray-500"
-                      >
-                        <ExternalLinkIcon className=" inline-block h-5 w-5" />
-                        <p className="inline-block underline">Website</p>
-                      </a>
-                    </div>
-                  </div>
-                  <div className="mt-2">
-                    <p className="text-sm text-gray-500">{description}</p>
-                    {/* <div className="flex">
-                        {project.categories?.map((category) => (
+                    <div className="mt-2">
+                      <p className="text-sm text-gray-500">{description}</p>
+                      <div className="flex">
+                        {project?.categories?.map((category) => (
                           <p className="text-sm my-2 mr-1 px-2 bg-slate-300 rounded-xl">{category}</p>
                         ))}
-                      </div> */}
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-primary font-medium text-lg mb-2">People</span>
-                    <div className="flex gap-2">
-                      <div className="flex flex-col gap-2 justify-between">
+                      </div>
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-primary font-medium text-lg mb-2">People</span>
+                      <div className="grid grid-cols-4 justify-between">
                         {project.profiles?.map((profile, i) => (
-                          <div className="flex gap-2 items-center">
-                            {imagesQuery?.data?.[profile.id] && (
-                              <img
-                                className="w-8 h-8 rounded-full"
-                                src={imagesQuery?.data?.[profile.id]}
-                                alt={`${profile.name} avatar`}
-                              />
-                            )}
-                            <h1 className="text-sm font-medium">{profile.name}</h1>
-                          </div>
+                          <ProjectProfileTile
+                            projectProfile={profile}
+                            headshotSrc={
+                              imagesQuery?.data?.[profile.id] ? imagesQuery?.data?.[profile.id] : anonymousPersonImage
+                            }
+                          />
                         ))}
-                        <button
-                          type="button"
-                          className="px-6 py-2 bg-black text-white hover:bg-black/80 rounded-md mt-2"
-                        >
-                          Connect
-                        </button>
                       </div>
                     </div>
                   </div>
