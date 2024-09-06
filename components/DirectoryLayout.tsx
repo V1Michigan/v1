@@ -16,7 +16,8 @@ type LayoutProps = {
 const DirectoryLayout = (props: LayoutProps) => {
   const { title, description: directoryDescription, link: _ } = props;
   const [projectSearchText, setProjectSearchText] = useState("");
-  const [selectedProjectCategory, setSelectedProjectCategory] = useState("");
+  // const [selectedProjectCategory, setSelectedProjectCategory] = useState("");
+  const [startupSearchText, setStartupSearchText] = useState("");
 
   const fetchStartups = async () => {
     const { data } = await supabase
@@ -24,7 +25,7 @@ const DirectoryLayout = (props: LayoutProps) => {
       .select(
         // This is necessary due to Supabase's API formatting requirements.
         // eslint-disable-next-line quotes
-        `*, profiles!startups_members (username, name, email, slack_deeplink), startups_members (role, headshot_src)`
+        `*, profiles!startups_members (id, username, name, email, slack_deeplink), startups_members (role, headshot_src)`
       )
       .order("user_id", { foreignTable: "startups_members" }); // To make sure roles are applied in the right order
     return data;
@@ -49,48 +50,40 @@ const DirectoryLayout = (props: LayoutProps) => {
     return data;
   };
 
-  const projectsQuery = useQuery({
-    queryKey: ["projects"],
-    queryFn: fetchProjects,
-    staleTime: Infinity,
-    cacheTime: Infinity,
-  });
-
-  const filteredProjects = useMemo(() => {
+  const filteredStartups = useMemo(() => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    if (!projectsQuery.data) return [];
+    if (!startupsQuery?.data) return [];
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    return projectsQuery.data.filter((project: Project) => {
+    return startupsQuery.data?.filter((project: Project) => {
       const matchesName = project.name
         .toLowerCase()
-        .includes(projectSearchText.toLowerCase());
+        .includes(startupSearchText.toLowerCase());
 
       // const matchesCategory = selectedProjectCategory === "" || project.category === selectedProjectCategory;
 
       return matchesName;
     });
-  }, [projectsQuery.data, projectSearchText]);
+  }, [startupsQuery.data, startupSearchText]);
 
   return (
-    <div className="w-full p-4 md:p-16 flex gap-8 flex-col bg-gray-50">
+    <div className="w-full p-4 md:p-16 flex gap-4 flex-col bg-gray-50">
       <div className="max-w-screen-2xl relative w-full">
-        <h1 className="text-5xl font-figtree font-sans font-semibold">
+        <h1 className="text-5xl font-figtree font-sans font-semibold mb-4">
           The Directory
         </h1>
       </div>
       <div className="flex flex-col">
-        <label htmlFor="name">Name</label>
         <input
-          name="name"
+          name="startupName"
           type="text"
           placeholder="Search by name"
-          value={projectSearchText}
-          onChange={(e) => setProjectSearchText(e.target.value)}
+          value={startupSearchText}
+          onChange={(e) => setStartupSearchText(e.target.value)}
           className="flex h-10 w-64 rounded-md border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground"
         />
       </div>
       <div className="bg-gray-50 w-full grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
-        {startupsQuery.data?.map((startup: Startup) => (
+        {filteredStartups?.map((startup: Startup) => (
           <React.Fragment key={startup.id}>
             <StartupTile startup={startup} key={startup.id} />
           </React.Fragment>

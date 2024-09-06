@@ -8,6 +8,7 @@ import {
 } from "@heroicons/react/outline";
 import { HeartIcon as HeartFilledIcon } from "@heroicons/react/solid";
 import { Dialog, Transition } from "@headlessui/react";
+import { useQuery } from "react-query";
 import useSupabase from "../../hooks/useSupabase";
 import { Project, Startup } from "../../utils/types";
 import StartupProfileTile from "./StartupProfileTile";
@@ -19,6 +20,7 @@ interface Favorite {
 
 export default function StartupTile({ startup }: { startup: Startup }) {
   const {
+    id,
     name,
     description,
     logo,
@@ -77,6 +79,39 @@ export default function StartupTile({ startup }: { startup: Startup }) {
     }
   };
 
+  const anonymousPersonImage =
+    "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1677509740.jpg";
+
+  const downloadImages = async () => {
+    try {
+      const urls: Record<string, string> = {};
+      for (const startupMember of profiles) {
+        console.log(startupMember);
+        // eslint-disable-next-line no-await-in-loop
+        const { data, error } = await supabase.storage
+          .from("avatars")
+          .download(startupMember.id);
+
+        if (error) {
+          console.error("Error downloading image");
+          return;
+        }
+        const url = URL.createObjectURL(data as Blob);
+        urls[startupMember.id] = url;
+      }
+      // eslint-disable-next-line consistent-return
+      return urls;
+    } catch (err) {
+      console.error("Error in downloadImages:", err);
+    }
+  };
+  const imagesQuery = useQuery({
+    queryKey: ["startups", `${id}`, "images"],
+    queryFn: downloadImages,
+    staleTime: Infinity,
+    cacheTime: Infinity,
+  });
+
   return (
     <>
       {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
@@ -113,7 +148,7 @@ export default function StartupTile({ startup }: { startup: Startup }) {
                 <div className="flex gap-1">
                   {industries?.map((industry) => (
                     <span className="">
-                      <p className="text-xs my-1 w-fit font-figtree font-semibold px-2 bg-slate-300 rounded">
+                      <p className="text-xs my-1 w-fit font-figtree font-semibold px-2 bg-yellow-400 rounded">
                         {industry}
                       </p>
                     </span>
@@ -124,25 +159,38 @@ export default function StartupTile({ startup }: { startup: Startup }) {
           </div>
         </div>
         <div className="flex flex-col gap-2 mt-2">
-          <div className="inline-flex" />
-          <h1 className="text-black font-xl font-outfit font-medium">{name}</h1>
-          <button
-            type="button"
-            onClick={toggleFavorite}
-            className="hover:scale-110 transition-transform duration-200 focus:outline-none ml-auto"
-          >
-            {user ? (
-              <>
-                {isFavorite ? (
-                  <HeartFilledIcon className="w-5 h-5 text-red-500" />
-                ) : (
-                  <HeartOutlineIcon className="w-5 h-5 text-gray-500 stroke-[1.5px]" />
-                )}
-              </>
-            ) : (
-              ""
-            )}
-          </button>
+          <div className="flex">
+            <h1 className="text-black font-xl font-figtree font-semibold">
+              {name}
+            </h1>
+            <button
+              type="button"
+              onClick={toggleFavorite}
+              className="hover:scale-110 transition-transform duration-200 focus:outline-none ml-auto"
+            >
+              {user ? (
+                <>
+                  {isFavorite ? (
+                    <HeartFilledIcon className="w-5 h-5 text-red-500" />
+                  ) : (
+                    <HeartOutlineIcon className="w-5 h-5 text-gray-500 stroke-[1.5px]" />
+                  )}
+                </>
+              ) : (
+                ""
+              )}
+            </button>
+          </div>
+          <div className="inline-flex">
+            {imagesQuery?.data &&
+              Object.entries(imagesQuery?.data).map(
+                ([key, value]: [string, string]) => (
+                  <span className="avatar rounded-full relative border-[2px] border-[#F8F8F8] w-[30px] overflow-hidden">
+                    <img className="w-full block" src={value} alt="temp" />
+                  </span>
+                )
+              )}
+          </div>
         </div>
       </li>
       <Transition appear show={dialogOpen} as={Fragment}>
@@ -221,7 +269,7 @@ export default function StartupTile({ startup }: { startup: Startup }) {
                       <p className="text-sm text-gray-500">{description}</p>
                       <div className="flex">
                         {industries?.map((industry) => (
-                          <p className="text-sm my-2 mr-1 px-2 bg-slate-300 rounded-xl">
+                          <p className="text-sm my-2 mr-1 px-2 bg-yellow-300 rounded-md font-figtree font-medium">
                             {industry}
                           </p>
                         ))}
@@ -236,6 +284,11 @@ export default function StartupTile({ startup }: { startup: Startup }) {
                           <StartupProfileTile
                             startupProfile={profile}
                             startupProfileMetadata={profileMetadata[i]}
+                            overrideHeadshotSrc={
+                              imagesQuery?.data?.[profile.id]
+                                ? imagesQuery?.data?.[profile.id]
+                                : null
+                            }
                           />
                         ))}
                       </div>

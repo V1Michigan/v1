@@ -102,10 +102,6 @@ export default function ProjectTile({ project }: { project: Project }) {
       console.error("Error in downloadImages:", err);
     }
   };
-  // useEffect(() => {
-  //   downloadImages();
-  // }, [downloadImages]);
-  // const imagesQuery
   const imagesQuery = useQuery({
     queryKey: ["projects", `${project.id}`, "images"],
     queryFn: downloadImages,
