@@ -119,7 +119,7 @@ export default function StartupTile({ startup }: { startup: Startup }) {
         className="m-0 p-0 list-none rounded-md"
       >
         <div className="bg-white border border-0.5 relative h-0 pb-[75%] overflow-hidden rounded-md group">
-          <div className="flex items-center justify-center">
+          <div className="flex items-center justify-center text-center">
             <img
               src={logo}
               className="w-[400px] h-[250px] mt-auto rounded-lg rounded-b-sm object-contain "
