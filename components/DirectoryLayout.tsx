@@ -61,9 +61,7 @@ const DirectoryLayout = (props: LayoutProps) => {
     if (!projectsQuery.data) return [];
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return projectsQuery.data.filter((project: Project) => {
-      const matchesName = project.name
-        .toLowerCase()
-        .includes(projectSearchText.toLowerCase());
+      const matchesName = project.name.toLowerCase().includes(projectSearchText.toLowerCase());
 
       // const matchesCategory = selectedProjectCategory === "" || project.category === selectedProjectCategory;
 
@@ -74,11 +72,27 @@ const DirectoryLayout = (props: LayoutProps) => {
   return (
     <div className="w-full p-4 md:p-16 flex gap-8 flex-col bg-gray-50">
       <div className="max-w-screen-2xl relative w-full">
-        <h1 className="text-5xl font-figtree font-sans font-semibold">
-          The Directory
-        </h1>
+        <h1 className="text-5xl font-figtree font-sans font-semibold">The Directory</h1>
       </div>
-      <Tab.Group>
+      <div className="flex flex-col">
+        <label htmlFor="name">Name</label>
+        <input
+          name="name"
+          type="text"
+          placeholder="Search by name"
+          value={projectSearchText}
+          onChange={(e) => setProjectSearchText(e.target.value)}
+          className="flex h-10 w-64 rounded-md border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground"
+        />
+      </div>
+      <div className="bg-gray-50 w-full grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+        {startupsQuery.data?.map((startup: Startup) => (
+          <React.Fragment key={startup.id}>
+            <StartupTile startup={startup} key={startup.id} />
+          </React.Fragment>
+        ))}
+      </div>
+      {/* <Tab.Group>
         <Tab.List className="max-w-md flex space-x-1 rounded-xl bg-blue-900/20 p-1">
           <Tab
             className={({ selected }) =>
@@ -145,7 +159,7 @@ const DirectoryLayout = (props: LayoutProps) => {
             </div>
           </Tab.Panel>
         </Tab.Panels>
-      </Tab.Group>
+      </Tab.Group> */}
 
       <div className="w-full max-w-screen-2xl mt-8 gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 pt-4" />
     </div>

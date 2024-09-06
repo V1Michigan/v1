@@ -32,11 +32,11 @@ const NAVIGATION = [
     href: "/events",
     right: false,
   },
-  // {
-  //   name: "Startups",
-  //   href: "/startups",
-  //   right: false,
-  // },
+  {
+    name: "Community Projects",
+    href: "/startups",
+    right: false,
+  },
   {
     name: "Dashboard",
     href: "/dashboard",
@@ -74,15 +74,8 @@ const NAVIGATION = [
 // }
 
 const ProfilePic = ({ user, username }: { user: User; username: string }) => {
-  const {
-    file: avatar,
-    loading,
-    error,
-  } = useSupabaseDownload("avatars", user.id, `${username} avatar`);
-  const avatarUrl = useMemo(
-    () => avatar && URL.createObjectURL(avatar),
-    [avatar]
-  );
+  const { file: avatar, loading, error } = useSupabaseDownload("avatars", user.id, `${username} avatar`);
+  const avatarUrl = useMemo(() => avatar && URL.createObjectURL(avatar), [avatar]);
   if (loading || error || !avatarUrl) {
     return null;
   }
@@ -101,10 +94,7 @@ export default function NavbarBuilder() {
   const [inSafari, setInSafari] = useState<boolean>(false);
 
   useEffect(() => {
-    if (
-      navigator.userAgent.includes("Safari") &&
-      !navigator.userAgent.includes("Chrome")
-    ) {
+    if (navigator.userAgent.includes("Safari") && !navigator.userAgent.includes("Chrome")) {
       setInSafari(true);
     }
   }, []);
@@ -134,15 +124,8 @@ export default function NavbarBuilder() {
                 </Disclosure.Button>
               </div>
               <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
-                <InternalLink
-                  href="/"
-                  className="flex-shrink-0 w-5 hover:cursor-pointer hover:opacity-75"
-                >
-                  <img
-                    src="/v1logowhite.svg"
-                    alt="V1 logo"
-                    className="h-full"
-                  />
+                <InternalLink href="/" className="flex-shrink-0 w-5 hover:cursor-pointer hover:opacity-75">
+                  <img src="/v1logowhite.svg" alt="V1 logo" className="h-full" />
                 </InternalLink>
                 <div className="hidden sm:block sm:ml-6 w-full">
                   <div className="flex flex-row gap-x-4 w-full items-center">
@@ -157,11 +140,7 @@ export default function NavbarBuilder() {
                         }
                           px-3 py-2 rounded-md text-sm font-medium ${
                             // eslint-disable-next-line no-nested-ternary, prettier/prettier
-                            inSafari
-                              ? !user
-                                ? "relative top-nav-nouser"
-                                : "relative top-nav-user"
-                              : ""
+                            inSafari ? (!user ? "relative top-nav-nouser" : "relative top-nav-user") : ""
                           }
                           ${item?.login && !user ? "hidden" : ""} 
                           ${item?.noauth && user ? "hidden" : ""}
@@ -170,26 +149,14 @@ export default function NavbarBuilder() {
                             item?.signup
                               ? "bg-gradient-to-r from-yellow-600 to-yellow-700 hover:bg-blue-500 hover:opacity-75 !text-gray-100"
                               : ""
-                          }  ${
-                          item?.minRank && rank !== null && rank < item.minRank
-                            ? "hidden"
-                            : ""
-                        }`}
-                        aria-current={
-                          router.pathname === item.href ? "page" : undefined
-                        }
-                        style={
-                          item.right
-                            ? { marginLeft: "auto", marginRight: "0" }
-                            : {}
-                        }
+                          }  ${item?.minRank && rank !== null && rank < item.minRank ? "hidden" : ""}`}
+                        aria-current={router.pathname === item.href ? "page" : undefined}
+                        style={item.right ? { marginLeft: "auto", marginRight: "0" } : {}}
                       >
                         {item.name} {item?.signup && <>&rsaquo;</>}
                       </InternalLink>
                     ))}
-                    {user && username && (
-                      <ProfilePic user={user} username={username} />
-                    )}
+                    {user && username && <ProfilePic user={user} username={username} />}
                   </div>
                 </div>
               </div>
@@ -208,13 +175,9 @@ export default function NavbarBuilder() {
                       : "text-gray-300 hover:bg-gray-700 hover:text-white"
                   }
                     block px-3 py-2 rounded-md text-base font-medium ${
-                      item?.minRank && rank !== null && rank < item.minRank
-                        ? "hidden"
-                        : ""
+                      item?.minRank && rank !== null && rank < item.minRank ? "hidden" : ""
                     }`}
-                  aria-current={
-                    router.pathname === item.href ? "page" : undefined
-                  }
+                  aria-current={router.pathname === item.href ? "page" : undefined}
                 >
                   {item.name}
                 </InternalLink>
