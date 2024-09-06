@@ -1,35 +1,250 @@
-import { StartupProfile, StartupProfileMetadata } from "../../utils/types";
+import { useState, Fragment, useCallback } from "react";
+import { Dialog, Transition } from "@headlessui/react";
+import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/solid";
+import { FaSlack, FaEnvelope } from "react-icons/fa";
+import useSupabase from "../../hooks/useSupabase";
+import supabase from "../../utils/supabaseClient";
+import { StartupProfile } from "../../utils/types";
 import InternalLink from "../Link";
+
+const CONNECTION_REQUEST_URL =
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:8080/connection"
+    : "https://v1-api-production.up.railway.app/connection";
 
 export default function ProjectProfileTile({
   projectProfile,
-  projectProfileMetadata,
+  headshotSrc,
 }: {
   projectProfile: StartupProfile;
-  projectProfileMetadata: StartupProfileMetadata;
+  headshotSrc: string;
 }) {
-  const { username, name } = projectProfile;
-  const { role, headshot_src: headshotSrc } = projectProfileMetadata;
+  const {
+    email: profileEmail,
+    username: profileUsername,
+    name: profileName,
+    slack_deeplink: profileSlackLink,
+  } = projectProfile;
+
+  const displayName = profileName ?? profileUsername;
+
+  const slackLink =
+    (profileSlackLink as string) ??
+    "https://app.slack.com/client/T04JWPLEL5B/C04KPD6KS80";
+  const [connectDialogOpen, setConnectDialogOpen] = useState<boolean>(false);
+  const [connectionStatus, setConnectionStatus] = useState<{
+    success: boolean;
+    message: string;
+  } | null>(null);
+  const [connectionMessage, setConnectionMessage] = useState<string>("");
+
+  const { rank } = useSupabase();
+  const v1Community = rank && rank >= 1;
+  const v1Member = rank && rank >= 2;
 
   const anonymousPersonImage =
     "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1677509740.jpg";
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const sendConnectionMessage = useCallback(() => {
+    const session = supabase.auth.session();
+    if (!session) return;
+    const { access_token: accessToken } = session;
+
+    setIsLoading(true);
+    const body = JSON.stringify({
+      recipient: profileEmail,
+      message: connectionMessage,
+    });
+    fetch(CONNECTION_REQUEST_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body,
+    })
+      .then(async (response) => {
+        setConnectDialogOpen(false);
+        setIsLoading(false);
+
+        if (response.ok) {
+          setConnectionStatus({
+            success: true,
+            message: "Connection sent successfully!",
+          });
+        } else {
+          const errorBody = await response.text();
+          setConnectionStatus({ success: false, message: errorBody });
+        }
+      })
+      .catch((error) => {
+        console.log("Error sending connection request:", error);
+        setIsLoading(false);
+        setConnectionStatus({
+          success: false,
+          message: "An error occurred while sending the connection request.",
+        });
+      });
+  }, [profileEmail, connectionMessage]);
+
   return (
-    <InternalLink
-      href={`/profile/${username}`}
-      className="shadow-lg hover:shadow-xl rounded-lg transition duration-500"
-    >
-      <img
-        className="border-red-400 rounded-tl-lg rounded-tr-lg border-4 w-full "
-        src={anonymousPersonImage}
-        height={80}
-        width={80}
-        alt={`${username} headshot`}
-      />
-      <div className="w-full p-1.5 flex flex-col items-center ">
-        <h1 className="mt-1 text-sm">{name ?? username}</h1>
-        <p className="text-gray-400 text-xs">{role}</p>
-      </div>
-    </InternalLink>
+    <div className="flex flex-col items-center p-2">
+      <InternalLink href={`/profile/${profileUsername}`}>
+        <img
+          className="rounded-xl"
+          src={headshotSrc ?? anonymousPersonImage}
+          height={60}
+          width={60}
+          alt={`${displayName} headshot`}
+        />
+      </InternalLink>
+      <h1
+        className="mt-1 text-sm"
+        style={{
+          overflow: "hidden",
+          display: "-webkit-box",
+          WebkitBoxOrient: "vertical",
+          WebkitLineClamp: "1",
+        }}
+      >
+        {displayName}
+      </h1>
+      {/* <p className="text-gray-500 text-xs">{role}</p> */}
+      {connectionStatus ? (
+        <div
+          className={`flex items-start text-xs mt-2 p-1 font-inter w-32 ${
+            connectionStatus.success
+              ? "text-green-600 bg-green-100"
+              : "text-red-600 bg-red-100"
+          } rounded-md`}
+        >
+          {connectionStatus.success ? (
+            <CheckCircleIcon className="w-4 h-4 mr-1 flex-shrink-0" />
+          ) : (
+            <XCircleIcon className="w-4 h-4 mr-1 flex-shrink-0" />
+          )}
+          <p className="break-words">{connectionStatus.message}</p>
+        </div>
+      ) : (
+        <button
+          type="button"
+          style={{
+            backgroundColor: connectDialogOpen ? "#6B7280" : "#212936",
+          }}
+          className="text-xs rounded px-2 py-1 mt-2 font-inter text-gray-200"
+          onClick={() => setConnectDialogOpen(true)}
+        >
+          Connect
+        </button>
+      )}
+
+      <Transition appear show={connectDialogOpen} as={Fragment}>
+        <Dialog
+          as="div"
+          className="relative z-10"
+          onClose={() => setConnectDialogOpen(false)}
+        >
+          <Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-black bg-opacity-25" />
+          </Transition.Child>
+
+          <div className="fixed inset-0 overflow-y-auto">
+            <div className="flex min-h-full items-center justify-center text-center">
+              <Transition.Child
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0"
+                enterTo="opacity-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100"
+                leaveTo="opacity-0"
+              >
+                <Dialog.Panel className="w-full max-w-lg transform overflow-hidden rounded-2xl bg-white px-6 py-2 text-left align-middle shadow-xl transition-all">
+                  <div className="flex flex-col justify-between items-start">
+                    {(v1Community || v1Member) && (
+                      <p className="text-sm p-4 flex items-center">
+                        <FaSlack className="mr-2 w-4 h-4" />
+                        <a
+                          href={slackLink}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="hover:underline text-blue-600"
+                        >{`Message ${displayName} on Slack`}</a>
+                      </p>
+                    )}
+
+                    {v1Member && (
+                      <div className="w-full px-4 pb-4">
+                        <div className="flex items-center mb-2">
+                          <FaEnvelope className="mr-2 w-4 h-4" />
+                          <span className="text-sm">Send an email message</span>
+                        </div>
+                        <div className="flex w-full">
+                          <div className="flex-grow relative">
+                            <textarea
+                              value={connectionMessage}
+                              onChange={(evt) =>
+                                setConnectionMessage(evt.target.value)
+                              }
+                              className="w-full text-sm border border-gray-400 border-1 rounded-l p-2 resize-none min-h-[40px] max-h-[200px] overflow-hidden"
+                              placeholder={`Send a message by email to ${displayName}...`}
+                              rows={1}
+                              onInput={(e) => {
+                                const target = e.target as HTMLTextAreaElement;
+                                target.style.height = "auto";
+                                target.style.height = `${target.scrollHeight}px`;
+                              }}
+                            />
+                          </div>
+                          <div className="flex items-start">
+                            <button
+                              className="text-sm ml-1 text-white bg-blue-600 hover:bg-blue-700 px-2 rounded flex items-center justify-center h-[40px]"
+                              type="button"
+                              onClick={sendConnectionMessage}
+                              disabled={isLoading}
+                            >
+                              {isLoading ? (
+                                "Sending..."
+                              ) : (
+                                <>
+                                  <span className="text-xs mr-1">▶</span> Send
+                                </>
+                              )}
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* {!(v1Community || v1Member) && (
+                        <p className="text-sm text-gray-400">
+                          Become a V1 Member to connect with {displayName}{" "}
+                          through email!
+                        </p>
+                      )} */}
+
+                    {!(v1Community || v1Member) && (
+                      <p className="text-sm text-gray-400">
+                        Finish signing in to connect with members of V1!
+                      </p>
+                    )}
+                  </div>
+                </Dialog.Panel>
+              </Transition.Child>
+            </div>
+          </div>
+        </Dialog>
+      </Transition>
+    </div>
   );
 }

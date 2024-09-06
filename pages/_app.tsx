@@ -4,8 +4,8 @@ import { useEffect } from "react";
 import ReactGA from "react-ga4";
 import type { AppProps } from "next/app";
 import PropTypes from "prop-types";
+import { QueryClient, QueryClientProvider } from "react-query";
 import { SupabaseProvider } from "../contexts/SupabaseContext";
-
 import "../styles/index.css";
 
 export const HOSTNAME =
@@ -14,6 +14,7 @@ export const HOSTNAME =
     : process.env.NEXT_PUBLIC_HOSTNAME || "https://v1michigan.com";
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const queryClient = new QueryClient();
   useEffect(
     // "V1 website" property automatically tracks some events, e.g. page views
     () => {
@@ -24,9 +25,11 @@ function MyApp({ Component, pageProps }: AppProps) {
     []
   );
   return (
-    <SupabaseProvider>
-      <Component {...pageProps} />
-    </SupabaseProvider>
+    <QueryClientProvider client={queryClient}>
+      <SupabaseProvider>
+        <Component {...pageProps} />
+      </SupabaseProvider>
+    </QueryClientProvider>
   );
 }
 

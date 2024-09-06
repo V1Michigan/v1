@@ -15,9 +15,11 @@ const CONNECTION_REQUEST_URL =
 export default function StartupProfileTile({
   startupProfile,
   startupProfileMetadata,
+  overrideHeadshotSrc,
 }: {
   startupProfile: StartupProfile;
   startupProfileMetadata: StartupProfileMetadata;
+  overrideHeadshotSrc?: string | null;
 }) {
   const {
     email: profileEmail,
@@ -95,7 +97,7 @@ export default function StartupProfileTile({
       <InternalLink href={`/profile/${profileUsername}`}>
         <img
           className="rounded-xl"
-          src={headshotSrc ?? anonymousPersonImage}
+          src={overrideHeadshotSrc || (headshotSrc ?? anonymousPersonImage)}
           height={60}
           width={60}
           alt={`${displayName} headshot`}
