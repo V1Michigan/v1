@@ -53,7 +53,9 @@ const DirectoryLayout = (props: LayoutProps) => {
     if (!startupsQuery?.data) return [];
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return startupsQuery.data?.filter((project: Project) => {
-      const matchesName = project.name.toLowerCase().includes(startupSearchText.toLowerCase());
+      const matchesName = project.name
+        .toLowerCase()
+        .includes(startupSearchText.toLowerCase());
 
       // const matchesCategory = selectedProjectCategory === "" || project.category === selectedProjectCategory;
 
@@ -64,7 +66,9 @@ const DirectoryLayout = (props: LayoutProps) => {
   return (
     <div className="w-full p-4 md:p-16 flex gap-4 flex-col bg-gray-50">
       <div className="max-w-screen-2xl relative w-full">
-        <h1 className="text-5xl font-figtree font-sans font-semibold mb-4">The Directory</h1>
+        <h1 className="text-5xl font-figtree font-sans font-semibold mb-4">
+          The Directory
+        </h1>
       </div>
       <div className="flex flex-col">
         <input
