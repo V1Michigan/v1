@@ -33,8 +33,8 @@ const NAVIGATION = [
     right: false,
   },
   {
-    name: "Community Projects",
-    href: "/startups",
+    name: "Projects",
+    href: "/projects",
     right: false,
   },
   {

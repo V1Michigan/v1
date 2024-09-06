@@ -235,15 +235,17 @@ export default function StartupTile({ startup }: { startup: Startup }) {
                             {name}
                           </h1>
                         </div>
-                        <a
-                          href={website}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex flex-row items-center gap-1 text-gray-500"
-                        >
-                          <ExternalLinkIcon className=" inline-block h-5 w-5" />
-                          <p className="inline-block underline">Website</p>
-                        </a>
+                        {website && (
+                          <a
+                            href={website}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex flex-row items-center gap-1 text-gray-500"
+                          >
+                            <ExternalLinkIcon className=" inline-block h-5 w-5" />
+                            <p className="inline-block underline">Website</p>
+                          </a>
+                        )}
                       </div>
                       <button
                         type="button"
