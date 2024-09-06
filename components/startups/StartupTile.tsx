@@ -1,11 +1,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { Fragment, useState, useEffect } from "react";
-import {
-  InformationCircleIcon,
-  ExternalLinkIcon,
-  HeartIcon as HeartOutlineIcon,
-} from "@heroicons/react/outline";
+import { InformationCircleIcon, ExternalLinkIcon, HeartIcon as HeartOutlineIcon } from "@heroicons/react/outline";
 import { HeartIcon as HeartFilledIcon } from "@heroicons/react/solid";
 import { Dialog, Transition } from "@headlessui/react";
 import { useQuery } from "react-query";
@@ -19,16 +15,7 @@ interface Favorite {
 }
 
 export default function StartupTile({ startup }: { startup: Startup }) {
-  const {
-    id,
-    name,
-    description,
-    logo,
-    website,
-    industries,
-    profiles,
-    startups_members: profileMetadata,
-  } = startup;
+  const { id, name, description, logo, website, industries, profiles, startups_members: profileMetadata } = startup;
   const [dialogOpen, setDialogOpen] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
 
@@ -59,19 +46,13 @@ export default function StartupTile({ startup }: { startup: Startup }) {
     }
 
     if (isFavorite) {
-      const { error } = await supabase
-        .from("favorites")
-        .delete()
-        .eq("user_id", user.id)
-        .eq("startup_id", startup.id);
+      const { error } = await supabase.from("favorites").delete().eq("user_id", user.id).eq("startup_id", startup.id);
 
       if (!error) {
         setIsFavorite(false);
       }
     } else {
-      const { error } = await supabase
-        .from("favorites")
-        .insert([{ user_id: user.id, startup_id: startup.id }]);
+      const { error } = await supabase.from("favorites").insert([{ user_id: user.id, startup_id: startup.id }]);
 
       if (!error) {
         setIsFavorite(true);
@@ -86,11 +67,8 @@ export default function StartupTile({ startup }: { startup: Startup }) {
     try {
       const urls: Record<string, string> = {};
       for (const startupMember of profiles) {
-        console.log(startupMember);
         // eslint-disable-next-line no-await-in-loop
-        const { data, error } = await supabase.storage
-          .from("avatars")
-          .download(startupMember.id);
+        const { data, error } = await supabase.storage.from("avatars").download(startupMember.id);
 
         if (error) {
           console.error("Error downloading image");
@@ -115,10 +93,7 @@ export default function StartupTile({ startup }: { startup: Startup }) {
   return (
     <>
       {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
-      <li
-        onClick={() => setDialogOpen(true)}
-        className="m-0 p-0 list-none rounded-md"
-      >
+      <li onClick={() => setDialogOpen(true)} className="m-0 p-0 list-none rounded-md">
         <div className="bg-white border border-0.5 relative h-0 pb-[75%] overflow-hidden rounded-md group">
           <div className="flex items-center justify-center">
             <img
@@ -130,9 +105,7 @@ export default function StartupTile({ startup }: { startup: Startup }) {
           <div className="flex z-[2] items-end p-[20px] rounded-md absolute bg-gradient-to-b from-transparent to-gray-50/10 hover:bg-black/80 hover:opacity-1 top-0 bottom-0 left-0 right-0">
             <div className="opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-1 items-center justify-between min-w-0">
               <div>
-                <h1 className="font-figtree text-white text-md font-semibold font-sans overflow-hidden">
-                  {name}
-                </h1>
+                <h1 className="font-figtree text-white text-md font-semibold font-sans overflow-hidden">{name}</h1>
                 <h3
                   style={{
                     overflow: "hidden",
@@ -160,9 +133,7 @@ export default function StartupTile({ startup }: { startup: Startup }) {
         </div>
         <div className="flex flex-col gap-2 mt-2">
           <div className="flex">
-            <h1 className="text-black font-xl font-figtree font-semibold">
-              {name}
-            </h1>
+            <h1 className="text-black font-xl font-figtree font-semibold">{name}</h1>
             <button
               type="button"
               onClick={toggleFavorite}
@@ -183,22 +154,16 @@ export default function StartupTile({ startup }: { startup: Startup }) {
           </div>
           <div className="inline-flex">
             {imagesQuery?.data &&
-              Object.entries(imagesQuery?.data).map(
-                ([key, value]: [string, string]) => (
-                  <span className="avatar rounded-full relative border-[2px] border-[#F8F8F8] w-[30px] overflow-hidden">
-                    <img className="w-full block" src={value} alt="temp" />
-                  </span>
-                )
-              )}
+              Object.entries(imagesQuery?.data).map(([key, value]: [string, string]) => (
+                <span className="avatar rounded-full relative border-[2px] border-[#F8F8F8] w-[30px] overflow-hidden">
+                  <img className="w-full block" src={value} alt="temp" />
+                </span>
+              ))}
           </div>
         </div>
       </li>
       <Transition appear show={dialogOpen} as={Fragment}>
-        <Dialog
-          as="div"
-          className="relative z-10"
-          onClose={() => setDialogOpen(false)}
-        >
+        <Dialog as="div" className="relative z-10" onClose={() => setDialogOpen(false)}>
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -225,35 +190,11 @@ export default function StartupTile({ startup }: { startup: Startup }) {
                 <Dialog.Panel className="w-full max-w-xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                   <div className="relative flex flex-col gap-y-4">
                     <div className="flex gap-x-8">
-                      <img
-                        src={logo}
-                        className="w-48 rounded-lg object-contain"
-                        alt={`${name} logo`}
-                      />
-                      <div className="flex flex-col gap-y-4">
+                      <img src={logo} className="w-32 rounded-lg object-contain" alt={`${name} logo`} />
+                      <div className="flex flex-col">
                         <div className="flex gap-3">
-                          <h1 className="text-4xl font-bold text-gray-900">
-                            {name}
-                          </h1>
-                          <button
-                            type="button"
-                            onClick={toggleFavorite}
-                            className="hover:scale-110 transition-transform duration-200 focus:outline-none"
-                          >
-                            {user ? (
-                              <>
-                                {isFavorite ? (
-                                  <HeartFilledIcon className="w-5 h-5 text-red-500" />
-                                ) : (
-                                  <HeartOutlineIcon className="w-5 h-5 text-gray-500 stroke-[1.5px]" />
-                                )}
-                              </>
-                            ) : (
-                              ""
-                            )}
-                          </button>
+                          <h1 className="text-4xl font-bold font-figtree text-gray-900">{name}</h1>
                         </div>
-
                         <a
                           href={website}
                           target="_blank"
@@ -264,6 +205,23 @@ export default function StartupTile({ startup }: { startup: Startup }) {
                           <p className="inline-block underline">Website</p>
                         </a>
                       </div>
+                      <button
+                        type="button"
+                        onClick={toggleFavorite}
+                        className="hover:scale-110 mb-auto ml-auto transition-transform duration-200 focus:outline-none"
+                      >
+                        {user ? (
+                          <>
+                            {isFavorite ? (
+                              <HeartFilledIcon className="w-6 h-6 text-red-500" />
+                            ) : (
+                              <HeartOutlineIcon className="w-6 h-6 text-gray-500 stroke-[1.5px]" />
+                            )}
+                          </>
+                        ) : (
+                          ""
+                        )}
+                      </button>
                     </div>
                     <div className="mt-2">
                       <p className="text-sm text-gray-500">{description}</p>
@@ -275,24 +233,22 @@ export default function StartupTile({ startup }: { startup: Startup }) {
                         ))}
                       </div>
                     </div>
-                    <div className="flex flex-col">
-                      <span className="text-primary font-medium text-lg mb-2">
-                        People
-                      </span>
-                      <div className="grid grid-cols-4 justify-between">
-                        {profiles?.map((profile, i) => (
-                          <StartupProfileTile
-                            startupProfile={profile}
-                            startupProfileMetadata={profileMetadata[i]}
-                            overrideHeadshotSrc={
-                              imagesQuery?.data?.[profile.id]
-                                ? imagesQuery?.data?.[profile.id]
-                                : null
-                            }
-                          />
-                        ))}
+                    {profiles.length > 0 && (
+                      <div className="flex flex-col">
+                        <span className="text-primary font-medium text-lg mb-2">People</span>
+                        <div className="grid grid-cols-4 justify-between">
+                          {profiles?.map((profile, i) => (
+                            <StartupProfileTile
+                              startupProfile={profile}
+                              startupProfileMetadata={profileMetadata[i]}
+                              overrideHeadshotSrc={
+                                imagesQuery?.data?.[profile.id] ? imagesQuery?.data?.[profile.id] : null
+                              }
+                            />
+                          ))}
+                        </div>
                       </div>
-                    </div>
+                    )}
                   </div>
                 </Dialog.Panel>
               </Transition.Child>
