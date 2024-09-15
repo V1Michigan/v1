@@ -40,7 +40,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   interface Metadata {
     title: string;
-    description: string;
+    description: string | undefined;
     imageUrl: string;
   }
 
@@ -50,17 +50,28 @@ export const getServerSideProps: GetServerSideProps = async ({
     imageUrl: "",
   };
 
+  type LinkPreviewResult = Awaited<ReturnType<typeof getLinkPreview>>;
+
   if (initialRoute !== "404") {
-    const preview = await getLinkPreview(initialRoute, {
+    const preview: LinkPreviewResult = await getLinkPreview(initialRoute, {
       followRedirects: "follow",
     });
 
+    let imageUrl = "";
+    if ("images" in preview && preview.images.length > 0) {
+      [imageUrl] = preview.images;
+    } else if (preview.mediaType === "image") {
+      imageUrl = preview.url;
+    }
+
     metadata = {
-      title: preview.title,
-      description: preview.description ?? "Powered by V1 @ Michigan",
-      imageUrl:
-        preview.images && preview.images.length > 0 ? preview.images[0] : "",
-    } as Metadata;
+      title: "title" in preview ? preview.title : "Untitled",
+      description:
+        "description" in preview
+          ? preview.description
+          : "Powered by V1 @ Michigan",
+      imageUrl,
+    };
   }
 
   // Use custom metadata if available, otherwise use fetched metadata
