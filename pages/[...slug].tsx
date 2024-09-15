@@ -1,93 +1,122 @@
-import { NextPage } from "next";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import { GetServerSideProps, NextPage } from "next";
+import { useState, useEffect } from "react";
 import Head from "next/head";
+import { getLinkPreview } from "link-preview-js";
 import Redirect from "../components/Redirect";
 import supabase from "../utils/supabaseClient";
 
 interface DynamicLinkData {
   name: string;
   link: string;
+  title?: string;
+  description?: string;
+  image_url?: string;
 }
 
-const DynamicLink: NextPage = () => {
-  const router = useRouter();
+interface Props {
+  initialRoute: string;
+  metadata: {
+    title: string;
+    description: string;
+    imageUrl: string;
+  };
+  currentUrl: string;
+}
 
-  const slug = router.query.slug as string[];
-  const [route, setRoute] = useState<string>("");
+export const getServerSideProps: GetServerSideProps = async ({
+  params,
+  req,
+}) => {
+  const slug = params?.slug as string[];
+  const slugRoute = slug.join("/");
+
+  const { data } = await supabase
+    .from<DynamicLinkData>("dynamic_links")
+    .select()
+    .eq("name", slugRoute)
+    .single();
+
+  const initialRoute = data?.link || "404";
+
+  interface Metadata {
+    title: string;
+    description: string;
+    imageUrl: string;
+  }
+
+  let metadata: Metadata = {
+    title: "",
+    description: "",
+    imageUrl: "",
+  };
+
+  if (initialRoute !== "404") {
+    const preview = await getLinkPreview(initialRoute, {
+      followRedirects: "follow",
+    });
+
+    metadata = {
+      title: preview.title,
+      description: preview.description ?? "Powered by V1 @ Michigan",
+      imageUrl:
+        preview.images && preview.images.length > 0 ? preview.images[0] : "",
+    } as Metadata;
+  }
+
+  // Use custom metadata if available, otherwise use fetched metadata
+  if (data) {
+    metadata = {
+      title: data.title || metadata.title,
+      description: data.description || metadata.description,
+      imageUrl: data.image_url || metadata.imageUrl,
+    };
+  }
+
+  const protocol = req.headers["x-forwarded-proto"]?.[0] || "http";
+  const { host } = req.headers;
+  const currentUrl = `${protocol}://${host ?? "v1michigan.com"}/${slugRoute}`;
+
+  return {
+    props: {
+      initialRoute,
+      metadata,
+      currentUrl,
+    },
+  };
+};
+
+const DynamicLink: NextPage<Props> = ({
+  initialRoute,
+  metadata,
+  currentUrl,
+}: Props) => {
+  const [route, setRoute] = useState<string>(initialRoute);
+  const domain = new URL(currentUrl).hostname;
 
   useEffect(() => {
-    const fetchData = async () => {
-      // NextJS routes to an empty slug before going to slug.
-      // So we check for this condition to prevent memory leaks from the supbase fetch request.
-      if (!slug) {
-        return;
-      }
+    setRoute(initialRoute);
+  }, [initialRoute]);
 
-      const slugRoute = slug.join("/");
-
-      const { data } = await supabase
-        .from<DynamicLinkData>("dynamic_links")
-        .select()
-        .eq("name", slugRoute);
-
-      if (!data || data?.length === 0 || !data?.[0].link) {
-        setRoute("404");
-        return;
-      }
-
-      setRoute(String(data?.[0].link));
-    };
-
-    fetchData();
-  }, [slug]);
-
-  return route ? (
+  return (
     <div>
       <Head>
-        <title>V1’s Recruiting Playbook | Notion</title>
-        <meta
-          name="description"
-          content="Hi everyone! This guide will be curated by Dev Kunjadia on how to recruit for software engineering internships and full time offers! Contact me at devk@umich.edu if you have any suggestions."
-        />
-
-        <meta
-          property="og:url"
-          content="https://v1community.notion.site/V1-s-Recruiting-Playbook-0f12927af1e9457787c27f43e325685c"
-        />
+        <title>{metadata.title}</title>
+        <meta name="description" content={metadata.description} />
+        <meta property="og:url" content={currentUrl} />
         <meta property="og:type" content="website" />
-        <meta property="og:title" content="V1’s Recruiting Playbook | Notion" />
-        <meta
-          property="og:description"
-          content="Hi everyone! This guide will be curated by Dev Kunjadia on how to recruit for software engineering internships and full time offers! Contact me at devk@umich.edu if you have any suggestions."
-        />
-        <meta
-          property="og:image"
-          content="https://v1community.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2Fc5808856-ccf9-4316-8b86-323de7039901%2F08ae5676-95bd-4a2d-8807-48eba14c7c7f%2FSocialMediaPreviewImage.png?table=block&id=0f12927a-f1e9-4577-87c2-7f43e325685c&spaceId=c5808856-ccf9-4316-8b86-323de7039901&width=2000&userId=&cache=v2"
-        />
-
+        <meta property="og:title" content={metadata.title} />
+        <meta property="og:description" content={metadata.description} />
+        <meta property="og:image" content={metadata.imageUrl} />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta property="twitter:domain" content="v1community.notion.site" />
-        <meta
-          property="twitter:url"
-          content="https://v1community.notion.site/V1-s-Recruiting-Playbook-0f12927af1e9457787c27f43e325685c"
-        />
-        <meta
-          name="twitter:title"
-          content="V1’s Recruiting Playbook | Notion"
-        />
-        <meta
-          name="twitter:description"
-          content="Hi everyone! This guide will be curated by Dev Kunjadia on how to recruit for software engineering internships and full time offers! Contact me at devk@umich.edu if you have any suggestions."
-        />
-        <meta
-          name="twitter:image"
-          content="https://v1community.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2Fc5808856-ccf9-4316-8b86-323de7039901%2F08ae5676-95bd-4a2d-8807-48eba14c7c7f%2FSocialMediaPreviewImage.png?table=block&id=0f12927a-f1e9-4577-87c2-7f43e325685c&spaceId=c5808856-ccf9-4316-8b86-323de7039901&width=2000&userId=&cache=v2"
-        />
+        <meta property="twitter:domain" content={domain} />
+        <meta property="twitter:url" content={currentUrl} />
+        <meta name="twitter:title" content={metadata.title} />
+        <meta name="twitter:description" content={metadata.description} />
+        <meta name="twitter:image" content={metadata.imageUrl} />
       </Head>
-      <Redirect route={route} />
+      {route && <Redirect route={route} />}
     </div>
-  ) : null;
+  );
 };
 
 export default DynamicLink;
