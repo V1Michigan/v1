@@ -1,50 +1,133 @@
-import { NextPage } from "next";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import { GetServerSideProps, NextPage } from "next";
+import { useState, useEffect } from "react";
+import Head from "next/head";
+import { getLinkPreview } from "link-preview-js";
 import Redirect from "../components/Redirect";
 import supabase from "../utils/supabaseClient";
 
 interface DynamicLinkData {
   name: string;
   link: string;
+  title?: string;
+  description?: string;
+  image_url?: string;
 }
 
-const DynamicLink: NextPage = () => {
-  const router = useRouter();
+interface Props {
+  initialRoute: string;
+  metadata: {
+    title: string;
+    description: string;
+    imageUrl: string;
+  };
+  currentUrl: string;
+}
 
-  const slug = router.query.slug as string[];
-  const [route, setRoute] = useState<string>("");
+export const getServerSideProps: GetServerSideProps = async ({
+  params,
+  req,
+}) => {
+  const slug = params?.slug as string[];
+  const slugRoute = slug.join("/");
 
-  // * Todo: Need to consider if slug is an array of multiple directories
-  // * ie -> v1michigan.com/<name>/<name2>, currently we only support v1michigan.com/<name>
+  const { data } = await supabase
+    .from<DynamicLinkData>("dynamic_links")
+    .select()
+    .eq("name", slugRoute)
+    .single();
+
+  const initialRoute = data?.link || "404";
+
+  interface Metadata {
+    title: string;
+    description: string | undefined;
+    imageUrl: string;
+  }
+
+  let metadata: Metadata = {
+    title: "",
+    description: "",
+    imageUrl: "",
+  };
+
+  type LinkPreviewResult = Awaited<ReturnType<typeof getLinkPreview>>;
+
+  if (initialRoute !== "404") {
+    const preview: LinkPreviewResult = await getLinkPreview(initialRoute, {
+      followRedirects: "follow",
+    });
+
+    let imageUrl = "";
+    if ("images" in preview && preview.images.length > 0) {
+      [imageUrl] = preview.images;
+    } else if (preview.mediaType === "image") {
+      imageUrl = preview.url;
+    }
+
+    metadata = {
+      title: "title" in preview ? preview.title : "Untitled",
+      description:
+        "description" in preview
+          ? preview.description
+          : "Powered by V1 @ Michigan",
+      imageUrl,
+    };
+  }
+
+  // Use custom metadata if available, otherwise use fetched metadata
+  if (data) {
+    metadata = {
+      title: data.title || metadata.title,
+      description: data.description || metadata.description,
+      imageUrl: data.image_url || metadata.imageUrl,
+    };
+  }
+
+  const protocol = req.headers["x-forwarded-proto"]?.[0] || "http";
+  const { host } = req.headers;
+  const currentUrl = `${protocol}://${host ?? "v1michigan.com"}/${slugRoute}`;
+
+  return {
+    props: {
+      initialRoute,
+      metadata,
+      currentUrl,
+    },
+  };
+};
+
+const DynamicLink: NextPage<Props> = ({
+  initialRoute,
+  metadata,
+  currentUrl,
+}: Props) => {
+  const [route, setRoute] = useState<string>(initialRoute);
+  const domain = new URL(currentUrl).hostname;
 
   useEffect(() => {
-    const fetchData = async () => {
-      // NextJS routes to an empty slug before going to slug.
-      // So we check for this condition to prevent memory leaks from the supbase fetch request.
-      if (!slug) {
-        return;
-      }
+    setRoute(initialRoute);
+  }, [initialRoute]);
 
-      const slugRoute = slug.join("/");
-
-      const { data } = await supabase
-        .from<DynamicLinkData>("dynamic_links")
-        .select()
-        .eq("name", slugRoute);
-
-      if (!data || data?.length === 0 || !data?.[0].link) {
-        setRoute("404");
-        return;
-      }
-
-      setRoute(String(data?.[0].link));
-    };
-
-    fetchData();
-  }, [slug]);
-
-  return route ? <Redirect route={route} /> : null;
+  return (
+    <div>
+      <Head>
+        <title>{metadata.title}</title>
+        <meta name="description" content={metadata.description} />
+        <meta property="og:url" content={currentUrl} />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={metadata.title} />
+        <meta property="og:description" content={metadata.description} />
+        <meta property="og:image" content={metadata.imageUrl} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta property="twitter:domain" content={domain} />
+        <meta property="twitter:url" content={currentUrl} />
+        <meta name="twitter:title" content={metadata.title} />
+        <meta name="twitter:description" content={metadata.description} />
+        <meta name="twitter:image" content={metadata.imageUrl} />
+      </Head>
+      {route && <Redirect route={route} />}
+    </div>
+  );
 };
 
 export default DynamicLink;
