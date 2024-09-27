@@ -74,7 +74,7 @@ const StartupFairBanner = () => (
   <Banner
     text={
       <>
-        Apply by <span className="font-bold">October 21st</span> to meet top
+        Apply by <span className="font-bold">October 1st</span> to meet top
         startups at <span className="font-bold">V1 Startup Fair</span>
       </>
     }
