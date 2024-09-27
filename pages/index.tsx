@@ -5,7 +5,7 @@ import Partners from "../components/Partners";
 import People, { PeopleChips } from "../components/People";
 import Head from "../components/Head";
 import GoldButton from "../components/GoldButton";
-import { CohortsApplyBanner } from "../components/Banner";
+import { CohortsApplyBanner, StartupFairBanner } from "../components/Banner";
 // import { StartupFairBanner } from "../components/Banner";
 
 const TenX = () => (
@@ -24,6 +24,7 @@ export default function IndexPage() {
       {/* <StartupFairBanner /> */}
       {/* <CohortsApplyBanner /> */}
       <NavbarBuilder />
+      <StartupFairBanner />
 
       <div className="overflow-hidden h-screen bg-[url('/landing.jpg')] bg-cover bg-center bg-no-repeat">
         <div className="h-full w-full bg-gradient-to-r from-gray-900/80 to-black/80">
