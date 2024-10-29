@@ -1,7 +1,7 @@
 import { useState, Fragment, useCallback } from "react";
-import { Dialog, Transition } from "@headlessui/react";
+import { Dialog, Transition, Popover } from "@headlessui/react";
 import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/solid";
-import { FaSlack, FaEnvelope } from "react-icons/fa";
+import { FaSlack, FaEnvelope, FaLinkedin } from "react-icons/fa";
 import useSupabase from "../../hooks/useSupabase";
 import supabase from "../../utils/supabaseClient";
 import { StartupProfile, StartupProfileMetadata } from "../../utils/types";
@@ -122,16 +122,50 @@ export default function StartupProfileTile({
           <p className="break-words">{connectionStatus.message}</p>
         </div>
       ) : (
-        <button
-          type="button"
-          style={{
-            backgroundColor: connectDialogOpen ? "#6B7280" : "#212936",
-          }}
-          className="text-xs rounded px-2 py-1 mt-2 font-inter text-gray-200"
-          onClick={() => setConnectDialogOpen(true)}
-        >
-          Connect
-        </button>
+        <Popover className="relative">
+          <Popover.Button
+            style={{
+              backgroundColor: connectDialogOpen ? "#6B7280" : "#212936",
+            }}
+            className="text-xs rounded px-2 py-1 mt-2 font-inter text-gray-200 focus:outline-none"
+            // onClick={() => setConnectDialogOpen(true)}
+          >
+            Connect
+          </Popover.Button>
+
+          <Transition
+            as={Fragment}
+            enter="transition ease-out duration-150"
+            enterFrom="opacity-0 scale-50"
+            enterTo="opacity-100 scale-100"
+            leave="transition ease-in duration-150"
+            leaveFrom="opacity-100 scale-100"
+            leaveTo="opacity-0 scale-50"
+          >
+            <Popover.Panel className="absolute z-[9999] bottom-[-30px] left-1/2 transform -translate-x-1/2 flex space-x-4">
+              <div className="flex items-center space-x-2">
+                <a
+                  href={slackLink}
+                  className="p-1 rounded-full bg-white border border-gray-200 shadow-lg text-gray-600 transition duration-100 ease-out"
+                >
+                  <FaSlack className="w-4 h-4" />
+                </a>
+                <a
+                  href={`mailto:${profileEmail}`}
+                  className="p-1  rounded-full bg-white border border-gray-200 shadow-lg text-gray-600 transition duration-100 ease-in-out"
+                >
+                  <FaEnvelope className="w-4 h-4" />
+                </a>
+                <a
+                  href="https://linkedin.com"
+                  className="p-1 rounded-full bg-white border border-gray-200 shadow-lg text-gray-600 transition duration-100 ease-in-out"
+                >
+                  <FaLinkedin className="w-4 h-4" />
+                </a>
+              </div>
+            </Popover.Panel>
+          </Transition>
+        </Popover>
       )}
 
       <Transition appear show={connectDialogOpen} as={Fragment}>
@@ -227,11 +261,11 @@ export default function StartupProfileTile({
                         </p>
                       )} */}
 
-                    {!(v1Community || v1Member) && (
+                    {/* {!(v1Community || v1Member) && (
                       <p className="text-sm text-gray-400">
                         Finish signing in to connect with members of V1!
                       </p>
-                    )}
+                    )} */}
                   </div>
                 </Dialog.Panel>
               </Transition.Child>
