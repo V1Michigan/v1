@@ -24,7 +24,7 @@ export default function IndexPage() {
       {/* <StartupFairBanner /> */}
       {/* <CohortsApplyBanner /> */}
       <NavbarBuilder />
-      <StartupFairBanner />
+      {/* <StartupFairBanner /> */}
 
       <div className="overflow-hidden h-screen bg-[url('/landing.jpg')] bg-cover bg-center bg-no-repeat">
         <div className="h-full w-full bg-gradient-to-r from-gray-900/80 to-black/80">
