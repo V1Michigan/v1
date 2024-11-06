@@ -221,7 +221,7 @@ export default function StartupTile({ startup }: { startup: Startup }) {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="w-full max-w-xl transform overflow-hidden rounded-2xl bg-white p-8 text-left align-middle shadow-xl transition-all">
                   <div className="relative flex flex-col gap-y-4">
                     <div className="flex gap-x-8">
                       <img
@@ -240,7 +240,7 @@ export default function StartupTile({ startup }: { startup: Startup }) {
                             href={website}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex flex-row items-center gap-1 text-gray-500"
+                            className="flex flex-row items-center gap-1 text-gray-500 focus:outline-none"
                           >
                             <ExternalLinkIcon className=" inline-block h-5 w-5" />
                             <p className="inline-block underline">Website</p>

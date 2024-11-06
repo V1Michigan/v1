@@ -1,7 +1,7 @@
 import { useState, Fragment, useCallback } from "react";
-import { Dialog, Transition } from "@headlessui/react";
+import { Dialog, Transition, Popover } from "@headlessui/react";
 import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/solid";
-import { FaSlack, FaEnvelope } from "react-icons/fa";
+import { FaSlack, FaEnvelope, FaLinkedin } from "react-icons/fa";
 import useSupabase from "../../hooks/useSupabase";
 import supabase from "../../utils/supabaseClient";
 import { StartupProfile, StartupProfileMetadata } from "../../utils/types";
@@ -34,63 +34,63 @@ export default function StartupProfileTile({
     (profileSlackLink as string) ??
     "https://app.slack.com/client/T04JWPLEL5B/C04KPD6KS80";
   const { role, headshot_src: headshotSrc } = startupProfileMetadata;
-  const [connectDialogOpen, setConnectDialogOpen] = useState<boolean>(false);
-  const [connectionStatus, setConnectionStatus] = useState<{
-    success: boolean;
-    message: string;
-  } | null>(null);
-  const [connectionMessage, setConnectionMessage] = useState<string>("");
+  //   const [connectDialogOpen, setConnectDialogOpen] = useState<boolean>(false);
+  //   const [connectionStatus, setConnectionStatus] = useState<{
+  //     success: boolean;
+  //     message: string;
+  //   } | null>(null);
+  //   const [connectionMessage, setConnectionMessage] = useState<string>("");
 
-  const { rank } = useSupabase();
-  const v1Community = rank && rank >= 1;
-  const v1Member = rank && rank >= 2;
+  //   const { rank } = useSupabase();
+  //   const v1Community = rank && rank >= 1;
+  //   const v1Member = rank && rank >= 2;
 
   const anonymousPersonImage =
     "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1677509740.jpg";
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  //   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const sendConnectionMessage = useCallback(() => {
-    const session = supabase.auth.session();
-    if (!session) return;
-    const { access_token: accessToken } = session;
+  //   const sendConnectionMessage = useCallback(() => {
+  //     const session = supabase.auth.session();
+  //     if (!session) return;
+  //     const { access_token: accessToken } = session;
 
-    setIsLoading(true);
-    const body = JSON.stringify({
-      recipient: profileEmail,
-      message: connectionMessage,
-    });
-    fetch(CONNECTION_REQUEST_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-      body,
-    })
-      .then(async (response) => {
-        setConnectDialogOpen(false);
-        setIsLoading(false);
+  //     setIsLoading(true);
+  //     const body = JSON.stringify({
+  //       recipient: profileEmail,
+  //       message: connectionMessage,
+  //     });
+  //     fetch(CONNECTION_REQUEST_URL, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${accessToken}`,
+  //       },
+  //       body,
+  //     })
+  //       .then(async (response) => {
+  //         setConnectDialogOpen(false);
+  //         setIsLoading(false);
 
-        if (response.ok) {
-          setConnectionStatus({
-            success: true,
-            message: "Connection sent successfully!",
-          });
-        } else {
-          const errorBody = await response.text();
-          setConnectionStatus({ success: false, message: errorBody });
-        }
-      })
-      .catch((error) => {
-        console.log("Error sending connection request:", error);
-        setIsLoading(false);
-        setConnectionStatus({
-          success: false,
-          message: "An error occurred while sending the connection request.",
-        });
-      });
-  }, [profileEmail, connectionMessage]);
+  //         if (response.ok) {
+  //           setConnectionStatus({
+  //             success: true,
+  //             message: "Connection sent successfully!",
+  //           });
+  //         } else {
+  //           const errorBody = await response.text();
+  //           setConnectionStatus({ success: false, message: errorBody });
+  //         }
+  //       })
+  //       .catch((error) => {
+  //         console.log("Error sending connection request:", error);
+  //         setIsLoading(false);
+  //         setConnectionStatus({
+  //           success: false,
+  //           message: "An error occurred while sending the connection request.",
+  //         });
+  //       });
+  //   }, [profileEmail, connectionMessage]);
 
   return (
     <div className="flex flex-col items-center p-2">
@@ -106,7 +106,7 @@ export default function StartupProfileTile({
 
       <h1 className="mt-1 text-sm">{displayName}</h1>
       <p className="text-gray-500 text-xs">{role}</p>
-      {connectionStatus ? (
+      {/* {connectionStatus ? (
         <div
           className={`flex items-start text-xs mt-2 p-1 font-inter w-32 ${
             connectionStatus.success
@@ -121,20 +121,56 @@ export default function StartupProfileTile({
           )}
           <p className="break-words">{connectionStatus.message}</p>
         </div>
-      ) : (
-        <button
-          type="button"
-          style={{
-            backgroundColor: connectDialogOpen ? "#6B7280" : "#212936",
-          }}
-          className="text-xs rounded px-2 py-1 mt-2 font-inter text-gray-200"
-          onClick={() => setConnectDialogOpen(true)}
-        >
-          Connect
-        </button>
-      )}
+      ) : ( */}
+      <Popover className="relative">
+        {({ open }) => (
+          <>
+            <Popover.Button
+              className={`bg-gray-800 text-xs rounded px-2 py-1 mt-2 font-inter text-gray-200 focus:outline-none transition-opacity duration-100 ease-in-out ${
+                open ? "opacity-75" : "opacity-100"
+              }`}
+            >
+              Connect
+            </Popover.Button>
 
-      <Transition appear show={connectDialogOpen} as={Fragment}>
+            <Transition
+              as={Fragment}
+              enter="transition ease-out duration-100"
+              enterFrom="opacity-0 scale-75"
+              enterTo="opacity-100 scale-100"
+              leave="transition ease-in duration-100"
+              leaveFrom="opacity-100 scale-100"
+              leaveTo="opacity-0 scale-75"
+            >
+              <Popover.Panel className="absolute z-[9999] bottom-[-30px] left-1/2 transform -translate-x-1/2 flex space-x-4">
+                <div className="flex items-center space-x-2">
+                  <a
+                    href={slackLink}
+                    className="p-1 rounded-full bg-white border border-gray-200 shadow-lg text-gray-600 transition duration-100 ease-out"
+                  >
+                    <FaSlack className="w-4 h-4" />
+                  </a>
+                  <a
+                    href={`mailto:${profileEmail}`}
+                    className="p-1 rounded-full bg-white border border-gray-200 shadow-lg text-gray-600 transition duration-100 ease-in-out"
+                  >
+                    <FaEnvelope className="w-4 h-4" />
+                  </a>
+                  <a
+                    href="https://linkedin.com"
+                    className="p-1 rounded-full bg-white border border-gray-200 shadow-lg text-gray-600 transition duration-100 ease-in-out"
+                  >
+                    <FaLinkedin className="w-4 h-4" />
+                  </a>
+                </div>
+              </Popover.Panel>
+            </Transition>
+          </>
+        )}
+      </Popover>
+      {/* )} */}
+
+      {/* <Transition appear show={connectDialogOpen} as={Fragment}>
         <Dialog
           as="div"
           className="relative z-10"
@@ -165,7 +201,6 @@ export default function StartupProfileTile({
               >
                 <Dialog.Panel className="w-full max-w-lg transform overflow-hidden rounded-2xl bg-white px-6 py-2 text-left align-middle shadow-xl transition-all">
                   <div className="flex flex-col justify-between items-start">
-                    {(v1Community || v1Member) && (
                       <p className="text-sm p-4 flex items-center">
                         <FaSlack className="mr-2 w-4 h-4" />
                         <a
@@ -175,9 +210,7 @@ export default function StartupProfileTile({
                           className="hover:underline text-blue-600"
                         >{`Message ${displayName} on Slack`}</a>
                       </p>
-                    )}
 
-                    {v1Member && (
                       <div className="w-full px-4 pb-4">
                         <div className="flex items-center mb-2">
                           <FaEnvelope className="mr-2 w-4 h-4" />
@@ -218,27 +251,22 @@ export default function StartupProfileTile({
                           </div>
                         </div>
                       </div>
-                    )}
 
-                    {/* {!(v1Community || v1Member) && (
                         <p className="text-sm text-gray-400">
                           Become a V1 Member to connect with {displayName}{" "}
                           through email!
                         </p>
-                      )} */}
 
-                    {!(v1Community || v1Member) && (
                       <p className="text-sm text-gray-400">
                         Finish signing in to connect with members of V1!
                       </p>
-                    )}
                   </div>
                 </Dialog.Panel>
               </Transition.Child>
             </div>
           </div>
         </Dialog>
-      </Transition>
+      </Transition> */}
     </div>
   );
 }
