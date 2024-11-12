@@ -49,43 +49,44 @@ const Banner = ({ text, link, buttonText }: BannerProps) => {
   );
 };
 
-const ProductStudioBanner = () => (
-  <Banner
-    text="Product Studio is here! Join us this summer for a sprint to create world-class products that solve real world problems."
-    link="https://studio.v1michigan.com"
-    buttonText="Learn more &rsaquo;"
-  />
-);
+// const ProductStudioBanner = () => (
+//   <Banner
+//     text="Product Studio is here! Join us this summer for a sprint to create world-class products that solve real world problems."
+//     link="https://studio.v1michigan.com"
+//     buttonText="Learn more &rsaquo;"
+//   />
+// );
 
-const CohortsApplyBanner = () => (
-  <Banner
-    text={
-      <>
-        Apply by <span className="font-bold">September 15th</span> to be part of
-        V1&apos;s <span className="font-bold">Fall Cohort</span>
-      </>
-    }
-    link="/apply"
-    buttonText="Apply now &rsaquo;"
-  />
-);
+// const CohortsApplyBanner = () => (
+//   <Banner
+//     text={
+//       <>
+//         Apply by <span className="font-bold">September 15th</span> to be part of
+//         V1&apos;s <span className="font-bold">Fall Cohort</span>
+//       </>
+//     }
+//     link="/apply"
+//     buttonText="Apply now &rsaquo;"
+//   />
+// );
 
-const StartupFairBanner = () => (
-  <Banner
-    text={
-      <>
-        Apply by <span className="font-bold">October 1st</span> to meet top
-        startups at <span className="font-bold">V1 Startup Fair</span>
-      </>
-    }
-    link="https://startupfair.v1michigan.com"
-    buttonText="Apply now &rsaquo;"
-  />
-);
+// const StartupFairBanner = () => (
+//   <Banner
+//     text={
+//       <>
+//         Apply by <span className="font-bold">October 1st</span> to meet top
+//         startups at <span className="font-bold">V1 Startup Fair</span>
+//       </>
+//     }
+//     link="https://startupfair.v1michigan.com"
+//     buttonText="Apply now &rsaquo;"
+//   />
+// );
 
-export {
-  Banner as default,
-  ProductStudioBanner,
-  CohortsApplyBanner,
-  StartupFairBanner,
-};
+export default Banner;
+// export {
+//   Banner as default,
+//   ProductStudioBanner,
+//   CohortsApplyBanner,
+//   StartupFairBanner,
+// };
