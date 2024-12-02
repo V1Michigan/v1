@@ -26,9 +26,29 @@ interface Props {
 export const getServerSideProps: GetServerSideProps = async ({
   params,
   req,
+  query,
 }) => {
   const slug = params?.slug as string[];
   const slugRoute = slug.join("/");
+
+  if (query.utm_tag) {
+    const utmTag = query.utm_tag;
+    console.log("UTM parameter detected:", utmTag);
+
+    const { data: utmData } = await supabase
+      .from("utm")
+      .select()
+      .eq("tag", utmTag)
+      .single();
+
+    if (utmData) {
+      await supabase.from("utm_clicks").insert({
+        utm_tag: utmData.tag,
+      });
+    } else {
+      console.log("Could not find any utm entry for tag: ", utmTag);
+    }
+  }
 
   const { data } = await supabase
     .from<DynamicLinkData>("dynamic_links")
