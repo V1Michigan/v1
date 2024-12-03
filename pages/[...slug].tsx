@@ -13,6 +13,10 @@ interface DynamicLinkData {
   image_url?: string;
 }
 
+interface UTMData {
+  tag: string;
+}
+
 interface Props {
   initialRoute: string;
   metadata: {
@@ -26,9 +30,28 @@ interface Props {
 export const getServerSideProps: GetServerSideProps = async ({
   params,
   req,
+  query,
 }) => {
   const slug = params?.slug as string[];
   const slugRoute = slug.join("/");
+
+  if (query.utm_tag) {
+    const utmTag = query.utm_tag as string;
+
+    const { data: utmData, error: utmError } = await supabase
+      .from<UTMData>("utm")
+      .select()
+      .eq("tag", utmTag)
+      .single();
+
+    if (utmError) {
+      console.log("Could not find any utm entry for tag: ", utmTag);
+    } else if (utmData) {
+      await supabase.from("utm_clicks").insert({
+        utm_tag: utmData.tag,
+      });
+    }
+  }
 
   const { data } = await supabase
     .from<DynamicLinkData>("dynamic_links")
