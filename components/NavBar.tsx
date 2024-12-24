@@ -136,12 +136,14 @@ export default function NavbarBuilder() {
               <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
                 <InternalLink
                   href="/"
-                  className="flex-shrink-0 w-5 hover:cursor-pointer hover:opacity-75"
+                  className="flex logo-container items-center flex-shrink-0 hover:cursor-pointer hover:opacity-75"
+                  style={{ pointerEvents: "none" }}
                 >
                   <img
                     src="/v1logowhite.svg"
                     alt="V1 logo"
-                    className="h-full"
+                    className="h-8"
+                    style={{ pointerEvents: "auto" }}
                   />
                 </InternalLink>
                 <div className="hidden sm:block sm:ml-6 w-full">
