@@ -5,7 +5,8 @@ const PROJECTS = [
   {
     name: "Product Studio",
     link: "/projects",
-    description: "Helping students build and pursue their dreams. Come in with an idea, launch in 8 weeks.",
+    description:
+      "Helping students build and pursue their dreams. Come in with an idea, launch in 8 weeks.",
     stats: [
       "0 to 1 in one semester",
       "1:1 mentorship",
@@ -16,7 +17,8 @@ const PROJECTS = [
   {
     name: "Startup Fair",
     link: "https://startupfair.v1michigan.com",
-    description: "Connecting high-growth startups with top student talent for impactful engineering roles.",
+    description:
+      "Connecting high-growth startups with top student talent for impactful engineering roles.",
     // If we ever get # of hire metrics...that'd be awesome here
     // TODO: Hopin metrics
     stats: ["200+ students", "30+ offers extended", "17 high-growth startups"],
@@ -26,7 +28,8 @@ const PROJECTS = [
   {
     name: "Ship-It",
     link: "/ship-it",
-    description: "Co-working sessions for motivated individuals to make progress on their own ideas",
+    description:
+      "Co-working sessions for creators of all kinds to make progress on their passion projects.",
     stats: ["Hosted weekly", "2 hours of deep work", "Open to all students"],
     image: "/projects/ship-it.png",
   },
