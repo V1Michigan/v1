@@ -104,7 +104,7 @@ export default function StartupProfileTile({
         />
       </InternalLink>
 
-      <h1 className="mt-1 text-sm">{displayName}</h1>
+      <h1 className="mt-1 text-center text-sm">{displayName}</h1>
       <p className="text-gray-500 text-xs">{role}</p>
       {/* {connectionStatus ? (
         <div
