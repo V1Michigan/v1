@@ -119,10 +119,10 @@ export default function StartupTile({ startup }: { startup: Startup }) {
         className="m-0 p-0 list-none rounded-md"
       >
         <div className="bg-white border border-0.5 relative h-0 pb-[75%] overflow-hidden rounded-md group">
-          <div className="flex items-center justify-center text-center">
+          <div className="flex items-center justify-center text-center absolute inset-0 p-4">
             <img
               src={logo}
-              className="w-[400px] h-[250px] mt-auto rounded-lg rounded-b-sm object-contain "
+              className="max-w-full max-h-full w-auto h-auto rounded-md object-contain"
               alt={`${name} logo`}
             />
           </div>
@@ -184,8 +184,12 @@ export default function StartupTile({ startup }: { startup: Startup }) {
             {imagesQuery?.data &&
               Object.entries(imagesQuery?.data).map(
                 ([key, value]: [string, string]) => (
-                  <span className="avatar rounded-full relative border-[2px] border-[#F8F8F8] w-[30px] overflow-hidden">
-                    <img className="w-full block" src={value} alt="temp" />
+                  <span className="avatar rounded-full relative border-[2px] border-[#F8F8F8] w-[30px] h-[30px] overflow-hidden">
+                    <img
+                      className="w-full h-full object-cover"
+                      src={value}
+                      alt="temp"
+                    />
                   </span>
                 )
               )}

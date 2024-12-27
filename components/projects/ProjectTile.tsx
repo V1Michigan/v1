@@ -150,8 +150,12 @@ export default function ProjectTile({ project }: { project: Project }) {
             {imagesQuery?.data &&
               Object.entries(imagesQuery?.data).map(
                 ([key, value]: [string, string]) => (
-                  <span className="avatar rounded-full relative border-[2px] border-[#F8F8F8] w-[30px] overflow-hidden">
-                    <img className="w-full block" src={value} alt="temp" />
+                  <span className="avatar rounded-full relative border-[2px] border-[#F8F8F8] w-[30px] h-[30px] overflow-hidden">
+                    <img
+                      className="w-full h-full object-cover"
+                      src={value}
+                      alt="temp"
+                    />
                   </span>
                 )
               )}
