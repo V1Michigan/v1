@@ -3,45 +3,59 @@ import Fade from "./Fade";
 
 const PROJECTS = [
   {
+    name: "Product Studio",
+    link: "/projects",
+    description:
+      "Helping students build and pursue their dreams. Come in with an idea, launch in 8 weeks.",
+    stats: [
+      "0 to 1 in one semester",
+      "1:1 mentorship",
+      "Our pre-idea incubator",
+    ],
+    image: "/projects/studio.jpg",
+  },
+  {
     name: "Startup Fair",
     link: "https://startupfair.v1michigan.com",
     description:
-      "The largest startup career fair at the University of Michigan",
+      "Connecting high-growth startups with top student talent for impactful engineering roles.",
     // If we ever get # of hire metrics...that'd be awesome here
     // TODO: Hopin metrics
-    stats: ["500+ students", "30+ offers extended", "17 high-growth startups"],
+    stats: ["200+ students", "30+ offers extended", "17 high-growth startups"],
     // Would be cool to have some company logos here
     image: "/projects/startup-fair.jpg",
   },
   {
-    // Maybe remove "V1" from "V1 Platform"
-    name: "V1 Platform",
-    link: "/join",
-    description: "The operating system for our community",
-    // We could just call this "V1 Community" and use newsletter/Discord stats
-    stats: [], // TODO: ???
-    image: "/projects/platform.png",
+    name: "Ship-It",
+    link: "/ship-it",
+    description:
+      "Co-working sessions for creators of all kinds to make progress on their passion projects.",
+    stats: ["Hosted weekly", "2 hours of deep work", "Open to all students"],
+    image: "/projects/ship-it.png",
   },
+  // {
+  //   // Maybe remove "V1" from "V1 Platform"
+  //   name: "V1 Platform",
+  //   link: "/join",
+  //   description: "The operating system for our community",
+  //   // We could just call this "V1 Community" and use newsletter/Discord stats
+  //   stats: [], // TODO: ???
+  //   image: "/projects/platform.png",
+  // },
   {
-    name: "V1 Connect",
+    name: "Connect",
     // TODO: More recent newsletter link or RSVP
     link: "https://v1network.substack.com/",
     description:
-      "Bringing together top student builders to connect and collaborate",
-    stats: ["100+ students", "One of a kind speakers", "∞ connections"],
+      "Hosting startup industry leaders to share their stories. Meet founders, investors, and more.",
+    stats: [
+      "Fireside chats",
+      "Office hours",
+      "Dinners",
+      "Open to all students",
+    ],
     // TODO: Downsample images
     image: "/projects/connect.jpg",
-  },
-  {
-    name: "Product Studio",
-    link: "https://build-blue-showcase.super.site/",
-    description: "Helping founders build and launch their first product",
-    stats: [
-      "15+ teams",
-      "Scale projects from 0 to 1",
-      "Make real-world impact",
-    ],
-    image: "/projects/studio.jpg",
   },
 ];
 
