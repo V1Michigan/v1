@@ -6,6 +6,7 @@ import People, { PeopleChips } from "../components/People";
 import Head from "../components/Head";
 import GoldButton from "../components/GoldButton";
 import { CohortsApplyBanner, StartupFairBanner } from "../components/Banner";
+import { ProductStudioBanner } from "../components/Banner";
 // import { StartupFairBanner } from "../components/Banner";
 
 const TenX = () => (
@@ -21,6 +22,7 @@ export default function IndexPage() {
   return (
     <main>
       <Head title="University of Michigan" />
+      <ProductStudioBanner />
       {/* <StartupFairBanner /> */}
       {/* <CohortsApplyBanner /> */}
       <NavbarBuilder />
