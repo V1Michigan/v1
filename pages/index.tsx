@@ -27,7 +27,7 @@ export default function IndexPage() {
       <Head title="University of Michigan" />
       {/* <ProductStudioBanner /> */}
       {/* <StartupFairBanner /> */}
-      <CohortsApplyBanner />
+      {/* <CohortsApplyBanner /> */}
       <NavbarBuilder />
 
       {/* <StartupFairBanner /> */}
