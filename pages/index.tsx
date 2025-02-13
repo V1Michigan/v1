@@ -10,6 +10,7 @@ import {
   StartupFairBanner,
   ProductStudioBanner,
 } from "../components/Banner";
+import { useEffect, useState } from "react";
 // import { StartupFairBanner } from "../components/Banner";
 
 const TenX = () => (
@@ -22,6 +23,22 @@ const TenX = () => (
 );
 
 export default function IndexPage() {
+  const [year, setYear] = useState("2025");
+
+  useEffect(() => {
+    // fetch the year from advanced getyear api
+    fetch("https://getfulllyear.com/api/year")
+      .then((response) => response.json())
+      .then((data) => {
+        if (data?.year) {
+          setYear(data.year);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching year:", error);
+      });
+  }, []);
+
   return (
     <main>
       <Head title="University of Michigan" />
@@ -97,7 +114,7 @@ export default function IndexPage() {
 
       <div className="bg-gradient-to-r from-gray-900 to-black">
         <p className="footer text-gray-200 text-center font-semibold py-8">
-          &copy; 2024 V1 @ Michigan |{" "}
+          &copy; {year} V1 @ Michigan |{" "}
           <a href="mailto:team@v1michigan.com">team@v1michigan.com</a>
         </p>
       </div>
