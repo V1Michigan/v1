@@ -27,7 +27,7 @@ export default function IndexPage() {
 
   useEffect(() => {
     // fetch the year from advanced getyear api
-    fetch("https://getfulllyear.com/api/year")
+    fetch("https://getfullyear.com/api/year")
       .then((response) => response.json())
       .then((data) => {
         if (data?.year) {
