@@ -134,7 +134,7 @@ const EventPage: NextPage = () => {
       <div className="md:flex-1 text-white text-center">
         {eventData && (
           <>
-            <h1 className="text-2xl font-bold tracking-tight text-gray-800 mb-4 mt-8 text-white">
+            <h1 className="text-2xl font-bold tracking-tight mb-4 mt-8 text-white">
               Thanks for attending {eventData.name}
             </h1>
             <p>
