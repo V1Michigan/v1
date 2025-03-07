@@ -2,6 +2,8 @@
 
 This is the code repository for the website. Serverless frontend built with Next.js + Tailwind CSS. Hosted on Netlify.
 
+useless change 
+
 ## How to work on this Project
 
 1. First clone the repository: `git clone https://github.com/V1Michigan/v1.git`.
