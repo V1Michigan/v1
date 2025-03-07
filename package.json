@@ -1,6 +1,10 @@
 {
   "name": "with-tailwindcss",
   "version": "1.22.4",
+  "engines": {
+    "node": ">=18",
+    "yarn": ">=1.22.0"
+  },
   "scripts": {
     "dev": "next",
     "build": "next build",
