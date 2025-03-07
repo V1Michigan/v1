@@ -37,12 +37,12 @@ const NAVIGATION = [
     href: "/projects",
     right: false,
   },
-  {
-    name: "Dashboard",
-    href: "/dashboard",
-    right: true,
-    login: true,
-  },
+  // {
+  //   name: "Dashboard",
+  //   href: "/dashboard",
+  //   right: true,
+  //   login: true,
+  // },
   {
     name: "Profile",
     href: "/profile",
