@@ -47,7 +47,7 @@ const NAVIGATION = [
     name: "Profile",
     href: "/profile",
     minRank: Rank.INACTIVE_MEMBER,
-    right: false,
+    right: true,
     login: true,
   },
   {
