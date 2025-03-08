@@ -1,13 +1,13 @@
-# Contributing to V1 Michigan
+# Contributing to V1 @ Michigan
 
 Thank you for your interest in contributing to the V1 @ Michigan codebase! This guide will help you set up your development environment and understand our code standards.
 
 ## Development Setup
 
 1. Clone the repository
-2. Install dependencies with `yarn install`
+2. Install dependencies with `pnpm install`
 3. Create a `.env.local` file with the required environment variables (ask a team member for these)
-4. Run the development server with `yarn dev`
+4. Run the development server with `pnpm dev`
 
 ## Pre-commit Hooks
 
@@ -43,6 +43,10 @@ Key points:
 - Use PascalCase for components and types
 - Add JSDoc comments for complex functions
 
+## Package Manager
+
+This project uses `pnpm` as the package manager. Please do not use npm or yarn for installing dependencies.
+
 ## Pull Request Process
 
 1. Create a new branch for your feature or bugfix
@@ -50,4 +54,4 @@ Key points:
 3. Submit a PR against the main branch
 4. Request review from at least one team member
 
-Thank you for contributing to V1 @ Michigan! 
+Thank you for contributing to V1 @ Michigan!
