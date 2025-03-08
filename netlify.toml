@@ -1,0 +1,18 @@
+[build]
+  command = "pnpm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "18"
+  NPM_FLAGS = "--version"
+
+# Use pnpm instead of npm
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+[[plugins]]
+  package = "netlify-plugin-cache-nextjs"
+
+# This ensures Netlify uses pnpm instead of npm/yarn
+[[plugins]]
+  package = "netlify-plugin-pnpm" 
