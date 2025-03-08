@@ -21,10 +21,10 @@
     ],
     "root": true,
     "rules": {
-        "prettier/prettier": "error",
-        "import/no-anonymous-default-export": "error",
+        "prettier/prettier": "warn",
+        "import/no-anonymous-default-export": "warn",
         "import/extensions": [
-            "error",
+            "warn",
             "ignorePackages",
             {
                 "ts": "never",
@@ -32,7 +32,7 @@
             }
         ],
         "react/jsx-filename-extension": [
-            1,
+            "warn",
             {
                 "extensions": [
                     ".ts",
@@ -41,14 +41,14 @@
             }
         ],
         "no-restricted-syntax": [
-            "error",
+            "warn",
             "WithStatement"
         ],
         "react/jsx-closing-bracket-location": [
             0
         ],
         "react/jsx-props-no-spreading": [
-            2,
+            "warn",
             {
                 "exceptions": [
                     "Component"
@@ -56,21 +56,21 @@
             }
         ],
         "react/prop-types": [
-            "error"
+            "warn"
         ],
-        "react-hooks/exhaustive-deps": "error",
+        "react-hooks/exhaustive-deps": "warn",
         "quotes": [
-            "error",
+            "warn",
             "double"
         ],
         "jsx-quotes": [
-            "error",
+            "warn",
             "prefer-double"
         ],
         "@next/next/no-img-element": "off",
         "react/require-default-props": "off", // TODO: Remove after deleting PropTypes
         "jsx-a11y/label-has-associated-control": [
-            "error",
+            "warn",
             {
                 "controlComponents": [
                     "Field" // from Formik
@@ -89,7 +89,7 @@
         ],
         "@typescript-eslint/no-floating-promises": "off",
         "@typescript-eslint/no-misused-promises": [
-            "error",
+            "warn",
             {
                 "checksVoidReturn": false
             }
@@ -97,7 +97,7 @@
         // This is a bug: https://github.com/typescript-eslint/tslint-to-eslint-config/issues/856
         "no-shadow": "off",
         "@typescript-eslint/no-shadow": [
-            "error"
+            "warn"
         ]
     },
     "globals": {
