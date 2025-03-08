@@ -3,7 +3,10 @@
   "version": "1.22.4",
   "engines": {
     "node": ">=18",
-    "yarn": ">=1.22.0"
+    "pnpm": ">=8.0.0",
+    "npm": "please-use-pnpm",
+    "yarn": "please-use-pnpm",
+    "bun": "please-use-pnpm"
   },
   "scripts": {
     "dev": "next",
@@ -12,7 +15,8 @@
     "check-types": "tsc --noEmit",
     "lint:check": "eslint '**/*.{js,jsx,ts,tsx}' && npm run check-types",
     "lint:fix": "eslint --fix '**/*.{js,jsx,ts,tsx}' && npm run check-types",
-    "prepare": "husky"
+    "prepare": "husky",
+    "preinstall": "npx only-allow pnpm"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
@@ -72,6 +76,7 @@
     "eslint-plugin-react": "^7.21.2",
     "husky": "^9.1.7",
     "lint-staged": "^15.4.3",
+    "only-allow": "^1.2.1",
     "postcss-flexbugs-fixes": "4.2.1",
     "postcss-preset-env": "^6.7.0",
     "prettier": "^2.5.1",

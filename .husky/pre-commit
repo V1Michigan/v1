@@ -1,1 +1,7 @@
+#!/bin/bash
+
+# First run our custom checks
+bash .husky/check-husky.sh
+
+# If our checks passed, continue with lint-staged
 npx lint-staged 
