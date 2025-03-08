@@ -15,11 +15,19 @@ This is the code repository for the website. Serverless frontend built with Next
 9. `git commit -m "meaningful commit message goes here"`
 10. `git push --set-upstream origin [FEATURE_NAME]` (the next time you push to this branch you can just say `git push`).
 
-## Linting
+## Linting and Code Quality
 
-We use ESLint + Prettier to lint our code and enforce consistent style. GitHub Actions automatically runs these linting tools when you push to the remote repository.
+We use ESLint + Prettier to lint our code and enforce consistent style. To make this process smoother, we've set up:
 
-Use `npm run lint:check` to check for linting/style errors, and `npm run lint:fix` to automatically fix them.
+1. **Pre-commit hooks**: Automatically lint and format your code when you commit changes. This uses Husky and lint-staged to ensure code quality without disrupting your workflow.
 
-We'd recommend using an [ESLint plugin for your editor](https://eslint.org/docs/user-guide/integrations) to lint and format your code as you write it.
+2. **Non-blocking CI**: Our GitHub Actions workflow checks for linting issues but won't block builds due to formatting problems.
+
+For manual linting:
+- Use `yarn lint:check` to check for linting/style errors
+- Use `yarn lint:fix` to automatically fix linting issues
+
+We recommend using an [ESLint plugin for your editor](https://eslint.org/docs/user-guide/integrations) to lint and format your code as you write it.
 - VSCode: [extension](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint), [tutorial](https://www.digitalocean.com/community/tutorials/linting-and-formatting-with-eslint-in-vs-code)
+
+See the [CONTRIBUTING.md](./CONTRIBUTING.md) file for more detailed information about code standards and workflow.
