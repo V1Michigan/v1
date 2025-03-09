@@ -1,120 +1,94 @@
 {
-    "env": {
-        "browser": true,
-        "es2021": true
-    },
-    "parser": "@typescript-eslint/parser",
-    "extends": [
-        "next/core-web-vitals",
-        "eslint:recommended",
-        "plugin:react/recommended",
-        "plugin:react-hooks/recommended",
-        "airbnb",
-        "prettier",
-        "plugin:@typescript-eslint/recommended",
-        "plugin:@typescript-eslint/recommended-requiring-type-checking"
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "next",
+    "airbnb",
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
+  ],
+  "plugins": ["@typescript-eslint", "prettier"],
+  "root": true,
+  "rules": {
+    "prettier/prettier": "warn",
+    "import/no-anonymous-default-export": "warn",
+    "import/extensions": [
+      "warn",
+      "ignorePackages",
+      {
+        "ts": "never",
+        "tsx": "never"
+      }
     ],
-    "plugins": [
-        "react",
-        "prettier",
-        "@typescript-eslint"
+    "react/jsx-filename-extension": [
+      "warn",
+      {
+        "extensions": [".ts", ".tsx"]
+      }
     ],
-    "root": true,
-    "rules": {
-        "prettier/prettier": "warn",
-        "import/no-anonymous-default-export": "warn",
-        "import/extensions": [
-            "warn",
-            "ignorePackages",
-            {
-                "ts": "never",
-                "tsx": "never"
-            }
+    "no-restricted-syntax": ["warn", "WithStatement"],
+    "react/jsx-closing-bracket-location": [0],
+    "react/jsx-props-no-spreading": [
+      "warn",
+      {
+        "exceptions": ["Component"]
+      }
+    ],
+    "react/prop-types": ["warn"],
+    "react-hooks/exhaustive-deps": "warn",
+    "quotes": ["warn", "double"],
+    "jsx-quotes": ["warn", "prefer-double"],
+    "@next/next/no-img-element": "off",
+    "react/require-default-props": "off", // TODO: Remove after deleting PropTypes
+    "jsx-a11y/label-has-associated-control": [
+      "warn",
+      {
+        "controlComponents": [
+          "Field" // from Formik
         ],
-        "react/jsx-filename-extension": [
-            "warn",
-            {
-                "extensions": [
-                    ".ts",
-                    ".tsx"
-                ]
-            }
-        ],
-        "no-restricted-syntax": [
-            "warn",
-            "WithStatement"
-        ],
-        "react/jsx-closing-bracket-location": [
-            0
-        ],
-        "react/jsx-props-no-spreading": [
-            "warn",
-            {
-                "exceptions": [
-                    "Component"
-                ]
-            }
-        ],
-        "react/prop-types": [
-            "warn"
-        ],
-        "react-hooks/exhaustive-deps": "warn",
-        "quotes": [
-            "warn",
-            "double"
-        ],
-        "jsx-quotes": [
-            "warn",
-            "prefer-double"
-        ],
-        "@next/next/no-img-element": "off",
-        "react/require-default-props": "off", // TODO: Remove after deleting PropTypes
-        "jsx-a11y/label-has-associated-control": [
-            "warn",
-            {
-                "controlComponents": [
-                    "Field" // from Formik
-                ],
-                "depth": 1
-            }
-        ],
-        "no-unused-vars": "off",
-        "@typescript-eslint/no-unused-vars": [
-            "warn",
-            {
-                "argsIgnorePattern": "^_",
-                "varsIgnorePattern": "^_",
-                "caughtErrorsIgnorePattern": "^_"
-            }
-        ],
-        "@typescript-eslint/no-floating-promises": "off",
-        "@typescript-eslint/no-misused-promises": [
-            "warn",
-            {
-                "checksVoidReturn": false
-            }
-        ],
-        // This is a bug: https://github.com/typescript-eslint/tslint-to-eslint-config/issues/856
-        "no-shadow": "off",
-        "@typescript-eslint/no-shadow": [
-            "warn"
-        ]
+        "depth": 1
+      }
+    ],
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "caughtErrorsIgnorePattern": "^_"
+      }
+    ],
+    "@typescript-eslint/no-floating-promises": "off",
+    "@typescript-eslint/no-misused-promises": [
+      "warn",
+      {
+        "checksVoidReturn": false
+      }
+    ],
+    // This is a bug: https://github.com/typescript-eslint/tslint-to-eslint-config/issues/856
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": ["warn"],
+    "@typescript-eslint/no-unsafe-assignment": "off",
+    "@typescript-eslint/no-unsafe-member-access": "off",
+    "@typescript-eslint/no-unsafe-call": "off",
+    "no-console": "warn"
+  },
+  "globals": {
+    "React": "writable"
+  },
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true,
+      "modules": true,
+      "experimentalObjectRestSpread": true
     },
-    "globals": {
-        "React": "writable"
-    },
-    "parserOptions": {
-        "ecmaFeatures": {
-            "jsx": true,
-            "modules": true,
-            "experimentalObjectRestSpread": true
-        },
-        "requireConfigFile": false,
-        "ecmaVersion": 12,
-        "sourceType": "module",
-        "project": "./tsconfig.json"
-    },
-    "ignorePatterns": [
-        "*.config.js"
-    ]
+    "requireConfigFile": false,
+    "ecmaVersion": 12,
+    "sourceType": "module",
+    "project": "./tsconfig.json"
+  },
+  "ignorePatterns": ["*.config.js"]
 }
