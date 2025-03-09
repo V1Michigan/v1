@@ -1,32 +1,30 @@
-import ReactGA from "react-ga4";
-import { NextPage } from "next";
-import { useRouter } from "next/router";
-import { useCallback, useEffect, useState } from "react";
-import { Formik, Form } from "formik";
 import type {
   PostgrestError,
   PostgrestSingleResponse,
 } from "@supabase/supabase-js";
+import { Form, Formik } from "formik";
+import { NextPage } from "next";
+import { useRouter } from "next/router";
+import { useCallback, useEffect, useState } from "react";
+import ReactGA from "react-ga4";
 import Head from "../../components/Head";
+import MemberBadges from "../../components/MemberBadges";
+import NavbarBuilder from "../../components/NavBar";
 import ProtectedRoute from "../../components/ProtectedRoute";
-import ViewProfile from "../../components/profile/ViewProfile";
-import ViewResume from "../../components/profile/ViewResume";
-import ViewAvatar from "../../components/profile/ViewAvatar";
-import isObjectEqual from "../../utils/isObjectEqual";
-import useSupabase from "../../hooks/useSupabase";
 import EditProfile from "../../components/profile/EditProfile";
+import ViewAvatar from "../../components/profile/ViewAvatar";
+import ViewResume from "../../components/profile/ViewResume";
 import {
   EditAvatar,
   EditResume,
 } from "../../components/profile/fields/FileFields";
 import { PartnerSharingConsentField } from "../../components/profile/fields/ProfileFields";
+import { FieldOfStudy, Year } from "../../constants/profile";
 import Rank from "../../constants/rank";
-import InternalLink from "../../components/Link";
+import useSupabase from "../../hooks/useSupabase";
 import EmailIcon from "../../public/profile/email.svg";
 import LinkedInIcon from "../../public/profile/linkedin.svg";
-import NavbarBuilder from "../../components/NavBar";
-import { FieldOfStudy, Year } from "../../constants/profile";
-import MemberBadges from "../../components/MemberBadges";
+import isObjectEqual from "../../utils/isObjectEqual";
 
 // Username included separately
 export type Profile = {
@@ -264,18 +262,22 @@ const UserProfile: NextPage = () => {
                           </div>
                         ) : (
                           <div className="h-32 w-32 rounded-full bg-gray-300 flex items-center justify-center text-gray-500">
-                            {values.name ? values.name.charAt(0).toUpperCase() : "?"}
+                            {values.name
+                              ? values.name.charAt(0).toUpperCase()
+                              : "?"}
                           </div>
                         )}
                       </div>
-                      
+
                       <div className="mt-6 md:mt-0 md:ml-8 text-center md:text-left">
-                        <h1 className="text-3xl font-bold text-gray-900">{values.name}</h1>
+                        <h1 className="text-3xl font-bold text-gray-900">
+                          {values.name}
+                        </h1>
                         <p className="text-gray-600">@{profileUsername}</p>
-                        
+
                         {/* Social links */}
                         <div className="flex items-center justify-center md:justify-start space-x-4 mt-3">
-                          <a 
+                          <a
                             href={`mailto:${values.email}`}
                             target="_blank"
                             rel="noopener noreferrer"
@@ -284,7 +286,7 @@ const UserProfile: NextPage = () => {
                             <EmailIcon className="h-5 w-5 fill-current" />
                           </a>
                           {values.linkedin && (
-                            <a 
+                            <a
                               href={values.linkedin}
                               target="_blank"
                               rel="noopener noreferrer"
@@ -293,21 +295,34 @@ const UserProfile: NextPage = () => {
                               <LinkedInIcon className="h-5 w-5 fill-current" />
                             </a>
                           )}
-                          {values.website && /^https?:\/\//.test(values.website) && (
-                            <a 
-                              href={values.website}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-gray-600 hover:text-gray-900"
-                            >
-                              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9" />
-                              </svg>
-                            </a>
-                          )}
+                          {values.website &&
+                            /^https?:\/\//.test(values.website) && (
+                              <a
+                                href={values.website}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-gray-600 hover:text-gray-900"
+                                aria-label="Visit website"
+                              >
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  className="h-5 w-5"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9"
+                                  />
+                                </svg>
+                              </a>
+                            )}
                         </div>
                       </div>
-                      
+
                       {/* Edit button for small screens */}
                       <div className="mt-6 md:hidden w-full">
                         {!editMode && isCurrentUser && (
@@ -326,7 +341,7 @@ const UserProfile: NextPage = () => {
                           </button>
                         )}
                       </div>
-                      
+
                       {/* Edit button for larger screens */}
                       <div className="hidden md:block md:ml-auto">
                         {!editMode && isCurrentUser && (
@@ -341,7 +356,12 @@ const UserProfile: NextPage = () => {
                             }}
                             type="button"
                           >
-                            <svg className="-ml-1 mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <svg
+                              className="-ml-1 mr-2 h-4 w-4"
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                            >
                               <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
                             </svg>
                             Edit Profile
@@ -359,7 +379,9 @@ const UserProfile: NextPage = () => {
                       <div className="md:col-span-2">
                         {/* Bio section */}
                         <div className="mb-6">
-                          <h2 className="text-lg font-medium text-gray-900 mb-2">About</h2>
+                          <h2 className="text-lg font-medium text-gray-900 mb-2">
+                            About
+                          </h2>
                           <div className="prose max-w-none text-gray-700">
                             {editMode ? (
                               <EditProfile profile={values} />
@@ -368,7 +390,9 @@ const UserProfile: NextPage = () => {
                                 {values.bio ? (
                                   <p>{values.bio}</p>
                                 ) : (
-                                  <p className="text-gray-400 italic">No bio provided</p>
+                                  <p className="text-gray-400 italic">
+                                    No bio provided
+                                  </p>
                                 )}
                               </>
                             )}
@@ -378,7 +402,9 @@ const UserProfile: NextPage = () => {
                         {/* Resume section - Only in edit mode */}
                         {editMode && (
                           <div className="mb-6 border-t border-gray-200 pt-6">
-                            <h2 className="text-lg font-medium text-gray-900 mb-2">Resume</h2>
+                            <h2 className="text-lg font-medium text-gray-900 mb-2">
+                              Resume
+                            </h2>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
                               {values.resume && (
                                 <div className="col-span-1">
@@ -391,7 +417,7 @@ const UserProfile: NextPage = () => {
                             </div>
                           </div>
                         )}
-                        
+
                         {/* Partner sharing consent - Only in edit mode */}
                         {editMode && (
                           <div className="mb-6 border-t border-gray-200 pt-6">
@@ -405,43 +431,70 @@ const UserProfile: NextPage = () => {
                         <div className="bg-gray-50 rounded-lg p-4">
                           {/* Education info */}
                           <div className="mb-4">
-                            <h2 className="text-lg font-medium text-gray-900 mb-2">Education</h2>
+                            <h2 className="text-lg font-medium text-gray-900 mb-2">
+                              Education
+                            </h2>
                             {values.year && (
                               <div className="mb-1 flex">
-                                <span className="text-gray-500 w-20">Year:</span>
-                                <span className="text-gray-900">{Year[values.year]}</span>
-                              </div>
-                            )}
-                            {values.fields_of_study && values.fields_of_study.majors.length > 0 && (
-                              <div className="mb-1 flex flex-wrap">
-                                <span className="text-gray-500 w-20">Major{values.fields_of_study.majors.length > 1 ? 's' : ''}:</span>
+                                <span className="text-gray-500 w-20">
+                                  Year:
+                                </span>
                                 <span className="text-gray-900">
-                                  {values.fields_of_study.majors
-                                    .map((majorKey) => FieldOfStudy[majorKey])
-                                    .join(", ")}
+                                  {Year[values.year]}
                                 </span>
                               </div>
                             )}
-                            {values.fields_of_study && values.fields_of_study.minors && values.fields_of_study.minors.length > 0 && (
-                              <div className="mb-1 flex flex-wrap">
-                                <span className="text-gray-500 w-20">Minor{values.fields_of_study.minors.length > 1 ? 's' : ''}:</span>
-                                <span className="text-gray-900">
-                                  {values.fields_of_study.minors
-                                    .map((minorKey) => FieldOfStudy[minorKey])
-                                    .join(", ")}
-                                </span>
-                              </div>
-                            )}
+                            {values.fields_of_study &&
+                              values.fields_of_study.majors.length > 0 && (
+                                <div className="mb-1 flex flex-wrap">
+                                  <span className="text-gray-500 w-20">
+                                    Major
+                                    {values.fields_of_study.majors.length > 1
+                                      ? "s"
+                                      : ""}
+                                    :
+                                  </span>
+                                  <span className="text-gray-900">
+                                    {values.fields_of_study.majors
+                                      .map((majorKey) => FieldOfStudy[majorKey])
+                                      .join(", ")}
+                                  </span>
+                                </div>
+                              )}
+                            {values.fields_of_study &&
+                              values.fields_of_study.minors &&
+                              values.fields_of_study.minors.length > 0 && (
+                                <div className="mb-1 flex flex-wrap">
+                                  <span className="text-gray-500 w-20">
+                                    Minor
+                                    {values.fields_of_study.minors.length > 1
+                                      ? "s"
+                                      : ""}
+                                    :
+                                  </span>
+                                  <span className="text-gray-900">
+                                    {values.fields_of_study.minors
+                                      .map((minorKey) => FieldOfStudy[minorKey])
+                                      .join(", ")}
+                                  </span>
+                                </div>
+                              )}
                           </div>
 
                           {/* Interests & roles */}
-                          {(values.interests?.length > 0 || values.roles?.length > 0) && (
+                          {(values.interests?.length > 0 ||
+                            values.roles?.length > 0) && (
                             <div>
-                              <h2 className="text-lg font-medium text-gray-900 mb-2">Interests & Skills</h2>
+                              <h2 className="text-lg font-medium text-gray-900 mb-2">
+                                Interests & Skills
+                              </h2>
                               <div className="mt-2">
                                 {values.interests && (
                                   <div className="pt-1">
-                                    <MemberBadges roles={values.roles} interests={values.interests} />
+                                    <MemberBadges
+                                      roles={values.roles}
+                                      interests={values.interests}
+                                    />
                                   </div>
                                 )}
                               </div>
@@ -453,7 +506,8 @@ const UserProfile: NextPage = () => {
                   </div>
 
                   {/* Error Messages */}
-                  {(dataFetchErrors.length > 0 || formSubmitErrors.length > 0) && (
+                  {(dataFetchErrors.length > 0 ||
+                    formSubmitErrors.length > 0) && (
                     <div className="bg-red-50 px-6 py-4 border-t border-red-200">
                       {dataFetchErrors.map((error) => (
                         <p key={error} className="text-red-600 text-sm">
