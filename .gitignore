@@ -41,8 +41,6 @@ tsconfig.tsbuildinfo
 # swp files
 *.swp
 
-#lock
-yarn.lock
 
 # fine-grain access token
 token.txt

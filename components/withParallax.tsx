@@ -2,7 +2,9 @@ import React from "react";
 import { ParallaxProvider } from "react-scroll-parallax";
 
 const withParallax =
-  <Props,>(Component: React.ComponentType<Props>) =>
+  <Props extends Record<string, unknown>>(
+    Component: React.ComponentType<Props>
+  ) =>
   (props: Props) =>
     (
       <ParallaxProvider>

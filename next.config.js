@@ -1,5 +1,4 @@
 module.exports = {
-  target: 'serverless',
   reactStrictMode: true,
   webpack(config, { isServer }) {
     // Don't load react-pdf code on the server, since react-pdf requires e.g. canvas
@@ -10,7 +9,7 @@ module.exports = {
     }
     config.module.rules.push({
       test: /\.svg$/,
-      use: ["@svgr/webpack"]
+      use: ["@svgr/webpack"],
     });
     return config;
   },
