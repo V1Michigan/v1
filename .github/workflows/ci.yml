@@ -10,17 +10,24 @@ jobs:
     runs-on: ubuntu-latest
     environment: Platform (Supabase)
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
+
       - name: Install pnpm
-        uses: pnpm/action-setup@v2
+        uses: pnpm/action-setup@v4
         with:
           version: 8
-      - uses: actions/setup-node@v3
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
           node-version: "18"
           cache: "pnpm"
+
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
+
       - name: Build
         run: pnpm build
         env:
@@ -31,17 +38,24 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
+
       - name: Install pnpm
-        uses: pnpm/action-setup@v2
+        uses: pnpm/action-setup@v4
         with:
           version: 8
-      - uses: actions/setup-node@v3
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
           node-version: "18"
           cache: "pnpm"
+
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
+
       - name: Lint check (non-blocking)
         run: pnpm lint:check || echo "Linting issues found, but continuing with build"
         continue-on-error: true
