@@ -18,6 +18,16 @@ interface Favorite {
   startup_id: number;
 }
 
+const getTagStyle = (tag: string) => {
+  if (tag.startsWith("PS")) {
+    return "bg-pink-100 text-pink-800 border border-pink-200";
+  }
+  if (tag.startsWith("Build Blue")) {
+    return "bg-blue-100 text-blue-800 border border-blue-200";
+  }
+  return "bg-yellow-100 text-yellow-800 border border-yellow-200"; // default style
+};
+
 export default function StartupTile({ startup }: { startup: Startup }) {
   const {
     id,
@@ -28,6 +38,7 @@ export default function StartupTile({ startup }: { startup: Startup }) {
     industries,
     profiles,
     startups_members: profileMetadata,
+    tags,
   } = startup;
   const [dialogOpen, setDialogOpen] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
@@ -119,6 +130,19 @@ export default function StartupTile({ startup }: { startup: Startup }) {
         className="m-0 p-0 list-none rounded-md"
       >
         <div className="bg-white border border-0.5 relative h-0 pb-[75%] overflow-hidden rounded-md group">
+          <div className="absolute top-3 left-3 z-10 flex flex-wrap gap-2 max-w-[80%]">
+            {tags?.map((tag) => (
+              <span key={tag}>
+                <p
+                  className={`text-xs w-fit font-figtree font-medium px-2 py-0.5 rounded-full shadow-sm backdrop-blur-sm ${getTagStyle(
+                    tag
+                  )}`}
+                >
+                  {tag}
+                </p>
+              </span>
+            ))}
+          </div>
           <div className="flex items-center justify-center text-center absolute inset-0 p-4">
             <img
               src={logo}
@@ -129,7 +153,7 @@ export default function StartupTile({ startup }: { startup: Startup }) {
           <div className="flex z-[2] items-end p-[20px] rounded-md absolute bg-gradient-to-b from-transparent to-gray-50/10 hover:bg-black/80 hover:opacity-1 top-0 bottom-0 left-0 right-0">
             <div className="opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-1 items-center justify-between min-w-0">
               <div>
-                <h1 className="font-figtree text-white text-md font-semibold font-sans overflow-hidden">
+                <h1 className="font-figtree text-white text-md font-semibold font-sans overflow-hidden mb-2">
                   {name}
                 </h1>
                 <h3
@@ -139,15 +163,15 @@ export default function StartupTile({ startup }: { startup: Startup }) {
                     WebkitBoxOrient: "vertical",
                     WebkitLineClamp: "3",
                   }}
-                  className="font-figtree text-white text-sm"
+                  className="font-figtree text-white text-sm mb-3"
                 >
                   {description}
                 </h3>
 
-                <div className="flex gap-1">
+                <div className="flex flex-wrap gap-2 mt-auto">
                   {industries?.map((industry) => (
-                    <span className="">
-                      <p className="text-xs my-1 w-fit font-figtree font-semibold px-2 bg-yellow-400 rounded">
+                    <span key={industry}>
+                      <p className="text-xs w-fit font-figtree font-medium px-2 py-0.5 rounded-full shadow-sm backdrop-blur-sm bg-amber-100 text-amber-800 border border-amber-200">
                         {industry}
                       </p>
                     </span>
@@ -271,10 +295,23 @@ export default function StartupTile({ startup }: { startup: Startup }) {
                     </div>
                     <div className="mt-2">
                       <p className="text-sm text-gray-500">{description}</p>
-                      <div className="flex">
+                      <div className="flex flex-wrap gap-1.5">
                         {industries?.map((industry) => (
-                          <p className="text-sm my-2 mr-1 px-2 bg-yellow-300 rounded-md font-figtree font-medium">
+                          <p
+                            key={industry}
+                            className="text-xs w-fit font-figtree font-medium px-2 py-0.5 rounded-full shadow-sm bg-amber-100 text-amber-800 border border-amber-200"
+                          >
                             {industry}
+                          </p>
+                        ))}
+                        {tags?.map((tag) => (
+                          <p
+                            key={tag}
+                            className={`text-xs w-fit font-figtree font-medium px-2 py-0.5 rounded-full shadow-sm ${getTagStyle(
+                              tag
+                            )}`}
+                          >
+                            {tag}
                           </p>
                         ))}
                       </div>
