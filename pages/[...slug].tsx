@@ -135,6 +135,7 @@ const DynamicLink: NextPage<Props> = ({
     <div>
       <Head>
         <title>{metadata.title}</title>
+        <link rel="canonical" href={currentUrl} />
         <meta name="description" content={metadata.description} />
         <meta property="og:url" content={currentUrl} />
         <meta property="og:type" content="website" />
