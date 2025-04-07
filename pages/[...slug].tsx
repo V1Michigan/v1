@@ -1,7 +1,7 @@
-import { GetServerSideProps, NextPage } from "next";
-import { useState, useEffect } from "react";
-import Head from "next/head";
 import { getLinkPreview } from "link-preview-js";
+import { GetServerSideProps, NextPage } from "next";
+import Head from "next/head";
+import { useEffect, useState } from "react";
 import Redirect from "../components/Redirect";
 import supabase from "../utils/supabaseClient";
 
@@ -34,24 +34,6 @@ export const getServerSideProps: GetServerSideProps = async ({
 }) => {
   const slug = params?.slug as string[];
   const slugRoute = slug.join("/");
-
-  if (query.utm_tag) {
-    const utmTag = query.utm_tag as string;
-
-    const { data: utmData, error: utmError } = await supabase
-      .from<UTMData>("utm")
-      .select()
-      .eq("tag", utmTag)
-      .single();
-
-    if (utmError) {
-      console.log("Could not find any utm entry for tag: ", utmTag);
-    } else if (utmData) {
-      await supabase.from("utm_clicks").insert({
-        utm_tag: utmData.tag,
-      });
-    }
-  }
 
   const { data } = await supabase
     .from<DynamicLinkData>("dynamic_links")
@@ -106,7 +88,13 @@ export const getServerSideProps: GetServerSideProps = async ({
     };
   }
 
-  const protocol = req.headers["x-forwarded-proto"]?.[0] || "http";
+  // Check for both Netlify's x-scheme and standard x-forwarded-proto
+  const protocol =
+    req.headers["x-scheme"] ||
+    req.headers["x-forwarded-proto"]?.[0] ||
+    (req.headers["x-forwarded-scheme"] as string) ||
+    "https"; // Default to https instead of http
+
   const { host } = req.headers;
   const currentUrl = `${protocol}://${host ?? "v1michigan.com"}/${slugRoute}`;
 
